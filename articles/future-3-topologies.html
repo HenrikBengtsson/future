@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
       </span>
     </div>
 
@@ -440,11 +440,11 @@ output will be.</p>
 on those nodes. Now, imagine you want to use only 50% of these cores.
 This can be done by tweaking the <code>multisession</code> plan by
 passing a function to <code>workers</code>;</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>halfCores <span class="ot">&lt;-</span> <span class="cf">function</span>() { <span class="fu">max</span>(<span class="dv">1</span>, <span class="fu">round</span>(<span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">availableCores</span>()))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">list</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tweak</span>(cluster, <span class="at">workers =</span> nodes),</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tweak</span>(multisession, <span class="at">workers =</span> halfCores)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>))</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>halfCores <span class="ot">&lt;-</span> <span class="cf">function</span>() { <span class="fu">max</span>(<span class="dv">1</span>, <span class="fu">round</span>(<span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">availableCores</span>()))</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">list</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">tweak</span>(cluster, <span class="at">workers =</span> nodes),</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">tweak</span>(multisession, <span class="at">workers =</span> halfCores)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>))</span></code></pre></div>
 <p>With this, each node will use at most 50% of the cores available. For
 instance, if <code>n1</code> and <code>n2</code> have eight cores, and
 <code>n3</code> has 32 cores, then they nodes will use four, four, and

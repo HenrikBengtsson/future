@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
       </span>
     </div>
 
@@ -182,13 +182,13 @@ Here is an example illustrating how the basics of futures work.
 First, consider the following code snippet that uses plain R code:
 -->
 <p>フューチャがどのように動作するか例を示そう。 まず、フューチャを使わずに式を評価する次のコードを見てみよう。</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Hello world<span class="sc">!</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> v</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> {</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>Hello world<span class="sc">!</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="er">&gt;</span> v</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span></code></pre></div>
 <!--
 It works by assigning the value of an expression to variable v and we then print the value of v. 
 Moreover, when the expression for v is evaluated we also print a message.
@@ -198,14 +198,14 @@ Moreover, when the expression for v is evaluated we also print a message.
 Here is the same code snippet modified to use futures instead:
 -->
 <p>上のコードをフューチャを使った式に書き換えよう。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="sc">%&lt;-%</span> {</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>Hello world<span class="sc">!</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="sc">%&lt;-%</span> {</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="sc">&gt;</span> v</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>Hello world<span class="sc">!</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span></code></pre></div>
 <!--
 The difference is in how v is constructed; with plain R we use <- whereas with futures we use %<-%.
 The other difference is that output is relayed after the future is resolved (not during) and when the value is queried (see Vignette 'Outputting Text').
@@ -216,15 +216,15 @@ So why are futures useful?
 Because we can choose to evaluate the future expression in a separate R process asynchronously by simply switching settings as:
 -->
 <p>フューチャは何が便利なのだろうか？ 式をフューチャにしておくと、式の評価を非同期実行したいときに、次のように簡単に切り替えることができる。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="sc">%&lt;-%</span> {</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>Hello world<span class="sc">!</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="sc">%&lt;-%</span> {</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="sc">&gt;</span> v</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>Hello world<span class="sc">!</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span></code></pre></div>
 <!--
 With asynchronous futures, the current/main R process does not block, which means it is available for further processing while the futures are being resolved in separate processes running in the background.
 In other words, futures provide a simple but yet powerful construct for parallel and / or distributed processing in R.
@@ -243,15 +243,15 @@ In the introductory example above we used implicit futures created via the v %<-
 An alternative is explicit futures using the f <- future({ expr }) and v <- value(f) constructs. With these, our example could alternatively be written as:
 -->
 <p>future パッケージには、フューチャを作成する方法として、<strong>明示的な</strong>スタイルと<strong>非明示的な</strong>スタイルの2種類がある。 上記の例では、<code>v %&lt;-% { 式 }</code> という非明示的なスタイルでフューチャを作成した。 一方、明示的にフューチャを作成する方法として <code>f &lt;- future({ 式 })</code> と <code>v &lt;- value(f)</code> という2つの関数を使うスタイルがある。 上記の例を明示的なスタイルに書き換えると次のようになる。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> })</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">value</span>(f)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>Hello world<span class="sc">!</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="er">&gt;</span> v</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"future"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="sc">+</span>   <span class="fu">cat</span>(<span class="st">"Hello world!</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="sc">+</span>   <span class="fl">3.14</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="sc">+</span> })</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">value</span>(f)</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>Hello world<span class="sc">!</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="er">&gt;</span> v</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span></code></pre></div>
 <!--
 Either style of future construct works equally(*) well. 
 The implicit style is most similar to how regular R code is written. 
@@ -375,16 +375,16 @@ As soon as the value (or an error) has been collected it will be available for a
 </ul><!--
 Here is an example illustrating that all assignments are done to a local environment:
 --><p>代入がローカル環境で実行される（グローバル環境に影響しない）ことは、次のコードの実行結果からわかる。</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(sequential)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="sc">%&lt;-%</span> {</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     a <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="dv">2</span> <span class="sc">*</span> a</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> x</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">4</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(sequential)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="sc">&gt;</span> x <span class="sc">%&lt;-%</span> {</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="sc">+</span>     a <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="sc">+</span>     <span class="dv">2</span> <span class="sc">*</span> a</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="sc">&gt;</span> x</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">4</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">1</span></span></code></pre></div>
 <!--
 Now we are ready to explore the different future strategies.
 -->
@@ -406,35 +406,35 @@ They were designed to behave as similar as possible to regular R evaluation whil
 Here is an example illustrating their properties:
 -->
 <p>逐次的フューチャはデフォルトのフューチャである。 Future API の共通のふるまいを満たしながら、通常の R 評価と同じように動作するように設計されている。 逐次的フューチャのふるまいを次のコードに示す。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(sequential)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fl">3.14</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="sc">%&lt;-%</span> {</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">rm</span>(pid)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'b' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> c <span class="sc">%&lt;-%</span> {</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'c' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="dv">2</span> <span class="sc">*</span> a</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> c</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'c'</span> ...</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">6.28</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(sequential)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="sc">&gt;</span> pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="sc">+</span>     pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="sc">+</span>     <span class="fl">3.14</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="sc">%&lt;-%</span> {</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">rm</span>(pid)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'b' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="sc">&gt;</span> c <span class="sc">%&lt;-%</span> {</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'c' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="sc">+</span>     <span class="dv">2</span> <span class="sc">*</span> a</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="sc">&gt;</span> c</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>Future <span class="st">'c'</span> ...</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">6.28</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span></code></pre></div>
 <!--
 Since eager sequential evaluation is taking place, each of the three futures is resolved instantaneously in the moment it is created. 
 Note also how pid in the calling environment, which was assigned the process ID of the current process, is neither overwritten nor removed.
@@ -469,35 +469,35 @@ A multisession future is evaluated in a background R session running on the same
 Here is our example with multisession evaluation:
 -->
 <p>すべての OS で提供されているマルチセッションフューチャから始めよう。 マルチセッションフューチャは呼び出し側の R プロセスと同じマシンで、バックグラウンドの R セッションにおいてフューチャを評価する。 マルチセッション評価の例を示そう。</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fl">3.14</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="sc">%&lt;-%</span> {</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">rm</span>(pid)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'b' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> c <span class="sc">%&lt;-%</span> {</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'c' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="dv">2</span> <span class="sc">*</span> a</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23246</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> c</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'c'</span> ...</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">6.28</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="sc">&gt;</span> pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="sc">+</span>     pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a><span class="sc">+</span>     <span class="fl">3.14</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="sc">%&lt;-%</span> {</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">rm</span>(pid)</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'b' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a><span class="sc">&gt;</span> c <span class="sc">%&lt;-%</span> {</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'c' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a><span class="sc">+</span>     <span class="dv">2</span> <span class="sc">*</span> a</span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23246</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="sc">&gt;</span> c</span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>Future <span class="st">'c'</span> ...</span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">6.28</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span></code></pre></div>
 <!--
 The first thing we observe is that the values of a, c and pid are the same as previously. 
 However, we notice that b is different from before.
@@ -510,9 +510,9 @@ If all background sessions are busy serving other futures, the creation of the n
 The total number of background processes launched is decided by the value of availableCores(), e.g.
 -->
 <p>マルチセッション戦略を使うと、現行とは別の R セッションがバックグラウンドで起動され、フューチャは作成と同時にそれらの R セッションで評価される。 もしすべてのバックグラウンドセッションが他のフューチャでビジーならば、新しく作成されたマルチセッションフューチャはバックグラウンドセッションが利用可能になるまで<strong>ブロックされる</strong>。 いくつのバックグラウンドプロセスが起動されるかは <code><a href="reference/re-exports.html">availableCores()</a></code> の値によって決まる。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">availableCores</span>()</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mc.cores </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>       <span class="dv">2</span> </span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">availableCores</span>()</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>mc.cores </span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>       <span class="dv">2</span> </span></code></pre></div>
 <!--
 This particular result tells us that the mc.cores option was set such that we are allowed to use in total two (2) processes including the main process.
 In other words, with these settings, there will be two (2) background processes serving the multisession futures. 
@@ -558,35 +558,35 @@ Cluster futures evaluate expressions on an ad-hoc cluster (as implemented by the
 For instance, assume you have access to three nodes n1, n2 and n3, you can then use these for asynchronous evaluation as:
 -->
 <p>クラスタフューチャは、（parallel パッケージで実装されているような）アドホッククラスタ上で式を評価する。 例えば、3つのクラスタノード <code>n1</code>, <code>n2</code>, <code>n3</code> があるとき、それらを使って非同期処理を行うには次のようにする。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(cluster, <span class="at">workers =</span> <span class="fu">c</span>(<span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span>))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fl">3.14</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="sc">%&lt;-%</span> {</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">rm</span>(pid)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'b' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> c <span class="sc">%&lt;-%</span> {</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'c' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="dv">2</span> <span class="sc">*</span> a</span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23352</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> c</span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'c'</span> ...</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">6.28</span></span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(cluster, <span class="at">workers =</span> <span class="fu">c</span>(<span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="sc">&gt;</span> pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a><span class="sc">+</span>     pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="sc">+</span>     <span class="fl">3.14</span></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="sc">%&lt;-%</span> {</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">rm</span>(pid)</span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'b' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="sc">&gt;</span> c <span class="sc">%&lt;-%</span> {</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'c' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="sc">+</span>     <span class="dv">2</span> <span class="sc">*</span> a</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23352</span></span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a><span class="sc">&gt;</span> c</span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a>Future <span class="st">'c'</span> ...</span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">6.28</span></span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a>[<span class="dv">1</span>] <span class="fl">3.14</span></span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span></code></pre></div>
 <!--
 Any types of clusters that parallel::makeCluster() creates can be used for cluster futures. 
 For instance, the above cluster can be explicitly set up as:
@@ -619,35 +619,35 @@ However, there is nothing stopping us from using a “nested topology” of futu
 For instance, here is an example of two “top” futures (a and b) that uses multisession evaluation and where the second future (b) in turn uses two internal futures:
 -->
 <p>例えば、次の例では、2つの「トップ」フューチャ（<code>a</code> と <code>b</code>）があり、マルチセッション戦略を使って評価される。 ただし、フューチャ <code>b</code> は内部に別のフューチャが使われている。</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="sc">%&lt;-%</span> {</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'b' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     b1 <span class="sc">%&lt;-%</span> {</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">cat</span>(<span class="st">"Future 'b1' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     }</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     b2 <span class="sc">%&lt;-%</span> {</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">cat</span>(<span class="st">"Future 'b2' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     }</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">c</span>(<span class="at">b.pid =</span> <span class="fu">Sys.getpid</span>(), <span class="at">b1.pid =</span> b1, <span class="at">b2.pid =</span> b2)</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23429</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b1'</span> ...</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b2'</span> ...</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a> b.pid b1.pid b2.pid </span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a> <span class="dv">23430</span>  <span class="dv">23430</span>  <span class="dv">23430</span> </span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="sc">&gt;</span> pid <span class="ot">&lt;-</span> <span class="fu">Sys.getpid</span>()</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="sc">%&lt;-%</span> {</span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'b' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a><span class="sc">+</span>     b1 <span class="sc">%&lt;-%</span> {</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">cat</span>(<span class="st">"Future 'b1' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
+<span id="cb12-12"><a href="#cb12-12" tabindex="-1"></a><span class="sc">+</span>     }</span>
+<span id="cb12-13"><a href="#cb12-13" tabindex="-1"></a><span class="sc">+</span>     b2 <span class="sc">%&lt;-%</span> {</span>
+<span id="cb12-14"><a href="#cb12-14" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">cat</span>(<span class="st">"Future 'b2' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
+<span id="cb12-16"><a href="#cb12-16" tabindex="-1"></a><span class="sc">+</span>     }</span>
+<span id="cb12-17"><a href="#cb12-17" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">c</span>(<span class="at">b.pid =</span> <span class="fu">Sys.getpid</span>(), <span class="at">b1.pid =</span> b1, <span class="at">b2.pid =</span> b2)</span>
+<span id="cb12-18"><a href="#cb12-18" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb12-19"><a href="#cb12-19" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb12-20"><a href="#cb12-20" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb12-21"><a href="#cb12-21" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb12-22"><a href="#cb12-22" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb12-23"><a href="#cb12-23" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23429</span></span>
+<span id="cb12-24"><a href="#cb12-24" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
+<span id="cb12-25"><a href="#cb12-25" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
+<span id="cb12-26"><a href="#cb12-26" tabindex="-1"></a>Future <span class="st">'b1'</span> ...</span>
+<span id="cb12-27"><a href="#cb12-27" tabindex="-1"></a>Future <span class="st">'b2'</span> ...</span>
+<span id="cb12-28"><a href="#cb12-28" tabindex="-1"></a> b.pid b1.pid b2.pid </span>
+<span id="cb12-29"><a href="#cb12-29" tabindex="-1"></a> <span class="dv">23430</span>  <span class="dv">23430</span>  <span class="dv">23430</span> </span></code></pre></div>
 <!--
 By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.
 There is the main R process (pid 23153), and there are the two processes used by a (pid 23429) and b (pid 23430). 
@@ -667,19 +667,19 @@ First, the same evaluation strategies as above can be explicitly specified as:
 We would actually get the same behavior if we try with multiple levels of multisession evaluations;
 -->
 <p>しかし、次に示すように、複数レベルのマルチセッション評価を試しても、上記と同じ動作になる。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(<span class="fu">list</span>(multisession, multisession))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>[...]</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23431</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b1'</span> ...</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b2'</span> ...</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a> b.pid b1.pid b2.pid </span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">23432</span>  <span class="dv">23432</span>  <span class="dv">23432</span> </span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(<span class="fu">list</span>(multisession, multisession))</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>[...]</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23431</span></span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>Future <span class="st">'b1'</span> ...</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>Future <span class="st">'b2'</span> ...</span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a> b.pid b1.pid b2.pid </span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a> <span class="dv">23432</span>  <span class="dv">23432</span>  <span class="dv">23432</span> </span></code></pre></div>
 <!--
 The reason for this is, also here, to protect us from launching more processes than what the machine can support. 
 Internally, this is done by setting mc.cores = 1 such that functions like parallel::mclapply() will fall back to run sequentially. 
@@ -690,19 +690,19 @@ This is the case for both multisession and multicore evaluation.
 Continuing, if we start off by sequential evaluation and then use multisession evaluation for any nested futures, we get:
 -->
 <p>次に、トップレベルを逐次評価にして、ネストされたフューチャをマルチセッション評価してみよう。</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(<span class="fu">list</span>(sequential, multisession))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>[...]</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b1'</span> ...</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b2'</span> ...</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a> b.pid b1.pid b2.pid </span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">23153</span>  <span class="dv">23433</span>  <span class="dv">23434</span> </span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(<span class="fu">list</span>(sequential, multisession))</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>[...]</span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>Future <span class="st">'b1'</span> ...</span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>Future <span class="st">'b2'</span> ...</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a> b.pid b1.pid b2.pid </span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a> <span class="dv">23153</span>  <span class="dv">23433</span>  <span class="dv">23434</span> </span></code></pre></div>
 <!--
 which clearly show that a and b are resolved in the calling process (pid 23153) whereas the two nested futures (b1 and b2) are resolved in two separate R processes (pids 23433 and 23434).
 -->
@@ -712,20 +712,20 @@ Having said this, it is indeed possible to use nested multisession evaluation st
 In order to do this we need to “tweak” the default settings, which can be done as follows:
 -->
 <p>各レベルで利用可能なコアの数を明示的に指定する（<strong>強制する</strong>）と、ネストされたマルチセッション評価戦略を使用することができる。 そのためには、次のようにしてデフォルト設定を “tweak” する必要がある。</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(<span class="fu">list</span>(<span class="fu">tweak</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>), <span class="fu">tweak</span>(multisession, </span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="at">workers =</span> <span class="dv">2</span>)))</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>[...]</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23435</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b1'</span> ...</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'b2'</span> ...</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a> b.pid b1.pid b2.pid </span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">23436</span>  <span class="dv">23437</span>  <span class="dv">23438</span> </span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(<span class="fu">list</span>(<span class="fu">tweak</span>(multisession, <span class="at">workers =</span> <span class="dv">2</span>), <span class="fu">tweak</span>(multisession, </span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="sc">+</span>     <span class="at">workers =</span> <span class="dv">2</span>)))</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>[...]</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a><span class="sc">&gt;</span> pid</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23153</span></span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23435</span></span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a><span class="sc">&gt;</span> b</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a>Future <span class="st">'b'</span> ...</span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a>Future <span class="st">'b1'</span> ...</span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a>Future <span class="st">'b2'</span> ...</span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a> b.pid b1.pid b2.pid </span>
+<span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a> <span class="dv">23436</span>  <span class="dv">23437</span>  <span class="dv">23438</span> </span></code></pre></div>
 <!--
 First, we see that both a and b are resolved in different processes (pids 23435 and 23436) than the calling process (pid 23153).
 Second, the two nested futures (b1 and b2) are resolved in yet two other R processes (pids 23437 and 23438).
@@ -745,32 +745,32 @@ If we work with implicit futures (as in all the examples above), we can use the 
 For example,
 -->
 <p>フューチャが解決済みか未解決かをブロックされずに確認する方法がある。 これには <code>resolved(f)</code> 関数を使う。 この関数には入力として明示的なフューチャ <code>f</code> を与える。 もし非明示的なフューチャを使っている場合、<code>f &lt;- futureOf(a)</code> のようにして非明示的なフューチャを明示的なフューチャに変換する必要がある。 例を次に示す。</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ..."</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.sleep</span>(<span class="dv">2</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"done</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cat</span>(<span class="st">"Waiting for 'a' to be resolved ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>Waiting <span class="cf">for</span> <span class="st">'a'</span> to be resolved ...</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">futureOf</span>(a)</span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> count <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">while</span> (<span class="sc">!</span><span class="fu">resolved</span>(f)) {</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(count, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.sleep</span>(<span class="fl">0.2</span>)</span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     count <span class="ot">&lt;-</span> count <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> </span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> </span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> </span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> </span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> </span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cat</span>(<span class="st">"Waiting for 'a' to be resolved ... DONE</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>Waiting <span class="cf">for</span> <span class="st">'a'</span> to be resolved ... DONE</span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...done</span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23439</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ..."</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.sleep</span>(<span class="dv">2</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"done</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.getpid</span>()</span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cat</span>(<span class="st">"Waiting for 'a' to be resolved ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a>Waiting <span class="cf">for</span> <span class="st">'a'</span> to be resolved ...</span>
+<span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">futureOf</span>(a)</span>
+<span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="sc">&gt;</span> count <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">while</span> (<span class="sc">!</span><span class="fu">resolved</span>(f)) {</span>
+<span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(count, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">Sys.sleep</span>(<span class="fl">0.2</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="sc">+</span>     count <span class="ot">&lt;-</span> count <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb17-16"><a href="#cb17-16" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb17-17"><a href="#cb17-17" tabindex="-1"></a><span class="dv">1</span> </span>
+<span id="cb17-18"><a href="#cb17-18" tabindex="-1"></a><span class="dv">2</span> </span>
+<span id="cb17-19"><a href="#cb17-19" tabindex="-1"></a><span class="dv">3</span> </span>
+<span id="cb17-20"><a href="#cb17-20" tabindex="-1"></a><span class="dv">4</span> </span>
+<span id="cb17-21"><a href="#cb17-21" tabindex="-1"></a><span class="dv">5</span> </span>
+<span id="cb17-22"><a href="#cb17-22" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cat</span>(<span class="st">"Waiting for 'a' to be resolved ... DONE</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" tabindex="-1"></a>Waiting <span class="cf">for</span> <span class="st">'a'</span> to be resolved ... DONE</span>
+<span id="cb17-24"><a href="#cb17-24" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb17-25"><a href="#cb17-25" tabindex="-1"></a>Future <span class="st">'a'</span> ...done</span>
+<span id="cb17-26"><a href="#cb17-26" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">23439</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -781,33 +781,33 @@ If an error occurs while evaluating a future, the error is propagated and thrown
 For example, if we use lazy evaluation on a future that generates an error, we might see something like
 -->
 <p>フューチャが期待通りに動かない場合がある。 フューチャを評価しているときにエラーが起こった場合、そのエラーは<strong>フューチャの値が要求されたとき</strong>に呼び出し環境へ伝播される。 例えば、遅延評価を使ったフューチャでエラーが起こった場合、次のようになる。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(sequential)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="ot">&lt;-</span> <span class="st">"hello"</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">log</span>(b)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> } <span class="sc">%lazy%</span> <span class="cn">TRUE</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cat</span>(<span class="st">"Everything is still ok although we have created a future that will fail.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>Everything is still ok although we have created a future that will fail.</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">log</span>(b) <span class="sc">:</span> non<span class="sc">-</span>numeric argument to mathematical <span class="cf">function</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(sequential)</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="sc">&gt;</span> b <span class="ot">&lt;-</span> <span class="st">"hello"</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="sc">%&lt;-%</span> {</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">cat</span>(<span class="st">"Future 'a' ...</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a><span class="sc">+</span>     <span class="fu">log</span>(b)</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a><span class="sc">+</span> } <span class="sc">%lazy%</span> <span class="cn">TRUE</span></span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cat</span>(<span class="st">"Everything is still ok although we have created a future that will fail.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>Everything is still ok although we have created a future that will fail.</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">log</span>(b) <span class="sc">:</span> non<span class="sc">-</span>numeric argument to mathematical <span class="cf">function</span></span></code></pre></div>
 <!--
 The error is thrown each time the value is requested, that is, if we try to get the value again will generate the same error (and output):
 -->
 <p>このエラーは値を要求するたびに起こる。 すなわち、もう一度値を取得しようとすると同じエラー（と出力）になる。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">log</span>(b) <span class="sc">:</span> non<span class="sc">-</span>numeric argument to mathematical <span class="cf">function</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>In addition<span class="sc">:</span> Warning message<span class="sc">:</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>restarting interrupted promise evaluation</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="sc">&gt;</span> a</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>Future <span class="st">'a'</span> ...</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a>Error <span class="cf">in</span> <span class="fu">log</span>(b) <span class="sc">:</span> non<span class="sc">-</span>numeric argument to mathematical <span class="cf">function</span></span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>In addition<span class="sc">:</span> Warning message<span class="sc">:</span></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>restarting interrupted promise evaluation</span></code></pre></div>
 <!--
 To see the last call in the call stack that gave the error, we can use the backtrace() function(*) on the future, i.e.
 -->
 <p>エラーを起こしたコールスタックの<strong>最後の</strong>呼び出しを見るには、<code><a href="reference/backtrace.html">backtrace()</a></code> 関数(*)を使う。</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">backtrace</span>(a)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>[[<span class="dv">1</span>]]</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(a)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">backtrace</span>(a)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a>[[<span class="dv">1</span>]]</span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="fu">log</span>(a)</span></code></pre></div>
 <!--
 (*) The commonly used traceback() does not provide relevant information in the context of futures.
 Furthermore, it is unfortunately not possible to see the list of calls (evaluated expressions) that led up to the error; only the call that gave the error (this is due to a limitation in tryCatch() used internally).
@@ -847,19 +847,19 @@ Because an explicit future is just like any other object in R it can be assigned
 For instance, we can create several of them in a loop and assign them to a list, e.g.
 -->
 <p>非明示的なフューチャには1つの制約がある。 明示的なフューチャは単なる R オブジェクトなので、どこでも何にでも代入可能である。 例えば、次のように、ループの中でフューチャをリストの要素として代入できる。</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) {</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     f[[ii]] <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     })</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">lapply</span>(f, <span class="at">FUN =</span> value)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">str</span>(v)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>List of <span class="dv">3</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23443</span></span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23444</span></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23445</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) {</span>
+<span id="cb21-4"><a href="#cb21-4" tabindex="-1"></a><span class="sc">+</span>     f[[ii]] <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
+<span id="cb21-5"><a href="#cb21-5" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
+<span id="cb21-6"><a href="#cb21-6" tabindex="-1"></a><span class="sc">+</span>     })</span>
+<span id="cb21-7"><a href="#cb21-7" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">lapply</span>(f, <span class="at">FUN =</span> value)</span>
+<span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">str</span>(v)</span>
+<span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a>List of <span class="dv">3</span></span>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23443</span></span>
+<span id="cb21-12"><a href="#cb21-12" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23444</span></span>
+<span id="cb21-13"><a href="#cb21-13" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23445</span></span></code></pre></div>
 <!--
 This is not possible to do when using implicit futures. 
 This is because the %<-% assignment operator cannot be used in all cases where the regular <- assignment operator can be used. 
@@ -867,19 +867,19 @@ It can only be used to assign future values to environments (including the calli
 However, we can assign implicit futures to environments using named indices, e.g.
 -->
 <p>これは非明示的なフューチャでは<strong>できない</strong>。 なぜなら、<code>%&lt;-%</code> 演算子は通常の <code>&lt;-</code> 代入演算子とは違う動作をするからである。 <code>%&lt;-%</code> 演算子はフューチャの値を<strong>環境</strong>（呼び出し環境など）に代入する。 これは <code>assign(name, value, envir)</code> と同じ動作である。 したがって、上記と同様のことを非明示的フューチャで行いたい場合は、次のように名前インデックスを使って環境に代入する。</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">new.env</span>()</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">for</span> (name <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)) {</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     v[[name]] <span class="sc">%&lt;-%</span> {</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     }</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">as.list</span>(v)</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">str</span>(v)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>List of <span class="dv">3</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> a<span class="sc">:</span> int <span class="dv">23446</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> b<span class="sc">:</span> int <span class="dv">23447</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> c<span class="sc">:</span> int <span class="dv">23448</span></span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">new.env</span>()</span>
+<span id="cb22-3"><a href="#cb22-3" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">for</span> (name <span class="cf">in</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)) {</span>
+<span id="cb22-4"><a href="#cb22-4" tabindex="-1"></a><span class="sc">+</span>     v[[name]] <span class="sc">%&lt;-%</span> {</span>
+<span id="cb22-5"><a href="#cb22-5" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
+<span id="cb22-6"><a href="#cb22-6" tabindex="-1"></a><span class="sc">+</span>     }</span>
+<span id="cb22-7"><a href="#cb22-7" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb22-8"><a href="#cb22-8" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">as.list</span>(v)</span>
+<span id="cb22-9"><a href="#cb22-9" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">str</span>(v)</span>
+<span id="cb22-10"><a href="#cb22-10" tabindex="-1"></a>List of <span class="dv">3</span></span>
+<span id="cb22-11"><a href="#cb22-11" tabindex="-1"></a> <span class="sc">$</span> a<span class="sc">:</span> int <span class="dv">23446</span></span>
+<span id="cb22-12"><a href="#cb22-12" tabindex="-1"></a> <span class="sc">$</span> b<span class="sc">:</span> int <span class="dv">23447</span></span>
+<span id="cb22-13"><a href="#cb22-13" tabindex="-1"></a> <span class="sc">$</span> c<span class="sc">:</span> int <span class="dv">23448</span></span></code></pre></div>
 <!--
 Here as.list(v) blocks until all futures in the environment v have been resolved.
 Then their values are collected and returned as a regular list.
@@ -892,20 +892,20 @@ By using list environments where we otherwise would use lists, we can also assig
 For example,
 -->
 <p>もし<strong>数値インデックス</strong>を使いたい場合は、<a href="https://cran.r-project.org/package=listenv" class="external-link">listenv</a> パッケージで提供されている<strong>リスト環境</strong>を使えばよい。 リスト環境は、インデックス付きリストと同じように、インデックス付けすることができる環境である。 上記のコードでリストをリスト環境に置き換えると、数値インデックスを使って非明示的フューチャを代入できるようになる。</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"listenv"</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">listenv</span>()</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) {</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     v[[ii]] <span class="sc">%&lt;-%</span> {</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span>     }</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="sc">+</span> }</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">as.list</span>(v)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">str</span>(v)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>List of <span class="dv">3</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23449</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23450</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23451</span></span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">library</span>(<span class="st">"listenv"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">plan</span>(multisession)</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">listenv</span>()</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a><span class="sc">&gt;</span> <span class="cf">for</span> (ii <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) {</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a><span class="sc">+</span>     v[[ii]] <span class="sc">%&lt;-%</span> {</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a><span class="sc">+</span>         <span class="fu">Sys.getpid</span>()</span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a><span class="sc">+</span>     }</span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="sc">+</span> }</span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="sc">&gt;</span> v <span class="ot">&lt;-</span> <span class="fu">as.list</span>(v)</span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">str</span>(v)</span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a>List of <span class="dv">3</span></span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23449</span></span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23450</span></span>
+<span id="cb23-14"><a href="#cb23-14" tabindex="-1"></a> <span class="sc">$</span> <span class="er">:</span> int <span class="dv">23451</span></span></code></pre></div>
 <!--
 As previously, as.list(v) blocks until all futures are resolved.
 -->

@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
       </span>
     </div>
 
@@ -524,26 +524,26 @@ However, Keras model instances in R make use of R connections and
 external pointers, which prevents them from being exported to external R
 processes. For example, if the attempt to use a Keras model in a
 multisession workers, the worker will produce a run-time error:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>()</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">future</span>(model <span class="sc">%&gt;%</span> </span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">256</span>, <span class="at">activation =</span> <span class="st">'relu'</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">784</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>       <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.4</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>, <span class="at">activation =</span> <span class="st">'relu'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>       <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.3</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">'softmax'</span>))</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">value</span>(f)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> object<span class="sc">$</span><span class="fu">add</span>(layer) <span class="sc">:</span> attempt to apply non<span class="sc">-</span><span class="cf">function</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>()</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">future</span>(model <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">256</span>, <span class="at">activation =</span> <span class="st">'relu'</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">784</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>       <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.4</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>, <span class="at">activation =</span> <span class="st">'relu'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>       <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">'softmax'</span>))</span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">value</span>(f)</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>Error <span class="cf">in</span> object<span class="sc">$</span><span class="fu">add</span>(layer) <span class="sc">:</span> attempt to apply non<span class="sc">-</span><span class="cf">function</span></span></code></pre></div>
 <p>If we turn on
 <code>options(future.globals.onReference = "error")</code>, we will
 catch this already when we create the future:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">globals</span> (<span class="st">'model'</span> of class <span class="st">'keras.engine.sequential.Sequential'</span>) used <span class="cf">in</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>the future expression</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">globals</span> (<span class="st">'model'</span> of class <span class="st">'keras.engine.sequential.Sequential'</span>) used <span class="cf">in</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>the future expression</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="package-magic">Package: magic<a class="anchor" aria-label="anchor" href="#package-magic"></a>
@@ -567,10 +567,10 @@ another R process, e.g.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span></code></pre></div>
 <p>we’ll see that this is caught even before attempting to run this in
 parallel;</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>(<span class="fu">image_fill</span>(frink, <span class="st">"orange"</span>, <span class="st">"+100+200"</span>, <span class="dv">20</span>))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Error: Detected a non-exportable reference ('externalptr' of class</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 'magick-image') in one of the globals ('frink' of class 'magick-image')</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">## used in the future expression</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>(<span class="fu">image_fill</span>(frink, <span class="st">"orange"</span>, <span class="st">"+100+200"</span>, <span class="dv">20</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="do">## Error: Detected a non-exportable reference ('externalptr' of class</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="do">## 'magick-image') in one of the globals ('frink' of class 'magick-image')</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="do">## used in the future expression</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="package-raster">Package: raster<a class="anchor" aria-label="anchor" href="#package-raster"></a>
@@ -579,21 +579,21 @@ parallel;</p>
 package provides methods for working with spatial data, which are held
 in ‘RasterLayer’ objects. Not all but some of these objects use an
 external pointer. For example,</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">system.file</span>(<span class="st">"external/test.grd"</span>, <span class="at">package =</span> <span class="st">"raster"</span>))</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>tf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".grd"</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">writeStart</span>(r, <span class="at">filename =</span> tf,  <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">dim</span>(r))</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">dim</span>(s))</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="fu">globals</span> (<span class="st">'s'</span> of class <span class="st">'RasterLayer'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">system.file</span>(<span class="st">"external/test.grd"</span>, <span class="at">package =</span> <span class="st">"raster"</span>))</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>tf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".grd"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">writeStart</span>(r, <span class="at">filename =</span> tf,  <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">dim</span>(r))</span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">dim</span>(s))</span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>})</span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="fu">globals</span> (<span class="st">'s'</span> of class <span class="st">'RasterLayer'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
 <p>Note that it is only the RasterLayer object <code>s</code> that
 carries an external pointer. If we dig deeper, we find that this is
 because <code>attr(s@file, "con")</code> is file connection opened for
@@ -774,22 +774,22 @@ we do as before;</p>
 <div class="section level4">
 <h4 id="package-terra">Package: terra<a class="anchor" aria-label="anchor" href="#package-terra"></a>
 </h4>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">vect</span>(file)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>dv <span class="sc">%&lt;-%</span> <span class="fu">dim</span>(v)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>dv</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>Error <span class="cf">in</span> x<span class="sc">@</span>ptr<span class="sc">$</span><span class="fu">nrow</span>() <span class="sc">:</span> external pointer is not valid</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(file)</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>dr <span class="sc">%&lt;-%</span> <span class="fu">dim</span>(r)</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>dr</span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Error in .External(list(name = "CppMethod__invoke_notvoid", address = &lt;pointer: (nil)&gt;,  : </span></span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  NULL value passed as symbol address</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">vect</span>(file)</span>
+<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a>dv <span class="sc">%&lt;-%</span> <span class="fu">dim</span>(v)</span>
+<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a>dv</span>
+<span id="cb34-9"><a href="#cb34-9" tabindex="-1"></a>Error <span class="cf">in</span> x<span class="sc">@</span>ptr<span class="sc">$</span><span class="fu">nrow</span>() <span class="sc">:</span> external pointer is not valid</span>
+<span id="cb34-10"><a href="#cb34-10" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
+<span id="cb34-12"><a href="#cb34-12" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(file)</span>
+<span id="cb34-13"><a href="#cb34-13" tabindex="-1"></a>dr <span class="sc">%&lt;-%</span> <span class="fu">dim</span>(r)</span>
+<span id="cb34-14"><a href="#cb34-14" tabindex="-1"></a>dr</span>
+<span id="cb34-15"><a href="#cb34-15" tabindex="-1"></a><span class="do">## Error in .External(list(name = "CppMethod__invoke_notvoid", address = &lt;pointer: (nil)&gt;,  : </span></span>
+<span id="cb34-16"><a href="#cb34-16" tabindex="-1"></a><span class="do">##  NULL value passed as symbol address</span></span></code></pre></div>
 <p>To catch this as soon as possible,</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
@@ -806,25 +806,25 @@ we do as before;</p>
 <p>Functions <code>wrap()</code> and <code>vect()</code> of the
 <strong>terra</strong> package can be used as workaround to marshal and
 unmarshal non-exportable <strong>terra</strong> objects, e.g.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">vect</span>(file)</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>.v <span class="ot">&lt;-</span> <span class="fu">wrap</span>(v)</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>dv <span class="sc">%&lt;-%</span> { v <span class="ot">&lt;-</span> <span class="fu">vect</span>(.v); <span class="fu">dim</span>(v) }</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(.v) <span class="do">## not needed anymore</span></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>dv</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">12</span>  <span class="dv">6</span></span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">vect</span>(file)</span>
+<span id="cb36-7"><a href="#cb36-7" tabindex="-1"></a>.v <span class="ot">&lt;-</span> <span class="fu">wrap</span>(v)</span>
+<span id="cb36-8"><a href="#cb36-8" tabindex="-1"></a>dv <span class="sc">%&lt;-%</span> { v <span class="ot">&lt;-</span> <span class="fu">vect</span>(.v); <span class="fu">dim</span>(v) }</span>
+<span id="cb36-9"><a href="#cb36-9" tabindex="-1"></a><span class="fu">rm</span>(.v) <span class="do">## not needed anymore</span></span>
+<span id="cb36-10"><a href="#cb36-10" tabindex="-1"></a>dv</span>
+<span id="cb36-11"><a href="#cb36-11" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">12</span>  <span class="dv">6</span></span></code></pre></div>
 <p>and</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(file)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>.r <span class="ot">&lt;-</span> <span class="fu">wrap</span>(v)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>dr <span class="sc">%&lt;-%</span> { r <span class="ot">&lt;-</span> <span class="fu">vect</span>(.r); <span class="fu">dim</span>(r) }</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(.r) <span class="do">## not needed anymore</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>dr</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">12</span>  <span class="dv">6</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(file)</span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a>.r <span class="ot">&lt;-</span> <span class="fu">wrap</span>(v)</span>
+<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a>dr <span class="sc">%&lt;-%</span> { r <span class="ot">&lt;-</span> <span class="fu">vect</span>(.r); <span class="fu">dim</span>(r) }</span>
+<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a><span class="fu">rm</span>(.r) <span class="do">## not needed anymore</span></span>
+<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a>dr</span>
+<span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">12</span>  <span class="dv">6</span></span></code></pre></div>
 <p>For more details, see
 <code><a href="https://rdrr.io/pkg/terra/man/wrap.html" class="external-link">help("wrap", package = "terra")</a></code>.</p>
 </div>
@@ -1017,13 +1017,13 @@ valid state. Consider the following example:</p>
 <span><span class="co">#&gt; 1: 2 b</span></span></code></pre></div>
 <p>If we would try the last step with a future with strict checking for
 references enabled, we would get an error:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>row <span class="sc">%&lt;-%</span> DT[<span class="dv">2</span>]</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>the <span class="fu">globals</span> (<span class="st">'DT'</span> of class <span class="st">'data.table'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb51-2"><a href="#cb51-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb51-3"><a href="#cb51-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" tabindex="-1"></a></span>
+<span id="cb51-5"><a href="#cb51-5" tabindex="-1"></a>row <span class="sc">%&lt;-%</span> DT[<span class="dv">2</span>]</span>
+<span id="cb51-6"><a href="#cb51-6" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of</span>
+<span id="cb51-7"><a href="#cb51-7" tabindex="-1"></a>the <span class="fu">globals</span> (<span class="st">'DT'</span> of class <span class="st">'data.table'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
 <p>This is a false positive. If we relax the checks, it does indeed
 work:</p>
 <div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
@@ -1072,13 +1072,13 @@ state. Consider the following example from
 <span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">fit</span>, permuted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p>If we would try the last step with a future with strict checking for
 references enabled, we would get an error:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(future)</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>e <span class="sc">%&lt;-%</span> <span class="fu">extract</span>(fit, <span class="at">permuted =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span> of class <span class="st">'DLLHandle'</span>)</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="cf">in</span> one of the <span class="fu">globals</span> (<span class="st">'fit'</span> of class <span class="st">'stanfit'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
+<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a>e <span class="sc">%&lt;-%</span> <span class="fu">extract</span>(fit, <span class="at">permuted =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span> of class <span class="st">'DLLHandle'</span>)</span>
+<span id="cb54-7"><a href="#cb54-7" tabindex="-1"></a><span class="cf">in</span> one of the <span class="fu">globals</span> (<span class="st">'fit'</span> of class <span class="st">'stanfit'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
 <p>However, this is a false positive. The <code>fit</code> object, which
 is of class ‘stanfit’, can indeed be exported to be used in an external
 R process, e.g.</p>

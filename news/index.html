@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
       </span>
     </div>
 
@@ -155,24 +155,28 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<ul><li>…</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.31.0" id="version-1310">Version 1.31.0<small>2023-02-01</small><a class="anchor" aria-label="anchor" href="#version-1310"></a></h2>
 <div class="section level3">
-<h3 id="signficant-changes-development-version">Signficant Changes<a class="anchor" aria-label="anchor" href="#signficant-changes-development-version"></a></h3>
+<h3 id="signficant-changes-1-31-0">Signficant Changes<a class="anchor" aria-label="anchor" href="#signficant-changes-1-31-0"></a></h3>
 <ul><li>Remove function <code>remote()</code>. Note that <code>plan(remote, ...)</code> has been deprecated since <strong>future</strong> 1.24.0 [2022-02-19] and defunct since <strong>future</strong> 1.3.0 (2022-12-15).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
+<h3 id="documentation-1-31-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-31-0"></a></h3>
 <ul><li>Add example to the ‘Common Issues with Solutions’ vignette on how <strong>magrittr</strong> pipes can result in an error when used with the future assignment operator and how to fix it.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
+<h3 id="bug-fixes-1-31-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-31-0"></a></h3>
 <ul><li>Error messages that contain a deparsed version of the future expression could become very large in cases where the expression comprise expanded, large objects. Now only the first 100 lines of the expression is deparsed.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="deprecated-and-defunct-development-version">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-development-version"></a></h3>
-<ul><li><p>Argument <code>local</code> is defunct and has been removed. Previously only <code>local = FALSE</code> was defunct.</p></li>
+<h3 id="deprecated-and-defunct-1-31-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-31-0"></a></h3>
+<ul><li><p>Deprecated <code>plan(multiprocess, ...)</code> now equals <code>plan(sequential)</code>, while still producing one warning each time a future is created.</p></li>
+<li><p>Argument <code>local</code> is defunct and has been removed. Previously only <code>local = FALSE</code> was defunct.</p></li>
 <li><p>Remove defunct argument <code>value</code> from all <code><a href="../reference/resolve.html">resolve()</a></code> methods.</p></li>
 <li><p>Remove defunct functions <code>transparent()</code> and <code>TransparentFuture()</code>.</p></li>
-<li><p>Deprecate <code>plan(multiprocess, ...)</code> now equals <code>plan(sequential)</code>, while still producing one warning each time a future is created.</p></li>
 </ul></div>
 </div>
     <div class="section level2">

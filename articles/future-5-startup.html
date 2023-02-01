@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.30.0-9023</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
       </span>
     </div>
 
@@ -213,8 +213,8 @@ option <code>future.plan</code>. For instance, if we add</p>
 <p>to our <code>~/.Rprofile</code> startup script, the future package
 will resolve futures in parallel (asynchronously using all available
 cores), i.e.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"class(future::plan())"</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">[1]</span> <span class="st">"multisession"</span> <span class="st">"future"</span>       <span class="st">"function"</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"class(future::plan())"</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">[1]</span> <span class="st">"multisession"</span> <span class="st">"future"</span>       <span class="st">"function"</span></span></code></pre></div>
 <p>Option <code>future.plan</code> is ignored if command-line option
 <code>--parallel</code> (<code>-p</code>) is specified.</p>
 </div>
@@ -226,9 +226,9 @@ cores), i.e.</p>
 <code>R_FUTURE_PLAN</code>. If set, then the future package will set
 <code>future.plan</code> accordingly <em>when loaded</em>. For
 example,</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> export R_FUTURE_PLAN=multisession</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"class(future::plan())"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">[1]</span> <span class="st">"multisession"</span> <span class="st">"future"</span>       <span class="st">"function"</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">$</span> export R_FUTURE_PLAN=multisession</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="ex">$</span> Rscript <span class="at">-e</span> <span class="st">"class(future::plan())"</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">[1]</span> <span class="st">"multisession"</span> <span class="st">"future"</span>       <span class="st">"function"</span></span></code></pre></div>
 <p>Environment variable <code>R_FUTURE_PLAN</code> is ignored if either
 option <code>future.plan</code> or command-line option
 <code>--parallel</code> (<code>-p</code>) is specified.</p>
@@ -242,18 +242,18 @@ the future strategy (via option <code>future.plan</code>) and the number
 of available cores (via option <code>mc.cores</code>) accordingly. This
 provides a convenient mechanism for specifying parallel future
 processing from the command line. For example, if we start R with</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> R <span class="at">--quiet</span> <span class="at">--args</span> <span class="at">--parallel</span><span class="op">=</span>2</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">$</span> R <span class="at">--quiet</span> <span class="at">--args</span> <span class="at">--parallel</span><span class="op">=</span>2</span></code></pre></div>
 <p>then future will interpret this as we wish to resolve futures in
 parallel using 2 cores. More specifically, we get that</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">availableCores</span>()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>mc.cores</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       <span class="dv">2</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">class</span>(future<span class="sc">::</span><span class="fu">plan</span>())</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"FutureStrategy"</span> <span class="st">"tweaked"</span>        <span class="st">"multisession"</span>   <span class="st">"future"</span>         <span class="st">"function"</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">availableCores</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>mc.cores</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>       <span class="dv">2</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">class</span>(future<span class="sc">::</span><span class="fu">plan</span>())</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>[<span class="dv">1</span>] <span class="st">"FutureStrategy"</span> <span class="st">"tweaked"</span>        <span class="st">"multisession"</span>   <span class="st">"future"</span>         <span class="st">"function"</span></span></code></pre></div>
 <p>We can use this command-line option also with <code>Rscript</code>,
 which provides a convenient mechanism for launching future-enhanced R
 scripts such that they run in parallel, e.g.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> Rscript analysis.R <span class="at">--parallel</span><span class="op">=</span>4</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">$</span> Rscript analysis.R <span class="at">--parallel</span><span class="op">=</span>4</span></code></pre></div>
 <p>This does, of course, require that the script uses futures and the
 future package.</p>
 <p>If <code>--parallel=1</code> is specified, or equivalently
