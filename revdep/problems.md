@@ -88,6 +88,31 @@ Run `revdep_details(, "AlpsNMR")` for more info
       Execution halted
     ```
 
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
+    Warning in has_utility("pdfcrop") :
+      pdfcrop not installed or not in PATH
+    sh: pdfcrop: command not found
+    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
+      error in running command
+    sh: pdfcrop: command not found
+    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
+      error in running command
+    ...
+    Warning: (fancyhdr)                \setlength{\headheight}{46.27916pt}.
+    Warning: (fancyhdr)                You might also make \topmargin smaller to compensate:
+    Warning: (fancyhdr)                \addtolength{\topmargin}{-3.60004pt}.
+    --- finished re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # aroma.core
 
 <details>
@@ -141,7 +166,7 @@ Run `revdep_details(, "BAMBI")` for more info
 * GitHub: https://github.com/BillPetti/baseballr
 * Source code: https://github.com/cran/baseballr
 * Date/Publication: 2022-09-09 07:52:55 UTC
-* Number of recursive dependencies: 117
+* Number of recursive dependencies: 118
 
 Run `revdep_details(, "baseballr")` for more info
 
@@ -152,23 +177,23 @@ Run `revdep_details(, "baseballr")` for more info
 *   checking re-building of vignette outputs ... ERROR
     ```
     Error(s) in re-building vignettes:
-      ...
     --- re-building ‘baseballr.Rmd’ using rmarkdown
     --- finished re-building ‘baseballr.Rmd’
     
     --- re-building ‘ncaa_scraping.Rmd’ using rmarkdown
-    --- finished re-building ‘ncaa_scraping.Rmd’
+    Quitting from lines 30-34 (ncaa_scraping.Rmd) 
+    Error: processing vignette 'ncaa_scraping.Rmd' failed with diagnostics:
+    no applicable method for 'select' applied to an object of class "function"
+    --- failed re-building ‘ncaa_scraping.Rmd’
     
-    --- re-building ‘plotting_statcast.Rmd’ using rmarkdown
-    --- finished re-building ‘plotting_statcast.Rmd’
     ...
     Quitting from lines 38-40 (using_statcast_pitch_data.Rmd) 
     Error: processing vignette 'using_statcast_pitch_data.Rmd' failed with diagnostics:
     HTTP error 404.
     --- failed re-building ‘using_statcast_pitch_data.Rmd’
     
-    SUMMARY: processing the following file failed:
-      ‘using_statcast_pitch_data.Rmd’
+    SUMMARY: processing the following files failed:
+      ‘ncaa_scraping.Rmd’ ‘using_statcast_pitch_data.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
@@ -724,11 +749,11 @@ Run `revdep_details(, "EFAtools")` for more info
 
 <details>
 
-* Version: 0.1.15
+* Version: 0.1.17
 * GitHub: https://github.com/lance-waller-lab/envi
 * Source code: https://github.com/cran/envi
-* Date/Publication: 2022-08-30 07:00:16 UTC
-* Number of recursive dependencies: 156
+* Date/Publication: 2023-02-02 00:40:02 UTC
+* Number of recursive dependencies: 153
 
 Run `revdep_details(, "envi")` for more info
 
@@ -1032,6 +1057,42 @@ Run `revdep_details(, "hackeRnews")` for more info
 </details>
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘hackeRnews-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: get_best_stories
+    > ### Title: Hacker News best stories
+    > ### Aliases: get_best_stories
+    > 
+    > ### ** Examples
+    > 
+    > # get the best story on Hacker News
+    > best_story <- get_best_stories(max_items = 1)
+    Error in curl::curl_fetch_memory(url, handle = handle) : 
+      Received HTTP code 503 from proxy after CONNECT
+    Calls: get_best_stories ... request_fetch -> request_fetch.write_memory -> <Anonymous>
+    Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘hackeRnews-specs.Rmd’ using rmarkdown
+    Quitting from lines 43-45 (hackeRnews-specs.Rmd) 
+    Error: processing vignette 'hackeRnews-specs.Rmd' failed with diagnostics:
+    Received HTTP code 503 from proxy after CONNECT
+    --- failed re-building ‘hackeRnews-specs.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘hackeRnews-specs.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking LazyData ... NOTE
     ```
@@ -1390,23 +1451,27 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 42821 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
+      Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > Sys.setenv("R_TESTS" = "")
-      > 
-      > library(testthat)
-      > library(lidR)
-      > test_check("lidR")
-      Tests using raster: terra 
-      Tests using future: TRUE 
-      Tests using OpenMP thread: 16 
-      OGR: Unsupported geometry type
-      OGR: Unsupported geometry type
-      terminate called after throwing an instance of 'std::length_error'
-        what():  basic_string::_S_create
+    Last 50 lines of output:
+       3.   └─lidR (local) algorithm(st_bbox(las))
+       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       5.       └─lidR:::raster_crop(chm, bbox)
+       6.         ├─sf::st_crop(raster, bbox)
+       7.         └─stars:::st_crop.stars(raster, bbox)
+      ── Error ('test-segment_trees.R:147'): Silva algorithm works with sfc ──────────
+    ...
+        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
+        8.   └─lidR (local) algorithm(st_bbox(las))
+        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       10.       └─lidR:::raster_crop(chm, bbox)
+       11.         ├─sf::st_crop(raster, bbox)
+       12.         └─stars:::st_crop.stars(raster, bbox)
+      
+      [ FAIL 20 | WARN 3 | SKIP 40 | PASS 1357 ]
+      Error: Test failures
+      Execution halted
     ```
 
 *   checking installed package size ... NOTE
@@ -1798,6 +1863,39 @@ Run `revdep_details(, "oncomsm")` for more info
     GNU make is a SystemRequirements.
     ```
 
+# onemapsgapi
+
+<details>
+
+* Version: 1.1.0
+* GitHub: NA
+* Source code: https://github.com/cran/onemapsgapi
+* Date/Publication: 2022-11-29 08:00:03 UTC
+* Number of recursive dependencies: 70
+
+Run `revdep_details(, "onemapsgapi")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘onemapsgapi_vignette.Rmd’ using rmarkdown
+    Quitting from lines 36-37 (onemapsgapi_vignette.Rmd) 
+    Error: processing vignette 'onemapsgapi_vignette.Rmd' failed with diagnostics:
+    Received HTTP code 503 from proxy after CONNECT
+    --- failed re-building ‘onemapsgapi_vignette.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘onemapsgapi_vignette.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # OOS
 
 <details>
@@ -1813,6 +1911,23 @@ Run `revdep_details(, "OOS")` for more info
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘basic_introduction.Rmd’ using rmarkdown
+    Quitting from lines 31-49 (basic_introduction.Rmd) 
+    Error: processing vignette 'basic_introduction.Rmd' failed with diagnostics:
+    object 'UNRATE' not found
+    --- failed re-building ‘basic_introduction.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘basic_introduction.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking LazyData ... NOTE
     ```
@@ -2182,13 +2297,13 @@ Run `revdep_details(, "reproducible")` for more info
 
 *   checking tests ...
     ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 38301 Segmentation fault      ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60:  7156 Segmentation fault      ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/test-all.R’ failed.
     Last 50 lines of output:
-        adding: scratch/henrik/RtmpHcmK4b/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
-        adding: scratch/henrik/RtmpHcmK4b/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
+        adding: scratch/henrik/RtmpcbGlaK/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
+        adding: scratch/henrik/RtmpcbGlaK/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
       
        *** caught segfault ***
       address 0x40, cause 'memory not mapped'
@@ -2396,6 +2511,31 @@ Run `revdep_details(, "sentopics")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > 
+      > library("testthat")
+      > library("sentopics")
+      > 
+      > if (Sys.getenv("R_COVR") != "true") {
+      +   test_check("sentopics")
+    ...
+      Backtrace:
+          ▆
+       1. └─sentopics:::get_ECB_press_conferences(years = 1998) at test-others.R:2:2
+       2.   └─base::lapply(...)
+       3.     └─sentopics (local) FUN(X[[i]], ...)
+       4.       └─utils::download.file(...)
+      
+      [ FAIL 1 | WARN 2 | SKIP 1 | PASS 321 ]
+      Error: Test failures
+      Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -2692,11 +2832,11 @@ Run `revdep_details(, "spaMM")` for more info
 
 <details>
 
-* Version: 0.2.6
+* Version: 0.2.7
 * GitHub: https://github.com/machiela-lab/sparrpowR
 * Source code: https://github.com/cran/sparrpowR
-* Date/Publication: 2022-12-02 09:40:09 UTC
-* Number of recursive dependencies: 97
+* Date/Publication: 2023-02-02 01:00:02 UTC
+* Number of recursive dependencies: 133
 
 Run `revdep_details(, "sparrpowR")` for more info
 

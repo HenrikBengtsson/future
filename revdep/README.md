@@ -10,15 +10,15 @@
 |collate  |en_US.UTF-8                                               |
 |ctype    |en_US.UTF-8                                               |
 |tz       |America/Los_Angeles                                       |
-|date     |2023-02-01                                                |
+|date     |2023-02-02                                                |
 |pandoc   |3.0.1 @ /software/c4/cbi/software/pandoc-3.0.1/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.31.0 |1.30.0-9026 |*  |
-|codetools  |0.2-18 |0.2-18      |   |
+|future     |1.31.0 |1.31.0-9002 |*  |
+|codetools  |0.2-19 |0.2-19      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
 |listenv    |0.9.0  |0.9.0       |   |
@@ -33,7 +33,7 @@
 |[AIPW](problems.md#aipw) |0.6.3.2   |      |        |1    |
 |alookr                   |0.3.7     |      |        |     |
 |alphaci                  |1.0.0     |      |        |     |
-|[AlpsNMR](problems.md#alpsnmr)|4.0.2     |2     |        |     |
+|[AlpsNMR](problems.md#alpsnmr)|4.0.2     |3     |        |     |
 |arkdb                    |0.0.16    |      |        |     |
 |aroma.affymetrix         |3.2.1     |      |        |     |
 |aroma.cn                 |1.7.0     |      |        |     |
@@ -89,7 +89,7 @@
 |easyalluvial             |0.3.1     |      |        |     |
 |[EFAtools](problems.md#efatools)|0.4.4     |      |        |2    |
 |elevatr                  |0.4.2     |      |        |     |
-|[envi](problems.md#envi) |0.1.15    |      |1       |     |
+|[envi](problems.md#envi) |0.1.17    |      |1       |     |
 |[epitweetr](problems.md#epitweetr)|2.2.13    |      |        |2    |
 |epwshiftr                |0.1.3     |      |        |     |
 |ezcox                    |1.0.2     |      |        |     |
@@ -125,7 +125,7 @@
 |gtfs2emis                |0.1.0     |      |        |     |
 |gtfs2gps                 |2.1-0     |      |        |     |
 |[gWQS](problems.md#gwqs) |3.0.4     |      |        |1    |
-|[hackeRnews](problems.md#hackernews)|0.1.0     |      |        |1    |
+|[hackeRnews](problems.md#hackernews)|0.1.0     |2     |        |1    |
 |hacksig                  |0.1.2     |      |        |     |
 |[hal9001](problems.md#hal9001)|0.4.3     |      |        |1    |
 |haldensify               |0.2.3     |      |        |     |
@@ -191,8 +191,8 @@
 |nflseedR                 |1.2.0     |      |        |     |
 |nncc                     |1.0.0     |      |        |     |
 |[oncomsm](problems.md#oncomsm)|0.1.2     |      |        |2    |
-|onemapsgapi              |1.1.0     |      |        |     |
-|[OOS](problems.md#oos)   |1.0.0     |      |        |1    |
+|[onemapsgapi](problems.md#onemapsgapi)|1.1.0     |1     |        |     |
+|[OOS](problems.md#oos)   |1.0.0     |1     |        |1    |
 |origami                  |1.0.7     |      |        |     |
 |paramsim                 |0.1.0     |      |        |     |
 |[partR2](problems.md#partr2)|0.9.1     |      |        |1    |
@@ -246,7 +246,7 @@
 |[sdmTMB](problems.md#sdmtmb)|0.3.0     |      |        |3    |
 |seer                     |1.1.8     |      |        |     |
 |semtree                  |0.9.18    |      |        |     |
-|[sentopics](problems.md#sentopics)|0.7.1     |      |        |3    |
+|[sentopics](problems.md#sentopics)|0.7.1     |1     |        |3    |
 |[Seurat](problems.md#seurat)|4.3.0     |      |        |2    |
 |[SeuratObject](problems.md#seuratobject)|4.1.3     |      |        |1    |
 |[shiny](problems.md#shiny)|1.7.4     |      |        |1    |
@@ -266,7 +266,7 @@
 |[solitude](problems.md#solitude)|1.1.3     |      |        |1    |
 |sovereign                |1.2.1     |      |        |     |
 |[spaMM](problems.md#spamm)|4.1.20    |      |        |2    |
-|[sparrpowR](problems.md#sparrpowr)|0.2.6     |      |1       |     |
+|[sparrpowR](problems.md#sparrpowr)|0.2.7     |      |1       |     |
 |[SPARSEMODr](problems.md#sparsemodr)|1.2.0     |      |        |1    |
 |[spatialTIME](problems.md#spatialtime)|1.2.2     |      |        |1    |
 |[spatialwarnings](problems.md#spatialwarnings)|3.0.3     |      |1       |1    |
