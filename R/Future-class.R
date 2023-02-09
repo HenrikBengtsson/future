@@ -171,14 +171,15 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     ## SPECIAL CASE: Temporarily allow the 'civis' package to keep using
     ## 'local' for a tad longer, although it has zero effect since a
     ## long time (https://github.com/civisanalytics/civis-r/issues/244)
-    ## Only allow for this is local = TRUE.
-    ## /HB 2023-01-27
+    ## Only allow for this is local = TRUE and interactive mode (to
+    ## prevent it from breaking 'R CMD check')
+    ## /HB 2023-02-09
     if (isTRUE(args$local) &&
         Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "true") == "true") {
        for (call in sys.calls()) {
          if ("CivisFuture" %in% as.character(call[[1]])) {
            msg <- sprintf("%s. In this case it was because civis::CivisFuture() was used. Please contact the maintainers of the 'civis' package about this problem.", msg)
-           dfcn <- .Deprecated
+           if (!interactive()) dfcn <- .Deprecated
            break
          }
       }
