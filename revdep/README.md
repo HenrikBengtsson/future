@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                               |
 |ctype    |en_US.UTF-8                                               |
 |tz       |America/Los_Angeles                                       |
-|date     |2023-02-02                                                |
+|date     |2023-02-09                                                |
 |pandoc   |3.0.1 @ /software/c4/cbi/software/pandoc-3.0.1/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.31.0 |1.31.0-9002 |*  |
+|future     |1.31.0 |1.31.0-9003 |*  |
 |codetools  |0.2-19 |0.2-19      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
@@ -26,7 +26,7 @@
 
 # Revdeps
 
-## All (276)
+## All (278)
 
 |package                  |version   |error |warning |note |
 |:------------------------|:---------|:-----|:-------|:----|
@@ -42,7 +42,7 @@
 |bamm                     |0.4.3     |      |        |     |
 |[baseballr](problems.md#baseballr)|1.3.0     |1     |        |     |
 |BatchGetSymbols          |2.6.4     |      |        |     |
-|[batchtools](problems.md#batchtools)|0.9.15    |      |        |2    |
+|[batchtools](problems.md#batchtools)|0.9.16    |      |        |2    |
 |bayesian                 |0.0.9     |      |        |     |
 |bayesmove                |0.2.1     |      |        |     |
 |bcmaps                   |1.1.0     |      |        |     |
@@ -52,7 +52,7 @@
 |[bistablehistory](problems.md#bistablehistory)|1.1.1     |      |        |3    |
 |bkmrhat                  |1.1.3     |      |        |     |
 |[blavaan](problems.md#blavaan)|0.4-3     |      |        |3    |
-|[blockCV](problems.md#blockcv)|2.1.4     |      |        |2    |
+|[blockCV](problems.md#blockcv)|3.0-0     |1     |        |2    |
 |bolasso                  |0.2.0     |      |        |     |
 |[brms](problems.md#brms) |2.18.0    |      |        |2    |
 |brpop                    |0.1.5     |      |        |     |
@@ -76,7 +76,7 @@
 |delayed                  |0.4.0     |      |        |     |
 |dhReg                    |0.1.1     |      |        |     |
 |[dipsaus](problems.md#dipsaus)|0.2.6     |      |        |1    |
-|[disk.frame](problems.md#diskframe)|0.7.2     |1     |        |     |
+|disk.frame               |0.8.0     |      |        |     |
 |[dispositionEffect](problems.md#dispositioneffect)|1.0.1     |1     |        |     |
 |doFuture                 |0.12.2    |      |        |     |
 |DQAstats                 |0.3.2     |      |        |     |
@@ -87,6 +87,7 @@
 |dsos                     |0.1.1     |      |        |     |
 |DT                       |0.27      |      |        |     |
 |easyalluvial             |0.3.1     |      |        |     |
+|ecic                     |0.0.2     |      |        |     |
 |[EFAtools](problems.md#efatools)|0.4.4     |      |        |2    |
 |elevatr                  |0.4.2     |      |        |     |
 |[envi](problems.md#envi) |0.1.17    |      |1       |     |
@@ -98,7 +99,7 @@
 |fastRhockey              |0.4.0     |      |        |     |
 |[fect](problems.md#fect) |1.0.0     |      |        |2    |
 |fiery                    |1.1.4     |      |        |     |
-|finbif                   |0.7.1     |      |        |     |
+|finbif                   |0.7.2     |      |        |     |
 |[flowGraph](problems.md#flowgraph)|1.6.0     |      |        |2    |
 |[foieGras](problems.md#foiegras)|0.7-6     |      |        |1    |
 |[forecastML](problems.md#forecastml)|0.9.0     |      |        |1    |
@@ -112,7 +113,7 @@
 |future.tests             |0.5.0     |      |        |     |
 |fxTWAPLS                 |0.1.2     |      |        |     |
 |genBaRcode               |1.2.5     |      |        |     |
-|[geocmeans](problems.md#geocmeans)|0.3.2     |      |        |1    |
+|[geocmeans](problems.md#geocmeans)|0.3.3     |      |        |1    |
 |GetBCBData               |0.7.0     |      |        |     |
 |[googleComputeEngineR](problems.md#googlecomputeenginer)|0.3.0     |      |        |1    |
 |googlePubsubR            |0.0.3     |      |        |     |
@@ -207,10 +208,10 @@
 |PINstimation             |0.1.1     |      |        |     |
 |[PLNmodels](problems.md#plnmodels)|1.0.0     |      |        |1    |
 |plumber                  |1.2.1     |      |        |     |
-|polle                    |1.0       |      |        |     |
+|polle                    |1.2       |      |        |     |
 |POMADE                   |0.1.0     |      |        |     |
 |[portvine](problems.md#portvine)|1.0.2     |      |        |1    |
-|powRICLPM                |0.1.0     |      |        |     |
+|powRICLPM                |0.1.1     |      |        |     |
 |[ppcseq](problems.md#ppcseq)|1.6.0     |      |        |3    |
 |[prewas](problems.md#prewas)|1.1.1     |      |        |1    |
 |progressr                |0.13.0    |      |        |     |
@@ -302,6 +303,7 @@
 |[updog](problems.md#updog)|2.1.3     |      |        |1    |
 |[vmeasur](problems.md#vmeasur)|0.1.4     |      |1       |     |
 |webdeveloper             |1.0.5     |      |        |     |
+|whitewater               |0.1.2     |      |        |     |
 |wildmeta                 |0.3.0     |      |        |     |
 |[wru](problems.md#wru)   |1.0.1     |      |        |2    |
 |[XNAString](problems.md#xnastring)|1.6.0     |      |        |3    |

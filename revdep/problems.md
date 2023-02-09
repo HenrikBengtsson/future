@@ -203,10 +203,10 @@ Run `revdep_details(, "baseballr")` for more info
 
 <details>
 
-* Version: 0.9.15
+* Version: 0.9.16
 * GitHub: https://github.com/mllg/batchtools
 * Source code: https://github.com/cran/batchtools
-* Date/Publication: 2021-01-11 12:40:03 UTC
+* Date/Publication: 2023-02-03 13:52:38 UTC
 * Number of recursive dependencies: 82
 
 Run `revdep_details(, "batchtools")` for more info
@@ -323,7 +323,7 @@ Run `revdep_details(, "bistablehistory")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
 * Date/Publication: 2022-05-11 17:00:05 UTC
-* Number of recursive dependencies: 98
+* Number of recursive dependencies: 99
 
 Run `revdep_details(, "blavaan")` for more info
 
@@ -352,11 +352,11 @@ Run `revdep_details(, "blavaan")` for more info
 
 <details>
 
-* Version: 2.1.4
+* Version: 3.0-0
 * GitHub: https://github.com/rvalavi/blockCV
 * Source code: https://github.com/cran/blockCV
-* Date/Publication: 2021-06-17 04:50:02 UTC
-* Number of recursive dependencies: 123
+* Date/Publication: 2023-02-06 11:42:35 UTC
+* Number of recursive dependencies: 131
 
 Run `revdep_details(, "blockCV")` for more info
 
@@ -364,11 +364,38 @@ Run `revdep_details(, "blockCV")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+        |================================================================      |  92%
+        |                                                                            
+        |=================================================================     |  92%
+        |                                                                            
+        |=================================================================     |  93%
+        |                                                                            
+    ...
+      Error in `sf::st_distance(rx, x[x_1s, ])`: st_crs(x) == st_crs(y) is not TRUE
+      Backtrace:
+          ▆
+       1. └─blockCV::cv_nndm(...) at test-cv_nndm.R:71:12
+       2.   └─sf::st_distance(rx, x[x_1s, ])
+       3.     └─base::stopifnot(st_crs(x) == st_crs(y))
+      
+      [ FAIL 1 | WARN 0 | SKIP 1 | PASS 306 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.6Mb
+      installed size is  6.9Mb
       sub-directories of 1Mb or more:
-        extdata   7.7Mb
+        doc       3.6Mb
+        extdata   1.8Mb
+        libs      1.2Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -530,7 +557,7 @@ Run `revdep_details(, "codebook")` for more info
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
 * Date/Publication: 2022-11-24 17:50:05 UTC
-* Number of recursive dependencies: 126
+* Number of recursive dependencies: 127
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -612,47 +639,6 @@ Run `revdep_details(, "dipsaus")` for more info
         libs   3.3Mb
     ```
 
-# disk.frame
-
-<details>
-
-* Version: 0.7.2
-* GitHub: https://github.com/DiskFrame/disk.frame
-* Source code: https://github.com/cran/disk.frame
-* Date/Publication: 2022-03-07 11:40:02 UTC
-* Number of recursive dependencies: 103
-
-Run `revdep_details(, "disk.frame")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘disk.frame-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: anti_join.disk.frame
-    > ### Title: Performs join/merge for disk.frames
-    > ### Aliases: anti_join.disk.frame full_join.disk.frame
-    > ###   inner_join.disk.frame left_join.disk.frame semi_join.disk.frame
-    > 
-    > ### ** Examples
-    > 
-    ...
-    Appending disk.frames: 
-    Error in anti_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite) : 
-      `...` must be empty.
-    ✖ Problematic arguments:
-    • ..1 = xch
-    • ..2 = ych
-    • overwrite = overwrite
-    ℹ Did you forget to name an argument?
-    Calls: anti_join ... resolve.list -> signalConditionsASAP -> signalConditions
-    Execution halted
-    ```
-
 # dispositionEffect
 
 <details>
@@ -724,7 +710,7 @@ Run `revdep_details(, "dragon")` for more info
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
 * Date/Publication: 2023-01-06 14:50:40 UTC
-* Number of recursive dependencies: 91
+* Number of recursive dependencies: 92
 
 Run `revdep_details(, "EFAtools")` for more info
 
@@ -904,10 +890,10 @@ Run `revdep_details(, "forecastML")` for more info
 
 <details>
 
-* Version: 0.3.2
+* Version: 0.3.3
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
-* Date/Publication: 2023-01-08 21:40:02 UTC
+* Date/Publication: 2023-02-07 01:02:31 UTC
 * Number of recursive dependencies: 197
 
 Run `revdep_details(, "geocmeans")` for more info
@@ -918,11 +904,11 @@ Run `revdep_details(, "geocmeans")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 14.3Mb
+      installed size is 14.6Mb
       sub-directories of 1Mb or more:
         doc       1.7Mb
         extdata   3.0Mb
-        libs      8.0Mb
+        libs      8.2Mb
     ```
 
 # googleComputeEngineR
@@ -1208,7 +1194,7 @@ Run `revdep_details(, "inlinedocs")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/InPAS
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 166
+* Number of recursive dependencies: 167
 
 Run `revdep_details(, "InPAS")` for more info
 
