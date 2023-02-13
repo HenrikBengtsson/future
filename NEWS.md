@@ -1,7 +1,11 @@
 # Version (development version)
 
- * ...
+## Deprecated and Defunct
 
+ * Deprecated `plan(multiprocess, ...)` is now defunct when running in
+   interactive mode.  The next step is to make it defunct also when
+   running in batch mode.
+   
 
 # Version 1.31.0 [2023-01-31]
 
