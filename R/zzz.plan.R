@@ -162,6 +162,8 @@ plan <- local({
     if (class[1] == strategy) return(TRUE)
     if (length(class) == 1L) return(FALSE)
     if (class[1] == "tweaked" && class[2] == strategy) return(TRUE)
+    ## Special case for strategy == "multiprocess"
+    if (strategy == "multiprocess" && class[length(class)] == strategy) return(TRUE)
     FALSE
   }
 

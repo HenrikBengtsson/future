@@ -42,4 +42,5 @@ multiprocess <- function(..., workers = availableCores(), envir = parent.frame()
 }
 class(multiprocess) <- c("sequential", "uniprocess", "future", "function")
 ## future (> 1.30.0): 'multiprocess' always resolves to 'sequential'
+class(multiprocess) <- c(class(multiprocess), "multiprocess")
 attr(multiprocess, "init") <- FALSE
