@@ -26,10 +26,10 @@ Run `revdep_details(, "AIPW")` for more info
 
 <details>
 
-* Version: 4.0.2
+* Version: 4.0.3
 * GitHub: https://github.com/sipss/AlpsNMR
 * Source code: https://github.com/cran/AlpsNMR
-* Date/Publication: 2022-11-10
+* Date/Publication: 2023-02-10
 * Number of recursive dependencies: 169
 
 Run `revdep_details(, "AlpsNMR")` for more info
@@ -38,81 +38,50 @@ Run `revdep_details(, "AlpsNMR")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
+*   checking whether package ‘AlpsNMR’ can be installed ... ERROR
     ```
-    Running examples in ‘AlpsNMR-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: models_stability_plot_plsda
-    > ### Title: Models stability plot
-    > ### Aliases: models_stability_plot_plsda
-    > 
-    > ### ** Examples
-    > 
-    > # Data analysis for a table of integrated peaks
-    ...
-     18.   └─vctrs::vec_default_cast(...)
-     19.     ├─base::withRestarts(...)
-     20.     │ └─base (local) withOneRestart(expr, restarts[[1L]])
-     21.     │   └─base (local) doWithOneRestart(return(expr), restart)
-     22.     └─vctrs::stop_incompatible_cast(...)
-     23.       └─vctrs::stop_incompatible_type(...)
-     24.         └─vctrs:::stop_incompatible(...)
-     25.           └─vctrs:::stop_vctrs(...)
-     26.             └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
-    Execution halted
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/00install.out’ for details.
     ```
 
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(AlpsNMR)
-      Loading required package: future
-      
-      Attaching package: 'AlpsNMR'
-      
-    ...
-          still_improving = dplyr::cumall(.data$auc_diff_above_thres), 
-          good_ncomp = (.data$still_improving == TRUE & dplyr::lead(.data$still_improving, 
-              default = FALSE) == FALSE))`: ℹ In argument: `good_ncomp = (...)`.
-      ℹ In group 2: `cv_outer_iteration = 1`, `cv_inner_iteration = 2`.
-      Caused by error in `vec_c()`:
-      ! Can't convert `..2` <logical> to <vctrs_unspecified>.
-      
-      [ FAIL 1 | WARN 2 | SKIP 1 | PASS 90 ]
-      Error: Test failures
-      Execution halted
-    ```
+## Installation
 
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
-    Warning in has_utility("pdfcrop") :
-      pdfcrop not installed or not in PATH
-    sh: pdfcrop: command not found
-    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
-      error in running command
-    sh: pdfcrop: command not found
-    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
-      error in running command
-    ...
-    Warning: (fancyhdr)                \setlength{\headheight}{46.27916pt}.
-    Warning: (fancyhdr)                You might also make \topmargin smaller to compensate:
-    Warning: (fancyhdr)                \addtolength{\topmargin}{-3.60004pt}.
-    --- finished re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
+### Devel
 
+```
+* installing *source* package ‘AlpsNMR’ ...
+** using staged installation
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘AlpsNMR’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/AlpsNMR’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘AlpsNMR’ ...
+** using staged installation
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘AlpsNMR’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/old/AlpsNMR.Rcheck/AlpsNMR’
+
+
+```
 # aroma.core
 
 <details>
@@ -158,6 +127,30 @@ Run `revdep_details(, "BAMBI")` for more info
         libs   6.7Mb
     ```
 
+# bamm
+
+<details>
+
+* Version: 0.4.3
+* GitHub: https://github.com/luismurao/bamm
+* Source code: https://github.com/cran/bamm
+* Date/Publication: 2022-12-20 11:10:05 UTC
+* Number of recursive dependencies: 109
+
+Run `revdep_details(, "bamm")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # baseballr
 
 <details>
@@ -177,23 +170,23 @@ Run `revdep_details(, "baseballr")` for more info
 *   checking re-building of vignette outputs ... ERROR
     ```
     Error(s) in re-building vignettes:
+      ...
     --- re-building ‘baseballr.Rmd’ using rmarkdown
     --- finished re-building ‘baseballr.Rmd’
     
     --- re-building ‘ncaa_scraping.Rmd’ using rmarkdown
-    Quitting from lines 30-34 (ncaa_scraping.Rmd) 
-    Error: processing vignette 'ncaa_scraping.Rmd' failed with diagnostics:
-    no applicable method for 'select' applied to an object of class "function"
-    --- failed re-building ‘ncaa_scraping.Rmd’
+    --- finished re-building ‘ncaa_scraping.Rmd’
     
+    --- re-building ‘plotting_statcast.Rmd’ using rmarkdown
+    --- finished re-building ‘plotting_statcast.Rmd’
     ...
     Quitting from lines 38-40 (using_statcast_pitch_data.Rmd) 
     Error: processing vignette 'using_statcast_pitch_data.Rmd' failed with diagnostics:
     HTTP error 404.
     --- failed re-building ‘using_statcast_pitch_data.Rmd’
     
-    SUMMARY: processing the following files failed:
-      ‘ncaa_scraping.Rmd’ ‘using_statcast_pitch_data.Rmd’
+    SUMMARY: processing the following file failed:
+      ‘using_statcast_pitch_data.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
@@ -225,6 +218,64 @@ Run `revdep_details(, "batchtools")` for more info
     Package unavailable to check Rd xrefs: ‘Rmpi’
     ```
 
+# bayesian
+
+<details>
+
+* Version: 0.0.9
+* GitHub: https://github.com/hsbadr/bayesian
+* Source code: https://github.com/cran/bayesian
+* Date/Publication: 2022-06-16 23:00:02 UTC
+* Number of recursive dependencies: 186
+
+Run `revdep_details(, "bayesian")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘bayesian’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/bayesian/new/bayesian.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘bayesian’ ...
+** package ‘bayesian’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error: package or namespace load failed for ‘brms’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+ there is no package called ‘igraph’
+Execution halted
+ERROR: lazy loading failed for package ‘bayesian’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/bayesian/new/bayesian.Rcheck/bayesian’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘bayesian’ ...
+** package ‘bayesian’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error: package or namespace load failed for ‘brms’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+ there is no package called ‘igraph’
+Execution halted
+ERROR: lazy loading failed for package ‘bayesian’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/bayesian/old/bayesian.Rcheck/bayesian’
+
+
+```
 # BEKKs
 
 <details>
@@ -319,10 +370,10 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 <details>
 
-* Version: 0.4-3
+* Version: 0.4-6
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
-* Date/Publication: 2022-05-11 17:00:05 UTC
+* Date/Publication: 2023-02-11 08:50:09 UTC
 * Number of recursive dependencies: 99
 
 Run `revdep_details(, "blavaan")` for more info
@@ -338,9 +389,10 @@ Run `revdep_details(, "blavaan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 87.4Mb
+      installed size is 89.8Mb
       sub-directories of 1Mb or more:
-        libs  85.5Mb
+        libs      87.3Mb
+        testdata   1.4Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -348,17 +400,90 @@ Run `revdep_details(, "blavaan")` for more info
     GNU make is a SystemRequirements.
     ```
 
-# blockCV
+# brms
 
 <details>
 
-* Version: 3.0-0
-* GitHub: https://github.com/rvalavi/blockCV
-* Source code: https://github.com/cran/blockCV
-* Date/Publication: 2023-02-06 11:42:35 UTC
-* Number of recursive dependencies: 131
+* Version: 2.18.0
+* GitHub: https://github.com/paul-buerkner/brms
+* Source code: https://github.com/cran/brms
+* Date/Publication: 2022-09-19 13:56:19 UTC
+* Number of recursive dependencies: 181
 
-Run `revdep_details(, "blockCV")` for more info
+Run `revdep_details(, "brms")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘brms’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/brms/new/brms.Rcheck/00install.out’ for details.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘cmdstanr’
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘brms’ ...
+** package ‘brms’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+Warning: namespace ‘brms’ is not available and has been replaced
+by .GlobalEnv when processing object ‘brmsfit_example1’
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘brms’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/brms/new/brms.Rcheck/brms’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘brms’ ...
+** package ‘brms’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+Warning: namespace ‘brms’ is not available and has been replaced
+by .GlobalEnv when processing object ‘brmsfit_example1’
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘brms’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/brms/old/brms.Rcheck/brms’
+
+
+```
+# canaper
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/ropensci/canaper
+* Source code: https://github.com/cran/canaper
+* Date/Publication: 2022-10-04 10:20:12 UTC
+* Number of recursive dependencies: 167
+
+Run `revdep_details(, "canaper")` for more info
 
 </details>
 
@@ -370,66 +495,47 @@ Run `revdep_details(, "blockCV")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 50 lines of output:
-        |================================================================      |  92%
-        |                                                                            
-        |=================================================================     |  92%
-        |                                                                            
-        |=================================================================     |  93%
-        |                                                                            
+        4. └─base::loadNamespace(x)
+        5.   ├─base::namespaceImportFrom(...)
+        6.   │ └─base::asNamespace(ns)
+        7.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
+        8.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+        9.       └─base (local) withOneRestart(expr, restarts[[1L]])
     ...
-      Error in `sf::st_distance(rx, x[x_1s, ])`: st_crs(x) == st_crs(y) is not TRUE
-      Backtrace:
-          ▆
-       1. └─blockCV::cv_nndm(...) at test-cv_nndm.R:71:12
-       2.   └─sf::st_distance(rx, x[x_1s, ])
-       3.     └─base::stopifnot(st_crs(x) == st_crs(y))
+        5.   ├─base::namespaceImportFrom(...)
+        6.   │ └─base::asNamespace(ns)
+        7.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
+        8.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+        9.       └─base (local) withOneRestart(expr, restarts[[1L]])
+       10.         └─base (local) doWithOneRestart(return(expr), restart)
       
-      [ FAIL 1 | WARN 0 | SKIP 1 | PASS 306 ]
+      [ FAIL 9 | WARN 0 | SKIP 0 | PASS 99 ]
       Error: Test failures
       Execution halted
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.9Mb
-      sub-directories of 1Mb or more:
-        doc       3.6Mb
-        extdata   1.8Mb
-        libs      1.2Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘biomod2’
-    ```
-
-# brms
+# ceRNAnetsim
 
 <details>
 
-* Version: 2.18.0
-* GitHub: https://github.com/paul-buerkner/brms
-* Source code: https://github.com/cran/brms
-* Date/Publication: 2022-09-19 13:56:19 UTC
-* Number of recursive dependencies: 175
+* Version: 1.10.0
+* GitHub: https://github.com/selcenari/ceRNAnetsim
+* Source code: https://github.com/cran/ceRNAnetsim
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 99
 
-Run `revdep_details(, "brms")` for more info
+Run `revdep_details(, "ceRNAnetsim")` for more info
 
 </details>
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Package suggested but not available for checking: ‘cmdstanr’
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.5Mb
-      sub-directories of 1Mb or more:
-        R     3.0Mb
-        doc   3.6Mb
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # ChromSCape
@@ -448,6 +554,17 @@ Run `revdep_details(, "ChromSCape")` for more info
 
 ## In both
 
+*   checking whether package ‘ChromSCape’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/ChromSCape/new/ChromSCape.Rcheck/00install.out’ for details.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘igraph’
+    ```
+
 *   checking for hidden files and directories ... NOTE
     ```
     Found the following hidden files and directories:
@@ -456,45 +573,54 @@ Run `revdep_details(, "ChromSCape")` for more info
     structure’ in the ‘Writing R Extensions’ manual.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  8.2Mb
-      sub-directories of 1Mb or more:
-        data   1.4Mb
-        doc    2.9Mb
-        www    2.0Mb
-    ```
+## Installation
 
-*   checking R code for possible problems ... NOTE
-    ```
-    bams_to_matrix_indexes: no visible binding for global variable
-      ‘files_dir_list’
-    enrich_TF_ChEA3_genes: no visible binding for global variable
-      ‘CheA3_TF_nTargets’
-    filter_correlated_cell_scExp: no visible binding for global variable
-      ‘run_tsne’
-    generate_analysis: no visible binding for global variable ‘k’
-    generate_analysis: no visible binding for global variable
-      ‘clusterConsensus’
-    get_most_variable_cyto: no visible binding for global variable
-    ...
-    plot_top_TF_scExp: no visible binding for global variable ‘TF’
-    rebin_matrix: no visible binding for global variable ‘new_row’
-    rebin_matrix: no visible binding for global variable ‘origin_value’
-    subset_bam_call_peaks: no visible binding for global variable
-      ‘merged_bam’
-    Undefined global functions or variables:
-      CheA3_TF_nTargets Component Fri_cyto Gain_or_Loss Gene TF V1 V2
-      absolute_value cluster clusterConsensus cytoBand files_dir_list genes
-      group k merged_bam molecule ncells new_row orientation origin_value
-      percent_active run_tsne sample_id total_counts
-    ```
+### Devel
 
-*   checking Rd files ... NOTE
-    ```
-    prepare_Rd: raw_counts_to_sparse_matrix.Rd:6-8: Dropping empty section \source
-    ```
+```
+* installing *source* package ‘ChromSCape’ ...
+** using staged installation
+** libs
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/ChromSCape/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/ChromSCape/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c as_dist.cpp -o as_dist.o
+g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o ChromSCape.so RcppExports.o as_dist.o -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
+installing to /c4/home/henrik/repositories/future/revdep/checks/ChromSCape/new/ChromSCape.Rcheck/00LOCK-ChromSCape/00new/ChromSCape/libs
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘ChromSCape’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/ChromSCape/new/ChromSCape.Rcheck/ChromSCape’
 
+
+```
+### CRAN
+
+```
+* installing *source* package ‘ChromSCape’ ...
+** using staged installation
+** libs
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/ChromSCape/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/ChromSCape/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c as_dist.cpp -o as_dist.o
+g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o ChromSCape.so RcppExports.o as_dist.o -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
+installing to /c4/home/henrik/repositories/future/revdep/checks/ChromSCape/old/ChromSCape.Rcheck/00LOCK-ChromSCape/00new/ChromSCape/libs
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘ChromSCape’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/ChromSCape/old/ChromSCape.Rcheck/ChromSCape’
+
+
+```
 # civis
 
 <details>
@@ -615,6 +741,30 @@ Run `revdep_details(, "DeclareDesign")` for more info
     Package suggested but not available for checking: ‘DesignLibrary’
     ```
 
+# delayed
+
+<details>
+
+* Version: 0.4.0
+* GitHub: https://github.com/tlverse/delayed
+* Source code: https://github.com/cran/delayed
+* Date/Publication: 2022-10-19 22:25:09 UTC
+* Number of recursive dependencies: 80
+
+Run `revdep_details(, "delayed")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # dipsaus
 
 <details>
@@ -696,10 +846,36 @@ Run `revdep_details(, "dragon")` for more info
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘htmltools’
-      All declared Imports should be used.
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
+# drake
+
+<details>
+
+* Version: 7.13.4
+* GitHub: https://github.com/ropensci/drake
+* Source code: https://github.com/cran/drake
+* Date/Publication: 2022-08-19 15:40:02 UTC
+* Number of recursive dependencies: 162
+
+Run `revdep_details(, "drake")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # EFAtools
@@ -752,6 +928,35 @@ Run `revdep_details(, "envi")` for more info
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
     See ‘/c4/home/henrik/repositories/future/revdep/checks/envi/new/envi.Rcheck/00install.out’ for details.
+    ```
+
+# EpiNow2
+
+<details>
+
+* Version: 1.3.4
+* GitHub: https://github.com/epiforecasts/EpiNow2
+* Source code: https://github.com/cran/EpiNow2
+* Date/Publication: 2023-02-12 21:52:20 UTC
+* Number of recursive dependencies: 128
+
+Run `revdep_details(, "EpiNow2")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 229.4Mb
+      sub-directories of 1Mb or more:
+        help    1.4Mb
+        libs  227.2Mb
+    ```
+
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
     ```
 
 # epitweetr
@@ -827,18 +1032,12 @@ Run `revdep_details(, "flowGraph")` for more info
 
 ## In both
 
-*   checking R code for possible problems ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    get_child: no visible binding for global variable ‘no_cores’
-    get_paren: no visible binding for global variable ‘no_cores’
-    ms_psig: no visible binding for global variable ‘meta’
-    Undefined global functions or variables:
-      meta no_cores
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘doParallel’
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # foieGras
@@ -884,6 +1083,30 @@ Run `revdep_details(, "forecastML")` for more info
     ```
     Namespace in Imports field not imported from: ‘dtplyr’
       All declared Imports should be used.
+    ```
+
+# genBaRcode
+
+<details>
+
+* Version: 1.2.5
+* GitHub: NA
+* Source code: https://github.com/cran/genBaRcode
+* Date/Publication: 2022-05-27 12:50:05 UTC
+* Number of recursive dependencies: 158
+
+Run `revdep_details(, "genBaRcode")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # geocmeans
@@ -971,6 +1194,11 @@ Run `revdep_details(, "greed")` for more info
 
 ## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘igraph’
+    ```
+
 *   checking installed package size ... NOTE
     ```
       installed size is 36.8Mb
@@ -1044,42 +1272,6 @@ Run `revdep_details(, "hackeRnews")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘hackeRnews-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: get_best_stories
-    > ### Title: Hacker News best stories
-    > ### Aliases: get_best_stories
-    > 
-    > ### ** Examples
-    > 
-    > # get the best story on Hacker News
-    > best_story <- get_best_stories(max_items = 1)
-    Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Received HTTP code 503 from proxy after CONNECT
-    Calls: get_best_stories ... request_fetch -> request_fetch.write_memory -> <Anonymous>
-    Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘hackeRnews-specs.Rmd’ using rmarkdown
-    Quitting from lines 43-45 (hackeRnews-specs.Rmd) 
-    Error: processing vignette 'hackeRnews-specs.Rmd' failed with diagnostics:
-    Received HTTP code 503 from proxy after CONNECT
-    --- failed re-building ‘hackeRnews-specs.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘hackeRnews-specs.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
@@ -1152,17 +1344,12 @@ Run `revdep_details(, "infercnv")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      installed size is  5.1Mb
-      sub-directories of 1Mb or more:
-        extdata   3.1Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Unexported object imported by a ':::' call: ‘HiddenMarkov:::makedensity’
-      See the note in ?`:::` about the use of this operator.
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # inlinedocs
@@ -1394,6 +1581,27 @@ Run `revdep_details(, "keyATM")` for more info
         libs  23.6Mb
     ```
 
+# lava
+
+<details>
+
+* Version: 1.7.1
+* GitHub: https://github.com/kkholst/lava
+* Source code: https://github.com/cran/lava
+* Date/Publication: 2023-01-06 22:30:34 UTC
+* Number of recursive dependencies: 136
+
+Run `revdep_details(, "lava")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘igraph’
+    ```
+
 # lidR
 
 <details>
@@ -1437,32 +1645,28 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 60963 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       3.   └─lidR (local) algorithm(st_bbox(las))
-       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       5.       └─lidR:::raster_crop(chm, bbox)
-       6.         ├─sf::st_crop(raster, bbox)
-       7.         └─stars:::st_crop.stars(raster, bbox)
-      ── Error ('test-segment_trees.R:147'): Silva algorithm works with sfc ──────────
-    ...
-        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
-        8.   └─lidR (local) algorithm(st_bbox(las))
-        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       10.       └─lidR:::raster_crop(chm, bbox)
-       11.         ├─sf::st_crop(raster, bbox)
-       12.         └─stars:::st_crop.stars(raster, bbox)
-      
-      [ FAIL 20 | WARN 3 | SKIP 40 | PASS 1357 ]
-      Error: Test failures
-      Execution halted
+    Complete output:
+      > Sys.setenv("R_TESTS" = "")
+      > 
+      > library(testthat)
+      > library(lidR)
+      > test_check("lidR")
+      Tests using raster: terra 
+      Tests using future: TRUE 
+      Tests using OpenMP thread: 32 
+      OGR: Unsupported geometry type
+      OGR: Unsupported geometry type
+      terminate called after throwing an instance of 'std::length_error'
+        what():  basic_string::_S_create
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 19.7Mb
+      installed size is 19.6Mb
       sub-directories of 1Mb or more:
         R         1.2Mb
         extdata   1.1Mb
@@ -1604,6 +1808,30 @@ Run `revdep_details(, "microservices")` for more info
       Execution halted
     ```
 
+# migraph
+
+<details>
+
+* Version: 0.13.2
+* GitHub: https://github.com/snlab-ch/migraph
+* Source code: https://github.com/cran/migraph
+* Date/Publication: 2022-12-20 16:20:02 UTC
+* Number of recursive dependencies: 137
+
+Run `revdep_details(, "migraph")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # MineICA
 
 <details>
@@ -1620,58 +1848,12 @@ Run `revdep_details(, "MineICA")` for more info
 
 ## In both
 
-*   checking dependencies in R code ... WARNING
+*   checking package dependencies ... ERROR
     ```
-    Namespace in Imports field not imported from: ‘lumiHumanAll.db’
-      All declared Imports should be used.
-    Packages in Depends field not imported from:
-      ‘GOstats’ ‘Hmisc’ ‘JADE’ ‘RColorBrewer’ ‘Rgraphviz’ ‘annotate’
-      ‘biomaRt’ ‘cluster’ ‘colorspace’ ‘fastICA’ ‘foreach’ ‘ggplot2’
-      ‘graph’ ‘gtools’ ‘igraph’ ‘marray’ ‘mclust’ ‘methods’ ‘plyr’ ‘scales’
-      ‘xtable’
-      These packages need to be imported from (in the NAMESPACE file)
-      for when this namespace is loaded but not attached.
-    Missing or unexported object: ‘GOstats::geneIdsByCategory’
-    ':::' calls which should be '::':
-      ‘Biobase:::annotation<-’ ‘Biobase:::validMsg’ ‘fpc:::pamk’
-      ‘lumi:::getChipInfo’ ‘mclust:::adjustedRandIndex’
-      See the note in ?`:::` about the use of this operator.
-    Unexported object imported by a ':::' call: ‘Biobase:::isValidVersion’
-      See the note in ?`:::` about the use of this operator.
-    ```
-
-*   checking Rd cross-references ... WARNING
-    ```
-    Missing link or links in documentation object 'Alist.Rd':
-      ‘class-IcaSet’
+    Package required but not available: ‘igraph’
     
-    Missing link or links in documentation object 'Slist.Rd':
-      ‘class-IcaSet’
+    Package suggested but not available for checking: ‘igraph’
     
-    Missing link or links in documentation object 'class-IcaSet.Rd':
-      ‘class-IcaSet’
-    
-    Missing link or links in documentation object 'getComp.Rd':
-      ‘class-IcaSet’
-    
-    Missing link or links in documentation object 'runAn.Rd':
-      ‘[Category:class-GOHyperGParams]{GOHyperGParams}’
-    
-    See section 'Cross-references' in the 'Writing R Extensions' manual.
-    ```
-
-*   checking for missing documentation entries ... WARNING
-    ```
-    Undocumented S4 classes:
-      ‘MineICAParams’
-    All user-level objects in a package (including S4 classes and methods)
-    should have documentation entries.
-    See chapter ‘Writing R documentation files’ in the ‘Writing R
-    Extensions’ manual.
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
     Package which this enhances but not available for checking: ‘doMC’
     
     Depends: includes the non-default packages:
@@ -1681,63 +1863,9 @@ Run `revdep_details(, "MineICA")` for more info
       'graph', 'annotate', 'Hmisc', 'fastICA', 'JADE'
     Adding so many packages to the search path is excessive and importing
     selectively is preferable.
-    ```
-
-*   checking DESCRIPTION meta-information ... NOTE
-    ```
-    Packages listed in more than one of Depends, Imports, Suggests, Enhances:
-      ‘biomaRt’ ‘GOstats’ ‘cluster’ ‘mclust’ ‘igraph’
-    A package should be listed in only one of these fields.
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    addGenesToGoReport: no visible global function definition for
-      ‘conditional’
-    addGenesToGoReport: no visible global function definition for
-      ‘sigCategories’
-    annot2Color: no visible global function definition for ‘brewer.pal’
-    annot2Color: no visible global function definition for ‘heat_hcl’
-    annot2Color: no visible global function definition for ‘terrain_hcl’
-    annot2Color: no visible global function definition for ‘cm.colors’
-    annot2Color: no visible global function definition for ‘rainbow_hcl’
-    annotFeatures: no visible global function definition for ‘na.omit’
-    ...
-      importFrom("methods", "callNextMethod", "new", "validObject")
-      importFrom("stats", "aggregate", "as.dendrogram", "as.dist",
-                 "as.hclust", "chisq.test", "cor", "cor.test", "cutree",
-                 "dist", "hclust", "kmeans", "kruskal.test", "lm", "median",
-                 "na.omit", "order.dendrogram", "p.adjust", "quantile",
-                 "reorder", "shapiro.test", "wilcox.test")
-      importFrom("utils", "capture.output", "combn", "read.table",
-                 "write.table")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
-    contains 'methods').
-    ```
-
-*   checking re-building of vignette outputs ... NOTE
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘MineICA.Rnw’ using Sweave
-    Loading required package: BiocGenerics
     
-    Attaching package: ‘BiocGenerics’
-    
-    The following objects are masked from ‘package:stats’:
-    
-        IQR, mad, sd, var, xtabs
-    
-    ...
-    l.23 \usepackage
-                    {subfig}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
-    --- failed re-building ‘MineICA.Rnw’
-    
-    SUMMARY: processing the following file failed:
-      ‘MineICA.Rnw’
-    
-    Error: Vignette re-building failed.
-    Execution halted
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # missSBM
@@ -1756,11 +1884,179 @@ Run `revdep_details(, "missSBM")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      installed size is  9.7Mb
-      sub-directories of 1Mb or more:
-        libs   7.8Mb
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
+# mistyR
+
+<details>
+
+* Version: 1.6.0
+* GitHub: https://github.com/saezlab/mistyR
+* Source code: https://github.com/cran/mistyR
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 152
+
+Run `revdep_details(, "mistyR")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘mistyR-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: plot_interaction_communities
+    > ### Title: Plot marker interaction communities
+    > ### Aliases: plot_interaction_communities
+    > 
+    > ### ** Examples
+    > 
+    > all.samples <- list.dirs("results", recursive = FALSE)
+    ...
+    
+    Collecting importances
+    
+    Aggregating
+    > 
+    > misty.results %>%
+    +   plot_interaction_communities("intra") %>%
+    +   plot_interaction_communities("para.10")
+    Error: The provided result list is malformed. Consider using collect_results().
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      
+      Computing triangulation
+      
+      Generating juxtaview
+      
+      Generating paraview
+    ...
+       1. ├─testthat::expect_invisible(...) at test-plots.R:47:2
+       2. │ └─base::withVisible(call)
+       3. ├─base::suppressWarnings(...)
+       4. │ └─base::withCallingHandlers(...)
+       5. └─mistyR::plot_interaction_communities(...)
+       6.   └─assertthat::assert_that(...)
+      
+      [ FAIL 1 | WARN 74 | SKIP 0 | PASS 172 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘mistyR.Rmd’ using rmarkdown
+    The magick package is required to crop "/c4/home/henrik/repositories/future/revdep/checks/mistyR/new/mistyR.Rcheck/vign_test/mistyR/vignettes/mistyR_files/figure-html/unnamed-chunk-2-1.png" but not available.
+    
+     Progress: ───────────────────────────────────────────────────────────────  100%
+     Progress: ───────────────────────────────────────────────────────────────  100%
+     Progress: ───────────────────────────────────────────────────────────────  100%
+     Progress: ───────────────────────────────────────────────────────────────  100%
+     Progress: ───────────────────────────────────────────────────────────────  100%
+     Progress: ───────────────────────────────────────────────────────────────  100%
+    ...
+    Quitting from lines 251-252 (mistyR.Rmd) 
+    Error: processing vignette 'mistyR.Rmd' failed with diagnostics:
+    The package igraph (>= 1.2.7) is required to calculate the interaction communities.
+    --- failed re-building ‘mistyR.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘mistyR.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘igraph’
+    ```
+
+# mlr3pipelines
+
+<details>
+
+* Version: 0.4.2
+* GitHub: https://github.com/mlr-org/mlr3pipelines
+* Source code: https://github.com/cran/mlr3pipelines
+* Date/Publication: 2022-09-20 22:00:07 UTC
+* Number of recursive dependencies: 159
+
+Run `revdep_details(, "mlr3pipelines")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘mlr3pipelines-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: mlr_pipeops_imputelearner
+    > ### Title: Impute Features by Fitting a Learner
+    > ### Aliases: mlr_pipeops_imputelearner PipeOpImputeLearner
+    > 
+    > ### ** Examples
+    > 
+    > library("mlr3")
+    ...
+    Empty data.table (0 rows and 8 cols): .impute_col,age,glucose,insulin,pedigree,pregnant...
+    
+    $task_prototype
+    Empty data.table (0 rows and 8 cols): .impute_col,age,glucose,insulin,pedigree,pregnant...
+    
+    $mlr3_version
+    [1] ‘0.14.1’
+    
+    $train_task
+    <TaskRegr:imputing> (768 x 8)
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      Starting 2 test processes
+      [ FAIL 5 | WARN 0 | SKIP 79 | PASS 12709 ]
+      
+      ══ Skipped tests ═══════════════════════════════════════════════════════════════
+      • On CRAN (77)
+      • empty test (2)
+    ...
+      Error: The following packages could not be loaded: igraph
+      Backtrace:
+          ▆
+       1. └─graph$plot() at test_multichannels.R:100:2
+       2.   └─mlr3pipelines:::.__Graph__plot(...)
+       3.     └─mlr3misc::require_namespaces("igraph")
+      
+      [ FAIL 5 | WARN 0 | SKIP 79 | PASS 12709 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘igraph’
     ```
 
 # momentuHMM
@@ -1820,6 +2116,54 @@ Run `revdep_details(, "mslp")` for more info
     Execution halted
     ```
 
+# netShiny
+
+<details>
+
+* Version: 1.0
+* GitHub: NA
+* Source code: https://github.com/cran/netShiny
+* Date/Publication: 2022-08-22 09:30:02 UTC
+* Number of recursive dependencies: 151
+
+Run `revdep_details(, "netShiny")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
+# nncc
+
+<details>
+
+* Version: 1.0.0
+* GitHub: NA
+* Source code: https://github.com/cran/nncc
+* Date/Publication: 2022-08-30 13:00:02 UTC
+* Number of recursive dependencies: 82
+
+Run `revdep_details(, "nncc")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # oncomsm
 
 <details>
@@ -1849,39 +2193,6 @@ Run `revdep_details(, "oncomsm")` for more info
     GNU make is a SystemRequirements.
     ```
 
-# onemapsgapi
-
-<details>
-
-* Version: 1.1.0
-* GitHub: NA
-* Source code: https://github.com/cran/onemapsgapi
-* Date/Publication: 2022-11-29 08:00:03 UTC
-* Number of recursive dependencies: 70
-
-Run `revdep_details(, "onemapsgapi")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘onemapsgapi_vignette.Rmd’ using rmarkdown
-    Quitting from lines 36-37 (onemapsgapi_vignette.Rmd) 
-    Error: processing vignette 'onemapsgapi_vignette.Rmd' failed with diagnostics:
-    Received HTTP code 503 from proxy after CONNECT
-    --- failed re-building ‘onemapsgapi_vignette.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘onemapsgapi_vignette.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # OOS
 
 <details>
@@ -1897,23 +2208,6 @@ Run `revdep_details(, "OOS")` for more info
 </details>
 
 ## In both
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘basic_introduction.Rmd’ using rmarkdown
-    Quitting from lines 31-49 (basic_introduction.Rmd) 
-    Error: processing vignette 'basic_introduction.Rmd' failed with diagnostics:
-    object 'UNRATE' not found
-    --- failed re-building ‘basic_introduction.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘basic_introduction.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
 
 *   checking LazyData ... NOTE
     ```
@@ -1963,6 +2257,30 @@ Run `revdep_details(, "pavo")` for more info
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
     See ‘/c4/home/henrik/repositories/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
+    ```
+
+# pGRN
+
+<details>
+
+* Version: 0.3.5
+* GitHub: NA
+* Source code: https://github.com/cran/pGRN
+* Date/Publication: 2023-01-17 17:20:02 UTC
+* Number of recursive dependencies: 93
+
+Run `revdep_details(, "pGRN")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # photosynthesis
@@ -2018,10 +2336,10 @@ Run `revdep_details(, "phylolm")` for more info
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.1
 * GitHub: https://github.com/pln-team/PLNmodels
 * Source code: https://github.com/cran/PLNmodels
-* Date/Publication: 2023-01-06 13:20:06 UTC
+* Date/Publication: 2023-02-12 14:42:07 UTC
 * Number of recursive dependencies: 146
 
 Run `revdep_details(, "PLNmodels")` for more info
@@ -2030,12 +2348,12 @@ Run `revdep_details(, "PLNmodels")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      installed size is 21.7Mb
-      sub-directories of 1Mb or more:
-        doc    2.1Mb
-        libs  18.3Mb
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # portvine
@@ -2131,6 +2449,48 @@ Run `revdep_details(, "prewas")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+       5.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
+       6.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+       7.       └─base (local) withOneRestart(expr, restarts[[1L]])
+       8.         └─base (local) doWithOneRestart(return(expr), restart)
+      ── Error ('test-preprocess_tree_and_vcf.R:46'): root_tree roots tree and drops outgroup when given valid inputs ──
+      <packageNotFoundError/error/condition>
+    ...
+       2.   ├─base::namespaceImportFrom(...)
+       3.   │ └─base::asNamespace(ns)
+       4.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
+       5.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+       6.       └─base (local) withOneRestart(expr, restarts[[1L]])
+       7.         └─base (local) doWithOneRestart(return(expr), restart)
+      
+      [ FAIL 4 | WARN 15 | SKIP 0 | PASS 324 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘getting_started_with_prewas.Rmd’ using rmarkdown
+    Quitting from lines 195-198 (getting_started_with_prewas.Rmd) 
+    Error: processing vignette 'getting_started_with_prewas.Rmd' failed with diagnostics:
+    there is no package called 'igraph'
+    --- failed re-building ‘getting_started_with_prewas.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘getting_started_with_prewas.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘stats’
@@ -2141,17 +2501,32 @@ Run `revdep_details(, "prewas")` for more info
 
 <details>
 
-* Version: 2.3.0
+* Version: 2.4.0
 * GitHub: https://github.com/stan-dev/projpred
 * Source code: https://github.com/cran/projpred
-* Date/Publication: 2023-01-10 15:00:03 UTC
-* Number of recursive dependencies: 143
+* Date/Publication: 2023-02-12 13:30:02 UTC
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "projpred")` for more info
 
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(projpred)
+      This is projpred version 2.4.0.
+      > 
+      > test_check("projpred")
+      Error: Package "rstanarm" is needed for these tests. Please install it.
+      Execution halted
+    ```
 
 *   checking package dependencies ... NOTE
     ```
@@ -2177,6 +2552,85 @@ Run `revdep_details(, "promises")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
+    ```
+
+# Prostar
+
+<details>
+
+* Version: 1.30.5
+* GitHub: https://github.com/prostarproteomics/Prostar
+* Source code: https://github.com/cran/Prostar
+* Date/Publication: 2023-02-10
+* Number of recursive dependencies: 166
+
+Run `revdep_details(, "Prostar")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘Prostar’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘Prostar’ ...
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘Prostar’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/Prostar’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘Prostar’ ...
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘Prostar’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/Prostar/old/Prostar.Rcheck/Prostar’
+
+
+```
+# protti
+
+<details>
+
+* Version: 0.6.0
+* GitHub: https://github.com/jpquast/protti
+* Source code: https://github.com/cran/protti
+* Date/Publication: 2023-01-20 10:30:02 UTC
+* Number of recursive dependencies: 195
+
+Run `revdep_details(, "protti")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘igraph’
     ```
 
 # QDNAseq
@@ -2243,6 +2697,27 @@ Run `revdep_details(, "RAINBOWR")` for more info
         libs  36.5Mb
     ```
 
+# rangeMapper
+
+<details>
+
+* Version: 2.0.3
+* GitHub: https://github.com/mpio-be/rangeMapper
+* Source code: https://github.com/cran/rangeMapper
+* Date/Publication: 2022-10-03 22:20:02 UTC
+* Number of recursive dependencies: 113
+
+Run `revdep_details(, "rangeMapper")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘igraph’
+    ```
+
 # regmedint
 
 <details>
@@ -2263,47 +2738,6 @@ Run `revdep_details(, "regmedint")` for more info
     ```
     Namespace in Imports field not imported from: ‘Deriv’
       All declared Imports should be used.
-    ```
-
-# reproducible
-
-<details>
-
-* Version: 1.2.16
-* GitHub: https://github.com/PredictiveEcology/reproducible
-* Source code: https://github.com/cran/reproducible
-* Date/Publication: 2022-12-22 09:50:02 UTC
-* Number of recursive dependencies: 104
-
-Run `revdep_details(, "reproducible")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60:  7156 Segmentation fault      ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 50 lines of output:
-        adding: scratch/henrik/RtmpcbGlaK/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
-        adding: scratch/henrik/RtmpcbGlaK/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
-      
-       *** caught segfault ***
-      address 0x40, cause 'memory not mapped'
-    ...
-      36: doTryCatch(return(expr), name, parentenv, handler)
-      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-      38: tryCatchList(expr, classes, parentenv, handlers)
-      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
-      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
-      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
-      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
-      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
-      44: test_check("reproducible")
-      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rgee
@@ -2383,6 +2817,66 @@ Run `revdep_details(, "sapfluxnetr")` for more info
       Note: found 4 marked UTF-8 strings
     ```
 
+# scBubbletree
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/snaketron/scBubbletree
+* Source code: https://github.com/cran/scBubbletree
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 178
+
+Run `revdep_details(, "scBubbletree")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘scBubbletree’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/scBubbletree/new/scBubbletree.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘scBubbletree’ ...
+** using staged installation
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘scBubbletree’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/scBubbletree/new/scBubbletree.Rcheck/scBubbletree’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘scBubbletree’ ...
+** using staged installation
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘scBubbletree’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/scBubbletree/old/scBubbletree.Rcheck/scBubbletree’
+
+
+```
 # scDiffCom
 
 <details>
@@ -2398,6 +2892,36 @@ Run `revdep_details(, "scDiffCom")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+      Running ‘spelling.R’
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(scDiffCom)
+      > 
+      > test_check("scDiffCom")
+      Loading required package: SeuratObject
+    ...
+        6.   ├─base::namespaceImportFrom(...)
+        7.   │ └─base::asNamespace(ns)
+        8.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
+        9.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+       10.       └─base (local) withOneRestart(expr, restarts[[1L]])
+       11.         └─base (local) doWithOneRestart(return(expr), restart)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 6 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘igraph’
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -2498,31 +3022,6 @@ Run `revdep_details(, "sentopics")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > 
-      > library("testthat")
-      > library("sentopics")
-      > 
-      > if (Sys.getenv("R_COVR") != "true") {
-      +   test_check("sentopics")
-    ...
-      Backtrace:
-          ▆
-       1. └─sentopics:::get_ECB_press_conferences(years = 1998) at test-others.R:2:2
-       2.   └─base::lapply(...)
-       3.     └─sentopics (local) FUN(X[[i]], ...)
-       4.       └─utils::download.file(...)
-      
-      [ FAIL 1 | WARN 2 | SKIP 1 | PASS 321 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is  8.0Mb
@@ -2557,17 +3056,12 @@ Run `revdep_details(, "Seurat")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      installed size is 14.5Mb
-      sub-directories of 1Mb or more:
-        R      1.4Mb
-        libs  12.4Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘Signac’
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # SeuratObject
@@ -2659,54 +3153,68 @@ Run `revdep_details(, "signeR")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking whether package ‘signeR’ can be installed ... ERROR
     ```
-      installed size is  6.6Mb
-      sub-directories of 1Mb or more:
-        R     1.1Mb
-        doc   4.6Mb
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/signeR/new/signeR.Rcheck/00install.out’ for details.
     ```
 
-*   checking R code for possible problems ... NOTE
-    ```
-    covariate: no visible binding for global variable ‘.’
-    denovo: no visible binding for global variable
-      ‘BSgenome.Hsapiens.UCSC.hg19’
-    denovo: no visible binding for global variable
-      ‘BSgenome.Hsapiens.UCSC.hg38’
-    explorepage: no visible binding for global variable ‘.’
-    fitting: no visible binding for global variable
-      ‘BSgenome.Hsapiens.UCSC.hg19’
-    fitting: no visible binding for global variable
-      ‘BSgenome.Hsapiens.UCSC.hg38’
-    ...
-    ExposureCorrelation,SignExp-numeric: no visible binding for global
-      variable ‘exposure’
-    ExposureCorrelation,matrix-numeric: no visible binding for global
-      variable ‘Feature’
-    ExposureCorrelation,matrix-numeric: no visible binding for global
-      variable ‘exposure’
-    Undefined global functions or variables:
-      . BSgenome.Hsapiens.UCSC.hg19 BSgenome.Hsapiens.UCSC.hg38 Col Feature
-      Frequency Row Samples Signatures alt<- exposure fc project sig
-      sig_test
-    ```
+## Installation
 
-*   checking Rd files ... NOTE
-    ```
-    prepare_Rd: cosmic_data.Rd:91-93: Dropping empty section \details
-    prepare_Rd: cosmic_data.Rd:98-100: Dropping empty section \references
-    prepare_Rd: cosmic_data.Rd:101-102: Dropping empty section \examples
-    prepare_Rd: tcga_similarities.Rd:96-98: Dropping empty section \details
-    prepare_Rd: tcga_similarities.Rd:99-101: Dropping empty section \source
-    prepare_Rd: tcga_similarities.Rd:102-104: Dropping empty section \references
-    prepare_Rd: tcga_similarities.Rd:105-106: Dropping empty section \examples
-    prepare_Rd: tcga_tumors.Rd:18-20: Dropping empty section \details
-    prepare_Rd: tcga_tumors.Rd:21-23: Dropping empty section \source
-    prepare_Rd: tcga_tumors.Rd:24-26: Dropping empty section \references
-    prepare_Rd: tcga_tumors.Rd:27-28: Dropping empty section \examples
-    ```
+### Devel
 
+```
+* installing *source* package ‘signeR’ ...
+** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c fuzzy.cpp -o fuzzy.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c gibbs_2.cpp -o gibbs_2.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c signeR_init.c -o signeR_init.o
+g++ -std=gnu++11 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o signeR.so RcppExports.o fuzzy.o gibbs_2.o signeR_init.o -Wl,-S -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lRlapack -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lRblas -lgfortran -lm -lquadmath -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
+installing to /c4/home/henrik/repositories/future/revdep/checks/signeR/new/signeR.Rcheck/00LOCK-signeR/00new/signeR/libs
+** R
+...
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘signeR’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/signeR/new/signeR.Rcheck/signeR’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘signeR’ ...
+** using staged installation
+** libs
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c fuzzy.cpp -o fuzzy.o
+g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c gibbs_2.cpp -o gibbs_2.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c signeR_init.c -o signeR_init.o
+g++ -std=gnu++11 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o signeR.so RcppExports.o fuzzy.o gibbs_2.o signeR_init.o -Wl,-S -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lRlapack -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lRblas -lgfortran -lm -lquadmath -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
+installing to /c4/home/henrik/repositories/future/revdep/checks/signeR/old/signeR.Rcheck/00LOCK-signeR/00new/signeR/libs
+** R
+...
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘signeR’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/signeR/old/signeR.Rcheck/signeR’
+
+
+```
 # SimDesign
 
 <details>
@@ -2774,11 +3282,12 @@ Run `revdep_details(, "solitude")` for more info
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... ERROR
     ```
-    Namespaces in Imports field not imported from:
-      ‘R6’ ‘lgr’
-      All declared Imports should be used.
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # spaMM
@@ -2914,6 +3423,30 @@ Run `revdep_details(, "spatialwarnings")` for more info
         libs   5.8Mb
     ```
 
+# specr
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/masurp/specr
+* Source code: https://github.com/cran/specr
+* Date/Publication: 2023-01-20 13:50:02 UTC
+* Number of recursive dependencies: 149
+
+Run `revdep_details(, "specr")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
+    ```
+
 # sphunif
 
 <details>
@@ -2958,13 +3491,12 @@ Run `revdep_details(, "spNetwork")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... ERROR
     ```
-      installed size is 25.2Mb
-      sub-directories of 1Mb or more:
-        doc       1.0Mb
-        extdata   2.6Mb
-        libs     20.3Mb
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # squat
@@ -3121,6 +3653,66 @@ Run `revdep_details(, "tableschema.r")` for more info
     Package unavailable to check Rd xrefs: ‘parsedate’
     ```
 
+# tarchetypes
+
+<details>
+
+* Version: 0.7.4
+* GitHub: https://github.com/ropensci/tarchetypes
+* Source code: https://github.com/cran/tarchetypes
+* Date/Publication: 2023-01-06 18:50:20 UTC
+* Number of recursive dependencies: 78
+
+Run `revdep_details(, "tarchetypes")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘tarchetypes’ can be installed ... ERROR
+    ```
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/tarchetypes/new/tarchetypes.Rcheck/00install.out’ for details.
+    ```
+
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘tarchetypes’ ...
+** package ‘tarchetypes’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘tarchetypes’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/tarchetypes/new/tarchetypes.Rcheck/tarchetypes’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘tarchetypes’ ...
+** package ‘tarchetypes’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘tarchetypes’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/tarchetypes/old/tarchetypes.Rcheck/tarchetypes’
+
+
+```
 # targeted
 
 <details>
@@ -3142,6 +3734,30 @@ Run `revdep_details(, "targeted")` for more info
       installed size is 16.8Mb
       sub-directories of 1Mb or more:
         libs  15.7Mb
+    ```
+
+# targets
+
+<details>
+
+* Version: 0.14.2
+* GitHub: https://github.com/ropensci/targets
+* Source code: https://github.com/cran/targets
+* Date/Publication: 2023-01-06 14:50:02 UTC
+* Number of recursive dependencies: 173
+
+Run `revdep_details(, "targets")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... ERROR
+    ```
+    Package required but not available: ‘igraph’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
 # text
@@ -3181,39 +3797,68 @@ Run `revdep_details(, "TreeSearch")` for more info
 
 ## In both
 
-*   checking re-building of vignette outputs ... ERROR
+*   checking whether package ‘TreeSearch’ can be installed ... ERROR
     ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘custom.Rmd’ using rmarkdown
-    Error reading bibliography file ../inst/REFERENCES.bib:
-    (line 348, column 1):
-    unexpected '@'
-    Error: processing vignette 'custom.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 25
-    --- failed re-building ‘custom.Rmd’
-    
-    --- re-building ‘getting-started.Rmd’ using rmarkdown
-    ...
-    unexpected '@'
-    Error: processing vignette 'tree-search.Rmd' failed with diagnostics:
-    pandoc document conversion failed with error 25
-    --- failed re-building ‘tree-search.Rmd’
-    
-    SUMMARY: processing the following files failed:
-      ‘custom.Rmd’ ‘profile-scores.Rmd’ ‘profile.Rmd’ ‘tree-search.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
+    Installation failed.
+    See ‘/c4/home/henrik/repositories/future/revdep/checks/TreeSearch/new/TreeSearch.Rcheck/00install.out’ for details.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.3Mb
-      sub-directories of 1Mb or more:
-        datasets   1.6Mb
-        libs       2.4Mb
-    ```
+## Installation
 
+### Devel
+
+```
+* installing *source* package ‘TreeSearch’ ...
+** package ‘TreeSearch’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphy.c -o RMorphy.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphyUtils.c -o RMorphyUtils.o
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c TreeSearch-init.c -o TreeSearch-init.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c fitch.c -o fitch.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c morphy.c -o morphy.o
+...
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘TreeSearch’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/TreeSearch/new/TreeSearch.Rcheck/TreeSearch’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘TreeSearch’ ...
+** package ‘TreeSearch’ successfully unpacked and MD5 sums checked
+** using staged installation
+** libs
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphy.c -o RMorphy.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphyUtils.c -o RMorphyUtils.o
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c TreeSearch-init.c -o TreeSearch-init.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c fitch.c -o fitch.o
+gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c morphy.c -o morphy.o
+...
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘TreeSearch’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/TreeSearch/old/TreeSearch.Rcheck/TreeSearch’
+
+
+```
 # TriDimRegression
 
 <details>
@@ -3355,13 +4000,54 @@ Run `revdep_details(, "vmeasur")` for more info
 
 ## In both
 
-*   checking whether package ‘vmeasur’ can be installed ... WARNING
+*   checking whether package ‘vmeasur’ can be installed ... ERROR
     ```
-    Found the following significant warnings:
-      Warning: no DISPLAY variable so Tk is not available
+    Installation failed.
     See ‘/c4/home/henrik/repositories/future/revdep/checks/vmeasur/new/vmeasur.Rcheck/00install.out’ for details.
     ```
 
+## Installation
+
+### Devel
+
+```
+* installing *source* package ‘vmeasur’ ...
+** package ‘vmeasur’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘vmeasur’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/vmeasur/new/vmeasur.Rcheck/vmeasur’
+
+
+```
+### CRAN
+
+```
+* installing *source* package ‘vmeasur’ ...
+** package ‘vmeasur’ successfully unpacked and MD5 sums checked
+** using staged installation
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called ‘igraph’
+Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: lazy loading failed for package ‘vmeasur’
+* removing ‘/c4/home/henrik/repositories/future/revdep/checks/vmeasur/old/vmeasur.Rcheck/vmeasur’
+
+
+```
 # wru
 
 <details>
