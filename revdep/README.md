@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                               |
 |ctype    |en_US.UTF-8                                               |
 |tz       |America/Los_Angeles                                       |
-|date     |2023-02-12                                                |
+|date     |2023-02-13                                                |
 |pandoc   |3.0.1 @ /software/c4/cbi/software/pandoc-3.0.1/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.31.0 |1.31.0-9004 |*  |
+|future     |1.31.0 |1.31.0-9005 |*  |
 |codetools  |0.2-19 |0.2-19      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
@@ -248,7 +248,7 @@
 |refineR                  |1.5.1     |      |        |     |
 |[regmedint](problems.md#regmedint)|1.0.0     |      |        |1    |
 |remiod                   |1.0.2     |      |        |     |
-|reproducible             |1.2.16    |-1    |        |     |
+|[reproducible](problems.md#reproducible)|1.2.16    |1     |        |     |
 |reval                    |3.1-0     |      |        |     |
 |[rgee](problems.md#rgee) |1.1.5     |      |        |2    |
 |[robotstxt](problems.md#robotstxt)|0.7.13    |      |        |2    |
