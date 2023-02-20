@@ -315,4 +315,7 @@ update_package_options <- function(debug = FALSE) {
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
+
+  ## future 1.32.0:
+  update_package_option("future.state.onInvalid", mode = "character", debug = debug)
 }

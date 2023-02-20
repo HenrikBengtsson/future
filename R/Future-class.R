@@ -176,12 +176,12 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     ## /HB 2023-02-09
     if (isTRUE(args$local) &&
         Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "true") == "true") {
-       for (call in sys.calls()) {
-         if ("CivisFuture" %in% as.character(call[[1]])) {
+      for (call in sys.calls()) {
+        if ("CivisFuture" %in% as.character(call[[1]])) {
            msg <- sprintf("%s. In this case it was because civis::CivisFuture() was used. Please contact the maintainers of the 'civis' package about this problem.", msg)
-           if (!interactive()) dfcn <- .Deprecated
-           break
-         }
+          if (!interactive()) dfcn <- .Deprecated
+          break
+        }
       }
     }
 
@@ -820,6 +820,7 @@ getExpression.Future <- local({
   } ## getExpression()
 })
 
+
 globals <- function(future, ...) UseMethod("globals")
 
 globals.Future <- function(future, ...) {
@@ -830,4 +831,35 @@ packages <- function(future, ...) UseMethod("packages")
 
 packages.Future <- function(future, ...) {
   future[["packages"]]
+}
+
+
+#' @export
+`$<-.Future` <- function(x, name, value) {
+  if (name == "state") {
+    if (!is.element(value, c("created", "running", "finished", "failed", "interrupted"))) {
+      action <- getOption("future.state.onInvalid", "warning")
+      
+      ## FIXME: civis::CivisFuture uses 'succeeded' /HB 2019-06-18
+      if (Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "true") == "true") {
+        for (call in sys.calls()) {
+          if ("CivisFuture" %in% as.character(call[[1]])) {
+            action <- "ignore"
+            break
+          }
+        }
+      }
+
+      if (action != "ignore") {
+        msg <- sprintf("Trying to assign an invalid value to the internal '%s' field of a %s object: %s", name, class(x)[1], value)
+        if (action == "error") {
+          stop(FutureError(msg, call = sys.call(), future = x))
+        } else {
+          warning(FutureWarning(msg, call = sys.call(), future = x))
+        }
+      }
+    }
+  }
+  
+  NextMethod()
 }

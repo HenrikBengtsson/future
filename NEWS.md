@@ -2,6 +2,8 @@
 
 ## Deprecated and Defunct
 
+ * Add optional assertion of the internal Future `state` field.
+
  * Deprecated `plan(multiprocess, ...)` is now defunct when running in
    interactive mode.  The next step is to make it defunct also when
    running in batch mode.
