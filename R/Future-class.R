@@ -843,7 +843,7 @@ packages.Future <- function(future, ...) {
       ## FIXME: civis::CivisFuture uses 'succeeded' /HB 2019-06-18
       if (Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "true") == "true") {
         for (call in sys.calls()) {
-          if ("CivisFuture" %in% as.character(call[[1]])) {
+          if (any(grepl("CivisFuture$", as.character(call[[1]])))) {
             action <- "ignore"
             break
           }
