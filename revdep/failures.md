@@ -2,10 +2,10 @@
 
 <details>
 
-* Version: 4.0.3
+* Version: 4.0.4
 * GitHub: https://github.com/sipss/AlpsNMR
 * Source code: https://github.com/cran/AlpsNMR
-* Date/Publication: 2023-02-10
+* Date/Publication: 2023-02-16
 * Number of recursive dependencies: 169
 
 Run `revdep_details(, "AlpsNMR")` for more info
@@ -276,10 +276,10 @@ ERROR: lazy loading failed for package ‘ChromSCape’
 
 <details>
 
-* Version: 1.30.5
+* Version: 1.30.6
 * GitHub: https://github.com/prostarproteomics/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2023-02-10
+* Date/Publication: 2023-02-17
 * Number of recursive dependencies: 166
 
 Run `revdep_details(, "Prostar")` for more info
@@ -532,11 +532,11 @@ ERROR: lazy loading failed for package ‘tarchetypes’
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.3.0
 * GitHub: https://github.com/ms609/TreeSearch
 * Source code: https://github.com/cran/TreeSearch
-* Date/Publication: 2022-08-10 22:40:17 UTC
-* Number of recursive dependencies: 117
+* Date/Publication: 2023-02-20 09:40:07 UTC
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "TreeSearch")` for more info
 
@@ -561,7 +561,7 @@ Run `revdep_details(, "TreeSearch")` for more info
 ** libs
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphy.c -o RMorphy.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphyUtils.c -o RMorphyUtils.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c TreeSearch-init.c -o TreeSearch-init.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c fitch.c -o fitch.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c morphy.c -o morphy.o
@@ -588,7 +588,7 @@ ERROR: lazy loading failed for package ‘TreeSearch’
 ** libs
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphy.c -o RMorphy.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphyUtils.c -o RMorphyUtils.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c TreeSearch-init.c -o TreeSearch-init.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c fitch.c -o fitch.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c morphy.c -o morphy.o

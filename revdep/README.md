@@ -10,14 +10,14 @@
 |collate  |en_US.UTF-8                                               |
 |ctype    |en_US.UTF-8                                               |
 |tz       |America/Los_Angeles                                       |
-|date     |2023-02-13                                                |
+|date     |2023-02-20                                                |
 |pandoc   |3.0.1 @ /software/c4/cbi/software/pandoc-3.0.1/bin/pandoc |
 
 # Dependencies
 
 |package    |old    |new         |Δ  |
 |:----------|:------|:-----------|:--|
-|future     |1.31.0 |1.31.0-9005 |*  |
+|future     |1.31.0 |1.31.0-9007 |*  |
 |codetools  |0.2-19 |0.2-19      |   |
 |digest     |0.6.31 |0.6.31      |   |
 |globals    |0.16.2 |0.16.2      |   |
@@ -30,25 +30,25 @@
 
 |package      |version |error |warning |note |
 |:------------|:-------|:-----|:-------|:----|
-|[AlpsNMR](failures.md#alpsnmr)|4.0.3   |1     |        |     |
+|[AlpsNMR](failures.md#alpsnmr)|4.0.4   |1     |        |     |
 |[bayesian](failures.md#bayesian)|0.0.9   |1     |        |     |
 |[brms](failures.md#brms)|2.18.0  |1     |        |1    |
 |[ChromSCape](failures.md#chromscape)|1.8.0   |1     |        |2    |
-|[Prostar](failures.md#prostar)|1.30.5  |1     |        |     |
+|[Prostar](failures.md#prostar)|1.30.6  |1     |        |     |
 |[scBubbletree](failures.md#scbubbletree)|1.0.0   |1     |        |     |
 |[signeR](failures.md#signer)|2.0.2   |1     |        |     |
 |[tarchetypes](failures.md#tarchetypes)|0.7.4   |1     |        |     |
-|[TreeSearch](failures.md#treesearch)|1.2.0   |1     |        |     |
+|[TreeSearch](failures.md#treesearch)|1.3.0   |1     |        |     |
 |[vmeasur](failures.md#vmeasur)|0.1.4   |1     |        |     |
 
-## All (279)
+## All (280)
 
 |package                  |version   |error |warning |note |
 |:------------------------|:---------|:-----|:-------|:----|
 |[AIPW](problems.md#aipw) |0.6.3.2   |      |        |1    |
 |alookr                   |0.3.7     |      |        |     |
 |alphaci                  |1.0.0     |      |        |     |
-|[AlpsNMR](failures.md#alpsnmr)|4.0.3     |1     |        |     |
+|[AlpsNMR](failures.md#alpsnmr)|4.0.4     |1     |        |     |
 |arkdb                    |0.0.16    |      |        |     |
 |aroma.affymetrix         |3.2.1     |      |        |     |
 |aroma.cn                 |1.7.0     |      |        |     |
@@ -98,14 +98,14 @@
 |[drake](problems.md#drake)|7.13.4    |1     |        |     |
 |drimmR                   |1.0.1     |      |        |     |
 |drtmle                   |1.1.2     |      |        |     |
-|dsos                     |0.1.1     |      |        |     |
+|dsos                     |0.1.2     |      |        |     |
 |DT                       |0.27      |      |        |     |
 |easyalluvial             |0.3.1     |      |        |     |
 |ecic                     |0.0.2     |      |        |     |
 |[EFAtools](problems.md#efatools)|0.4.4     |      |        |2    |
 |elevatr                  |0.4.2     |      |        |     |
 |[envi](problems.md#envi) |0.1.17    |      |1       |     |
-|[EpiNow2](problems.md#epinow2)|1.3.4     |      |        |2    |
+|[EpiNow2](problems.md#epinow2)|1.3.4     |-1    |        |2    |
 |[epitweetr](problems.md#epitweetr)|2.2.13    |      |        |2    |
 |epwshiftr                |0.1.3     |      |        |     |
 |ezcox                    |1.0.2     |      |        |     |
@@ -233,7 +233,7 @@
 |progressr                |0.13.0    |      |        |     |
 |[projpred](problems.md#projpred)|2.4.0     |1     |        |1    |
 |[promises](problems.md#promises)|1.2.0.1   |      |        |1    |
-|[Prostar](failures.md#prostar)|1.30.5    |1     |        |     |
+|[Prostar](failures.md#prostar)|1.30.6    |1     |        |     |
 |[protti](problems.md#protti)|0.6.0     |      |        |1    |
 |PSCBS                    |0.66.0    |      |        |     |
 |PUMP                     |1.0.1     |      |        |     |
@@ -248,12 +248,13 @@
 |refineR                  |1.5.1     |      |        |     |
 |[regmedint](problems.md#regmedint)|1.0.0     |      |        |1    |
 |remiod                   |1.0.2     |      |        |     |
-|[reproducible](problems.md#reproducible)|1.2.16    |1     |        |     |
+|reproducible             |1.2.16    |      |        |     |
 |reval                    |3.1-0     |      |        |     |
 |[rgee](problems.md#rgee) |1.1.5     |      |        |2    |
 |[robotstxt](problems.md#robotstxt)|0.7.13    |      |        |2    |
 |robust2sls               |0.2.2     |      |        |     |
 |RTransferEntropy         |0.2.21    |      |        |     |
+|s3fs                     |0.1.2     |      |        |     |
 |[sapfluxnetr](problems.md#sapfluxnetr)|0.1.4     |      |        |1    |
 |[scBubbletree](failures.md#scbubbletree)|1.0.0     |1     |        |     |
 |[scDiffCom](problems.md#scdiffcom)|0.1.0     |1     |        |2    |
@@ -298,7 +299,7 @@
 |startR                   |2.2.1     |      |        |     |
 |steps                    |1.3.0     |      |        |     |
 |supercells               |0.9.1     |      |        |     |
-|[synergyfinder](problems.md#synergyfinder)|3.6.2     |      |1       |2    |
+|[synergyfinder](problems.md#synergyfinder)|3.6.3     |      |1       |2    |
 |[tableschema.r](problems.md#tableschemar)|1.1.2     |      |        |1    |
 |[tarchetypes](failures.md#tarchetypes)|0.7.4     |1     |        |     |
 |[targeted](problems.md#targeted)|0.3       |      |        |1    |
@@ -309,8 +310,8 @@
 |[text](problems.md#text) |0.9.99.2  |      |        |1    |
 |tglkmeans                |0.3.5     |      |        |     |
 |tidyqwi                  |0.1.2     |      |        |     |
-|TKCat                    |1.0.6     |      |        |     |
-|[TreeSearch](failures.md#treesearch)|1.2.0     |1     |        |     |
+|TKCat                    |1.0.7     |      |        |     |
+|[TreeSearch](failures.md#treesearch)|1.3.0     |1     |        |     |
 |[TriDimRegression](problems.md#tridimregression)|1.0.1     |      |        |3    |
 |tsfeatures               |1.1       |      |        |     |
 |[TSstudio](problems.md#tsstudio)|0.1.6     |      |        |1    |
@@ -320,8 +321,8 @@
 |[vmeasur](failures.md#vmeasur)|0.1.4     |1     |        |     |
 |webdeveloper             |1.0.5     |      |        |     |
 |whitewater               |0.1.2     |      |        |     |
-|wildmeta                 |0.3.0     |      |        |     |
+|wildmeta                 |0.3.1     |      |        |     |
 |[wru](problems.md#wru)   |1.0.1     |      |        |2    |
 |[XNAString](problems.md#xnastring)|1.6.0     |      |        |3    |
-|yfR                      |1.0.6     |      |        |     |
+|yfR                      |1.1.0     |      |        |     |
 

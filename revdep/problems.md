@@ -26,10 +26,10 @@ Run `revdep_details(, "AIPW")` for more info
 
 <details>
 
-* Version: 4.0.3
+* Version: 4.0.4
 * GitHub: https://github.com/sipss/AlpsNMR
 * Source code: https://github.com/cran/AlpsNMR
-* Date/Publication: 2023-02-10
+* Date/Publication: 2023-02-16
 * Number of recursive dependencies: 169
 
 Run `revdep_details(, "AlpsNMR")` for more info
@@ -944,6 +944,33 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 </details>
 
+## Newly fixed
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘case-studies.Rmd’ using rmarkdown
+    --- finished re-building ‘case-studies.Rmd’
+    
+    --- re-building ‘estimate_infections.Rmd’ using rmarkdown
+    --- finished re-building ‘estimate_infections.Rmd’
+    
+    --- re-building ‘estimate_secondary.Rmd’ using rmarkdown
+    --- finished re-building ‘estimate_secondary.Rmd’
+    
+    ...
+     ConnectionTimeout
+    Error: processing vignette 'estimate_truncation.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 61
+    --- failed re-building ‘estimate_truncation.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘estimate_truncation.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 ## In both
 
 *   checking installed package size ... NOTE
@@ -1645,7 +1672,7 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 12039 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 253498 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
@@ -2558,10 +2585,10 @@ Run `revdep_details(, "promises")` for more info
 
 <details>
 
-* Version: 1.30.5
+* Version: 1.30.6
 * GitHub: https://github.com/prostarproteomics/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2023-02-10
+* Date/Publication: 2023-02-17
 * Number of recursive dependencies: 166
 
 Run `revdep_details(, "Prostar")` for more info
@@ -2738,47 +2765,6 @@ Run `revdep_details(, "regmedint")` for more info
     ```
     Namespace in Imports field not imported from: ‘Deriv’
       All declared Imports should be used.
-    ```
-
-# reproducible
-
-<details>
-
-* Version: 1.2.16
-* GitHub: https://github.com/PredictiveEcology/reproducible
-* Source code: https://github.com/cran/reproducible
-* Date/Publication: 2022-12-22 09:50:02 UTC
-* Number of recursive dependencies: 104
-
-Run `revdep_details(, "reproducible")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 11278 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 50 lines of output:
-        adding: scratch/henrik/RtmprFW55G/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
-        adding: scratch/henrik/RtmprFW55G/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
-      
-       *** caught segfault ***
-      address 0x8, cause 'memory not mapped'
-    ...
-      36: doTryCatch(return(expr), name, parentenv, handler)
-      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-      38: tryCatchList(expr, classes, parentenv, handlers)
-      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
-      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
-      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
-      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
-      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
-      44: test_check("reproducible")
-      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rgee
@@ -3621,10 +3607,10 @@ Run `revdep_details(, "stars")` for more info
 
 <details>
 
-* Version: 3.6.2
+* Version: 3.6.3
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2022-12-22
+* Date/Publication: 2023-02-13
 * Number of recursive dependencies: 191
 
 Run `revdep_details(, "synergyfinder")` for more info
@@ -3826,11 +3812,11 @@ Run `revdep_details(, "text")` for more info
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.3.0
 * GitHub: https://github.com/ms609/TreeSearch
 * Source code: https://github.com/cran/TreeSearch
-* Date/Publication: 2022-08-10 22:40:17 UTC
-* Number of recursive dependencies: 117
+* Date/Publication: 2023-02-20 09:40:07 UTC
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "TreeSearch")` for more info
 
@@ -3855,7 +3841,7 @@ Run `revdep_details(, "TreeSearch")` for more info
 ** libs
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphy.c -o RMorphy.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphyUtils.c -o RMorphyUtils.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c TreeSearch-init.c -o TreeSearch-init.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c fitch.c -o fitch.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c morphy.c -o morphy.o
@@ -3882,7 +3868,7 @@ ERROR: lazy loading failed for package ‘TreeSearch’
 ** libs
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphy.c -o RMorphy.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphyUtils.c -o RMorphyUtils.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c TreeSearch-init.c -o TreeSearch-init.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c fitch.c -o fitch.o
 gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c morphy.c -o morphy.o
