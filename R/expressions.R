@@ -114,8 +114,9 @@ makeExpression <- local({
       }
 
       if (length(args) > 0) base::do.call(base::Sys.setenv, args = args)
-      args <-  names <- old_names <- NAMES <- envs <- common <- added <- removed <- NULL
-      base::rm(list = c("args", "names", "old_names", "common", "added", "removed", "NAMES", "envs"))
+
+      ## Not needed anymore
+      args <- names <- old_names <- NAMES <- envs <- common <- added <- removed <- NULL
     } else {
       base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
     }
