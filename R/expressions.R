@@ -114,7 +114,7 @@ makeExpression <- local({
       }
 
       if (length(args) > 0) base::do.call(base::Sys.setenv, args = args)
-      base::rm(list = c("names", "old_names"))
+      base::rm(list = c("names", "old_names"), envir = environment(), inherits = FALSE)
       base::rm(list = c("common", "added", "removed"))
       base::rm(list = c("NAMES", "envs"))
       base::rm(list = c("args"))
