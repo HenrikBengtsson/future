@@ -163,29 +163,9 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
   }
 
-  ## 'local' is now defunct
+  ## 'local' is defunct
   if ("local" %in% args_names) {
-    dfcn <- .Defunct
-    msg <- "Argument 'local' is defunct as of future 1.31.0 (2023-01-31)"
-
-    ## SPECIAL CASE: Temporarily allow the 'civis' package to keep using
-    ## 'local' for a tad longer, although it has zero effect since a
-    ## long time (https://github.com/civisanalytics/civis-r/issues/244)
-    ## Only allow for this is local = TRUE and interactive mode (to
-    ## prevent it from breaking 'R CMD check')
-    ## /HB 2023-02-09
-    if (isTRUE(args$local) &&
-        Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "true") == "true") {
-      for (call in sys.calls()) {
-        if ("CivisFuture" %in% as.character(call[[1]])) {
-           msg <- sprintf("%s. In this case it was because civis::CivisFuture() was used. Please contact the maintainers of the 'civis' package about this problem.", msg)
-          if (!interactive()) dfcn <- .Deprecated
-          break
-        }
-      }
-    }
-
-    dfcn(msg = msg, package = .packageName)
+    .Defunct(msg = "Argument 'local' is defunct as of future 1.31.0 (2023-01-31)", package = .packageName)
   }
 
   core <- new.env(parent = emptyenv())
