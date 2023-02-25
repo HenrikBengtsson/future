@@ -45,6 +45,10 @@ FutureCondition <- function(message, call = NULL, uuid = future$uuid, future = N
     stop_if_not(is.character(uuid), length(uuid) == 1L, !is.na(uuid))
   }
   if (!is.null(future)) stop_if_not(inherits(future, "Future"))
+
+  if (!getOption("future.onFutureCondition.keepFuture", TRUE)) {
+    future <- NULL
+  }
   
   ## Create a condition object
   class <- c("FutureCondition", class)

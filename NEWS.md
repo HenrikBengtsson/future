@@ -5,6 +5,10 @@
  * Added optional assertion that no variables are added to the global
    environment by the future.
 
+ * Add option `future.onFutureCondition.keepFuture` for controlling
+   whether `FutureCondition` objects should have a copy of the
+   `Future` object or not.
+
 ## Deprecated and Defunct
 
  * Add optional assertion of the internal Future `state` field.

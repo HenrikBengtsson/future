@@ -26,6 +26,8 @@
 \alias{R_FUTURE_GLOBALS_ONREFERENCE}
 \alias{future.plan}
 \alias{R_FUTURE_PLAN}
+\alias{future.onFutureCondition.keepFuture}
+\alias{R_FUTURE_ONFUTURECONDITION_KEEPFUTURE}
 \alias{future.resolve.recursive}
 \alias{R_FUTURE_RESOLVE_RECURSIVE}
 \alias{future.globalenv.onMisuse}
@@ -92,6 +94,8 @@ If \code{"ignore"}, no scan is performed.
 \item{\option{future.rng.onMisuse}: (\emph{beta feature - may change})}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that \emph{no} random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and \code{future.rng.onMisuse = "error"}, then an informative error message is produced.  If \code{"warning"}, then a warning message is produced.  If \code{"ignore"}, no check is performed. (Default: \code{"warning"})}
 
 \item{\option{future.globalenv.onMisuse}: (\emph{beta feature - may change})}{(character string) Assigning variables to the global environment for the purpose of using the variable at a later time makes no sense with futures, because the next future may be evaluated in different R process.  To protect against mistakes, the future framework attempts to detect when variables are added to the global environment.  If this is detected, and \code{future.globalenv.onMisuse = "error"}, then an informative error message is produced.  If \code{"warning"}, then a warning message is produced.  If \code{"ignore"}, no check is performed. (Default: \code{"ignore"})}
+
+\item{\option{future.onFutureCondition.keepFuture}:}{(logical) If \code{TRUE}, a \code{FutureCondition} keeps a copy of the \code{Future} object that triggered the condition. If \code{FALSE}, it is dropped. (Default: \code{TRUE})}
 
 \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
 

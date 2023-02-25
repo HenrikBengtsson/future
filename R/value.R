@@ -77,16 +77,10 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   if (length(result$globalenv$added) > 0L) {
     onMisuse <- getOption("future.globalenv.onMisuse", "ignore")
     if (onMisuse != "ignore") {
-      uuid <- future$uuid
-      if (getOption("future.rng.onMisuse.keepFuture", TRUE)) {
-        f <- future
-      } else {
-        f <- NULL
-      }
       if (onMisuse == "error") {
-        cond <- GlobalEnvFutureError(globalenv = result$globalenv, uuid = uuid, future = f)
+        cond <- GlobalEnvFutureError(globalenv = result$globalenv, future = future)
       } else if (onMisuse == "warning") {
-        cond <- GlobalEnvFutureWarning(globalenv = result$globalenv, uuid = uuid, future = f)
+        cond <- GlobalEnvFutureWarning(globalenv = result$globalenv, future = future)
       } else {
         cond <- NULL
         warnf("Unknown value on option 'future.globalenv.onMisuse': %s",
@@ -127,18 +121,10 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
     } else {
       onMisuse <- getOption("future.rng.onMisuse", "warning")
       if (onMisuse != "ignore") {
-        cond <- RngFutureCondition(future = future)
-        msg <- conditionMessage(cond)
-        uuid <- future$uuid
-        if (getOption("future.rng.onMisuse.keepFuture", TRUE)) {
-          f <- future
-        } else {
-          f <- NULL
-        }
         if (onMisuse == "error") {
-          cond <- RngFutureError(msg, uuid = uuid, future = f)
+          cond <- RngFutureError(future = future)
         } else if (onMisuse == "warning") {
-          cond <- RngFutureWarning(msg, uuid = uuid, future = f)
+          cond <- RngFutureWarning(future = future)
         } else {
           cond <- NULL
           warnf("Unknown value on option 'future.rng.onMisuse': %s",

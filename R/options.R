@@ -48,6 +48,8 @@
 #'
 #'  \item{\option{future.globalenv.onMisuse}: (_beta feature - may change_)}{(character string) Assigning variables to the global environment for the purpose of using the variable at a later time makes no sense with futures, because the next future may be evaluated in different R process.  To protect against mistakes, the future framework attempts to detect when variables are added to the global environment.  If this is detected, and `future.globalenv.onMisuse = "error"`, then an informative error message is produced.  If `"warning"`, then a warning message is produced.  If `"ignore"`, no check is performed. (Default: `"ignore"`)}
 #'
+#'  \item{\option{future.onFutureCondition.keepFuture}:}{(logical) If `TRUE`, a `FutureCondition` keeps a copy of the `Future` object that triggered the condition. If `FALSE`, it is dropped. (Default: `TRUE`)}
+#'
 #'  \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: `30 * 24 * 60 * 60` (= 30 days))}
 #'
 #'  \item{\option{future.wait.interval}:}{(numeric) Initial interval (in
@@ -152,6 +154,8 @@
 #' R_FUTURE_GLOBALS_ONREFERENCE
 #' future.plan
 #' R_FUTURE_PLAN
+#' future.onFutureCondition.keepFuture
+#' R_FUTURE_ONFUTURECONDITION_KEEPFUTURE
 #' future.resolve.recursive
 #' R_FUTURE_RESOLVE_RECURSIVE
 #' future.globalenv.onMisuse
@@ -301,12 +305,13 @@ update_package_options <- function(debug = FALSE) {
     update_package_option(name, mode = "numeric", debug = debug)
   }
 
+  ## Introduced in future 1.32.0:
+  update_package_option("future.onFutureCondition.keepFuture", mode = "logical", debug = debug)
+
   update_package_option("future.rng.onMisuse", debug = debug)
-  update_package_option("future.rng.onMisuse.keepFuture", mode = "logical", debug = debug)
   
   ## Prototyping in future 1.32.0:
   update_package_option("future.globalenv.onMisuse", debug = debug)
-  update_package_option("future.globalenv.onMisuse.keepFuture", mode = "logical", debug = debug)
 
   update_package_option("future.wait.timeout", mode = "numeric", debug = debug)
   update_package_option("future.wait.interval", mode = "numeric", debug = debug)
