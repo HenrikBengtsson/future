@@ -1,5 +1,10 @@
 # Version (development version)
 
+## New Features
+
+ * Added optional assertion that no variables are added to the global
+   environment by the future.
+
 ## Deprecated and Defunct
 
  * Add optional assertion of the internal Future `state` field.

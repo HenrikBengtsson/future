@@ -219,6 +219,9 @@ makeExpression <- local({
     ...future.conditions <- base::list()
     ...future.rng <- base::globalenv()$.Random.seed
 
+    ## Record names of variables in the global environment
+    ...future.oldGlobalEnvNames <- names(base::globalenv())
+
     ## NOTE: We don't want to use local(body) w/ on.exit() because
     ## evaluation in a local is optional, cf. argument 'local'.
     ## If this was mandatory, we could.  Instead we use
@@ -226,7 +229,10 @@ makeExpression <- local({
     ...future.result <- base::tryCatch({
       base::withCallingHandlers({
         ...future.value <- base::withVisible(.(expr))
-        future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
+        ## Any variables added to the global environment?
+        added <- setdiff(names(base::globalenv()), ...future.oldGlobalEnvNames)
+        added <- setdiff(added, c("...future.value", "...future.oldGlobalEnvNames"))
+        future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), globalenv = list(added = added), started = ...future.startTime, version = "1.8")
       }, condition = base::local({
         ## WORKAROUND: If the name of any of the below objects/functions
         ## coincides with a promise (e.g. a future assignment) then we
@@ -371,7 +377,7 @@ makeExpression <- local({
     enter <- bquote_apply(tmpl_enter_workdir)
     enter <- bquote_apply(tmpl_enter_optenvar)
     enter <- bquote_apply(tmpl_enter_future_opts)
-    
+
     exit <- bquote_apply(tmpl_exit_future_opts)
     exit <- bquote_apply(tmpl_exit_optenvar)
     exit <- bquote_apply(tmpl_exit_workdir)
