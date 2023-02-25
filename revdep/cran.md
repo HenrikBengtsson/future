@@ -2,15 +2,14 @@
 
 We checked 280 reverse dependencies (261 from CRAN + 19 from Bioconductor), comparing R CMD check results across CRAN and dev versions of this package.
 
- * We saw 0 new problems
- * We failed to check 5 packages
+ * We saw 1 new problems
+ * We failed to check 0 packages
 
 Issues with CRAN packages are summarised below.
 
-### Failed to check
+### New problems
+(This reports the first line of each new failure)
 
-* bayesian    (NA)
-* brms        (NA)
-* tarchetypes (NA)
-* TreeSearch  (NA)
-* vmeasur     (NA)
+* civis
+  checking package dependencies ... ERROR
+
