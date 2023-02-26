@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9012</span>
       </span>
     </div>
 
@@ -183,13 +183,11 @@
 
       
 
-      </header><div class="row">
+      </header><script src="future-7-for-package-developers_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>A Future for R: Best Practices for Package
-Developers</h1>
-                        <h4 data-toc-skip class="author">Henrik
-Bengtsson</h4>
+      <h1 data-toc-skip>A Future for R: Best Practices for Package Developers</h1>
+                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/vignettes/future-7-for-package-developers.md.rsp" class="external-link"><code>vignettes/future-7-for-package-developers.md.rsp</code></a></small>
@@ -199,71 +197,38 @@ Bengtsson</h4>
 
     
     
-<p>Using future code in package is not much different from other type of
-package code or when using futures in R scripts. However, there are a
-few things that are useful to know about in order to minimize the risk
-for surprises to the end user.</p>
+<p>Using future code in package is not much different from other type of package code or when using futures in R scripts. However, there are a few things that are useful to know about in order to minimize the risk for surprises to the end user.</p>
 <div class="section level2">
 <h2 id="the-future-smell-test">The future smell test<a class="anchor" aria-label="anchor" href="#the-future-smell-test"></a>
 </h2>
-<p>The by far most common and popular future strategy is to parallelize
-on the local machine, i.e. <code>plan(multisession)</code>. This is
-often good enough in most situations but note that some end-users have
-access to multiple machines and might want to run your code using all of
-them to speed it up beyond what a single machine can do. Because of
-this, avoid as far as possible making assumption about your code will
-only run on the local machine. A good “smell test” is to ask
-yourself:</p>
-<p><em>- Will my future code work if it ends up running on the other
-side of the world?</em></p>
-<p>Regardless of performance, if you answer “Yes”, you have already
-embraced the core philosophy of the future framework. If you answer
-“Maybe” or “No”, see if you can rewrite it.</p>
-<p>For instance, if your future code made an assumption that it will
-have access to our local file system, as in:</p>
+<p>The by far most common and popular future strategy is to parallelize on the local machine, i.e. <code>plan(multisession)</code>. This is often good enough in most situations but note that some end-users have access to multiple machines and might want to run your code using all of them to speed it up beyond what a single machine can do. Because of this, avoid as far as possible making assumption about your code will only run on the local machine. A good “smell test” is to ask yourself:</p>
+<p><em>- Will my future code work if it ends up running on the other side of the world?</em></p>
+<p>Regardless of performance, if you answer “Yes”, you have already embraced the core philosophy of the future framework. If you answer “Maybe” or “No”, see if you can rewrite it.</p>
+<p>For instance, if your future code made an assumption that it will have access to our local file system, as in:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read_tsv</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
 <span>  <span class="fu">analyze</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>you can rewrite the code to load the content of the file before you
-set up the future, as in:</p>
+<p>you can rewrite the code to load the content of the file before you set up the future, as in:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">read_tsv</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="fu">analyze</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>Similarly, we should avoid having the future code write to the local
-file system because the parent R session might not have access to that
-file system.</p>
-<p>By keeping the future smell test in mind when writing future code, we
-increase the chances that the code can be parallelized in more ways than
-on just the local computer. Properly written future code will work
-regardless of what future strategy the end-user picks, e.g.</p>
+<p>Similarly, we should avoid having the future code write to the local file system because the parent R session might not have access to that file system.</p>
+<p>By keeping the future smell test in mind when writing future code, we increase the chances that the code can be parallelized in more ways than on just the local computer. Properly written future code will work regardless of what future strategy the end-user picks, e.g.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1.remote.org"</span>, <span class="st">"n2.remote.org"</span>, <span class="st">"n3.remote.org"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">32</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Remember, as developers we never know what compute resources the
-end-user has access to right now or they will have access to in six
-month. Who knows, your code might even end up running on 2,000 cores
-located on The Moon twenty years from now.</p>
+<p>Remember, as developers we never know what compute resources the end-user has access to right now or they will have access to in six month. Who knows, your code might even end up running on 2,000 cores located on The Moon twenty years from now.</p>
 </div>
 <div class="section level2">
 <h2 id="avoid-changing-the-future-strategy">Avoid changing the future strategy<a class="anchor" aria-label="anchor" href="#avoid-changing-the-future-strategy"></a>
 </h2>
-<p>For reasons like the ones mentioned above, refrain from setting
-<code><a href="../reference/plan.html">plan()</a></code> in a function. It is better to leave it to the
-end-user to decided how they want to parallelize. One reason for this is
-that we can never know how and in what context our code will run. For
-example, they might use futures to parallelize a function call in some
-other package and that package code calls your package internally. If
-you set <code>plan(multisession)</code> internally without undoing, you
-might mess up the <code><a href="../reference/plan.html">plan()</a></code> that is already set breaking any
-further parallelization.</p>
-<p>If you still think it is necessary to set <code><a href="../reference/plan.html">plan()</a></code>, make
-sure to undo when the function exits, also on errors. This can be done
-by using <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit()</a></code>, e.g.</p>
+<p>For reasons like the ones mentioned above, refrain from setting <code><a href="../reference/plan.html">plan()</a></code> in a function. It is better to leave it to the end-user to decided how they want to parallelize. One reason for this is that we can never know how and in what context our code will run. For example, they might use futures to parallelize a function call in some other package and that package code calls your package internally. If you set <code>plan(multisession)</code> internally without undoing, you might mess up the <code><a href="../reference/plan.html">plan()</a></code> that is already set breaking any further parallelization.</p>
+<p>If you still think it is necessary to set <code><a href="../reference/plan.html">plan()</a></code>, make sure to undo when the function exits, also on errors. This can be done by using <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit()</a></code>, e.g.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">oplan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -272,10 +237,7 @@ by using <code><a href="https://rdrr.io/r/base/on.exit.html" class="external-lin
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">analyze</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span>  <span class="fu">summarize</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>The need for setting the future strategy within a function often
-comes from developers wanting to add an argument to their function that
-allows the end-user to specify whether they want to run the function in
-parallel or sequentially. This often result in code like:</p>
+<p>The need for setting the future strategy within a function often comes from developers wanting to add an argument to their function that allows the end-user to specify whether they want to run the function in parallel or sequentially. This often result in code like:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">parallel</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">parallel</span><span class="op">)</span> <span class="op">{</span></span>
@@ -283,7 +245,7 @@ parallel or sequentially. This often result in code like:</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">oplan</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">future_lapply</span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span> <span class="co">## from future.apply package</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span></span>
+<span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="fu">summarize</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
@@ -293,10 +255,7 @@ parallel or sequentially. This often result in code like:</p>
 <p>or</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">my_fcn</span><span class="op">(</span><span class="va">x</span>, parallel <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>depending on their needs. However, if another package developer
-decide to call you function in their function, they now have to expose
-that <code>parallel</code> argument to the users of their function,
-e.g.</p>
+<p>depending on their needs. However, if another package developer decide to call you function in their function, they now have to expose that <code>parallel</code> argument to the users of their function, e.g.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">their_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">parallel</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu">preprocess</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -304,26 +263,18 @@ e.g.</p>
 <span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu">another_fcn</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
 <span>  <span class="va">z</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>Exposing and passing a “parallel” argument along can become quite
-cumbersome. Instead, it is neater to use:</p>
+<p>Exposing and passing a “parallel” argument along can become quite cumbersome. Instead, it is neater to use:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_fcn</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">future_lapply</span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span> <span class="co">## from future.apply package</span></span>
 <span>  <span class="fu">summarize</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
-<p>and let the user control whether or not they want to parallelize via
-<code><a href="../reference/plan.html">plan()</a></code>, e.g. <code>plan(multisession)</code> and
-<code>plan(sequential)</code>.</p>
+<p>and let the user control whether or not they want to parallelize via <code><a href="../reference/plan.html">plan()</a></code>, e.g. <code>plan(multisession)</code> and <code>plan(sequential)</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="writing-examples">Writing examples<a class="anchor" aria-label="anchor" href="#writing-examples"></a>
 </h2>
-<p>If your example sets the future strategy at the beginning, make sure
-to reset the future strategy to <code>plan(sequential)</code> at the end
-of the example. The reason for this is that when switching plan, the
-previous one will be cleaned up. This is particularly important for
-multisession and cluster futures where <code>plan(sequential)</code>
-will shut down the underlying PSOCK clusters.</p>
+<p>If your example sets the future strategy at the beginning, make sure to reset the future strategy to <code>plan(sequential)</code> at the end of the example. The reason for this is that when switching plan, the previous one will be cleaned up. This is particularly important for multisession and cluster futures where <code>plan(sequential)</code> will shut down the underlying PSOCK clusters.</p>
 <p>For instance, here is an example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Run the analysis in parallel on the local computer</span></span>
@@ -333,73 +284,42 @@ will shut down the underlying PSOCK clusters.</p>
 <span></span>
 <span><span class="co">## Shut down parallel workers</span></span>
 <span><span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span></span></code></pre></div>
-<p>If you forget to shut down the PSOCK cluster, then
-<code>R CMD check --as-cran</code>, or <code>R CMD check</code> with
-environment variable <code>_R_CHECK_CONNECTIONS_LEFT_OPEN_=true</code>
-set, will produce an error on</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="sc">$</span> R CMD check <span class="sc">--</span>as<span class="sc">-</span>cran mypkg_1.<span class="fl">0.</span>tar.gz</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>...</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="sc">*</span> checking examples ... ERROR</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>Running examples <span class="cf">in</span> <span class="st">'analyze-Ex.R'</span> failed</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>...</span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cleanEx</span>()</span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>Error<span class="sc">:</span> connections left open<span class="sc">:</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>      <span class="er">&lt;</span><span class="sc">-</span>localhost<span class="sc">:</span><span class="dv">37400</span> (sockconn)</span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>      <span class="ot">&lt;-</span>localhost<span class="sc">:</span><span class="dv">37400</span> (sockconn)</span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>Execution halted</span></code></pre></div>
-<p>If you for some reason do not like to display reset of the future
-strategy in the help documentation, but you still want it run, wrap the
-statement in an Rd <code>\dontshow{}</code> statement.</p>
+<p>If you forget to shut down the PSOCK cluster, then <code>R CMD check --as-cran</code>, or <code>R CMD check</code> with environment variable <code>_R_CHECK_CONNECTIONS_LEFT_OPEN_=true</code> set, will produce an error on</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="op">$</span><span class="st"> </span>R CMD check <span class="op">--</span>as<span class="op">-</span>cran mypkg_<span class="dv">1</span>.<span class="fl">0.</span>tar.gz</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>...</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="op">*</span><span class="st"> </span>checking examples ... ERROR</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>Running examples <span class="cf">in</span> <span class="st">'analyze-Ex.R'</span> failed</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>...</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">cleanEx</span>()</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>Error<span class="op">:</span><span class="st"> </span>connections left open<span class="op">:</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="st">      </span><span class="er">&lt;</span><span class="op">-</span>localhost<span class="op">:</span><span class="dv">37400</span> (sockconn)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>      &lt;-localhost<span class="op">:</span><span class="dv">37400</span> (sockconn)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>Execution halted</span></code></pre></div>
+<p>If you for some reason do not like to display reset of the future strategy in the help documentation, but you still want it run, wrap the statement in an Rd <code>\dontshow{}</code> statement.</p>
 </div>
 <div class="section level2">
 <h2 id="testing-a-package-that-relies-on-futures">Testing a package that relies on futures<a class="anchor" aria-label="anchor" href="#testing-a-package-that-relies-on-futures"></a>
 </h2>
-<p>If you want to make sure your code works when running sequentially as
-well as when running in parallel, it is often good enough to have
-package tests that run the code with:</p>
+<p>If you want to make sure your code works when running sequentially as well as when running in parallel, it is often good enough to have package tests that run the code with:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span></code></pre></div>
-<p>If the code works with this setup, you can be sure that all global
-variables are properly identified and exported to the workers and that
-the required packages are loaded on the workers.</p>
-<p>Always make sure to shut down your parallel ‘multisession’ workers at
-the end of each package test by calling:</p>
+<p>If the code works with this setup, you can be sure that all global variables are properly identified and exported to the workers and that the required packages are loaded on the workers.</p>
+<p>Always make sure to shut down your parallel ‘multisession’ workers at the end of each package test by calling:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
-<p>If not all of your tests are written this way, you can set
-environment variable <code>R_FUTURE_PLAN=multisession</code> before you
-call <code>R CMD check</code>. This will make the default future
-strategy to become ‘multisession’ instead of ‘sequential’. For
-example,</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="ex">$</span> export R_FUTURE_PLAN=multisession</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="ex">$</span> R CMD check <span class="at">--as-cran</span> mypkg_1.0.tar.gz</span></code></pre></div>
+<p>If not all of your tests are written this way, you can set environment variable <code>R_FUTURE_PLAN=multisession</code> before you call <code>R CMD check</code>. This will make the default future strategy to become ‘multisession’ instead of ‘sequential’. For example,</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>$ <span class="bu">export</span> <span class="va">R_FUTURE_PLAN=</span>multisession</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>$ <span class="ex">R</span> CMD check --as-cran mypkg_1.0.tar.gz</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="making-sure-to-stop-parallel-workers">Making sure to stop parallel workers<a class="anchor" aria-label="anchor" href="#making-sure-to-stop-parallel-workers"></a>
 </h2>
-<p>When creating a <code>cluster</code> object, for instance via
-<code>plan(multisession)</code>, in a package help example, in a package
-vignette, or in a package test, we must _remember to stop the cluster at
-the end of all examples(*), vignettes, and unit tests_. This is required
-in order to not leave behind stray parallel <code>cluster</code> workers
-after our main R session terminates. On Linux and macOS, the operating
-system often takes care of terminating the worker processes if we
-forget, but on MS Windows such processes will keep running in the
-background until they time out themselves, which takes 30 days
-(sic!).</p>
-<p><code>R CMD check --as-cran</code> will indirectly detect these stray
-worker processes on MS Windows when running R (&gt;= 4.3.0). They are
-detected, because they result in placeholder
-<code>Rscript&lt;hexcode&gt;</code> files being left behind in the
-temporary directory. The check NOTE to look out for (only in R (&gt;=
-4.3.0)) is:</p>
+<p>When creating a <code>cluster</code> object, for instance via <code>plan(multisession)</code>, in a package help example, in a package vignette, or in a package test, we must _remember to stop the cluster at the end of all examples(*), vignettes, and unit tests_. This is required in order to not leave behind stray parallel <code>cluster</code> workers after our main R session terminates. On Linux and macOS, the operating system often takes care of terminating the worker processes if we forget, but on MS Windows such processes will keep running in the background until they time out themselves, which takes 30 days (sic!).</p>
+<p><code>R CMD check --as-cran</code> will indirectly detect these stray worker processes on MS Windows when running R (&gt;= 4.3.0). They are detected, because they result in placeholder <code>Rscript&lt;hexcode&gt;</code> files being left behind in the temporary directory. The check NOTE to look out for (only in R (&gt;= 4.3.0)) is:</p>
 <pre><code>* checking for detritus in the temp directory ... NOTE
 Found the following files/directories:
   'Rscript1058267d0c10' 'Rscriptbd4267d0c10'</code></pre>
-<p>Those <code>Rscript&lt;hexcode&gt;</code> files are from background R
-worker processes, which almost always are parallel
-<code>cluster</code>:s that we forgot to stop at the end. To stop
-‘multisession’ workers, call:</p>
+<p>Those <code>Rscript&lt;hexcode&gt;</code> files are from background R worker processes, which almost always are parallel <code>cluster</code>:s that we forgot to stop at the end. To stop ‘multisession’ workers, call:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 <p>at the end of your examples(*), vignettes, and package tests.</p>
@@ -410,8 +330,7 @@ worker processes, which almost always are parallel
 <p>make sure to stop such clusters at the end using</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></code></pre></div>
-<p>(*) Currently, examples are excluded from the detritus checks. This
-was the validated with R-devel revision 82991 (2022-10-02).</p>
+<p>(*) Currently, examples are excluded from the detritus checks. This was the validated with R-devel revision 82991 (2022-10-02).</p>
 </div>
   </div>
 

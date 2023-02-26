@@ -28,7 +28,7 @@ further notice."><meta property="og:image" content="https://future.futureverse.o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9012</span>
       </span>
     </div>
 
@@ -213,6 +213,14 @@ If <code>"ignore"</code>, no scan is performed.
 
 <dt><span class="option">future.rng.onMisuse</span>: (<em>beta feature - may change</em>)</dt>
 <dd><p>(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that <em>no</em> random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and <code>future.rng.onMisuse = "error"</code>, then an informative error message is produced.  If <code>"warning"</code>, then a warning message is produced.  If <code>"ignore"</code>, no check is performed. (Default: <code>"warning"</code>)</p></dd>
+
+
+<dt><span class="option">future.globalenv.onMisuse</span>: (<em>beta feature - may change</em>)</dt>
+<dd><p>(character string) Assigning variables to the global environment for the purpose of using the variable at a later time makes no sense with futures, because the next future may be evaluated in different R process.  To protect against mistakes, the future framework attempts to detect when variables are added to the global environment.  If this is detected, and <code>future.globalenv.onMisuse = "error"</code>, then an informative error message is produced.  If <code>"warning"</code>, then a warning message is produced.  If <code>"ignore"</code>, no check is performed. (Default: <code>"ignore"</code>)</p></dd>
+
+
+<dt><span class="option">future.onFutureCondition.keepFuture</span>:</dt>
+<dd><p>(logical) If <code>TRUE</code>, a <code>FutureCondition</code> keeps a copy of the <code>Future</code> object that triggered the condition. If <code>FALSE</code>, it is dropped. (Default: <code>TRUE</code>)</p></dd>
 
 
 <dt><span class="option">future.wait.timeout</span>:</dt>

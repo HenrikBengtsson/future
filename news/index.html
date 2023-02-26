@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9012</span>
       </span>
     </div>
 
@@ -155,22 +155,28 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
-<ul><li>…</li>
+<div class="section level3">
+<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li><p>Added optional assertion that no variables are added to the global environment by the future.</p></li>
+<li><p>Add option <code>future.onFutureCondition.keepFuture</code> for controlling whether <code>FutureCondition</code> objects should have a copy of the <code>Future</code> object or not.</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="deprecated-and-defunct-development-version">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-development-version"></a></h3>
+<ul><li><p>Add optional assertion of the internal Future <code>state</code> field.</p></li>
+<li><p>Deprecated <code>plan(multiprocess, ...)</code> is now defunct when running in interactive mode. The next step is to make it defunct also when running in batch mode.</p></li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.31.0" id="version-1310">Version 1.31.0<small>2023-02-01</small><a class="anchor" aria-label="anchor" href="#version-1310"></a></h2>
 <div class="section level3">
 <h3 id="signficant-changes-1-31-0">Signficant Changes<a class="anchor" aria-label="anchor" href="#signficant-changes-1-31-0"></a></h3>
-<ul><li>Remove function <code>remote()</code>. Note that <code>plan(remote, ...)</code> has been deprecated since <strong>future</strong> 1.24.0 [2022-02-19] and defunct since <strong>future</strong> 1.3.0 (2022-12-15).</li>
-</ul></div>
+<ul><li>Remove function <code>remote()</code>. Note that <code>plan(remote, ...)</code> has been deprecated since <strong>future</strong> 1.24.0 [2022-02-19] and defunct since <strong>future</strong> 1.3.0 (2022-12-15).</li></ul></div>
 <div class="section level3">
 <h3 id="documentation-1-31-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-31-0"></a></h3>
-<ul><li>Add example to the ‘Common Issues with Solutions’ vignette on how <strong>magrittr</strong> pipes can result in an error when used with the future assignment operator and how to fix it.</li>
-</ul></div>
+<ul><li>Add example to the ‘Common Issues with Solutions’ vignette on how <strong>magrittr</strong> pipes can result in an error when used with the future assignment operator and how to fix it.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-31-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-31-0"></a></h3>
-<ul><li>Error messages that contain a deparsed version of the future expression could become very large in cases where the expression comprise expanded, large objects. Now only the first 100 lines of the expression is deparsed.</li>
-</ul></div>
+<ul><li>Error messages that contain a deparsed version of the future expression could become very large in cases where the expression comprise expanded, large objects. Now only the first 100 lines of the expression is deparsed.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-31-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-31-0"></a></h3>
 <ul><li><p>Deprecated <code>plan(multiprocess, ...)</code> now equals <code>plan(sequential)</code>, while still producing one warning each time a future is created.</p></li>
@@ -188,19 +194,16 @@
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-30-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-30-0"></a></h3>
-<ul><li>Strategy ‘remote’ was deprecated in <strong>future</strong> 1.24.0 and is now defunct. Use <code>plan(cluster, ..., persistent = TRUE)</code> instead. Note that <code>persistent = TRUE</code> will eventually also become deprecated and defunct, but by then we will have an alternative solution available.</li>
-</ul></div>
+<ul><li>Strategy ‘remote’ was deprecated in <strong>future</strong> 1.24.0 and is now defunct. Use <code>plan(cluster, ..., persistent = TRUE)</code> instead. Note that <code>persistent = TRUE</code> will eventually also become deprecated and defunct, but by then we will have an alternative solution available.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.29.0" id="version-1290">Version 1.29.0<small>2022-11-06</small><a class="anchor" aria-label="anchor" href="#version-1290"></a></h2>
 <div class="section level3">
 <h3 id="documentation-1-29-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-29-0"></a></h3>
-<ul><li>Add section ‘Making sure to stop parallel workers’ to the ‘Best Practices for Package Developers’, which explains why <code>R CMD check</code> may produce “checking for detritus in the temp directory … NOTE” and how to avoid them.</li>
-</ul></div>
+<ul><li>Add section ‘Making sure to stop parallel workers’ to the ‘Best Practices for Package Developers’, which explains why <code>R CMD check</code> may produce “checking for detritus in the temp directory … NOTE” and how to avoid them.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-29-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-29-0"></a></h3>
-<ul><li>The evaluation of a <em>sequential</em> future would reset any warnings collected by R prior to creating the future. This only happened with <code>plan(sequential)</code> and when <code>getOption("warn") == 0</code>. This bug was introduced in <strong>future</strong> 1.26.0 [2022-05-27].</li>
-</ul></div>
+<ul><li>The evaluation of a <em>sequential</em> future would reset any warnings collected by R prior to creating the future. This only happened with <code>plan(sequential)</code> and when <code>getOption("warn") == 0</code>. This bug was introduced in <strong>future</strong> 1.26.0 [2022-05-27].</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-29-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-29-0"></a></h3>
 <ul><li><p>Using the deprecated <code>plan(multiprocess)</code> will now trigger a deprecation warning <em>each</em> time a <code>multiprocess</code> future is created. This means that there could be a lot of warnings produced. Note that <code>multiprocess</code> has been deprecated since <strong>future</strong> 1.20.0 [2020-10-30]. Please use <code>multisession</code> (recommended) or <code>multicore</code> instead.</p></li>
@@ -211,13 +214,11 @@
 <h2 class="page-header" data-toc-text="1.28.0" id="version-1280">Version 1.28.0<small>2022-09-02</small><a class="anchor" aria-label="anchor" href="#version-1280"></a></h2>
 <div class="section level3">
 <h3 id="documentation-1-28-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-28-0"></a></h3>
-<ul><li>Mention how <code>source(..., local = TRUE)</code> is preferred over <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code> when used inside futures.</li>
-</ul></div>
+<ul><li>Mention how <code>source(..., local = TRUE)</code> is preferred over <code><a href="https://rdrr.io/r/base/source.html" class="external-link">source()</a></code> when used inside futures.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-28-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-28-0"></a></h3>
 <ul><li>
-<code>do.call(plan, args = list(multisession, workers = 2))</code> would ignore the <code>workers</code> argument, and any other arguments.</li>
-</ul></div>
+<code>do.call(plan, args = list(multisession, workers = 2))</code> would ignore the <code>workers</code> argument, and any other arguments.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-28-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-28-0"></a></h3>
 <ul><li><p>Previously deprecated use of <code>local = FALSE</code> with futures is now defunct.</p></li>
@@ -234,8 +235,7 @@
 <h2 class="page-header" data-toc-text="1.27.0" id="version-1270">Version 1.27.0<small>2022-07-22</small><a class="anchor" aria-label="anchor" href="#version-1270"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-27-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-27-0"></a></h3>
-<ul><li>The fallback to sequential processing done by ‘multicore’ and ‘multisession’ when <code>workers = 1</code> can now be overridden by specifying <code>workers = I(1)</code>.</li>
-</ul></div>
+<ul><li>The fallback to sequential processing done by ‘multicore’ and ‘multisession’ when <code>workers = 1</code> can now be overridden by specifying <code>workers = I(1)</code>.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-27-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-27-0"></a></h3>
 <ul><li><p>Some warnings and errors showed the wrong call.</p></li>
@@ -246,8 +246,7 @@
 <h2 class="page-header" data-toc-text="1.26.1" id="version-1261">Version 1.26.1<small>2022-05-27</small><a class="anchor" aria-label="anchor" href="#version-1261"></a></h2>
 <div class="section level3">
 <h3 id="miscellaneous-1-26-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-26-1"></a></h3>
-<ul><li>TESTS: <code>R CMD check --as-cran</code> on R-devel and MS Windows would trigger a NOTE on “Check: for detritus in the temp directory” and “Found the following files/directories: ‘Rscript1349cb8aeeba0’ …”. There were two package tests that explicitly created PSOCK cluster without stopping them. A third test launched multisession future without resolving it, which prevented the PSOCK worker to terminate. This was not detected in R 4.2.0. It is not a problem on macOS and Linux, because there background workers are automatically terminated when the main R session terminates.</li>
-</ul></div>
+<ul><li>TESTS: <code>R CMD check --as-cran</code> on R-devel and MS Windows would trigger a NOTE on “Check: for detritus in the temp directory” and “Found the following files/directories: ‘Rscript1349cb8aeeba0’ …”. There were two package tests that explicitly created PSOCK cluster without stopping them. A third test launched multisession future without resolving it, which prevented the PSOCK worker to terminate. This was not detected in R 4.2.0. It is not a problem on macOS and Linux, because there background workers are automatically terminated when the main R session terminates.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.26.0" id="version-1260">Version 1.26.0<a class="anchor" aria-label="anchor" href="#version-1260"></a></h2>
@@ -264,7 +263,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-1-26-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-26-0"></a></h3>
 <ul><li><p>The bug fix in <strong>future</strong> 1.22.0 that addressed the issue where object <code>a</code> in <code>future(fcn(), globals = list(a = 42, fcn =    function() a))</code> would not be found has been redesigned in a more robust way.</p></li>
-<li><p>Use of packages such as <strong>data.table</strong> and <strong>ff</strong> in cluster and multisession futures broke in <strong>future</strong> 1.25.0. For <strong>data.table</strong>, we saw “Error in setalloccol(ans) : verbose must be TRUE or FALSE”. For <strong>ff</strong>, we saw “Error in splitted$path[nopath] &lt;- getOption(”fftempdir”) : replacement has length zero”. See ‘Significant Changes’ for why and how this was fixed.</p></li>
+<li><p>Use of packages such as <strong>data.table</strong> and <strong>ff</strong> in cluster and multisession futures broke in <strong>future</strong> 1.25.0. For <strong>data.table</strong>, we saw “Error in setalloccol(ans) : verbose must be TRUE or FALSE”. For <strong>ff</strong>, we saw “Error in splitted$path[nopath] &lt;- getOption(”fftempdir“) : replacement has length zero”. See ‘Significant Changes’ for why and how this was fixed.</p></li>
 <li><p>The deprecation warning for using <code>local = FALSE</code> was silenced for sequential futures since <strong>future</strong> 1.25.0.</p></li>
 <li><p><code><a href="../reference/future.html">futureCall()</a></code> ignored arguments <code>stdout</code>, <code>conditions</code>, <code>earlySignal</code>, <code>label</code>, and <code>gc</code>.</p></li>
 </ul></div>
@@ -278,8 +277,7 @@
 <h2 class="page-header" data-toc-text="1.25.0" id="version-1250">Version 1.25.0<small>2022-04-24</small><a class="anchor" aria-label="anchor" href="#version-1250"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-25-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-25-0"></a></h3>
-<ul><li>R options and environment variables are now reset on the workers after future is resolved so that any changes to them by the future expression have no effect on following futures.</li>
-</ul></div>
+<ul><li>R options and environment variables are now reset on the workers after future is resolved so that any changes to them by the future expression have no effect on following futures.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-25-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-25-0"></a></h3>
 <ul><li><p>Now <code>f &lt;- future(..., stdout = structure(TRUE, drop = TRUE))</code> will cause the captured standard output to be dropped from the future object as soon as it has been relayed once, for instance, by <code>value(f)</code>. Similarly, <code>conditions = structure("conditions", drop =    TRUE)</code> will drop captured non-error conditions as soon as they have been relayed. This can help decrease the amount of memory used, especially if there are many active futures.</p></li>
@@ -287,27 +285,22 @@
 </ul></div>
 <div class="section level3">
 <h3 id="beta-features-1-25-0">Beta Features<a class="anchor" aria-label="anchor" href="#beta-features-1-25-0"></a></h3>
-<ul><li>Now, <code><a href="../reference/value.html">value()</a></code> will only attempt to recover UTF-8 symbols in the captured standard output if the future was evaluated on an MS Windows that does not support capturing of UTF-8 symbols. Support for UTF-8 capturing on also MS Windows was added in R 4.2.0, but it typically requires an up-to-date MS Windows 10 or MS Windows Server 2022.</li>
-</ul></div>
+<ul><li>Now, <code><a href="../reference/value.html">value()</a></code> will only attempt to recover UTF-8 symbols in the captured standard output if the future was evaluated on an MS Windows that does not support capturing of UTF-8 symbols. Support for UTF-8 capturing on also MS Windows was added in R 4.2.0, but it typically requires an up-to-date MS Windows 10 or MS Windows Server 2022.</li></ul></div>
 <div class="section level3">
 <h3 id="performance-1-25-0">Performance<a class="anchor" aria-label="anchor" href="#performance-1-25-0"></a></h3>
-<ul><li>The default value for option <code>future.wait.interval</code> was decreased from 0.2 seconds to 0.01 seconds. This controls the polling frequency for finding an available worker when all workers are currently busy. Starting with this release, this option also controls the polling frequency of <code><a href="../reference/resolve.html">resolve()</a></code>.</li>
-</ul></div>
+<ul><li>The default value for option <code>future.wait.interval</code> was decreased from 0.2 seconds to 0.01 seconds. This controls the polling frequency for finding an available worker when all workers are currently busy. Starting with this release, this option also controls the polling frequency of <code><a href="../reference/resolve.html">resolve()</a></code>.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-25-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-25-0"></a></h3>
-<ul><li>A bug was introduced in <strong>future</strong> 1.24.0 [2022-02-19] that caused future plan tweaking to break, e.g. <code>plan(multicore, workers = 2)</code> and <code>plan(sequential, split = TRUE)</code> introduced breaking side effects to the futures evaluated.</li>
-</ul></div>
+<ul><li>A bug was introduced in <strong>future</strong> 1.24.0 [2022-02-19] that caused future plan tweaking to break, e.g. <code>plan(multicore, workers = 2)</code> and <code>plan(sequential, split = TRUE)</code> introduced breaking side effects to the futures evaluated.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.24.0" id="version-1240">Version 1.24.0<small>2022-02-19</small><a class="anchor" aria-label="anchor" href="#version-1240"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-24-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-24-0"></a></h3>
-<ul><li>Now <code>future(..., seed = TRUE)</code> forwards the RNG state in the calling R session. Previously, it would leave it intact.</li>
-</ul></div>
+<ul><li>Now <code>future(..., seed = TRUE)</code> forwards the RNG state in the calling R session. Previously, it would leave it intact.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-24-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-24-0"></a></h3>
-<ul><li>Now <code><a href="../reference/plan.html">plan()</a></code> and <code><a href="../reference/tweak.html">tweak()</a></code> preserve calls in arguments, e.g. <code>plan(multisession, workers = 2, rscript_startup =    quote(options(socketOptions="no-delay")))</code>, and <code>tweak(..., abc =    quote(x == y))</code>.</li>
-</ul></div>
+<ul><li>Now <code><a href="../reference/plan.html">plan()</a></code> and <code><a href="../reference/tweak.html">tweak()</a></code> preserve calls in arguments, e.g. <code>plan(multisession, workers = 2, rscript_startup =    quote(options(socketOptions="no-delay")))</code>, and <code>tweak(..., abc =    quote(x == y))</code>.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-24-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-24-0"></a></h3>
 <ul><li><p><code><a href="../reference/nbrOfWorkers.html">nbrOfFreeWorkers()</a></code> would produce “Error: ‘is.character(name)’ is not TRUE” for <code>plan(multisession, workers = 1)</code>.</p></li>
@@ -328,16 +321,13 @@
 </ul></div>
 <div class="section level3">
 <h3 id="beta-features-1-23-0">Beta Features<a class="anchor" aria-label="anchor" href="#beta-features-1-23-0"></a></h3>
-<ul><li>UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols, e.g. a UTF-8 check mark symbol (<code>\u2713</code>) would be relayed as <code>&lt;U+2713&gt;</code> (8 characters). The reason for this is a limitation in R itself on MS Windows. Now, <code><a href="../reference/value.html">value()</a></code> attempts to recover such MS Windows output to UTF-8 before relaying it. There is an option for disabling this new feature.</li>
-</ul></div>
+<ul><li>UTF-8 symbols outputted on MS Windows would be relayed as escaped symbols, e.g. a UTF-8 check mark symbol (<code>\u2713</code>) would be relayed as <code>&lt;U+2713&gt;</code> (8 characters). The reason for this is a limitation in R itself on MS Windows. Now, <code><a href="../reference/value.html">value()</a></code> attempts to recover such MS Windows output to UTF-8 before relaying it. There is an option for disabling this new feature.</li></ul></div>
 <div class="section level3">
 <h3 id="miscellaneous-1-23-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-23-0"></a></h3>
-<ul><li>TESTS: Using more robust emulation of crashed forked parallel workers after understanding that <code><a href="https://rdrr.io/r/base/quit.html" class="external-link">quit()</a></code> must not be used in forked R processes.</li>
-</ul></div>
+<ul><li>TESTS: Using more robust emulation of crashed forked parallel workers after understanding that <code><a href="https://rdrr.io/r/base/quit.html" class="external-link">quit()</a></code> must not be used in forked R processes.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-23-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-23-0"></a></h3>
-<ul><li>Now <code>future(..., seed)</code> will set the random seed as late as possible just before the future expression is evaluated. Previously it was done before package dependencies where attached, which could lead to non-reproduce random numbers in case a package dependency would update the RNG seed when attached.</li>
-</ul></div>
+<ul><li>Now <code>future(..., seed)</code> will set the random seed as late as possible just before the future expression is evaluated. Previously it was done before package dependencies where attached, which could lead to non-reproduce random numbers in case a package dependency would update the RNG seed when attached.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-23-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-23-0"></a></h3>
 <ul><li><p><code>values()</code>, which has been deprecated since <strong>future</strong> 1.20.0, is now defunct. Use <code><a href="../reference/value.html">value()</a></code> instead.</p></li>
@@ -349,8 +339,7 @@
 <h2 class="page-header" data-toc-text="1.22.1" id="version-1221">Version 1.22.1<small>2021-08-25</small><a class="anchor" aria-label="anchor" href="#version-1221"></a></h2>
 <div class="section level3">
 <h3 id="miscellaneous-1-22-1">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-22-1"></a></h3>
-<ul><li>Disable package test that emulates crashing of forked parallel workers when using <code>parallel::makeCluster(..., type = "FORK")</code>. This test is disabled on macOS, where it appears that the main R session becomes unstable after the FORK node is terminated.</li>
-</ul></div>
+<ul><li>Disable package test that emulates crashing of forked parallel workers when using <code>parallel::makeCluster(..., type = "FORK")</code>. This test is disabled on macOS, where it appears that the main R session becomes unstable after the FORK node is terminated.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.22.0" id="version-1220">Version 1.22.0<a class="anchor" aria-label="anchor" href="#version-1220"></a></h2>
@@ -397,8 +386,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="beta-features-1-21-0">Beta Features<a class="anchor" aria-label="anchor" href="#beta-features-1-21-0"></a></h3>
-<ul><li>Add <code><a href="../reference/nbrOfWorkers.html">nbrOfFreeWorkers()</a></code> to query how many workers are free to take on futures immediately. Until all third-party future backends have implemented this, some backends might produce an error saying it is not yet supported.</li>
-</ul></div>
+<ul><li>Add <code><a href="../reference/nbrOfWorkers.html">nbrOfFreeWorkers()</a></code> to query how many workers are free to take on futures immediately. Until all third-party future backends have implemented this, some backends might produce an error saying it is not yet supported.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-21-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-21-0"></a></h3>
 <ul><li><p><code>future(..., seed = TRUE)</code> with ‘sequential’ futures would set the RNG kind of the parent process. Now it behaves the same regardless of future backend.</p></li>
@@ -412,8 +400,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-1-20-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-20-1"></a></h3>
 <ul><li>
-<code>future::plan("multisession")</code> would produce ‘Error in if (debug) mdebug(“covr::package_coverage() workaround …”) : argument is not interpretable as logical’ if and only if the <strong>covr</strong> package was loaded.</li>
-</ul></div>
+<code>future::plan("multisession")</code> would produce ‘Error in if (debug) mdebug(“covr::package_coverage() workaround …”) : argument is not interpretable as logical’ if and only if the <strong>covr</strong> package was loaded.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.20.0" id="version-1200">Version 1.20.0<a class="anchor" aria-label="anchor" href="#version-1200"></a></h2>
@@ -440,8 +427,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="miscellaneous-1-20-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-20-0"></a></h3>
-<ul><li>Harmonizing Future constructor functions to also use <code>substitute =    TRUE</code>.</li>
-</ul></div>
+<ul><li>Harmonizing Future constructor functions to also use <code>substitute =    TRUE</code>.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-20-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-20-0"></a></h3>
 <ul><li><p>Since last version, <strong>future</strong> 1.19.1, <code>future(..., conditions =    character(0L))</code> would no longer avoid intercepting conditions as intended; instead, it muffles all conditions. From now on, use <code>conditions = NULL</code>.</p></li>
@@ -462,8 +448,7 @@
 <h2 class="page-header" data-toc-text="1.19.1" id="version-1191">Version 1.19.1<small>2020-09-22</small><a class="anchor" aria-label="anchor" href="#version-1191"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-1-19-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-19-1"></a></h3>
-<ul><li>When passing <code>...</code> as a globals, rather than via arguments, in higher-level map-reduce APIs such as <strong>future.apply</strong> and <strong>furrr</strong>, arguments in <code>...</code> could produce an error on “unused argument”.</li>
-</ul></div>
+<ul><li>When passing <code>...</code> as a globals, rather than via arguments, in higher-level map-reduce APIs such as <strong>future.apply</strong> and <strong>furrr</strong>, arguments in <code>...</code> could produce an error on “unused argument”.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.19.0" id="version-1190">Version 1.19.0<a class="anchor" aria-label="anchor" href="#version-1190"></a></h2>
@@ -483,8 +468,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="performance-1-19-0">Performance<a class="anchor" aria-label="anchor" href="#performance-1-19-0"></a></h3>
-<ul><li>Now <code>plan(multisession)</code>, <code>plan(cluster, workers = &lt;number&gt;)</code>, and <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> which they both use internally, sets up localhost workers twice as fast compared to versions since <strong>future</strong> 1.12.0, which brings it back to par with a bare-bone <code>parallel::makeCluster(..., setup_strategy = "sequential")</code> setup. The slowdown was introduced in <strong>future</strong> 1.12.0 (2019-03-07) when protection against leaving stray R processes behind from failed worker startup was implemented. This protection now makes use of memoization for speedup.</li>
-</ul></div>
+<ul><li>Now <code>plan(multisession)</code>, <code>plan(cluster, workers = &lt;number&gt;)</code>, and <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> which they both use internally, sets up localhost workers twice as fast compared to versions since <strong>future</strong> 1.12.0, which brings it back to par with a bare-bone <code>parallel::makeCluster(..., setup_strategy = "sequential")</code> setup. The slowdown was introduced in <strong>future</strong> 1.12.0 (2019-03-07) when protection against leaving stray R processes behind from failed worker startup was implemented. This protection now makes use of memoization for speedup.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-19-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-19-0"></a></h3>
 <ul><li><p>Sequential and multicore backends, but not multisession, would produce errors on “‘…’ used in an incorrect context” in cases where <code>...</code> was part of argument <code>globals</code> and not the evaluation environment.</p></li>
@@ -500,8 +484,7 @@
 <h2 class="page-header" data-toc-text="1.18.0" id="version-1180">Version 1.18.0<small>2020-07-09</small><a class="anchor" aria-label="anchor" href="#version-1180"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-18-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-18-0"></a></h3>
-<ul><li>Support for <code>persistent = TRUE</code> with multisession futures is deprecated.</li>
-</ul></div>
+<ul><li>Support for <code>persistent = TRUE</code> with multisession futures is deprecated.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-18-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-18-0"></a></h3>
 <ul><li><p><code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> on <code>RichSOCKcluster</code> gives information not only on the name of the host but also on the version of R and the platform of each node (“worker”), e.g. “Socket cluster with 3 nodes where 2 nodes are on host ‘localhost’ (R version 4.0.0 (2020-04-24), platform x86_64-w64-mingw32), 1 node is on host ‘n3’ (R version 3.6.3 (2020-02-29), platform x86_64-pc-linux-gnu)”.</p></li>
@@ -528,8 +511,7 @@
 <h2 class="page-header" data-toc-text="1.17.0" id="version-1170">Version 1.17.0<small>2020-04-18</small><a class="anchor" aria-label="anchor" href="#version-1170"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-17-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-17-0"></a></h3>
-<ul><li>Renamed <code>values()</code> to <code><a href="../reference/value.html">value()</a></code> to clean up and simplify the API.</li>
-</ul></div>
+<ul><li>Renamed <code>values()</code> to <code><a href="../reference/value.html">value()</a></code> to clean up and simplify the API.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-17-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-17-0"></a></h3>
 <ul><li><p><code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> gained argument <code>rscript_envs</code> for setting environment variables in workers on startup, e.g. <code>rscript_envs =    c(FOO = "3.14", "BAR")</code>.</p></li>
@@ -537,8 +519,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="miscellaneous-1-17-0">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-17-0"></a></h3>
-<ul><li>Not all CRAN servers have <code>_R_CHECK_LIMIT_CORES_</code> set. To better emulate CRAN submission checks, the <strong>future</strong> package will, when loaded, set this environment variable to ‘TRUE’ if unset and if <code>R    CMD check</code> is running. Note that <code><a href="../reference/re-exports.html">future::availableCores()</a></code> respects <code>_R_CHECK_LIMIT_CORES_</code> and returns at most <code>2L</code> (two cores) if detected.</li>
-</ul></div>
+<ul><li>Not all CRAN servers have <code>_R_CHECK_LIMIT_CORES_</code> set. To better emulate CRAN submission checks, the <strong>future</strong> package will, when loaded, set this environment variable to ‘TRUE’ if unset and if <code>R    CMD check</code> is running. Note that <code><a href="../reference/re-exports.html">future::availableCores()</a></code> respects <code>_R_CHECK_LIMIT_CORES_</code> and returns at most <code>2L</code> (two cores) if detected.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-17-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-17-0"></a></h3>
 <ul><li><p>Any globals named <code>version</code> and <code>has_future</code> would be overwritten with “garbage” values internally.</p></li>
@@ -546,15 +527,13 @@
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-17-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-17-0"></a></h3>
-<ul><li>All <code>values()</code> S3 methods have been renamed to <code><a href="../reference/value.html">value()</a></code> since they are closely related to the original purpose <code><a href="../reference/value.html">value()</a></code>. The <code>values()</code> methods will continue to work but will soon be formally deprecated and later be made defunct and finally be removed. Please replace all <code>values()</code> with <code><a href="../reference/value.html">value()</a></code> calls.</li>
-</ul></div>
+<ul><li>All <code>values()</code> S3 methods have been renamed to <code><a href="../reference/value.html">value()</a></code> since they are closely related to the original purpose <code><a href="../reference/value.html">value()</a></code>. The <code>values()</code> methods will continue to work but will soon be formally deprecated and later be made defunct and finally be removed. Please replace all <code>values()</code> with <code><a href="../reference/value.html">value()</a></code> calls.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.16.0" id="version-1160">Version 1.16.0<small>2020-01-16</small><a class="anchor" aria-label="anchor" href="#version-1160"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-16-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-16-0"></a></h3>
-<ul><li>Now <code>oplan &lt;- plan(new_strategy)</code> returns the list of all nested strategies previously set, instead of just the strategy on top of this stack. This makes it easier to temporarily use another plan. For the old behavior, use <code>oplan &lt;- plan(new_strategy)[[1]]</code>.</li>
-</ul></div>
+<ul><li>Now <code>oplan &lt;- plan(new_strategy)</code> returns the list of all nested strategies previously set, instead of just the strategy on top of this stack. This makes it easier to temporarily use another plan. For the old behavior, use <code>oplan &lt;- plan(new_strategy)[[1]]</code>.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-16-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-16-0"></a></h3>
 <ul><li><p>Now <code><a href="../reference/value.html">value()</a></code> detects if a <code>future(..., seed = FALSE)</code> call generated random numbers, which then might give unreliable results because non-parallel safe, non-statistically sound random number generation (RNG) was used. If option <code>future.rng.onMisuse</code> is <code>"warning"</code>, a warning is produced. If <code>"error"</code>, an error is produced. If <code>"ignore"</code> (default), the mistake is silently ignored. Using <code>seed = NULL</code> is like <code>seed = FALSE</code> but without performing the RNG validation.</p></li>
@@ -563,12 +542,11 @@
 </ul></div>
 <div class="section level3">
 <h3 id="beta-features-1-16-0">Beta Features<a class="anchor" aria-label="anchor" href="#beta-features-1-16-0"></a></h3>
-<ul><li>Add support for automatically disable multi-threading when using ‘multicore’ futures. For now, the default is to allow multi-threaded processing but this might change in the future. To disable multi-threaded, set option <code>future.fork.multithreading.enable</code> or environment variable <code>R_FUTURE_FORK_MULTITHREADING_ENABLE</code> to <code>FALSE</code>. This requires that <strong>RhpcBLASctl</strong> package is installed. Parallelization via multi-threaded processing (done in native code by some packages and externally library) while at the same time using forked (aka “multicore”) parallel processing is unstable in some cases. Note that this is not only true when using <code>plan(multicore)</code> but also when using, for instance, <code><a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">parallel::mclapply()</a></code>. This is in beta so the above names and options might change later.</li>
-</ul></div>
+<ul><li>Add support for automatically disable multi-threading when using ‘multicore’ futures. For now, the default is to allow multi-threaded processing but this might change in the future. To disable multi-threaded, set option <code>future.fork.multithreading.enable</code> or environment variable <code>R_FUTURE_FORK_MULTITHREADING_ENABLE</code> to <code>FALSE</code>. This requires that <strong>RhpcBLASctl</strong> package is installed. Parallelization via multi-threaded processing (done in native code by some packages and externally library) while at the same time using forked (aka “multicore”) parallel processing is unstable in some cases. Note that this is not only true when using <code>plan(multicore)</code> but also when using, for instance, <code><a href="https://rdrr.io/r/parallel/mclapply.html" class="external-link">parallel::mclapply()</a></code>. This is in beta so the above names and options might change later.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-16-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-16-0"></a></h3>
 <ul><li><p>Evaluation of futures could fail if the global environment contained <em>functions</em> with the same names as a small set of base R functions, e.g. <code><a href="https://rdrr.io/r/base/raw.html" class="external-link">raw()</a></code>, <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>, and <code><a href="https://rdrr.io/r/base/options.html" class="external-link">options()</a></code>.</p></li>
-<li><p><code>future(alist(a =))</code> would produce “Error in objectSize_list(x, depth = depth - 1L) : argument”x_kk” is missing, with no default”</p></li>
+<li><p><code>future(alist(a =))</code> would produce “Error in objectSize_list(x, depth = depth - 1L) : argument”x_kk" is missing, with no default"</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-16-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-16-0"></a></h3>
@@ -580,20 +558,17 @@
 <h2 class="page-header" data-toc-text="1.15.1" id="version-1151">Version 1.15.1<small>2019-11-25</small><a class="anchor" aria-label="anchor" href="#version-1151"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-15-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-15-1"></a></h3>
-<ul><li>The default range of ports that <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> draws a random port from (when argument <code>port</code> is not specified) can now be controlled by environment variable <code>R_FUTURE_RANDOM_PORTS</code>. The default range is still <code>11000:11999</code> as with the <strong>parallel</strong> package.</li>
-</ul></div>
+<ul><li>The default range of ports that <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> draws a random port from (when argument <code>port</code> is not specified) can now be controlled by environment variable <code>R_FUTURE_RANDOM_PORTS</code>. The default range is still <code>11000:11999</code> as with the <strong>parallel</strong> package.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-15-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-15-1"></a></h3>
-<ul><li>The change introduced to <code><a href="../reference/resolved.html">resolved()</a></code> in <strong>future</strong> 1.15.0 would cause lazy futures to block if all workers were occupied.</li>
-</ul></div>
+<ul><li>The change introduced to <code><a href="../reference/resolved.html">resolved()</a></code> in <strong>future</strong> 1.15.0 would cause lazy futures to block if all workers were occupied.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.15.0" id="version-1150">Version 1.15.0<small>2019-11-08</small><a class="anchor" aria-label="anchor" href="#version-1150"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-15-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-15-0"></a></h3>
 <ul><li>
-<code><a href="../reference/resolved.html">resolved()</a></code> will now launch lazy futures.</li>
-</ul></div>
+<code><a href="../reference/resolved.html">resolved()</a></code> will now launch lazy futures.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-15-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-15-0"></a></h3>
 <ul><li><p>Now the “visibility” of future values is recorded and reflected by <code><a href="../reference/value.html">value()</a></code>.</p></li>
@@ -601,8 +576,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-15-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-15-0"></a></h3>
-<ul><li>Added ‘Troubleshooting’ section to <code><a href="../reference/re-exports.html">?makeClusterPSOCK</a></code> with instructions on how to troubleshoot when the setup of local and remote clusters fail.</li>
-</ul></div>
+<ul><li>Added ‘Troubleshooting’ section to <code><a href="../reference/re-exports.html">?makeClusterPSOCK</a></code> with instructions on how to troubleshoot when the setup of local and remote clusters fail.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-15-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-15-0"></a></h3>
 <ul><li><p><code>values()</code> would resignal <code>immediateCondition</code>:s despite those should only be signaled at most once per future.</p></li>
@@ -652,8 +626,7 @@
 <h2 class="page-header" data-toc-text="1.13.0" id="version-1130">Version 1.13.0<small>2019-05-08</small><a class="anchor" aria-label="anchor" href="#version-1130"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-13-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-13-0"></a></h3>
-<ul><li>Forked processing is now disabled by default when running R via RStudio When disabled, ‘multicore’ futures fall back to a ‘sequential’ futures. This update follows from an RStudio recommendation against using <em>forked</em> parallel processing from within RStudio because it is likely to break the RStudio R session. See <code><a href="../reference/re-exports.html">help("supportsMulticore")</a></code> for more details, e.g. how to re-enable process forking. Note that parallelization via ‘multisession’ is unaffected and will still work as before. Also, when forked processing is disabled, or otherwise not supported, using <code>plan("multiprocess")</code> will fall back to using ‘multisession’ futures.</li>
-</ul></div>
+<ul><li>Forked processing is now disabled by default when running R via RStudio When disabled, ‘multicore’ futures fall back to a ‘sequential’ futures. This update follows from an RStudio recommendation against using <em>forked</em> parallel processing from within RStudio because it is likely to break the RStudio R session. See <code><a href="../reference/re-exports.html">help("supportsMulticore")</a></code> for more details, e.g. how to re-enable process forking. Note that parallelization via ‘multisession’ is unaffected and will still work as before. Also, when forked processing is disabled, or otherwise not supported, using <code>plan("multiprocess")</code> will fall back to using ‘multisession’ futures.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-13-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-13-0"></a></h3>
 <ul><li><p>Forked processing can be disabled by setting R option <code>future.fork.enable</code> to FALSE (or environment variable <code>R_FUTURE_FORK_ENABLE=false</code>). When disabled, ‘multicore’ futures fall back to a ‘sequential’ futures even if the operating system supports process forking. If set of TRUE, ‘multicore’ will not fall back to ‘sequential’. If NA, or not set (the default), a set of best-practices rules will decide whether forking is enabled or not. See <code><a href="../reference/re-exports.html">help("supportsMulticore")</a></code> for more details.</p></li>
@@ -665,17 +638,14 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-13-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-13-0"></a></h3>
-<ul><li>Add vignette on ‘Non-Exportable Objects’ (extracted from another vignette).</li>
-</ul></div>
+<ul><li>Add vignette on ‘Non-Exportable Objects’ (extracted from another vignette).</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-13-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-13-0"></a></h3>
 <ul><li>
-<code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> did not shell quote the Rscript executable when running its pre-tests checking whether localhost Rscript processes can be killed by their PIDs or not.</li>
-</ul></div>
+<code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> did not shell quote the Rscript executable when running its pre-tests checking whether localhost Rscript processes can be killed by their PIDs or not.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-13-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-13-0"></a></h3>
-<ul><li>Argument <code>value</code> of <code><a href="../reference/resolve.html">resolve()</a></code> has been renamed to <code>result</code> to better reflect that not only values are collected when this argument is used. Argument <code>value</code> still works for backward compatibility, but will eventually be formally deprecated and then defunct.</li>
-</ul></div>
+<ul><li>Argument <code>value</code> of <code><a href="../reference/resolve.html">resolve()</a></code> has been renamed to <code>result</code> to better reflect that not only values are collected when this argument is used. Argument <code>value</code> still works for backward compatibility, but will eventually be formally deprecated and then defunct.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.12.0" id="version-1120">Version 1.12.0<small>2019-03-08</small><a class="anchor" aria-label="anchor" href="#version-1120"></a></h2>
@@ -703,8 +673,7 @@
 <h2 class="page-header" data-toc-text="1.11.1.1" id="version-11111">Version 1.11.1.1<small>2019-01-26</small><a class="anchor" aria-label="anchor" href="#version-11111"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-1-11-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-11-1-1"></a></h3>
-<ul><li>When <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> fails to connect to a worker, it produces an error with detailed information on what could have happened. In rare cases, another error could be produced when generating the information on what the workers PID is.</li>
-</ul></div>
+<ul><li>When <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> fails to connect to a worker, it produces an error with detailed information on what could have happened. In rare cases, another error could be produced when generating the information on what the workers PID is.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.11.1" id="version-1111">Version 1.11.1<a class="anchor" aria-label="anchor" href="#version-1111"></a></h2>
@@ -715,19 +684,16 @@
 </ul></div>
 <div class="section level3">
 <h3 id="software-quality-1-11-1">Software Quality<a class="anchor" aria-label="anchor" href="#software-quality-1-11-1"></a></h3>
-<ul><li>TESTS: When the <strong>future</strong> package is loaded, it checks whether <code>R    CMD check</code> is running or not. If it is, then a few future-specific environment variables are adjusted such that the tests play nice with the testing environment. For instance, it sets the socket connection timeout for PSOCK cluster workers to 120 seconds (instead of the default 30 days!). This will lower the risk for more and more zombie worker processes cluttering up the test machine (e.g. CRAN servers) in case a worker process is left behind despite the main R processes is terminated. Note that these adjustments are applied automatically to the checks of any package that depends on, or imports, the <strong>future</strong> package.</li>
-</ul></div>
+<ul><li>TESTS: When the <strong>future</strong> package is loaded, it checks whether <code>R    CMD check</code> is running or not. If it is, then a few future-specific environment variables are adjusted such that the tests play nice with the testing environment. For instance, it sets the socket connection timeout for PSOCK cluster workers to 120 seconds (instead of the default 30 days!). This will lower the risk for more and more zombie worker processes cluttering up the test machine (e.g. CRAN servers) in case a worker process is left behind despite the main R processes is terminated. Note that these adjustments are applied automatically to the checks of any package that depends on, or imports, the <strong>future</strong> package.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-11-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-11-1"></a></h3>
-<ul><li>Whenever <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> would fail to connect to a worker, for instance due to a port clash, then it would leave the R worker process running - also after the main R process terminated. When the worker is running on the same machine, <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> will now attempt to kill such stray R processes. Note that <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makePSOCKcluster()</a></code> still has this problem.</li>
-</ul></div>
+<ul><li>Whenever <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> would fail to connect to a worker, for instance due to a port clash, then it would leave the R worker process running - also after the main R process terminated. When the worker is running on the same machine, <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> will now attempt to kill such stray R processes. Note that <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makePSOCKcluster()</a></code> still has this problem.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.11.0" id="version-1110">Version 1.11.0<small>2019-01-21</small><a class="anchor" aria-label="anchor" href="#version-1110"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-11-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-11-0"></a></h3>
-<ul><li>Message and warning conditions are now captured and relayed by default.</li>
-</ul></div>
+<ul><li>Message and warning conditions are now captured and relayed by default.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-11-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-11-0"></a></h3>
 <ul><li><p>The future call stack (“traceback”) is now recorded when the evaluation of a future produces an error. Use <code><a href="../reference/backtrace.html">backtrace()</a></code> on the future to retrieve it.</p></li>
@@ -749,8 +715,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-11-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-11-0"></a></h3>
-<ul><li>Removed defunct <code>future::future_lapply()</code>. Please use the one in the <strong>future.apply</strong> package instead.</li>
-</ul></div>
+<ul><li>Removed defunct <code>future::future_lapply()</code>. Please use the one in the <strong>future.apply</strong> package instead.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.10.0" id="version-1100">Version 1.10.0<small>2018-10-17</small><a class="anchor" aria-label="anchor" href="#version-1100"></a></h2>
@@ -764,15 +729,13 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-10-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-10-0"></a></h3>
-<ul><li>On Windows, <code>plan(multiprocess)</code> would not initiate the workers. Instead workers would be set up only when the first future was created.</li>
-</ul></div>
+<ul><li>On Windows, <code>plan(multiprocess)</code> would not initiate the workers. Instead workers would be set up only when the first future was created.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.9.0" id="version-190">Version 1.9.0<small>2018-07-23</small><a class="anchor" aria-label="anchor" href="#version-190"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-9-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-9-0"></a></h3>
-<ul><li>Standard output is now captured and re-outputted when <code><a href="../reference/value.html">value()</a></code> is called. This new behavior can be controlled by the argument <code>stdout</code> to <code><a href="../reference/future.html">future()</a></code> or by specifying the <code>%stdout%</code> operator if a future assignment is used.</li>
-</ul></div>
+<ul><li>Standard output is now captured and re-outputted when <code><a href="../reference/value.html">value()</a></code> is called. This new behavior can be controlled by the argument <code>stdout</code> to <code><a href="../reference/future.html">future()</a></code> or by specifying the <code>%stdout%</code> operator if a future assignment is used.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-9-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-9-0"></a></h3>
 <ul><li><p>R option <code>width</code> is passed down so that standard output is captured consistently across workers and consistently with the master process.</p></li>
@@ -817,8 +780,7 @@
 <h2 class="page-header" data-toc-text="1.8.0" id="version-180">Version 1.8.0<small>2018-04-08</small><a class="anchor" aria-label="anchor" href="#version-180"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-8-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-8-0"></a></h3>
-<ul><li>Errors produces when evaluating futures are now (re-)signaled on the master R process as-is with the original content and class attributes.</li>
-</ul></div>
+<ul><li>Errors produces when evaluating futures are now (re-)signaled on the master R process as-is with the original content and class attributes.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-8-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-8-0"></a></h3>
 <ul><li><p>More errors related to orchestration of futures are of class <code>FutureError</code> to make it easier to distinguish them from future evaluation errors.</p></li>
@@ -844,8 +806,7 @@
 <div class="section level3">
 <h3 id="significant-changes-1-7-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-7-0"></a></h3>
 <ul><li>
-<code>future_lapply()</code> has moved to the <strong>future.apply</strong> package available on CRAN.</li>
-</ul></div>
+<code>future_lapply()</code> has moved to the <strong>future.apply</strong> package available on CRAN.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-7-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-7-0"></a></h3>
 <ul><li><p>Argument <code>workers</code> of future strategies may now also be a function, which is called without argument when the future strategy is set up and used as is. For instance, <code>plan(multiprocess, workers =    halfCores)</code> where <code>halfCores &lt;- function() { max(1,    round(</code>availableCores()<code>/ 2)) }</code> will use half of the number of available cores. This is useful when using nested future strategies with remote machines.</p></li>
@@ -856,12 +817,10 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-7-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-7-0"></a></h3>
-<ul><li>Vignette ‘Common Issues with Solutions’ now documents the case where the future framework fails to identify a variable as being global because it is only so conditionally, e.g. <code>if (runif(1) &lt;    1/2) x &lt;- 0; y &lt;- 2 * x</code>.</li>
-</ul></div>
+<ul><li>Vignette ‘Common Issues with Solutions’ now documents the case where the future framework fails to identify a variable as being global because it is only so conditionally, e.g. <code>if (runif(1) &lt;    1/2) x &lt;- 0; y &lt;- 2 * x</code>.</li></ul></div>
 <div class="section level3">
 <h3 id="beta-features-1-7-0">Beta Features<a class="anchor" aria-label="anchor" href="#beta-features-1-7-0"></a></h3>
-<ul><li>Added mechanism for detecting globals that <em>may</em> not be exportable to an external R process (a “worker”). Typically, globals that carry connections and external pointers (<code>externalptr</code>) can not be exported, but there are exceptions. By setting options <code>future.globals.onReference</code> to <code>"warning"</code>, a warning is produced informing the user about potential problems. If <code>"error"</code>, an error is produced. Because there might be false positive, the default is <code>"ignore"</code>, which will cause above scans to be skipped. If there are non-exportable globals and these tests are skipped, a run-time error may be produced only when the future expression is evaluated.</li>
-</ul></div>
+<ul><li>Added mechanism for detecting globals that <em>may</em> not be exportable to an external R process (a “worker”). Typically, globals that carry connections and external pointers (<code>externalptr</code>) can not be exported, but there are exceptions. By setting options <code>future.globals.onReference</code> to <code>"warning"</code>, a warning is produced informing the user about potential problems. If <code>"error"</code>, an error is produced. Because there might be false positive, the default is <code>"ignore"</code>, which will cause above scans to be skipped. If there are non-exportable globals and these tests are skipped, a run-time error may be produced only when the future expression is evaluated.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-7-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-7-0"></a></h3>
 <ul><li><p>The total size of global variables was overestimated, and dramatically so if defined in the global environment and there were are large objects there too. This would sometimes result in a false error saying that the total size is larger than the allowed limit.</p></li>
@@ -894,33 +853,27 @@
 <h2 class="page-header" data-toc-text="1.6.1" id="version-161">Version 1.6.1<small>2017-09-09</small><a class="anchor" aria-label="anchor" href="#version-161"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-6-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-6-1"></a></h3>
-<ul><li>Now exporting <code><a href="../reference/getGlobalsAndPackages.html">getGlobalsAndPackages()</a></code>.</li>
-</ul></div>
+<ul><li>Now exporting <code><a href="../reference/getGlobalsAndPackages.html">getGlobalsAndPackages()</a></code>.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-6-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-6-1"></a></h3>
 <ul><li>
-<code>future_lapply()</code> would give “Error in objectSize.env(x, depth = depth - 1L): object ‘nnn’ not found” when for instance ‘nnn’ is part of an unresolved expression that is an argument value.</li>
-</ul></div>
+<code>future_lapply()</code> would give “Error in objectSize.env(x, depth = depth - 1L): object ‘nnn’ not found” when for instance ‘nnn’ is part of an unresolved expression that is an argument value.</li></ul></div>
 <div class="section level3">
 <h3 id="software-quality-1-6-1">Software Quality<a class="anchor" aria-label="anchor" href="#software-quality-1-6-1"></a></h3>
-<ul><li>FIX: Some of the package assertion tests made too precise assumptions about the object sizes, which fails with the introduction of ALTREP in R-devel which causes the R’s SEXP header size to change.</li>
-</ul></div>
+<ul><li>FIX: Some of the package assertion tests made too precise assumptions about the object sizes, which fails with the introduction of ALTREP in R-devel which causes the R’s SEXP header size to change.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.6.0" id="version-160">Version 1.6.0<small>2017-08-13</small><a class="anchor" aria-label="anchor" href="#version-160"></a></h2>
 <div class="section level3">
 <h3 id="new-features-1-6-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-6-0"></a></h3>
-<ul><li>Now <code><a href="../reference/tweak.html">tweak()</a></code>, and hence <code><a href="../reference/plan.html">plan()</a></code>, generates a more informative error message if a non-future function is specified by mistake, e.g. calling <code>plan(cluster)</code> with the <strong>survival</strong> package attached after <strong>future</strong> is equivalent to calling <code>plan(survival::cluster)</code> when <code>plan(future::cluster)</code> was intended.</li>
-</ul></div>
+<ul><li>Now <code><a href="../reference/tweak.html">tweak()</a></code>, and hence <code><a href="../reference/plan.html">plan()</a></code>, generates a more informative error message if a non-future function is specified by mistake, e.g. calling <code>plan(cluster)</code> with the <strong>survival</strong> package attached after <strong>future</strong> is equivalent to calling <code>plan(survival::cluster)</code> when <code>plan(future::cluster)</code> was intended.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-6-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-6-0"></a></h3>
 <ul><li>
-<code><a href="../reference/nbrOfWorkers.html">nbrOfWorkers()</a></code> gave an error with <code>plan(remote)</code>. Fixed by making the ‘remote’ future inherit <code>cluster</code> (as it should).</li>
-</ul></div>
+<code><a href="../reference/nbrOfWorkers.html">nbrOfWorkers()</a></code> gave an error with <code>plan(remote)</code>. Fixed by making the ‘remote’ future inherit <code>cluster</code> (as it should).</li></ul></div>
 <div class="section level3">
 <h3 id="software-quality-1-6-0">Software Quality<a class="anchor" aria-label="anchor" href="#software-quality-1-6-0"></a></h3>
-<ul><li>TESTS: No longer testing forced termination of forked cluster workers when running on Solaris. The termination was done by launching a future that called <code><a href="https://rdrr.io/r/base/quit.html" class="external-link">quit()</a></code>, but that appeared to have corrupted the main R session when running on Solaris.</li>
-</ul></div>
+<ul><li>TESTS: No longer testing forced termination of forked cluster workers when running on Solaris. The termination was done by launching a future that called <code><a href="https://rdrr.io/r/base/quit.html" class="external-link">quit()</a></code>, but that appeared to have corrupted the main R session when running on Solaris.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-6-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-6-0"></a></h3>
 <ul><li><p>Formally defunct ‘eager’ and ‘lazy’ futures; use ‘sequential’ instead.</p></li>
@@ -931,8 +884,7 @@
 <h2 class="page-header" data-toc-text="1.5.0" id="version-150">Version 1.5.0<small>2017-05-26</small><a class="anchor" aria-label="anchor" href="#version-150"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-5-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-5-0"></a></h3>
-<ul><li>Multicore and multisession futures no longer reserve one core for the main R process, which was done to lower the risk for producing a higher CPU load than the number of cores available for the R session.</li>
-</ul></div>
+<ul><li>Multicore and multisession futures no longer reserve one core for the main R process, which was done to lower the risk for producing a higher CPU load than the number of cores available for the R session.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-5-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-5-0"></a></h3>
 <ul><li><p><code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> now defaults to use the Windows PuTTY software’s SSH client <code>plink -ssh</code>, if <code>ssh</code> is not found.</p></li>
@@ -942,12 +894,10 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-5-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-5-0"></a></h3>
-<ul><li>Help on <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> gained more detailed descriptions on arguments and what their defaults are.</li>
-</ul></div>
+<ul><li>Help on <code><a href="../reference/re-exports.html">makeClusterPSOCK()</a></code> gained more detailed descriptions on arguments and what their defaults are.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-5-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-5-0"></a></h3>
-<ul><li>Formally deprecated eager futures; use sequential instead.</li>
-</ul></div>
+<ul><li>Formally deprecated eager futures; use sequential instead.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-5-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-5-0"></a></h3>
 <ul><li><p><code>future_lapply()</code> with multicore / multisession futures, would use a suboptimal workload balancing where it split up the data in one chunk too many. This is no longer a problem because of how argument <code>workers</code> is now defined for those type of futures (see note on top).</p></li>
@@ -967,8 +917,7 @@
 <h2 class="page-header" data-toc-text="1.4.0" id="version-140">Version 1.4.0<small>2017-03-13</small><a class="anchor" aria-label="anchor" href="#version-140"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-4-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-4-0"></a></h3>
-<ul><li>The default for <code>future_lapply()</code> is now to <em>not</em> generate RNG seeds (<code>future.seed = FALSE</code>). If proper random number generation is needed, use <code>future.seed = TRUE</code>. For more details, see help page.</li>
-</ul></div>
+<ul><li>The default for <code>future_lapply()</code> is now to <em>not</em> generate RNG seeds (<code>future.seed = FALSE</code>). If proper random number generation is needed, use <code>future.seed = TRUE</code>. For more details, see help page.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-4-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-4-0"></a></h3>
 <ul><li><p><code><a href="../reference/future.html">future()</a></code> and <code>future_lapply()</code> gained argument <code>packages</code> for explicitly specifying packages to be attached when the futures are evaluated. Note that the default throughout the <strong>future</strong> package is that all globals and all required packages are automatically identified and gathered, so in most cases those do not have to be specified manually.</p></li>
@@ -982,8 +931,7 @@
 <div class="section level3">
 <h3 id="performance-1-4-0">Performance<a class="anchor" aria-label="anchor" href="#performance-1-4-0"></a></h3>
 <ul><li>
-<code>future_lapply()</code> scans global variables for non-resolved futures (to resolve them) and calculate their total size once. Previously, each chunk (a future) would redo this.</li>
-</ul></div>
+<code>future_lapply()</code> scans global variables for non-resolved futures (to resolve them) and calculate their total size once. Previously, each chunk (a future) would redo this.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-4-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-4-0"></a></h3>
 <ul><li><p>Now <code>future_lapply(X, FUN, ...)</code> identifies global objects among <code>X</code>, <code>FUN</code> and <code>...</code> recursively until no new globals are found. Previously, only the first level of globals were scanned. This is mostly thanks to a bug fix in <strong>globals</strong> 0.9.0.</p></li>
@@ -1002,8 +950,7 @@
 <h2 class="page-header" data-toc-text="1.3.0" id="version-130">Version 1.3.0<small>2017-02-19</small><a class="anchor" aria-label="anchor" href="#version-130"></a></h2>
 <div class="section level3">
 <h3 id="significant-changes-1-3-0">Significant Changes<a class="anchor" aria-label="anchor" href="#significant-changes-1-3-0"></a></h3>
-<ul><li>Where applicable, workers are now initiated when calling <code><a href="../reference/plan.html">plan()</a></code>, e.g. <code>plan(cluster)</code> will set up workers on all cluster nodes. Previously, this only happened when the first future was created.</li>
-</ul></div>
+<ul><li>Where applicable, workers are now initiated when calling <code><a href="../reference/plan.html">plan()</a></code>, e.g. <code>plan(cluster)</code> will set up workers on all cluster nodes. Previously, this only happened when the first future was created.</li></ul></div>
 <div class="section level3">
 <h3 id="new-features-1-3-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-3-0"></a></h3>
 <ul><li><p>Renamed ‘eager’ futures to ‘sequential’, e.g. <code>plan(sequential)</code>. The ‘eager’ futures will be deprecated in an upcoming release.</p></li>
@@ -1021,12 +968,10 @@
 </ul></div>
 <div class="section level3">
 <h3 id="globals-1-3-0">Globals<a class="anchor" aria-label="anchor" href="#globals-1-3-0"></a></h3>
-<ul><li>Globals part of locally defined functions are now also identified thanks to <strong>globals</strong> (&gt;= 0.8.0) updates.</li>
-</ul></div>
+<ul><li>Globals part of locally defined functions are now also identified thanks to <strong>globals</strong> (&gt;= 0.8.0) updates.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-3-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-3-0"></a></h3>
-<ul><li>Lazy futures and <code>plan(lazy)</code> are now deprecated. Instead, use <code>plan(eager)</code> and then <code>f &lt;- future(..., lazy = TRUE)</code> or <code>x %&lt;-% {    ... } %lazy% TRUE</code>. The reason behind this is that in some cases code that uses futures only works under eager evaluation (<code>lazy =    FALSE</code>; the default), or vice verse. By removing the “lazy” future strategy, the user can no longer override the <code>lazy = TRUE / FALSE</code> that the developer is using.</li>
-</ul></div>
+<ul><li>Lazy futures and <code>plan(lazy)</code> are now deprecated. Instead, use <code>plan(eager)</code> and then <code>f &lt;- future(..., lazy = TRUE)</code> or <code>x %&lt;-% {    ... } %lazy% TRUE</code>. The reason behind this is that in some cases code that uses futures only works under eager evaluation (<code>lazy =    FALSE</code>; the default), or vice verse. By removing the “lazy” future strategy, the user can no longer override the <code>lazy = TRUE / FALSE</code> that the developer is using.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-3-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-3-0"></a></h3>
 <ul><li><p>Creation of cluster futures (including multisession ones) would time out already after 40 seconds if all workers were busy. New default timeout is 30 days (option <code>future.wait.timeout</code>).</p></li>
@@ -1047,12 +992,11 @@
 <div class="section level3">
 <h3 id="deprecated-and-defunct-1-2-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-2-0"></a></h3>
 <ul><li>
-<code>%&lt;=%</code> is deprecated. Use <code>%&lt;-%</code> instead. Same for <code>%=&gt;%</code>.</li>
-</ul></div>
+<code>%&lt;=%</code> is deprecated. Use <code>%&lt;-%</code> instead. Same for <code>%=&gt;%</code>.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-2-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-2-0"></a></h3>
 <ul><li><p><code>values()</code> for lists and list environments of futures where one or more of the futures resolved to NULL would give an error.</p></li>
-<li><p><code><a href="../reference/value.html">value()</a></code> for <code>ClusterFuture</code> would give cryptic error message “Error in stop(ex) : bad error message” if the cluster worker had crashed / terminated. Now it will instead give an error message like “Failed to retrieve the value of <code>ClusterFuture</code> from cluster node <a href="https://github.com/HenrikBengtsson/future/issues/1" class="external-link">#1</a> on ‘localhost’. The reason reported was”error reading from connection”.</p></li>
+<li><p><code><a href="../reference/value.html">value()</a></code> for <code>ClusterFuture</code> would give cryptic error message “Error in stop(ex) : bad error message” if the cluster worker had crashed / terminated. Now it will instead give an error message like “Failed to retrieve the value of <code>ClusterFuture</code> from cluster node <a href="https://github.com/HenrikBengtsson/future/issues/1" class="external-link">#1</a> on ‘localhost’. The reason reported was”error reading from connection".</p></li>
 <li><p>Argument <code>user</code> to <code>remote()</code> was ignored (since 1.1.0).</p></li>
 </ul></div>
 </div>
@@ -1060,8 +1004,7 @@
 <h2 class="page-header" data-toc-text="1.1.1" id="version-111">Version 1.1.1<small>2016-10-11</small><a class="anchor" aria-label="anchor" href="#version-111"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-1-1-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-1-1"></a></h3>
-<ul><li>For the special case where ‘remote’ futures use <code>workers =    "localhost"</code> they (again) use the exact same R executable as the main / calling R session (in all other cases it uses whatever <code>Rscript</code> is found in the <code>PATH</code>). This was already indeed implemented in 1.0.1, but with the added support for reverse SSH tunnels in 1.1.0 this default behavior was lost.</li>
-</ul></div>
+<ul><li>For the special case where ‘remote’ futures use <code>workers =    "localhost"</code> they (again) use the exact same R executable as the main / calling R session (in all other cases it uses whatever <code>Rscript</code> is found in the <code>PATH</code>). This was already indeed implemented in 1.0.1, but with the added support for reverse SSH tunnels in 1.1.0 this default behavior was lost.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.1.0" id="version-110">Version 1.1.0<small>2016-10-10</small><a class="anchor" aria-label="anchor" href="#version-110"></a></h2>
@@ -1083,8 +1026,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-1-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-1-0"></a></h3>
-<ul><li>Added vignette on command-line options and other methods for controlling the default type of futures to use.</li>
-</ul></div>
+<ul><li>Added vignette on command-line options and other methods for controlling the default type of futures to use.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.1" id="version-101">Version 1.0.1<small>2016-07-04</small><a class="anchor" aria-label="anchor" href="#version-101"></a></h2>
@@ -1095,8 +1037,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-1-0-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-0-1"></a></h3>
-<ul><li>Adding section to vignette on globals in formulas describing how they are currently not automatically detected and how to explicitly export them.</li>
-</ul></div>
+<ul><li>Adding section to vignette on globals in formulas describing how they are currently not automatically detected and how to explicitly export them.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-1-0-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-1"></a></h3>
 <ul><li><p>Since <strong>future</strong> 0.13.0, a global <code>pkg</code> would be overwritten by the name of the last package attached in future.</p></li>
@@ -1144,12 +1085,10 @@
 </ul></div>
 <div class="section level3">
 <h3 id="performance-0-15-0">Performance<a class="anchor" aria-label="anchor" href="#performance-0-15-0"></a></h3>
-<ul><li>Significantly decreased the overhead of creating a future, particularly multicore futures.</li>
-</ul></div>
+<ul><li>Significantly decreased the overhead of creating a future, particularly multicore futures.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-15-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-15-0"></a></h3>
-<ul><li>Future would give an error with <code>plan(list("eager"))</code>, whereas it did work with <code>plan("eager")</code> and <code>plan(list(eager))</code>.</li>
-</ul></div>
+<ul><li>Future would give an error with <code>plan(list("eager"))</code>, whereas it did work with <code>plan("eager")</code> and <code>plan(list(eager))</code>.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.14.0" id="version-0140">Version 0.14.0<small>2016-05-17</small><a class="anchor" aria-label="anchor" href="#version-0140"></a></h2>
@@ -1162,13 +1101,11 @@
 </ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-0-14-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-0-14-0"></a></h3>
-<ul><li>Renamed arguments <code>maxCores</code> and <code>cluster</code> to <code>workers</code>. If using the old argument names a deprecation warning will be generated, but it will still work until made defunct in a future release.</li>
-</ul></div>
+<ul><li>Renamed arguments <code>maxCores</code> and <code>cluster</code> to <code>workers</code>. If using the old argument names a deprecation warning will be generated, but it will still work until made defunct in a future release.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-14-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-14-0"></a></h3>
 <ul><li>
-<code><a href="../reference/resolve.html">resolve()</a></code> for lists and environments did not work properly when the set of futures was not resolved in order, which could happen with asynchronous futures.</li>
-</ul></div>
+<code><a href="../reference/resolve.html">resolve()</a></code> for lists and environments did not work properly when the set of futures was not resolved in order, which could happen with asynchronous futures.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.13.0" id="version-0130">Version 0.13.0<small>2016-04-14</small><a class="anchor" aria-label="anchor" href="#version-0130"></a></h2>
@@ -1200,8 +1137,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="performance-0-12-0">Performance<a class="anchor" aria-label="anchor" href="#performance-0-12-0"></a></h3>
-<ul><li>Adjusted the parameters for the schema used to wait for next available cluster node such that nodes are polled more frequently.</li>
-</ul></div>
+<ul><li>Adjusted the parameters for the schema used to wait for next available cluster node such that nodes are polled more frequently.</li></ul></div>
 <div class="section level3">
 <h3 id="globals-0-12-0">Globals<a class="anchor" aria-label="anchor" href="#globals-0-12-0"></a></h3>
 <ul><li><p><code><a href="../reference/resolve.html">resolve()</a></code> gained argument <code>recursive</code>.</p></li>
@@ -1219,13 +1155,12 @@
 <h3 id="new-features-0-11-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-11-0"></a></h3>
 <ul><li><p>Add multisession futures, which analogously to multicore ones, use multiple cores on the local machine with the difference that they are evaluated in separate R session running in the background rather than separate forked R processes. A multisession future is a special type of cluster futures that do not require explicit setup of cluster nodes.</p></li>
 <li><p>Add support for cluster futures, which can make use of a cluster of nodes created by <code><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">parallel::makeCluster()</a></code>.</p></li>
-<li><p>Add <code><a href="../reference/future.html">futureCall()</a></code>, which is for futures what <code><a href="https://rdrr.io/pkg/BiocGenerics/man/do.call.html" class="external-link">do.call()</a></code> is otherwise.</p></li>
+<li><p>Add <code><a href="../reference/future.html">futureCall()</a></code>, which is for futures what <code><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call()</a></code> is otherwise.</p></li>
 <li><p>Standardized how options are named, i.e. <code>future.&lt;option&gt;</code>. If you used any future options previously, make sure to check they follow the above format.</p></li>
 </ul></div>
 <div class="section level3">
 <h3 id="globals-0-11-0">Globals<a class="anchor" aria-label="anchor" href="#globals-0-11-0"></a></h3>
-<ul><li>All futures now validates globals by default (<code>globals = TRUE</code>).</li>
-</ul></div>
+<ul><li>All futures now validates globals by default (<code>globals = TRUE</code>).</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.10.0" id="version-0100">Version 0.10.0<small>2015-12-31</small><a class="anchor" aria-label="anchor" href="#version-0100"></a></h2>
@@ -1240,8 +1175,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-10-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-10-0"></a></h3>
 <ul><li>
-<code>futureOf(envir = x)</code> did not work properly when <code>x</code> was a list environment.</li>
-</ul></div>
+<code>futureOf(envir = x)</code> did not work properly when <code>x</code> was a list environment.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.9.0" id="version-090">Version 0.9.0<small>2015-12-12</small><a class="anchor" aria-label="anchor" href="#version-090"></a></h2>
@@ -1252,16 +1186,13 @@
 </ul></div>
 <div class="section level3">
 <h3 id="globals-0-9-0">Globals<a class="anchor" aria-label="anchor" href="#globals-0-9-0"></a></h3>
-<ul><li>Now globals (“unknown” variables) are identified using the new <code>findGlobals(..., method = "ordered")</code> in <strong>globals</strong> (&gt; 0.5.0) such that a global variable preceding a local variable with the same name is properly identified and exported/frozen.</li>
-</ul></div>
+<ul><li>Now globals (“unknown” variables) are identified using the new <code>findGlobals(..., method = "ordered")</code> in <strong>globals</strong> (&gt; 0.5.0) such that a global variable preceding a local variable with the same name is properly identified and exported/frozen.</li></ul></div>
 <div class="section level3">
 <h3 id="documentation-0-9-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-9-0"></a></h3>
-<ul><li>Updated vignette on common issues with the case where a global variable is not identified because it is hidden by an element assignment in the future expression.</li>
-</ul></div>
+<ul><li>Updated vignette on common issues with the case where a global variable is not identified because it is hidden by an element assignment in the future expression.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-9-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-9-0"></a></h3>
-<ul><li>Errors occurring in multicore futures could prevent further multicore futures from being created.</li>
-</ul></div>
+<ul><li>Errors occurring in multicore futures could prevent further multicore futures from being created.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.2" id="version-082">Version 0.8.2<small>2015-10-14</small><a class="anchor" aria-label="anchor" href="#version-082"></a></h2>
@@ -1275,18 +1206,15 @@
 <h2 class="page-header" data-toc-text="0.8.1" id="version-081">Version 0.8.1<small>2015-10-05</small><a class="anchor" aria-label="anchor" href="#version-081"></a></h2>
 <div class="section level3">
 <h3 id="documentation-0-8-1">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-8-1"></a></h3>
-<ul><li>Added vignette ‘Futures in R: Common issues with solutions’.</li>
-</ul></div>
+<ul><li>Added vignette ‘Futures in R: Common issues with solutions’.</li></ul></div>
 <div class="section level3">
 <h3 id="globals-0-8-1">Globals<a class="anchor" aria-label="anchor" href="#globals-0-8-1"></a></h3>
 <ul><li>
-<code>eager()</code> and <code><a href="../reference/multicore.html">multicore()</a></code> gained argument <code>globals</code>, where <code>globals = TRUE</code> will validate that all global variables identified can be located already before the future is created. This provides the means for providing the same tests on global variables with eager and multicore futures as with lazy futures.</li>
-</ul></div>
+<code>eager()</code> and <code><a href="../reference/multicore.html">multicore()</a></code> gained argument <code>globals</code>, where <code>globals = TRUE</code> will validate that all global variables identified can be located already before the future is created. This provides the means for providing the same tests on global variables with eager and multicore futures as with lazy futures.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-8-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-1"></a></h3>
 <ul><li>
-<code>lazy(sum(x, ...), globals = TRUE)</code> now properly passes <code>...</code> from the function from which the future is setup. If not called within a function or called within a function without <code>...</code> arguments, an informative error message is thrown.</li>
-</ul></div>
+<code>lazy(sum(x, ...), globals = TRUE)</code> now properly passes <code>...</code> from the function from which the future is setup. If not called within a function or called within a function without <code>...</code> arguments, an informative error message is thrown.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.8.0" id="version-080">Version 0.8.0<small>2015-09-07</small><a class="anchor" aria-label="anchor" href="#version-080"></a></h2>
@@ -1298,8 +1226,7 @@
 <div class="section level3">
 <h3 id="bug-fixes-0-8-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-8-0"></a></h3>
 <ul><li>
-<code>plan(future::lazy)</code> and similar gave errors.</li>
-</ul></div>
+<code>plan(future::lazy)</code> and similar gave errors.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.0" id="version-070">Version 0.7.0<small>2015-07-14</small><a class="anchor" aria-label="anchor" href="#version-070"></a></h2>
@@ -1310,8 +1237,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="documentation-0-7-0">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-7-0"></a></h3>
-<ul><li>More colorful <code>demo("mandelbrot", package = "future")</code>.</li>
-</ul></div>
+<ul><li>More colorful <code>demo("mandelbrot", package = "future")</code>.</li></ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-7-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-7-0"></a></h3>
 <ul><li><p>ROBUSTNESS: <code><a href="../reference/multicore.html">multicore()</a></code> blocks until one of the CPU cores is available, iff all are currently occupied by other multicore futures.</p></li>
@@ -1322,8 +1248,7 @@
 <h2 class="page-header" data-toc-text="0.6.0" id="version-060">Version 0.6.0<small>2015-06-19</small><a class="anchor" aria-label="anchor" href="#version-060"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-6-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-6-0"></a></h3>
-<ul><li>Add multicore futures, which are futures that are resolved asynchronously in a separate process. These are only supported on Unix-like systems, but not on Windows.</li>
-</ul></div>
+<ul><li>Add multicore futures, which are futures that are resolved asynchronously in a separate process. These are only supported on Unix-like systems, but not on Windows.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.1" id="version-051">Version 0.5.1<a class="anchor" aria-label="anchor" href="#version-051"></a></h2>
@@ -1339,20 +1264,17 @@
 <div class="section level3">
 <h3 id="globals-0-5-0">Globals<a class="anchor" aria-label="anchor" href="#globals-0-5-0"></a></h3>
 <ul><li>
-<code>lazy()</code> “freezes” global variables at the time when the future is created. This way the result of a lazy future is more likely to be the same as an ‘eager’ future. This is also how globals are likely to be handled by asynchronous futures.</li>
-</ul></div>
+<code>lazy()</code> “freezes” global variables at the time when the future is created. This way the result of a lazy future is more likely to be the same as an ‘eager’ future. This is also how globals are likely to be handled by asynchronous futures.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.2" id="version-042">Version 0.4.2<a class="anchor" aria-label="anchor" href="#version-042"></a></h2>
 <div class="section level3">
 <h3 id="new-features-0-4-2">New Features<a class="anchor" aria-label="anchor" href="#new-features-0-4-2"></a></h3>
 <ul><li>
-<code><a href="../reference/plan.html">plan()</a></code> records the call.</li>
-</ul></div>
+<code><a href="../reference/plan.html">plan()</a></code> records the call.</li></ul></div>
 <div class="section level3">
 <h3 id="documentation-0-4-2">Documentation<a class="anchor" aria-label="anchor" href="#documentation-0-4-2"></a></h3>
-<ul><li>Added <code>demo("mandelbrot", package = "future")</code>, which can be re-used by other future packages.</li>
-</ul></div>
+<ul><li>Added <code>demo("mandelbrot", package = "future")</code>, which can be re-used by other future packages.</li></ul></div>
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.1" id="version-041">Version 0.4.1<a class="anchor" aria-label="anchor" href="#version-041"></a></h2>
@@ -1364,8 +1286,7 @@
 </div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.4.0" id="version-040">Version 0.4.0<a class="anchor" aria-label="anchor" href="#version-040"></a></h2>
-<ul><li>Distilled Future API from (in-house) <strong>async</strong> package.</li>
-</ul></div>
+<ul><li>Distilled Future API from (in-house) <strong>async</strong> package.</li></ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

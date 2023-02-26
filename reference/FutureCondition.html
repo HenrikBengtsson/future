@@ -27,7 +27,7 @@ evaluation of the future."><meta property="og:image" content="https://future.fut
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9012</span>
       </span>
     </div>
 
@@ -186,7 +186,19 @@ class to help distinguish them from conditions that occur due to the
 <span></span>
 <span><span class="fu">RngFutureError</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">UnexpectedFutureResultError</span><span class="op">(</span><span class="va">future</span>, hint <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">UnexpectedFutureResultError</span><span class="op">(</span><span class="va">future</span>, hint <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">GlobalEnvFutureCondition</span><span class="op">(</span></span>
+<span>  message <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  call <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  globalenv <span class="op">=</span> <span class="va">globalenv</span>,</span>
+<span>  uuid <span class="op">=</span> <span class="va">future</span><span class="op">$</span><span class="va">uuid</span>,</span>
+<span>  future <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">GlobalEnvFutureWarning</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">GlobalEnvFutureError</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
