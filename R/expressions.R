@@ -221,7 +221,7 @@ makeExpression <- local({
 
     if (.(globalenv)) {
       ## Record names of variables in the global environment
-      ...future.globalenv.names <- c(base::names(base::.GlobalEnv), "...future.value", "...future.globalenv.names")
+      ...future.globalenv.names <- c(base::names(base::.GlobalEnv), "...future.value", "...future.globalenv.names", ".Random.seed")
     }
 
     ## NOTE: We don't want to use local(body) w/ on.exit() because
