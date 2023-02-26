@@ -219,8 +219,10 @@ makeExpression <- local({
     ...future.conditions <- base::list()
     ...future.rng <- base::globalenv()$.Random.seed
 
-    ## Record names of variables in the global environment
-    ...future.oldGlobalEnvNames <- names(base::globalenv())
+    if (.(globalenv)) {
+      ## Record names of variables in the global environment
+      ...future.globalenv.names <- c(base::names(base::.GlobalEnv), "...future.value", "...future.globalenv.names")
+    }
 
     ## NOTE: We don't want to use local(body) w/ on.exit() because
     ## evaluation in a local is optional, cf. argument 'local'.
@@ -229,10 +231,14 @@ makeExpression <- local({
     ...future.result <- base::tryCatch({
       base::withCallingHandlers({
         ...future.value <- base::withVisible(.(expr))
-        ## Any variables added to the global environment?
-        added <- setdiff(names(base::globalenv()), ...future.oldGlobalEnvNames)
-        added <- setdiff(added, c("...future.value", "...future.oldGlobalEnvNames"))
-        future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), globalenv = list(added = added), started = ...future.startTime, version = "1.8")
+        future::FutureResult(
+          value = ...future.value$value,
+          visible = ...future.value$visible,
+          rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
+          globalenv = if (.(globalenv)) list(added = base::setdiff(base::names(base::.GlobalEnv), ...future.globalenv.names)) else NULL,
+          started = ...future.startTime,
+          version = "1.8"
+        )
       }, condition = base::local({
         ## WORKAROUND: If the name of any of the below objects/functions
         ## coincides with a promise (e.g. a future assignment) then we
@@ -347,7 +353,7 @@ makeExpression <- local({
   })
 
 
-  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), globalenv = (getOption("future.globalenv.onMisuse", "ignore") != "ignore"), enter = NULL, exit = NULL, version = "1.8") {
     conditionClassesExclude <- attr(conditionClasses, "exclude", exact = TRUE)
     muffleInclude <- attr(conditionClasses, "muffleInclude", exact = TRUE)
     if (is.null(muffleInclude)) muffleInclude <- "^muffle"
