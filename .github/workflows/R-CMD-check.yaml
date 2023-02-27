@@ -112,6 +112,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           rcmdcheck::rcmdcheck(
+            build_args = if (getRversion() < "3.5.0") "--no-build-vignettes",
             args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"),
             check_dir = "check"
           )
