@@ -2,8 +2,8 @@
 
 ## New Features
 
- * Added optional assertion that no variables are added to the global
-   environment by the future.
+ * Added optional assertion against adding variables to the global
+   environment by a future.
 
  * Add option `future.onFutureCondition.keepFuture` for controlling
    whether `FutureCondition` objects should have a copy of the
