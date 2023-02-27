@@ -107,7 +107,7 @@ for (cores in 1:min(2L, availableCores("multicore"))) {
   b <- 3
   yTruth <- a * b
 
-  f <- multicore({ a * b }, workers = 1L)
+  f <- multicore({ a * b }, globals = TRUE, workers = 1L)
   rm(list = c("a", "b"))
 
   v <- value(f)

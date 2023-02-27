@@ -6,7 +6,7 @@
 * GitHub: https://github.com/yqzhong7/AIPW
 * Source code: https://github.com/cran/AIPW
 * Date/Publication: 2021-06-11 09:30:02 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "AIPW")` for more info
 
@@ -22,97 +22,106 @@ Run `revdep_details(, "AIPW")` for more info
       All declared Imports should be used.
     ```
 
-# alookr
-
-<details>
-
-* Version: 0.3.5
-* GitHub: https://github.com/choonghyunryu/alookr
-* Source code: https://github.com/cran/alookr
-* Date/Publication: 2021-12-01 12:10:02 UTC
-* Number of recursive dependencies: 160
-
-Run `revdep_details(, "alookr")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘alookr-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: run_models
-    > ### Title: Fit binary classification model
-    > ### Aliases: run_models
-    > 
-    > ### ** Examples
-    > 
-    > library(dplyr)
-    ...
-    No variables that high unique rate.
-    
-    ── Checking character variables ─────────────────────── categorical data ──
-    No character variables.
-    
-    > 
-    > # Run the model fitting.
-    > result <- run_models(.data = train, target = "Kyphosis", positive = "present")
-    Error: Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
-    Execution halted
-    ```
-
 # AlpsNMR
 
 <details>
 
-* Version: 3.4.0
-* GitHub: NA
+* Version: 4.0.2
+* GitHub: https://github.com/sipss/AlpsNMR
 * Source code: https://github.com/cran/AlpsNMR
-* Date/Publication: 2021-10-26
+* Date/Publication: 2022-11-10
 * Number of recursive dependencies: 169
 
 Run `revdep_details(, "AlpsNMR")` for more info
 
 </details>
 
-## Newly broken
+## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking examples ... ERROR
     ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘introduction-to-alpsnmr.Rmd’ using rmarkdown
-    Quitting from lines 61-63 (introduction-to-alpsnmr.Rmd) 
-    Error: processing vignette 'introduction-to-alpsnmr.Rmd' failed with diagnostics:
-    Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
-    --- failed re-building ‘introduction-to-alpsnmr.Rmd’
+    Running examples in ‘AlpsNMR-Ex.R’ failed
+    The error most likely occurred in:
     
-    SUMMARY: processing the following file failed:
-      ‘introduction-to-alpsnmr.Rmd’
-    
-    Error: Vignette re-building failed.
+    > ### Name: models_stability_plot_plsda
+    > ### Title: Models stability plot
+    > ### Aliases: models_stability_plot_plsda
+    > 
+    > ### ** Examples
+    > 
+    > # Data analysis for a table of integrated peaks
+    ...
+     18.   └─vctrs::vec_default_cast(...)
+     19.     ├─base::withRestarts(...)
+     20.     │ └─base (local) withOneRestart(expr, restarts[[1L]])
+     21.     │   └─base (local) doWithOneRestart(return(expr), restart)
+     22.     └─vctrs::stop_incompatible_cast(...)
+     23.       └─vctrs::stop_incompatible_type(...)
+     24.         └─vctrs:::stop_incompatible(...)
+     25.           └─vctrs:::stop_vctrs(...)
+     26.             └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
     Execution halted
     ```
 
-## In both
-
-*   checking dependencies in R code ... NOTE
+*   checking tests ...
     ```
-    Namespace in Imports field not imported from: ‘zip’
-      All declared Imports should be used.
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(AlpsNMR)
+      Loading required package: future
+      
+      Attaching package: 'AlpsNMR'
+      
+    ...
+          still_improving = dplyr::cumall(.data$auc_diff_above_thres), 
+          good_ncomp = (.data$still_improving == TRUE & dplyr::lead(.data$still_improving, 
+              default = FALSE) == FALSE))`: ℹ In argument: `good_ncomp = (...)`.
+      ℹ In group 2: `cv_outer_iteration = 1`, `cv_inner_iteration = 2`.
+      Caused by error in `vec_c()`:
+      ! Can't convert `..2` <logical> to <vctrs_unspecified>.
+      
+      [ FAIL 1 | WARN 2 | SKIP 1 | PASS 90 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
+    Warning in has_utility("pdfcrop") :
+      pdfcrop not installed or not in PATH
+    sh: pdfcrop: command not found
+    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
+      error in running command
+    sh: pdfcrop: command not found
+    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
+      error in running command
+    ...
+    Error: processing vignette 'Vig02-handling-metadata-and-annotations.Rmd' failed with diagnostics:
+    cannot open the connection
+    --- failed re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
+      ‘Vig02-handling-metadata-and-annotations.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # aroma.core
 
 <details>
 
-* Version: 3.2.2
+* Version: 3.3.0
 * GitHub: https://github.com/HenrikBengtsson/aroma.core
 * Source code: https://github.com/cran/aroma.core
-* Date/Publication: 2021-01-05 05:10:12 UTC
-* Number of recursive dependencies: 48
+* Date/Publication: 2022-11-15 18:30:13 UTC
+* Number of recursive dependencies: 71
 
 Run `revdep_details(, "aroma.core")` for more info
 
@@ -130,11 +139,11 @@ Run `revdep_details(, "aroma.core")` for more info
 
 <details>
 
-* Version: 2.3.3
+* Version: 2.3.4
 * GitHub: https://github.com/c7rishi/BAMBI
 * Source code: https://github.com/cran/BAMBI
-* Date/Publication: 2021-10-02 13:40:23 UTC
-* Number of recursive dependencies: 49
+* Date/Publication: 2022-09-02 15:10:05 UTC
+* Number of recursive dependencies: 51
 
 Run `revdep_details(, "BAMBI")` for more info
 
@@ -144,26 +153,20 @@ Run `revdep_details(, "BAMBI")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.3Mb
+      installed size is  7.2Mb
       sub-directories of 1Mb or more:
-        libs   5.8Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘stats4’
-      All declared Imports should be used.
+        libs   6.7Mb
     ```
 
 # baseballr
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.3.0
 * GitHub: https://github.com/BillPetti/baseballr
 * Source code: https://github.com/cran/baseballr
-* Date/Publication: 2022-04-25 07:20:12 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2022-09-09 07:52:55 UTC
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "baseballr")` for more info
 
@@ -171,64 +174,66 @@ Run `revdep_details(, "baseballr")` for more info
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking re-building of vignette outputs ... ERROR
     ```
-    Namespaces in Imports field not imported from:
-      ‘pitchRx’ ‘progressr’
-      All declared Imports should be used.
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘baseballr.Rmd’ using rmarkdown
+    --- finished re-building ‘baseballr.Rmd’
+    
+    --- re-building ‘ncaa_scraping.Rmd’ using rmarkdown
+    --- finished re-building ‘ncaa_scraping.Rmd’
+    
+    --- re-building ‘plotting_statcast.Rmd’ using rmarkdown
+    --- finished re-building ‘plotting_statcast.Rmd’
+    ...
+    Quitting from lines 38-40 (using_statcast_pitch_data.Rmd) 
+    Error: processing vignette 'using_statcast_pitch_data.Rmd' failed with diagnostics:
+    HTTP error 404.
+    --- failed re-building ‘using_statcast_pitch_data.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘using_statcast_pitch_data.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
-# BatchGetSymbols
+# batchtools
 
 <details>
 
-* Version: 2.6.1
-* GitHub: NA
-* Source code: https://github.com/cran/BatchGetSymbols
-* Date/Publication: 2020-11-28 15:10:21 UTC
-* Number of recursive dependencies: 89
+* Version: 0.9.15
+* GitHub: https://github.com/mllg/batchtools
+* Source code: https://github.com/cran/batchtools
+* Date/Publication: 2021-01-11 12:40:03 UTC
+* Number of recursive dependencies: 82
 
-Run `revdep_details(, "BatchGetSymbols")` for more info
+Run `revdep_details(, "batchtools")` for more info
 
 </details>
 
 ## In both
 
-*   checking LazyData ... NOTE
+*   checking package dependencies ... NOTE
     ```
-      'LazyData' is specified without a 'data' directory
+    Package suggested but not available for checking: ‘doMPI’
     ```
 
-# bcmaps
-
-<details>
-
-* Version: 1.0.2
-* GitHub: https://github.com/bcgov/bcmaps
-* Source code: https://github.com/cran/bcmaps
-* Date/Publication: 2021-03-09 23:40:03 UTC
-* Number of recursive dependencies: 129
-
-Run `revdep_details(, "bcmaps")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
+*   checking Rd cross-references ... NOTE
     ```
-      'LazyData' is specified without a 'data' directory
+    Package unavailable to check Rd xrefs: ‘Rmpi’
     ```
 
 # BEKKs
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.4.1
 * GitHub: NA
 * Source code: https://github.com/cran/BEKKs
-* Date/Publication: 2022-03-19 00:20:02 UTC
-* Number of recursive dependencies: 81
+* Date/Publication: 2022-12-18 16:40:14 UTC
+* Number of recursive dependencies: 99
 
 Run `revdep_details(, "BEKKs")` for more info
 
@@ -238,15 +243,14 @@ Run `revdep_details(, "BEKKs")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 14.7Mb
+      installed size is 18.4Mb
       sub-directories of 1Mb or more:
-        libs  13.9Mb
+        libs  17.5Mb
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘expm’ ‘forecast’ ‘parallel’
+    Namespace in Imports field not imported from: ‘forecast’
       All declared Imports should be used.
     ```
 
@@ -254,10 +258,10 @@ Run `revdep_details(, "BEKKs")` for more info
 
 <details>
 
-* Version: 0.4.1
+* Version: 0.5.0
 * GitHub: https://github.com/spatialstatisticsupna/bigDM
 * Source code: https://github.com/cran/bigDM
-* Date/Publication: 2022-02-08 15:40:10 UTC
+* Date/Publication: 2022-10-28 11:47:44 UTC
 * Number of recursive dependencies: 125
 
 Run `revdep_details(, "bigDM")` for more info
@@ -284,7 +288,7 @@ Run `revdep_details(, "bigDM")` for more info
 * GitHub: https://github.com/alexander-pastukhov/bistablehistory
 * Source code: https://github.com/cran/bistablehistory
 * Date/Publication: 2022-03-22 13:40:02 UTC
-* Number of recursive dependencies: 89
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "bistablehistory")` for more info
 
@@ -294,9 +298,9 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 43.3Mb
+      installed size is 50.3Mb
       sub-directories of 1Mb or more:
-        libs  42.4Mb
+        libs  49.4Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -315,11 +319,11 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 <details>
 
-* Version: 0.4-1
+* Version: 0.4-3
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
-* Date/Publication: 2022-01-27 21:40:02 UTC
-* Number of recursive dependencies: 104
+* Date/Publication: 2022-05-11 17:00:05 UTC
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "blavaan")` for more info
 
@@ -327,12 +331,16 @@ Run `revdep_details(, "blavaan")` for more info
 
 ## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘cmdstanr’
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 71.5Mb
+      installed size is 87.4Mb
       sub-directories of 1Mb or more:
-        libs      68.9Mb
-        testdata   1.5Mb
+        libs  85.5Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -348,7 +356,7 @@ Run `revdep_details(, "blavaan")` for more info
 * GitHub: https://github.com/rvalavi/blockCV
 * Source code: https://github.com/cran/blockCV
 * Date/Publication: 2021-06-17 04:50:02 UTC
-* Number of recursive dependencies: 119
+* Number of recursive dependencies: 123
 
 Run `revdep_details(, "blockCV")` for more info
 
@@ -362,41 +370,33 @@ Run `revdep_details(, "blockCV")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 50 lines of output:
-        train test
-      1   167   87
-      2    87  167
       [1] "SpatialBlock"
       The best folds was in iteration 1:
         train test
+      1   195   59
+      2   187   67
+      3   230   24
     ...
-       3.   │ └─base::withCallingHandlers(...)
-       4.   └─future::plan("multiprocess", workers = nCores)
-       5.     └─future plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-       6.       └─future warn_about_multiprocess(newStack)
-       7.         └─future warn_about_deprecated(...)
-       8.           └─base dfcn(msg = msg, package = .packageName)
+        6.         └─future:::run.Future(future)
+        7.           ├─base::do.call(makeFuture, args = args)
+        8.           └─future (local) `<FtrStrtg>`(...)
+        9.             └─future (local) strategy(..., workers = workers, envir = envir)
+       10.               └─future (local) dfcn(msg = msg, package = .packageName)
+       11.                 └─base::.Defunct(...)
       
       [ FAIL 1 | WARN 0 | SKIP 8 | PASS 193 ]
       Error: Test failures
       Execution halted
     ```
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking re-building of vignette outputs ... ERROR
     ```
     Error(s) in re-building vignettes:
       ...
     --- re-building ‘BlockCV_for_SDM.Rmd’ using rmarkdown
-    Loading required package: sp
-    Linking to GEOS 3.9.1, GDAL 2.4.4, PROJ 4.9.3; sf_use_s2() is TRUE
-    Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> = "none")` instead.
-    Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> = "none")` instead.
-    Warning: `guides(<scale> = FALSE)` is deprecated. Please use `guides(<scale> = "none")` instead.
-    There are 10 raster layers
-    
-    ...
     Quitting from lines 205-210 (BlockCV_for_SDM.Rmd) 
     Error: processing vignette 'BlockCV_for_SDM.Rmd' failed with diagnostics:
-    Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
+    Detected creation of a 'multiprocess' future. Strategy 'multiprocess' is defunct in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'.
     --- failed re-building ‘BlockCV_for_SDM.Rmd’
     
     SUMMARY: processing the following file failed:
@@ -424,11 +424,11 @@ Run `revdep_details(, "blockCV")` for more info
 
 <details>
 
-* Version: 2.17.0
+* Version: 2.18.0
 * GitHub: https://github.com/paul-buerkner/brms
 * Source code: https://github.com/cran/brms
-* Date/Publication: 2022-04-13 14:22:29 UTC
-* Number of recursive dependencies: 178
+* Date/Publication: 2022-09-19 13:56:19 UTC
+* Number of recursive dependencies: 175
 
 Run `revdep_details(, "brms")` for more info
 
@@ -443,43 +443,21 @@ Run `revdep_details(, "brms")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.7Mb
+      installed size is  7.5Mb
       sub-directories of 1Mb or more:
-        R     4.2Mb
+        R     3.0Mb
         doc   3.6Mb
-    ```
-
-# cfbfastR
-
-<details>
-
-* Version: 1.6.4
-* GitHub: https://github.com/saiemgilani/cfbfastR
-* Source code: https://github.com/cran/cfbfastR
-* Date/Publication: 2021-10-27 12:30:02 UTC
-* Number of recursive dependencies: 110
-
-Run `revdep_details(, "cfbfastR")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘xgboost’
-      All declared Imports should be used.
     ```
 
 # ChromSCape
 
 <details>
 
-* Version: 1.4.0
+* Version: 1.8.0
 * GitHub: https://github.com/vallotlab/ChromSCape
 * Source code: https://github.com/cran/ChromSCape
-* Date/Publication: 2021-10-26
-* Number of recursive dependencies: 272
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 227
 
 Run `revdep_details(, "ChromSCape")` for more info
 
@@ -497,49 +475,41 @@ Run `revdep_details(, "ChromSCape")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.9Mb
+      installed size is  8.2Mb
       sub-directories of 1Mb or more:
-        data   1.3Mb
+        data   1.4Mb
         doc    2.9Mb
         www    2.0Mb
     ```
 
 *   checking R code for possible problems ... NOTE
     ```
-    CompareWilcox: no visible binding for global variable ‘annot.’
     bams_to_matrix_indexes: no visible binding for global variable
       ‘files_dir_list’
+    enrich_TF_ChEA3_genes: no visible binding for global variable
+      ‘CheA3_TF_nTargets’
     filter_correlated_cell_scExp: no visible binding for global variable
       ‘run_tsne’
     generate_analysis: no visible binding for global variable ‘k’
     generate_analysis: no visible binding for global variable
       ‘clusterConsensus’
     get_most_variable_cyto: no visible binding for global variable
-      ‘cytoBand’
     ...
-    plot_reduced_dim_scExp: no visible binding for global variable ‘V1’
-    plot_reduced_dim_scExp: no visible binding for global variable ‘V2’
-    plot_reduced_dim_scExp: no visible binding for global variable
-      ‘cluster’
+    plot_top_TF_scExp: no visible binding for global variable ‘TF’
+    rebin_matrix: no visible binding for global variable ‘new_row’
+    rebin_matrix: no visible binding for global variable ‘origin_value’
     subset_bam_call_peaks: no visible binding for global variable
       ‘merged_bam’
     Undefined global functions or variables:
-      Fri_cyto Gain_or_Loss V1 V2 absolute_value annot. cluster
-      clusterConsensus cytoBand files_dir_list genes k merged_bam ncells
-      run_tsne sample_id total_counts
+      CheA3_TF_nTargets Component Fri_cyto Gain_or_Loss Gene TF V1 V2
+      absolute_value cluster clusterConsensus cytoBand files_dir_list genes
+      group k merged_bam molecule ncells new_row orientation origin_value
+      percent_active run_tsne sample_id total_counts
     ```
 
 *   checking Rd files ... NOTE
     ```
     prepare_Rd: raw_counts_to_sparse_matrix.Rd:6-8: Dropping empty section \source
-    ```
-
-*   checking files in ‘vignettes’ ... NOTE
-    ```
-    Files named as vignettes but with no recognized vignette engine:
-       ‘vignettes/PairedTag_Zhu_H3K4me1.Rmd’
-       ‘vignettes/scChIC_Ku_H3K4me3.Rmd’
-    (Is a VignetteBuilder field missing?)
     ```
 
 # civis
@@ -600,11 +570,11 @@ Run `revdep_details(, "codebook")` for more info
 
 <details>
 
-* Version: 0.4.0
+* Version: 0.5.0
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
-* Date/Publication: 2021-04-19 22:00:18 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2022-11-24 17:50:05 UTC
+* Number of recursive dependencies: 126
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -626,7 +596,7 @@ Run `revdep_details(, "cSEM")` for more info
 * GitHub: https://github.com/adsoncostanzifilho/CSGo
 * Source code: https://github.com/cran/CSGo
 * Date/Publication: 2021-05-07 18:50:02 UTC
-* Number of recursive dependencies: 74
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "CSGo")` for more info
 
@@ -641,79 +611,25 @@ Run `revdep_details(, "CSGo")` for more info
       All declared Imports should be used.
     ```
 
-# datapackage.r
+# DeclareDesign
 
 <details>
 
-* Version: 1.3.5
-* GitHub: https://github.com/frictionlessdata/datapackage-r
-* Source code: https://github.com/cran/datapackage.r
-* Date/Publication: 2022-01-11 10:22:47 UTC
-* Number of recursive dependencies: 118
+* Version: 1.0.2
+* GitHub: https://github.com/DeclareDesign/DeclareDesign
+* Source code: https://github.com/cran/DeclareDesign
+* Date/Publication: 2023-01-10 07:13:10 UTC
+* Number of recursive dependencies: 134
 
-Run `revdep_details(, "datapackage.r")` for more info
+Run `revdep_details(, "DeclareDesign")` for more info
 
 </details>
 
 ## In both
 
-*   checking tests ...
+*   checking package dependencies ... NOTE
     ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      ── Failure (test-profile.R:106:5): profile tabular-data-package should be up-to-date ──
-      profile$jsonschema not equal to `response.data`.
-      Component "properties": Component "licenses": Component "items": Names: 2 string mismatches
-      Component "properties": Component "licenses": Component "items": Length mismatch: comparison on first 5 components
-      Component "properties": Component "licenses": Component "items": Component 4: names for target but not for current
-      Component "properties": Component "licenses": Component "items": Component 4: Length mismatch: comparison on first 2 components
-    ...
-      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 4: Component 1: 1 string mismatch
-      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 4: Component 2: Modes: list, character
-      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 4: Component 2: Component 1: 1 string mismatch
-      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 5: Names: 1 string mismatch
-      Component "properties": Component "schema": Component "properties": Component "fields": Component "items": Component "anyOf": Component 1: Component 5: Component 5: Length mismatch: comparison on first 2 components
-      ...
-      
-      [ FAIL 5 | WARN 0 | SKIP 0 | PASS 248 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘future’ ‘iterators’ ‘readr’
-      All declared Imports should be used.
-    ```
-
-# delayed
-
-<details>
-
-* Version: 0.3.0
-* GitHub: https://github.com/tlverse/delayed
-* Source code: https://github.com/cran/delayed
-* Date/Publication: 2020-02-28 11:40:02 UTC
-* Number of recursive dependencies: 78
-
-Run `revdep_details(, "delayed")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘assertthat’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
+    Package suggested but not available for checking: ‘DesignLibrary’
     ```
 
 # dhReg
@@ -724,7 +640,7 @@ Run `revdep_details(, "delayed")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/dhReg
 * Date/Publication: 2021-02-28 12:30:02 UTC
-* Number of recursive dependencies: 67
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "dhReg")` for more info
 
@@ -745,12 +661,12 @@ Run `revdep_details(, "dhReg")` for more info
       > # install.packages("stats")
       > # library(stats)
     ...
-       1. dhReg::dhr(...)
-       2. future::plan(future::multiprocess)
-       3. future plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-       4. future warn_about_multiprocess(newStack)
-       5. future warn_about_deprecated(...)
-       6. base dfcn(msg = msg, package = .packageName)
+        4. future.apply:::future_xapply(...)
+        5. future::future(...)
+        7. future:::run.Future(future)
+        9. future (local) `<FtrStrtg>`(...)
+       10. future (local) dfcn(msg = msg, package = .packageName)
+       11. base::.Defunct(...)
       
       Error in reporter$stop_if_needed() : Test failed
       Calls: test_that -> <Anonymous>
@@ -761,11 +677,11 @@ Run `revdep_details(, "dhReg")` for more info
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.2.6
 * GitHub: https://github.com/dipterix/dipsaus
 * Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2022-01-27 17:30:02 UTC
-* Number of recursive dependencies: 76
+* Date/Publication: 2023-01-21 12:30:02 UTC
+* Number of recursive dependencies: 69
 
 Run `revdep_details(, "dipsaus")` for more info
 
@@ -775,21 +691,62 @@ Run `revdep_details(, "dipsaus")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.9Mb
+      installed size is  5.8Mb
       sub-directories of 1Mb or more:
-        doc    1.3Mb
-        libs   3.5Mb
+        doc    1.1Mb
+        libs   3.3Mb
+    ```
+
+# disk.frame
+
+<details>
+
+* Version: 0.7.2
+* GitHub: https://github.com/DiskFrame/disk.frame
+* Source code: https://github.com/cran/disk.frame
+* Date/Publication: 2022-03-07 11:40:02 UTC
+* Number of recursive dependencies: 103
+
+Run `revdep_details(, "disk.frame")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘disk.frame-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: anti_join.disk.frame
+    > ### Title: Performs join/merge for disk.frames
+    > ### Aliases: anti_join.disk.frame full_join.disk.frame
+    > ###   inner_join.disk.frame left_join.disk.frame semi_join.disk.frame
+    > 
+    > ### ** Examples
+    > 
+    ...
+    Appending disk.frames: 
+    Error in anti_join(.x, .y, by = by, copy = copy, ..., overwrite = overwrite) : 
+      `...` must be empty.
+    ✖ Problematic arguments:
+    • ..1 = xch
+    • ..2 = ych
+    • overwrite = overwrite
+    ℹ Did you forget to name an argument?
+    Calls: anti_join ... resolve.list -> signalConditionsASAP -> signalConditions
+    Execution halted
     ```
 
 # dispositionEffect
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.1
 * GitHub: https://github.com/marcozanotti/dispositionEffect
 * Source code: https://github.com/cran/dispositionEffect
-* Date/Publication: 2021-08-02 07:50:02 UTC
-* Number of recursive dependencies: 120
+* Date/Publication: 2022-05-30 07:50:02 UTC
+* Number of recursive dependencies: 135
 
 Run `revdep_details(, "dispositionEffect")` for more info
 
@@ -803,21 +760,21 @@ Run `revdep_details(, "dispositionEffect")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 50 lines of output:
-      ── Failure (test-realized_duration.R:113:2): realized_duration works (realized_only = TRUE) ──
+      ── Failure ('test-realized_duration.R:113'): realized_duration works (realized_only = TRUE) ──
       realized_duration(...) not equal to c(...).
       1/4 mismatches
       [2] 34 - 28 == 6
-      ── Failure (test-realized_duration.R:116:2): realized_duration works (realized_only = TRUE) ──
+      ── Failure ('test-realized_duration.R:116'): realized_duration works (realized_only = TRUE) ──
       realized_duration(...) not equal to c(...).
     ...
       1/4 mismatches
       [2] 34 - 28 == 6
-      ── Failure (test-realized_duration.R:161:2): realized_duration works (realized_only = TRUE) ──
+      ── Failure ('test-realized_duration.R:161'): realized_duration works (realized_only = TRUE) ──
       realized_duration(...) not equal to c(...).
       1/4 mismatches
       [1] 34 - 28 == 6
       
-      [ FAIL 36 | WARN 0 | SKIP 0 | PASS 331 ]
+      [ FAIL 36 | WARN 1 | SKIP 0 | PASS 331 ]
       Error: Test failures
       Execution halted
     ```
@@ -830,7 +787,7 @@ Run `revdep_details(, "dispositionEffect")` for more info
 * GitHub: https://github.com/sjspielman/dragon
 * Source code: https://github.com/cran/dragon
 * Date/Publication: 2022-04-08 08:42:33 UTC
-* Number of recursive dependencies: 135
+* Number of recursive dependencies: 140
 
 Run `revdep_details(, "dragon")` for more info
 
@@ -844,37 +801,15 @@ Run `revdep_details(, "dragon")` for more info
       All declared Imports should be used.
     ```
 
-# easyalluvial
-
-<details>
-
-* Version: 0.3.0
-* GitHub: https://github.com/erblast/easyalluvial
-* Source code: https://github.com/cran/easyalluvial
-* Date/Publication: 2021-01-13 10:40:09 UTC
-* Number of recursive dependencies: 146
-
-Run `revdep_details(, "easyalluvial")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘progress’
-      All declared Imports should be used.
-    ```
-
 # EFAtools
 
 <details>
 
-* Version: 0.4.1
+* Version: 0.4.4
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
-* Date/Publication: 2022-04-24 14:40:02 UTC
-* Number of recursive dependencies: 90
+* Date/Publication: 2023-01-06 14:50:40 UTC
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "EFAtools")` for more info
 
@@ -884,9 +819,9 @@ Run `revdep_details(, "EFAtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.7Mb
+      installed size is  7.4Mb
       sub-directories of 1Mb or more:
-        libs   5.5Mb
+        libs   6.2Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -899,11 +834,11 @@ Run `revdep_details(, "EFAtools")` for more info
 
 <details>
 
-* Version: 0.1.13
-* GitHub: https://github.com/Waller-SUSAN/envi
+* Version: 0.1.15
+* GitHub: https://github.com/lance-waller-lab/envi
 * Source code: https://github.com/cran/envi
-* Date/Publication: 2022-03-24 08:40:17 UTC
-* Number of recursive dependencies: 124
+* Date/Publication: 2022-08-30 07:00:16 UTC
+* Number of recursive dependencies: 156
 
 Run `revdep_details(, "envi")` for more info
 
@@ -918,70 +853,15 @@ Run `revdep_details(, "envi")` for more info
     See ‘/c4/home/henrik/repositories/future/revdep/checks/envi/new/envi.Rcheck/00install.out’ for details.
     ```
 
-# EpiNow2
-
-<details>
-
-* Version: 1.3.2
-* GitHub: https://github.com/epiforecasts/EpiNow2
-* Source code: https://github.com/cran/EpiNow2
-* Date/Publication: 2020-12-14 09:00:15 UTC
-* Number of recursive dependencies: 157
-
-Run `revdep_details(, "EpiNow2")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘spelling.R’
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(EpiNow2)
-      > 
-      > test_check("EpiNow2")
-      [ FAIL 2 | WARN 0 | SKIP 37 | PASS 32 ]
-    ...
-        6. └─EpiNow2::setup_future(reported_cases, strategies = "multiprocess")
-        7.   └─future::plan(strategies, workers = workers, gc = TRUE, earlySignal = TRUE)
-        8.     └─future plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-        9.       └─future warn_about_multiprocess(newStack)
-       10.         └─future warn_about_deprecated(...)
-       11.           └─base dfcn(msg = msg, package = .packageName)
-      
-      [ FAIL 2 | WARN 0 | SKIP 37 | PASS 32 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘EpiSoon’
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 168.1Mb
-      sub-directories of 1Mb or more:
-        libs  166.5Mb
-    ```
-
 # epitweetr
 
 <details>
 
-* Version: 2.0.3
+* Version: 2.2.13
 * GitHub: https://github.com/EU-ECDC/epitweetr
 * Source code: https://github.com/cran/epitweetr
-* Date/Publication: 2022-01-05 10:00:08 UTC
-* Number of recursive dependencies: 143
+* Date/Publication: 2022-12-01 00:40:03 UTC
+* Number of recursive dependencies: 146
 
 Run `revdep_details(, "epitweetr")` for more info
 
@@ -994,82 +874,98 @@ Run `revdep_details(, "epitweetr")` for more info
     Package suggested but not available for checking: ‘taskscheduleR’
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.1Mb
-      sub-directories of 1Mb or more:
-        doc    3.0Mb
-        java   1.3Mb
-    ```
-
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘httpuv’ ‘knitr’ ‘plyr’ ‘tidyverse’ ‘tokenizers’ ‘xml2’
+      ‘httpuv’ ‘knitr’ ‘plyr’ ‘rgdal’ ‘tidyverse’ ‘tokenizers’ ‘xml2’
       All declared Imports should be used.
     ```
 
-# fipe
+# fect
 
 <details>
 
-* Version: 0.0.1
-* GitHub: https://github.com/italocegatta/fipe
-* Source code: https://github.com/cran/fipe
-* Date/Publication: 2019-08-25 07:20:06 UTC
-* Number of recursive dependencies: 66
+* Version: 1.0.0
+* GitHub: NA
+* Source code: https://github.com/cran/fect
+* Date/Publication: 2022-10-14 09:52:32 UTC
+* Number of recursive dependencies: 68
 
-Run `revdep_details(, "fipe")` for more info
+Run `revdep_details(, "fect")` for more info
 
 </details>
 
 ## In both
 
-*   checking LazyData ... NOTE
+*   checking installed package size ... NOTE
     ```
-      'LazyData' is specified without a 'data' directory
+      installed size is 13.9Mb
+      sub-directories of 1Mb or more:
+        libs  12.7Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘panelView’
+      All declared Imports should be used.
+    ```
+
+# fiery
+
+<details>
+
+* Version: 1.1.4
+* GitHub: https://github.com/thomasp85/fiery
+* Source code: https://github.com/cran/fiery
+* Date/Publication: 2022-08-16 07:20:06 UTC
+* Number of recursive dependencies: 74
+
+Run `revdep_details(, "fiery")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(fiery)
+      > 
+      > test_check("fiery")
+      
+      [ FAIL 1 | WARN 0 | SKIP 1 | PASS 253 ]
+    ...
+       2.   └─private$ASYNC$add(substitute(expr), then, substituted = TRUE)
+       3.     └─private$make_future(expr, then, ...)
+       4.       ├─base::do.call(private$catcher, list(expr = expr, lazy = private$lazy))
+       5.       └─future::multiprocess(...)
+       6.         └─future (local) dfcn(msg = msg, package = .packageName)
+       7.           └─base::.Defunct(...)
+      
+      [ FAIL 1 | WARN 0 | SKIP 1 | PASS 253 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # flowGraph
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.6.0
 * GitHub: https://github.com/aya49/flowGraph
 * Source code: https://github.com/cran/flowGraph
-* Date/Publication: 2021-10-26
-* Number of recursive dependencies: 87
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 92
 
 Run `revdep_details(, "flowGraph")` for more info
 
 </details>
 
 ## In both
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘flowGraph.Rmd’ using rmarkdown
-    - 8 pops @ layer 1
-    23:56:06-23:56:06 > 16:00:00
-    - 24 pops @ layer 2
-    23:56:06-23:56:06 > 16:00:00
-    - 32 pops @ layer 3
-    23:56:06-23:56:06 > 16:00:00
-    - 16 pops @ layer 4
-    23:56:06-23:56:06 > 16:00:00
-    ...
-    Quitting from lines 557-561 (flowGraph.Rmd) 
-    Error: processing vignette 'flowGraph.Rmd' failed with diagnostics:
-    `map_df()` requires dplyr
-    --- failed re-building ‘flowGraph.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘flowGraph.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
 
 *   checking R code for possible problems ... NOTE
     ```
@@ -1093,7 +989,7 @@ Run `revdep_details(, "flowGraph")` for more info
 * GitHub: https://github.com/ianjonsen/foieGras
 * Source code: https://github.com/cran/foieGras
 * Date/Publication: 2021-04-26 22:10:07 UTC
-* Number of recursive dependencies: 139
+* Number of recursive dependencies: 140
 
 Run `revdep_details(, "foieGras")` for more info
 
@@ -1103,9 +999,9 @@ Run `revdep_details(, "foieGras")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 40.9Mb
+      installed size is 49.9Mb
       sub-directories of 1Mb or more:
-        libs  40.0Mb
+        libs  49.0Mb
     ```
 
 # forecastML
@@ -1116,7 +1012,7 @@ Run `revdep_details(, "foieGras")` for more info
 * GitHub: https://github.com/nredell/forecastML
 * Source code: https://github.com/cran/forecastML
 * Date/Publication: 2020-05-07 15:10:17 UTC
-* Number of recursive dependencies: 100
+* Number of recursive dependencies: 102
 
 Run `revdep_details(, "forecastML")` for more info
 
@@ -1134,11 +1030,11 @@ Run `revdep_details(, "forecastML")` for more info
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.3.2
 * GitHub: https://github.com/JeremyGelb/geocmeans
 * Source code: https://github.com/cran/geocmeans
-* Date/Publication: 2021-08-23 07:11:35 UTC
-* Number of recursive dependencies: 204
+* Date/Publication: 2023-01-08 21:40:02 UTC
+* Number of recursive dependencies: 197
 
 Run `revdep_details(, "geocmeans")` for more info
 
@@ -1148,45 +1044,11 @@ Run `revdep_details(, "geocmeans")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 11.4Mb
+      installed size is 14.3Mb
       sub-directories of 1Mb or more:
-        data   2.3Mb
-        doc    1.9Mb
-        libs   6.1Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘rgdal’
-      All declared Imports should be used.
-    ```
-
-# GetBCBData
-
-<details>
-
-* Version: 0.6
-* GitHub: https://github.com/msperlin/GetBCBData
-* Source code: https://github.com/cran/GetBCBData
-* Date/Publication: 2021-01-21 17:40:07 UTC
-* Number of recursive dependencies: 88
-
-Run `revdep_details(, "GetBCBData")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘RCurl’ ‘lubridate’ ‘readr’ ‘stats’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
+        doc       1.7Mb
+        extdata   3.0Mb
+        libs      8.0Mb
     ```
 
 # googleComputeEngineR
@@ -1233,44 +1095,15 @@ Run `revdep_details(, "googleTagManageR")` for more info
       All declared Imports should be used.
     ```
 
-# grattan
-
-<details>
-
-* Version: 1.9.0.10
-* GitHub: https://github.com/HughParsonage/grattan
-* Source code: https://github.com/cran/grattan
-* Date/Publication: 2022-01-10 01:02:41 UTC
-* Number of recursive dependencies: 121
-
-Run `revdep_details(, "grattan")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking:
-      'taxstats', 'taxstats1516'
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.1Mb
-      sub-directories of 1Mb or more:
-        libs   4.1Mb
-    ```
-
 # greed
 
 <details>
 
-* Version: 0.6.0
+* Version: 0.6.1
 * GitHub: https://github.com/comeetie/greed
 * Source code: https://github.com/cran/greed
-* Date/Publication: 2022-03-18 12:50:02 UTC
-* Number of recursive dependencies: 93
+* Date/Publication: 2022-10-03 22:00:05 UTC
+* Number of recursive dependencies: 96
 
 Run `revdep_details(, "greed")` for more info
 
@@ -1280,9 +1113,9 @@ Run `revdep_details(, "greed")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 28.3Mb
+      installed size is 36.8Mb
       sub-directories of 1Mb or more:
-        libs  26.0Mb
+        libs  34.6Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -1290,45 +1123,27 @@ Run `revdep_details(, "greed")` for more info
       Note: found 989 marked UTF-8 strings
     ```
 
-# greta
+# gsynth
 
 <details>
 
-* Version: 0.4.2
-* GitHub: https://github.com/greta-dev/greta
-* Source code: https://github.com/cran/greta
-* Date/Publication: 2022-03-22 13:00:02 UTC
-* Number of recursive dependencies: 167
+* Version: 1.2.1
+* GitHub: NA
+* Source code: https://github.com/cran/gsynth
+* Date/Publication: 2021-08-06 07:50:05 UTC
+* Number of recursive dependencies: 65
 
-Run `revdep_details(, "greta")` for more info
+Run `revdep_details(, "gsynth")` for more info
 
 </details>
 
-## Newly broken
+## In both
 
-*   checking tests ...
+*   checking installed package size ... NOTE
     ```
-      Running ‘spelling.R’
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      
-      i Initialising python and checking dependencies, this may take a moment.
-      x Initialising python and checking dependencies, this may take a moment. ... ...
-      
-      i Initialising python and checking dependencies, this may take a moment.
-    ...
-       4.   └─future plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-       5.     └─future warn_about_multiprocess(newStack)
-       6.       └─future warn_about_deprecated(...)
-       7.         └─base dfcn(msg = msg, package = .packageName)
-      
-      [ FAIL 1 | WARN 0 | SKIP 250 | PASS 5 ]
-      Deleting unused snapshots:
-      • greta-sitrep.md
-      Error: Test failures
-      Execution halted
+      installed size is  5.2Mb
+      sub-directories of 1Mb or more:
+        libs   4.9Mb
     ```
 
 # gWQS
@@ -1339,7 +1154,7 @@ Run `revdep_details(, "greta")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/gWQS
 * Date/Publication: 2021-05-20 09:30:02 UTC
-* Number of recursive dependencies: 102
+* Number of recursive dependencies: 103
 
 Run `revdep_details(, "gWQS")` for more info
 
@@ -1361,7 +1176,7 @@ Run `revdep_details(, "gWQS")` for more info
 * GitHub: https://github.com/szymanskir/hackeRnews
 * Source code: https://github.com/cran/hackeRnews
 * Date/Publication: 2019-12-13 13:20:05 UTC
-* Number of recursive dependencies: 68
+* Number of recursive dependencies: 69
 
 Run `revdep_details(, "hackeRnews")` for more info
 
@@ -1382,7 +1197,7 @@ Run `revdep_details(, "hackeRnews")` for more info
 * GitHub: https://github.com/tlverse/hal9001
 * Source code: https://github.com/cran/hal9001
 * Date/Publication: 2022-02-09 22:50:02 UTC
-* Number of recursive dependencies: 96
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "hal9001")` for more info
 
@@ -1392,20 +1207,20 @@ Run `revdep_details(, "hal9001")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.1Mb
+      installed size is  7.6Mb
       sub-directories of 1Mb or more:
-        libs   5.7Mb
+        libs   7.2Mb
     ```
 
 # hwep
 
 <details>
 
-* Version: 0.0.1
-* GitHub: NA
+* Version: 2.0.0
+* GitHub: https://github.com/dcgerard/hwep
 * Source code: https://github.com/cran/hwep
-* Date/Publication: 2021-09-28 10:30:02 UTC
-* Number of recursive dependencies: 69
+* Date/Publication: 2022-08-16 07:20:02 UTC
+* Number of recursive dependencies: 110
 
 Run `revdep_details(, "hwep")` for more info
 
@@ -1413,43 +1228,27 @@ Run `revdep_details(, "hwep")` for more info
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking installed package size ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘future’
-      All declared Imports should be used.
+      installed size is 68.6Mb
+      sub-directories of 1Mb or more:
+        libs  68.1Mb
     ```
 
-# iml
-
-<details>
-
-* Version: 0.10.1
-* GitHub: https://github.com/christophM/iml
-* Source code: https://github.com/cran/iml
-* Date/Publication: 2020-09-24 12:30:14 UTC
-* Number of recursive dependencies: 168
-
-Run `revdep_details(, "iml")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
+*   checking for GNU extensions in Makefiles ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘keras’
-      All declared Imports should be used.
+    GNU make is a SystemRequirements.
     ```
 
 # infercnv
 
 <details>
 
-* Version: 1.10.1
+* Version: 1.14.0
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
-* Date/Publication: 2021-11-08
-* Number of recursive dependencies: 135
+* Date/Publication: 2022-11-02
+* Number of recursive dependencies: 196
 
 Run `revdep_details(, "infercnv")` for more info
 
@@ -1459,7 +1258,7 @@ Run `revdep_details(, "infercnv")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.0Mb
+      installed size is  5.1Mb
       sub-directories of 1Mb or more:
         extdata   3.1Mb
     ```
@@ -1491,44 +1290,168 @@ Run `revdep_details(, "inlinedocs")` for more info
     Package unavailable to check Rd xrefs: ‘R.methodsS3’
     ```
 
-# ipc
+# InPAS
 
 <details>
 
-* Version: 0.1.3
-* GitHub: https://github.com/fellstat/ipc
-* Source code: https://github.com/cran/ipc
-* Date/Publication: 2019-06-23 06:00:03 UTC
-* Number of recursive dependencies: 69
+* Version: 2.6.0
+* GitHub: NA
+* Source code: https://github.com/cran/InPAS
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 166
 
-Run `revdep_details(, "ipc")` for more info
+Run `revdep_details(, "InPAS")` for more info
 
 </details>
 
-## Newly broken
+## In both
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking dependencies in R code ... NOTE
+    ```
+    There are ::: calls to the package's namespace in its code. A package
+      almost never needs to use ::: for its own objects:
+      ‘adjust_distalCPs’ ‘adjust_proximalCPs’ ‘adjust_proximalCPsByNBC’
+      ‘adjust_proximalCPsByPWM’ ‘calculate_mse’ ‘find_valleyBySpline’
+      ‘get_PAscore’ ‘get_PAscore2’ ‘remove_convergentUTR3s’
+      ‘search_distalCPs’ ‘search_proximalCPs’
+    ```
+
+# interflex
+
+<details>
+
+* Version: 1.2.6
+* GitHub: NA
+* Source code: https://github.com/cran/interflex
+* Date/Publication: 2021-05-18 11:40:02 UTC
+* Number of recursive dependencies: 99
+
+Run `revdep_details(, "interflex")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.8Mb
+      sub-directories of 1Mb or more:
+        libs   5.1Mb
+    ```
+
+# ISAnalytics
+
+<details>
+
+* Version: 1.8.1
+* GitHub: https://github.com/calabrialab/ISAnalytics
+* Source code: https://github.com/cran/ISAnalytics
+* Date/Publication: 2022-12-01
+* Number of recursive dependencies: 171
+
+Run `revdep_details(, "ISAnalytics")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘ISAnalytics-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: import_Vispa2_stats
+    > ### Title: Import Vispa2 stats given the aligned association file.
+    > ### Aliases: import_Vispa2_stats
+    > 
+    > ### ** Examples
+    > 
+    > fs_path <- generate_default_folder_structure(type = "correct")
+    ...
+      2. │ ├─ISAnalytics:::.manage_association_file(...)
+      3. │ │ └─ISAnalytics:::.check_file_system_alignment(...)
+      4. │ │   └─proj_fold_col %in% colnames(df)
+      5. │ └─dplyr::if_else(...)
+      6. │   └─dplyr:::vec_case_when(...)
+      7. │     └─vctrs::list_check_all_vectors(values, arg = values_arg, call = call)
+      8. └─vctrs:::stop_scalar_type(`<fn>`(NULL), "false", `<env>`)
+      9.   └─vctrs:::stop_vctrs(...)
+     10.     └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(ISAnalytics)
+      Loading required package: magrittr
+      
+      Attaching package: 'magrittr'
+      
+    ...
+       13. │                       ├─ISAnalytics:::.manage_association_file(...)
+       14. │                       │ └─ISAnalytics:::.check_file_system_alignment(...)
+       15. │                       │   └─proj_fold_col %in% colnames(df)
+       16. │                       └─dplyr::if_else(...)
+       17. │                         └─dplyr:::vec_case_when(...)
+       18. │                           └─vctrs::list_check_all_vectors(values, arg = values_arg, call = call)
+       19. └─vctrs:::stop_scalar_type(`<fn>`(NULL), "false", `<env>`)
+       20.   └─vctrs:::stop_vctrs(...)
+       21.     └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
     ```
     Error(s) in re-building vignettes:
       ...
-    --- re-building ‘shinymp.Rmd’ using rmarkdown
-    Quitting from lines 21-43 (shinymp.Rmd) 
-    Error: processing vignette 'shinymp.Rmd' failed with diagnostics:
-    Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
-    --- failed re-building ‘shinymp.Rmd’
+    --- re-building ‘ISAnalytics.Rmd’ using rmarkdown
+    --- finished re-building ‘ISAnalytics.Rmd’
+    
+    --- re-building ‘sharing_analyses.Rmd’ using rmarkdown
+    --- finished re-building ‘sharing_analyses.Rmd’
+    
+    --- re-building ‘workflow_start.Rmd’ using rmarkdown
+    Quitting from lines 466-470 (workflow_start.Rmd) 
+    Error: processing vignette 'workflow_start.Rmd' failed with diagnostics:
+    `false` must be a vector, not `NULL`.
+    --- failed re-building ‘workflow_start.Rmd’
     
     SUMMARY: processing the following file failed:
-      ‘shinymp.Rmd’
+      ‘workflow_start.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
     ```
 
-## In both
-
-*   checking LazyData ... NOTE
+*   checking installed package size ... NOTE
     ```
-      'LazyData' is specified without a 'data' directory
+      installed size is  7.9Mb
+      sub-directories of 1Mb or more:
+        data   1.4Mb
+        doc    4.4Mb
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    .sh_row_permut: no visible global function definition for ‘.’
+    .sharing_multdf_mult_key: no visible binding for global variable ‘.’
+    .sharing_multdf_single_key: no visible binding for global variable ‘.’
+    .sharing_singledf_mult_key: no visible binding for global variable ‘.’
+    .sharing_singledf_single_key: no visible binding for global variable
+      ‘.’
+    cumulative_is: no visible binding for global variable ‘is’
+    gene_frequency_fisher: no visible binding for global variable ‘.’
+    Undefined global functions or variables:
+      . is
+    Consider adding
+      importFrom("methods", "is")
+    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
+    contains 'methods').
     ```
 
 # ivmte
@@ -1539,7 +1462,7 @@ Run `revdep_details(, "ipc")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/ivmte
 * Date/Publication: 2021-09-17 12:20:07 UTC
-* Number of recursive dependencies: 111
+* Number of recursive dependencies: 110
 
 Run `revdep_details(, "ivmte")` for more info
 
@@ -1552,62 +1475,14 @@ Run `revdep_details(, "ivmte")` for more info
     Packages suggested but not available for checking: 'gurobi', 'cplexAPI'
     ```
 
-# kernelboot
-
-<details>
-
-* Version: 0.1.7
-* GitHub: https://github.com/twolodzko/kernelboot
-* Source code: https://github.com/cran/kernelboot
-* Date/Publication: 2020-02-13 23:10:03 UTC
-* Number of recursive dependencies: 64
-
-Run `revdep_details(, "kernelboot")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘test_parallel.R’
-     ERROR
-    Running the tests in ‘tests/test_parallel.R’ failed.
-    Complete output:
-      > 
-      > library("kernelboot")
-      > 
-      > if ( future::availableCores() > 1L ) {
-      + 
-      +   # simply check if it fails
-    ...
-      + 
-      +   set.seed(0xBEEF)
-      +   s2 <- kernelboot(mtcars, function(data) coef(lm(mpg ~ disp + hp + drat, data = data)),
-      +                    R = 10, parallel = TRUE, workers = 2L)
-      + 
-      +   stopifnot( all.equal(s1, s2) )
-      + 
-      + }
-      Error: Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
-      Execution halted
-    ```
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
 # keyATM
 
 <details>
 
-* Version: 0.4.0
+* Version: 0.4.2
 * GitHub: https://github.com/keyATM/keyATM
 * Source code: https://github.com/cran/keyATM
-* Date/Publication: 2021-02-14 17:40:02 UTC
+* Date/Publication: 2023-01-06 18:50:52 UTC
 * Number of recursive dependencies: 107
 
 Run `revdep_details(, "keyATM")` for more info
@@ -1618,41 +1493,20 @@ Run `revdep_details(, "keyATM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 18.9Mb
+      installed size is 23.9Mb
       sub-directories of 1Mb or more:
-        libs  18.5Mb
-    ```
-
-# lava
-
-<details>
-
-* Version: 1.6.10
-* GitHub: https://github.com/kkholst/lava
-* Source code: https://github.com/cran/lava
-* Date/Publication: 2021-09-02 14:50:18 UTC
-* Number of recursive dependencies: 131
-
-Run `revdep_details(, "lava")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Packages suggested but not available for checking: 'gof', 'lava.tobit'
+        libs  23.6Mb
     ```
 
 # lidR
 
 <details>
 
-* Version: 4.0.0
+* Version: 4.0.2
 * GitHub: https://github.com/r-lidar/lidR
 * Source code: https://github.com/cran/lidR
-* Date/Publication: 2022-02-18 16:10:03 UTC
-* Number of recursive dependencies: 158
+* Date/Publication: 2022-12-15 15:10:02 UTC
+* Number of recursive dependencies: 157
 
 Run `revdep_details(, "lidR")` for more info
 
@@ -1665,20 +1519,20 @@ Run `revdep_details(, "lidR")` for more info
     Running examples in ‘lidR-Ex.R’ failed
     The error most likely occurred in:
     
-    > ### Name: its_dalponte2016
+    > ### Name: its_silva2016
     > ### Title: Individual Tree Segmentation Algorithm
-    > ### Aliases: its_dalponte2016 dalponte2016
+    > ### Aliases: its_silva2016 silva2016
     > 
     > ### ** Examples
     > 
     > LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
     ...
-    > chm <- rasterize_canopy(las, 0.5, p2r(0.3), pkg = "raster")
+    > chm <- rasterize_canopy(las, res = 0.5, p2r(0.3), pkg = "raster")
     > ker <- matrix(1,3,3)
     > chm <- raster::focal(chm, w = ker, fun = mean, na.rm = TRUE)
     > 
     > ttops <- locate_trees(chm, lmf(4, 2))
-    > las   <- segment_trees(las, dalponte2016(chm, ttops))
+    > las   <- segment_trees(las, silva2016(chm, ttops))
     Error in geos_op2_geom("intersection", x, y, ...) : 
       st_crs(x) == st_crs(y) is not TRUE
     Calls: segment_trees ... st_intersection.sf -> geos_op2_df -> geos_op2_geom -> stopifnot
@@ -1687,71 +1541,69 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 211249 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       3.   └─lidR algorithm(st_bbox(las))
-       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       5.       └─lidR:::raster_crop(chm, bbox)
-       6.         ├─sf::st_crop(raster, bbox)
-       7.         └─stars:::st_crop.stars(raster, bbox)
-      ── Error (test-segment_trees.R:147:3): Silva algorithm works with sfc ──────────
-    ...
-        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
-        8.   └─lidR algorithm(st_bbox(las))
-        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       10.       └─lidR:::raster_crop(chm, bbox)
-       11.         ├─sf::st_crop(raster, bbox)
-       12.         └─stars:::st_crop.stars(raster, bbox)
-      
-      [ FAIL 20 | WARN 5 | SKIP 40 | PASS 1345 ]
-      Error: Test failures
-      Execution halted
+    Complete output:
+      > Sys.setenv("R_TESTS" = "")
+      > 
+      > library(testthat)
+      > library(lidR)
+      > test_check("lidR")
+      Tests using raster: terra 
+      Tests using future: TRUE 
+      Tests using OpenMP thread: 32 
+      OGR: Unsupported geometry type
+      OGR: Unsupported geometry type
+      terminate called after throwing an instance of 'std::length_error'
+        what():  basic_string::_S_create
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 15.8Mb
+      installed size is 19.7Mb
       sub-directories of 1Mb or more:
-        R         1.1Mb
-        doc       1.0Mb
+        R         1.2Mb
         extdata   1.1Mb
-        libs     12.0Mb
+        libs     15.8Mb
     ```
 
-# lmtp
+# lightr
 
 <details>
 
-* Version: 1.0.0
-* GitHub: https://github.com/nt-williams/lmtp
-* Source code: https://github.com/cran/lmtp
-* Date/Publication: 2021-09-29 07:10:07 UTC
-* Number of recursive dependencies: 113
+* Version: 1.7.0
+* GitHub: https://github.com/ropensci/lightr
+* Source code: https://github.com/cran/lightr
+* Date/Publication: 2022-05-14 13:50:02 UTC
+* Number of recursive dependencies: 77
 
-Run `revdep_details(, "lmtp")` for more info
+Run `revdep_details(, "lightr")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘R6’ ‘nnls’ ‘utils’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘pavo’
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘pavo’
     ```
 
 # MAI
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.4.0
 * GitHub: https://github.com/KechrisLab/MAI
 * Source code: https://github.com/cran/MAI
-* Date/Publication: 2021-10-26
-* Number of recursive dependencies: 164
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 168
 
 Run `revdep_details(, "MAI")` for more info
 
@@ -1766,14 +1618,59 @@ Run `revdep_details(, "MAI")` for more info
     is not mentioned in the DESCRIPTION file.
     ```
 
+# metabolomicsR
+
+<details>
+
+* Version: 1.0.0
+* GitHub: https://github.com/XikunHan/metabolomicsR
+* Source code: https://github.com/cran/metabolomicsR
+* Date/Publication: 2022-04-29 07:40:02 UTC
+* Number of recursive dependencies: 163
+
+Run `revdep_details(, "metabolomicsR")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘genuMet’
+    ```
+
+# mice
+
+<details>
+
+* Version: 3.15.0
+* GitHub: https://github.com/amices/mice
+* Source code: https://github.com/cran/mice
+* Date/Publication: 2022-11-19 13:00:02 UTC
+* Number of recursive dependencies: 133
+
+Run `revdep_details(, "mice")` for more info
+
+</details>
+
+## In both
+
+*   checking Rd cross-references ... WARNING
+    ```
+    Missing link or links in documentation object 'mice.impute.cart.Rd':
+      ‘rpart.control’
+    
+    See section 'Cross-references' in the 'Writing R Extensions' manual.
+    ```
+
 # microservices
 
 <details>
 
-* Version: 0.1.2
+* Version: 0.2.0
 * GitHub: https://github.com/tidylab/microservices
 * Source code: https://github.com/cran/microservices
-* Date/Publication: 2021-06-12 06:10:02 UTC
+* Date/Publication: 2022-10-01 09:50:02 UTC
 * Number of recursive dependencies: 69
 
 Run `revdep_details(, "microservices")` for more info
@@ -1807,22 +1704,15 @@ Run `revdep_details(, "microservices")` for more info
       Execution halted
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘config’ ‘desc’ ‘dplyr’ ‘glue’ ‘withr’
-      All declared Imports should be used.
-    ```
-
 # MineICA
 
 <details>
 
-* Version: 1.34.0
+* Version: 1.38.0
 * GitHub: NA
 * Source code: https://github.com/cran/MineICA
-* Date/Publication: 2021-10-26
-* Number of recursive dependencies: 208
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 217
 
 Run `revdep_details(, "MineICA")` for more info
 
@@ -1851,11 +1741,31 @@ Run `revdep_details(, "MineICA")` for more info
     Warning: executing %dopar% sequentially: no parallel backend registered
     FastICA iteration 2
     FastICA iteration 3
-    Error: Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
+    Error: Detected creation of a 'multiprocess' future. Strategy 'multiprocess' is defunct in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'.
     Execution halted
     ```
 
 ## In both
+
+*   checking dependencies in R code ... WARNING
+    ```
+    Namespace in Imports field not imported from: ‘lumiHumanAll.db’
+      All declared Imports should be used.
+    Packages in Depends field not imported from:
+      ‘GOstats’ ‘Hmisc’ ‘JADE’ ‘RColorBrewer’ ‘Rgraphviz’ ‘annotate’
+      ‘biomaRt’ ‘cluster’ ‘colorspace’ ‘fastICA’ ‘foreach’ ‘ggplot2’
+      ‘graph’ ‘gtools’ ‘igraph’ ‘marray’ ‘mclust’ ‘methods’ ‘plyr’ ‘scales’
+      ‘xtable’
+      These packages need to be imported from (in the NAMESPACE file)
+      for when this namespace is loaded but not attached.
+    Missing or unexported object: ‘GOstats::geneIdsByCategory’
+    ':::' calls which should be '::':
+      ‘Biobase:::annotation<-’ ‘Biobase:::validMsg’ ‘fpc:::pamk’
+      ‘lumi:::getChipInfo’ ‘mclust:::adjustedRandIndex’
+      See the note in ?`:::` about the use of this operator.
+    Unexported object imported by a ':::' call: ‘Biobase:::isValidVersion’
+      See the note in ?`:::` about the use of this operator.
+    ```
 
 *   checking Rd cross-references ... WARNING
     ```
@@ -1907,39 +1817,18 @@ Run `revdep_details(, "MineICA")` for more info
     A package should be listed in only one of these fields.
     ```
 
-*   checking dependencies in R code ... NOTE
-    ```
-    'library' or 'require' call to ‘GOstats’ which was already attached by Depends.
-      Please remove these calls from your code.
-    Namespace in Imports field not imported from: ‘lumiHumanAll.db’
-      All declared Imports should be used.
-    Packages in Depends field not imported from:
-      ‘GOstats’ ‘Hmisc’ ‘JADE’ ‘RColorBrewer’ ‘Rgraphviz’ ‘annotate’
-      ‘biomaRt’ ‘cluster’ ‘colorspace’ ‘fastICA’ ‘foreach’ ‘ggplot2’
-      ‘graph’ ‘gtools’ ‘igraph’ ‘marray’ ‘mclust’ ‘methods’ ‘plyr’ ‘scales’
-      ‘xtable’
-      These packages need to be imported from (in the NAMESPACE file)
-      for when this namespace is loaded but not attached.
-    ':::' calls which should be '::':
-      ‘Biobase:::annotation<-’ ‘Biobase:::validMsg’ ‘fpc:::pamk’
-      ‘lumi:::getChipInfo’ ‘mclust:::adjustedRandIndex’
-      See the note in ?`:::` about the use of this operator.
-    Unexported object imported by a ':::' call: ‘Biobase:::isValidVersion’
-      See the note in ?`:::` about the use of this operator.
-    ```
-
 *   checking R code for possible problems ... NOTE
     ```
-    addGenesToGoReport: no visible global function definition for
-      ‘geneIdsByCategory’
-    addGenesToGoReport: no visible global function definition for
-      ‘geneIdUniverse’
     addGenesToGoReport: no visible global function definition for
       ‘conditional’
     addGenesToGoReport: no visible global function definition for
       ‘sigCategories’
     annot2Color: no visible global function definition for ‘brewer.pal’
     annot2Color: no visible global function definition for ‘heat_hcl’
+    annot2Color: no visible global function definition for ‘terrain_hcl’
+    annot2Color: no visible global function definition for ‘cm.colors’
+    annot2Color: no visible global function definition for ‘rainbow_hcl’
+    annotFeatures: no visible global function definition for ‘na.omit’
     ...
       importFrom("methods", "callNextMethod", "new", "validObject")
       importFrom("stats", "aggregate", "as.dendrogram", "as.dist",
@@ -1982,11 +1871,11 @@ Run `revdep_details(, "MineICA")` for more info
 
 <details>
 
-* Version: 1.0.2
+* Version: 1.0.3
 * GitHub: https://github.com/grossSBM/missSBM
 * Source code: https://github.com/cran/missSBM
-* Date/Publication: 2022-02-01 16:00:20 UTC
-* Number of recursive dependencies: 108
+* Date/Publication: 2022-08-23 12:10:06 UTC
+* Number of recursive dependencies: 109
 
 Run `revdep_details(, "missSBM")` for more info
 
@@ -1996,20 +1885,20 @@ Run `revdep_details(, "missSBM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.4Mb
+      installed size is  9.7Mb
       sub-directories of 1Mb or more:
-        libs   6.5Mb
+        libs   7.8Mb
     ```
 
 # momentuHMM
 
 <details>
 
-* Version: 1.5.4
+* Version: 1.5.5
 * GitHub: https://github.com/bmcclintock/momentuHMM
 * Source code: https://github.com/cran/momentuHMM
-* Date/Publication: 2021-09-03 04:30:02 UTC
-* Number of recursive dependencies: 195
+* Date/Publication: 2022-10-18 20:52:35 UTC
+* Number of recursive dependencies: 142
 
 Run `revdep_details(, "momentuHMM")` for more info
 
@@ -2019,32 +1908,72 @@ Run `revdep_details(, "momentuHMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.1Mb
+      installed size is 10.1Mb
       sub-directories of 1Mb or more:
         R      1.2Mb
         doc    1.7Mb
-        libs   5.6Mb
+        libs   6.6Mb
     ```
 
-# onemapsgapi
+# mslp
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.0.1
 * GitHub: NA
-* Source code: https://github.com/cran/onemapsgapi
-* Date/Publication: 2020-02-06 11:00:02 UTC
-* Number of recursive dependencies: 66
+* Source code: https://github.com/cran/mslp
+* Date/Publication: 2022-11-20
+* Number of recursive dependencies: 88
 
-Run `revdep_details(, "onemapsgapi")` for more info
+Run `revdep_details(, "mslp")` for more info
 
 </details>
 
 ## In both
 
-*   checking LazyData ... NOTE
+*   checking re-building of vignette outputs ... ERROR
     ```
-      'LazyData' is specified without a 'data' directory
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘mslp.Rmd’ using rmarkdown
+    Error: processing vignette 'mslp.Rmd' failed with diagnostics:
+    there is no package called ‘BiocStyle’
+    --- failed re-building ‘mslp.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘mslp.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+# oncomsm
+
+<details>
+
+* Version: 0.1.2
+* GitHub: https://github.com/Boehringer-Ingelheim/oncomsm
+* Source code: https://github.com/cran/oncomsm
+* Date/Publication: 2022-12-09 14:40:09 UTC
+* Number of recursive dependencies: 122
+
+Run `revdep_details(, "oncomsm")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 55.3Mb
+      sub-directories of 1Mb or more:
+        doc    1.3Mb
+        libs  53.0Mb
+    ```
+
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
     ```
 
 # OOS
@@ -2055,7 +1984,7 @@ Run `revdep_details(, "onemapsgapi")` for more info
 * GitHub: https://github.com/tylerJPike/OOS
 * Source code: https://github.com/cran/OOS
 * Date/Publication: 2021-03-17 13:20:20 UTC
-* Number of recursive dependencies: 131
+* Number of recursive dependencies: 134
 
 Run `revdep_details(, "OOS")` for more info
 
@@ -2076,7 +2005,7 @@ Run `revdep_details(, "OOS")` for more info
 * GitHub: https://github.com/mastoffel/partR2
 * Source code: https://github.com/cran/partR2
 * Date/Publication: 2021-01-18 16:30:04 UTC
-* Number of recursive dependencies: 91
+* Number of recursive dependencies: 92
 
 Run `revdep_details(, "partR2")` for more info
 
@@ -2094,11 +2023,11 @@ Run `revdep_details(, "partR2")` for more info
 
 <details>
 
-* Version: 2.7.1
+* Version: 2.8.0
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
-* Date/Publication: 2021-09-21 13:10:21 UTC
-* Number of recursive dependencies: 87
+* Date/Publication: 2022-08-16 13:00:20 UTC
+* Number of recursive dependencies: 92
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -2117,11 +2046,11 @@ Run `revdep_details(, "pavo")` for more info
 
 <details>
 
-* Version: 2.0.1
+* Version: 2.1.1
 * GitHub: https://github.com/cdmuir/photosynthesis
 * Source code: https://github.com/cran/photosynthesis
-* Date/Publication: 2021-07-01 04:30:02 UTC
-* Number of recursive dependencies: 104
+* Date/Publication: 2022-11-19 19:40:09 UTC
+* Number of recursive dependencies: 135
 
 Run `revdep_details(, "photosynthesis")` for more info
 
@@ -2129,43 +2058,16 @@ Run `revdep_details(, "photosynthesis")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-        |                                                                            
-        |===================================                                   |  50%
-        |                                                                            
-        |======================================================================| 100%[ FAIL 6 | WARN 0 | SKIP 0 | PASS 149 ]
-      
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-    ...
-      `Wt1` not equal to `Wt2`.
-      Attributes: < Modes: list, NULL >
-      Attributes: < Lengths: 2, 0 >
-      Attributes: < names for target but not for current >
-      Attributes: < current is not list-like >
-      target is units, current is numeric
-      
-      [ FAIL 6 | WARN 0 | SKIP 0 | PASS 149 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.1Mb
+      installed size is  7.0Mb
       sub-directories of 1Mb or more:
-        doc    3.4Mb
-        help   1.1Mb
+        doc   6.0Mb
     ```
 
-*   checking dependencies in R code ... NOTE
+*   checking data for non-ASCII characters ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘future’
-      All declared Imports should be used.
+      Note: found 13 marked UTF-8 strings
     ```
 
 # phylolm
@@ -2193,11 +2095,11 @@ Run `revdep_details(, "phylolm")` for more info
 
 <details>
 
-* Version: 0.11.6
+* Version: 1.0.0
 * GitHub: https://github.com/pln-team/PLNmodels
 * Source code: https://github.com/cran/PLNmodels
-* Date/Publication: 2022-02-01 16:00:24 UTC
-* Number of recursive dependencies: 173
+* Date/Publication: 2023-01-06 13:20:06 UTC
+* Number of recursive dependencies: 146
 
 Run `revdep_details(, "PLNmodels")` for more info
 
@@ -2207,42 +2109,44 @@ Run `revdep_details(, "PLNmodels")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 16.9Mb
+      installed size is 21.7Mb
       sub-directories of 1Mb or more:
-        doc    2.0Mb
-        libs  13.8Mb
+        doc    2.1Mb
+        libs  18.3Mb
     ```
 
-# plumber
+# portvine
 
 <details>
 
-* Version: 1.1.0
-* GitHub: https://github.com/rstudio/plumber
-* Source code: https://github.com/cran/plumber
-* Date/Publication: 2021-03-24 05:10:02 UTC
-* Number of recursive dependencies: 81
+* Version: 1.0.2
+* GitHub: https://github.com/EmanuelSommer/portvine
+* Source code: https://github.com/cran/portvine
+* Date/Publication: 2023-01-06 09:40:04 UTC
+* Number of recursive dependencies: 129
 
-Run `revdep_details(, "plumber")` for more info
+Run `revdep_details(, "portvine")` for more info
 
 </details>
 
 ## In both
 
-*   checking LazyData ... NOTE
+*   checking installed package size ... NOTE
     ```
-      'LazyData' is specified without a 'data' directory
+      installed size is 51.3Mb
+      sub-directories of 1Mb or more:
+        libs  50.6Mb
     ```
 
 # ppcseq
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.6.0
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
-* Date/Publication: 2021-10-26
-* Number of recursive dependencies: 117
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "ppcseq")` for more info
 
@@ -2252,10 +2156,10 @@ Run `revdep_details(, "ppcseq")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 45.6Mb
+      installed size is 53.1Mb
       sub-directories of 1Mb or more:
         data   1.5Mb
-        libs  42.8Mb
+        libs  50.3Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -2288,29 +2192,6 @@ Run `revdep_details(, "ppcseq")` for more info
     GNU make is a SystemRequirements.
     ```
 
-# ppseq
-
-<details>
-
-* Version: 0.1.1
-* GitHub: NA
-* Source code: https://github.com/cran/ppseq
-* Date/Publication: 2021-09-09 09:00:02 UTC
-* Number of recursive dependencies: 100
-
-Run `revdep_details(, "ppseq")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.3Mb
-      sub-directories of 1Mb or more:
-        doc   5.2Mb
-    ```
-
 # prewas
 
 <details>
@@ -2319,7 +2200,7 @@ Run `revdep_details(, "ppseq")` for more info
 * GitHub: https://github.com/Snitkin-Lab-Umich/prewas
 * Source code: https://github.com/cran/prewas
 * Date/Publication: 2021-04-02 12:20:05 UTC
-* Number of recursive dependencies: 75
+* Number of recursive dependencies: 76
 
 Run `revdep_details(, "prewas")` for more info
 
@@ -2333,35 +2214,33 @@ Run `revdep_details(, "prewas")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 50 lines of output:
-       3.     └─future plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-       4.       └─future warn_about_multiprocess(newStack)
-       5.         └─future warn_about_deprecated(...)
-       6.           └─base dfcn(msg = msg, package = .packageName)
-      ── Error (test-reference_alleles.R:89:3): remove_unknown_alleles correctly removes Ns when given valid input ──
-      <defunctError/error/condition>
+      Backtrace:
+           ▆
+        1. └─prewas:::get_ancestral_alleles(tree = temp_tree, mat = temp_dna_list$variant_only_dna_mat) at test-reference_alleles.R:138:2
+        2.   ├─base::t(...)
+        3.   └─future.apply::future_apply(...)
+        4.     └─future.apply::future_lapply(...)
     ...
-       1. └─prewas:::get_ancestral_alleles(tree = temp_tree, mat = temp_dna_list$variant_only_dna_mat) at test-reference_alleles.R:258:2
-       2.   └─future::plan(future::multiprocess)
-       3.     └─future plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-       4.       └─future warn_about_multiprocess(newStack)
-       5.         └─future warn_about_deprecated(...)
-       6.           └─base dfcn(msg = msg, package = .packageName)
+        7.           ├─future::run(future)
+        8.           └─future:::run.Future(future)
+        9.             ├─base::do.call(makeFuture, args = args)
+       10.             └─future (local) `<FtrStrtg>`(...)
+       11.               └─future (local) dfcn(msg = msg, package = .packageName)
+       12.                 └─base::.Defunct(...)
       
       [ FAIL 6 | WARN 0 | SKIP 0 | PASS 312 ]
       Error: Test failures
       Execution halted
     ```
 
-*   checking re-building of vignette outputs ... WARNING
+*   checking re-building of vignette outputs ... ERROR
     ```
     Error(s) in re-building vignettes:
       ...
     --- re-building ‘getting_started_with_prewas.Rmd’ using rmarkdown
-    Warning in subset_tree_and_matrix(tree, dna_mat) :
-      These samples were dropped from the matrix: t1
     Quitting from lines 136-141 (getting_started_with_prewas.Rmd) 
     Error: processing vignette 'getting_started_with_prewas.Rmd' failed with diagnostics:
-    Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
+    Detected creation of a 'multiprocess' future. Strategy 'multiprocess' is defunct in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'.
     --- failed re-building ‘getting_started_with_prewas.Rmd’
     
     SUMMARY: processing the following file failed:
@@ -2379,45 +2258,25 @@ Run `revdep_details(, "prewas")` for more info
       All declared Imports should be used.
     ```
 
-# progressr
+# projpred
 
 <details>
 
-* Version: 0.10.0
-* GitHub: https://github.com/HenrikBengtsson/progressr
-* Source code: https://github.com/cran/progressr
-* Date/Publication: 2021-12-19 03:50:02 UTC
-* Number of recursive dependencies: 53
+* Version: 2.3.0
+* GitHub: https://github.com/stan-dev/projpred
+* Source code: https://github.com/cran/projpred
+* Date/Publication: 2023-01-10 15:00:03 UTC
+* Number of recursive dependencies: 143
 
-Run `revdep_details(, "progressr")` for more info
+Run `revdep_details(, "projpred")` for more info
 
 </details>
 
-## Newly broken
+## In both
 
-*   checking tests ...
+*   checking package dependencies ... NOTE
     ```
-      Running ‘debug.R’
-      Running ‘demo.R’
-     ERROR
-    Running the tests in ‘tests/demo.R’ failed.
-    Last 50 lines of output:
-      + 
-      +   pp <- 0L
-      +   while (any(sapply(counts, FUN = inherits, "Future"))) {
-      +     counts <- plot_what_is_done(counts)
-      +   }
-    ...
-      > close.screen()
-       [1]  1  2  3  4  5  6  7  8  9 10 11 12
-      
-      > message("SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(multisession).\n")
-      SUGGESTION: Try to rerun this demo after changing strategy for how futures are resolved, e.g. plan(multisession).
-      
-      - plan('multisession') ... DONE
-      - plan('multiprocess') ...
-      Error: Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
-      Execution halted
+    Package suggested but not available for checking: ‘cmdstanr’
     ```
 
 # promises
@@ -2428,7 +2287,7 @@ Run `revdep_details(, "progressr")` for more info
 * GitHub: https://github.com/rstudio/promises
 * Source code: https://github.com/cran/promises
 * Date/Publication: 2021-02-11 19:00:02 UTC
-* Number of recursive dependencies: 67
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "promises")` for more info
 
@@ -2441,89 +2300,15 @@ Run `revdep_details(, "promises")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# Prostar
-
-<details>
-
-* Version: 1.26.4
-* GitHub: https://github.com/samWieczorek/Prostar
-* Source code: https://github.com/cran/Prostar
-* Date/Publication: 2022-01-23
-* Number of recursive dependencies: 320
-
-Run `revdep_details(, "Prostar")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘BiocManager’ ‘DAPAR’ ‘DAPARdata’ ‘DT’ ‘R.utils’ ‘XML’ ‘colourpicker’
-      ‘data.table’ ‘future’ ‘highcharter’ ‘htmlwidgets’ ‘later’ ‘promises’
-      ‘rclipboard’ ‘rhandsontable’ ‘sass’ ‘shinyAce’ ‘shinyBS’ ‘shinyTree’
-      ‘shinyWidgets’ ‘shinycssloaders’ ‘shinyjqui’ ‘shinyjs’ ‘shinythemes’
-      ‘tibble’ ‘webshot’
-      All declared Imports should be used.
-    ```
-
-*   checking re-building of vignette outputs ... NOTE
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘Prostar_UserManual.Rnw’ using Sweave
-    Error: processing vignette 'Prostar_UserManual.Rnw' failed with diagnostics:
-    Running 'texi2dvi' on 'Prostar_UserManual.tex' failed.
-    LaTeX errors:
-    ! LaTeX Error: File `nowidow.sty' not found.
-    
-    Type X to quit or <RETURN> to proceed,
-    or enter new name. (Default extension: sty)
-    ...
-    l.189 \RequirePackage
-                         {parnotes}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
-    --- failed re-building ‘Prostar_UserManual.Rnw’
-    
-    SUMMARY: processing the following file failed:
-      ‘Prostar_UserManual.Rnw’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-# PUMP
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/MDRCNY/PUMP
-* Source code: https://github.com/cran/PUMP
-* Date/Publication: 2022-02-09 09:50:05 UTC
-* Number of recursive dependencies: 129
-
-Run `revdep_details(, "PUMP")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘here’
-      All declared Imports should be used.
-    ```
-
 # QDNAseq
 
 <details>
 
-* Version: 1.30.0
+* Version: 1.34.0
 * GitHub: https://github.com/ccagc/QDNAseq
 * Source code: https://github.com/cran/QDNAseq
-* Date/Publication: 2021-10-26
-* Number of recursive dependencies: 80
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 88
 
 Run `revdep_details(, "QDNAseq")` for more info
 
@@ -2564,7 +2349,7 @@ Run `revdep_details(, "QDNAseq")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/RAINBOWR
 * Date/Publication: 2022-01-07 13:53:11 UTC
-* Number of recursive dependencies: 147
+* Number of recursive dependencies: 150
 
 Run `revdep_details(, "RAINBOWR")` for more info
 
@@ -2574,50 +2359,9 @@ Run `revdep_details(, "RAINBOWR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 32.6Mb
+      installed size is 37.7Mb
       sub-directories of 1Mb or more:
-        libs  31.4Mb
-    ```
-
-# rBiasCorrection
-
-<details>
-
-* Version: 0.3.3
-* GitHub: https://github.com/kapsner/rBiasCorrection
-* Source code: https://github.com/cran/rBiasCorrection
-* Date/Publication: 2022-02-16 13:00:02 UTC
-* Number of recursive dependencies: 120
-
-Run `revdep_details(, "rBiasCorrection")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      ── Error (test-algorithm_minmax_FALSE.R:22:5): algorithm test, type 1, minmax = FALSE ──
-      <defunctError/error/condition>
-      Error: Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
-      Backtrace:
-          ▆
-       1. ├─base::suppressWarnings(future::plan("multiprocess")) at test-algorithm_minmax_FALSE.R:22:4
-    ...
-       2. │ └─base::withCallingHandlers(...)
-       3. └─future::plan("multiprocess")
-       4.   └─future plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
-       5.     └─future warn_about_multiprocess(newStack)
-       6.       └─future warn_about_deprecated(...)
-       7.         └─base dfcn(msg = msg, package = .packageName)
-      
-      [ FAIL 4 | WARN 31 | SKIP 5 | PASS 37 ]
-      Error: Test failures
-      Execution halted
+        libs  36.5Mb
     ```
 
 # regmedint
@@ -2628,7 +2372,7 @@ Run `revdep_details(, "rBiasCorrection")` for more info
 * GitHub: https://github.com/kaz-yos/regmedint
 * Source code: https://github.com/cran/regmedint
 * Date/Publication: 2022-04-06 20:20:02 UTC
-* Number of recursive dependencies: 131
+* Number of recursive dependencies: 134
 
 Run `revdep_details(, "regmedint")` for more info
 
@@ -2642,36 +2386,55 @@ Run `revdep_details(, "regmedint")` for more info
       All declared Imports should be used.
     ```
 
-# remiod
+# reproducible
 
 <details>
 
-* Version: 1.0.0
-* GitHub: https://github.com/xsswang/remiod
-* Source code: https://github.com/cran/remiod
-* Date/Publication: 2022-03-14 08:50:02 UTC
-* Number of recursive dependencies: 125
+* Version: 1.2.16
+* GitHub: https://github.com/PredictiveEcology/reproducible
+* Source code: https://github.com/cran/reproducible
+* Date/Publication: 2022-12-22 09:50:02 UTC
+* Number of recursive dependencies: 104
 
-Run `revdep_details(, "remiod")` for more info
+Run `revdep_details(, "reproducible")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking tests ...
     ```
-    Namespace in Imports field not imported from: ‘reshape2’
-      All declared Imports should be used.
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 195637 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 50 lines of output:
+        adding: scratch/henrik/1120431/Rtmpld0uD2/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
+        adding: scratch/henrik/1120431/Rtmpld0uD2/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
+      
+       *** caught segfault ***
+      address 0x40, cause 'memory not mapped'
+    ...
+      36: doTryCatch(return(expr), name, parentenv, handler)
+      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      38: tryCatchList(expr, classes, parentenv, handlers)
+      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
+      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
+      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
+      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
+      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
+      44: test_check("reproducible")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rgee
 
 <details>
 
-* Version: 1.1.3
+* Version: 1.1.5
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
-* Date/Publication: 2022-03-16 15:50:02 UTC
+* Date/Publication: 2022-09-13 08:10:06 UTC
 * Number of recursive dependencies: 150
 
 Run `revdep_details(, "rgee")` for more info
@@ -2682,9 +2445,9 @@ Run `revdep_details(, "rgee")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.2Mb
+      installed size is  7.9Mb
       sub-directories of 1Mb or more:
-        doc   7.0Mb
+        doc   6.6Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -2720,56 +2483,15 @@ Run `revdep_details(, "robotstxt")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# RTransferEntropy
-
-<details>
-
-* Version: 0.2.14
-* GitHub: https://github.com/BZPaper/RTransferEntropy
-* Source code: https://github.com/cran/RTransferEntropy
-* Date/Publication: 2021-04-02 21:00:03 UTC
-* Number of recursive dependencies: 81
-
-Run `revdep_details(, "RTransferEntropy")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking re-building of vignette outputs ... WARNING
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘transfer-entropy.Rmd’ using rmarkdown
-    `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
-    Warning: Removed 1 rows containing non-finite values (stat_smooth).
-    Warning: Removed 1 rows containing missing values (geom_point).
-    `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
-    `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
-    Warning: Removed 1 rows containing non-finite values (stat_smooth).
-    Warning: Removed 1 rows containing missing values (geom_point).
-    ...
-    Quitting from lines 254-261 (transfer-entropy.Rmd) 
-    Error: processing vignette 'transfer-entropy.Rmd' failed with diagnostics:
-    Strategy 'multiprocess' is deprecated in future (>= 1.20.0) [2020-10-30] and will soon become defunct. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. In the current R session, 'multiprocess' equals 'multicore'.
-    --- failed re-building ‘transfer-entropy.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘transfer-entropy.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # sapfluxnetr
 
 <details>
 
-* Version: 0.1.3
+* Version: 0.1.4
 * GitHub: https://github.com/sapfluxnet/sapfluxnetr
 * Source code: https://github.com/cran/sapfluxnetr
-* Date/Publication: 2021-11-19 15:10:02 UTC
-* Number of recursive dependencies: 78
+* Date/Publication: 2023-01-25 15:30:02 UTC
+* Number of recursive dependencies: 81
 
 Run `revdep_details(, "sapfluxnetr")` for more info
 
@@ -2790,7 +2512,7 @@ Run `revdep_details(, "sapfluxnetr")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/scDiffCom
 * Date/Publication: 2021-08-17 07:20:05 UTC
-* Number of recursive dependencies: 245
+* Number of recursive dependencies: 246
 
 Run `revdep_details(, "scDiffCom")` for more info
 
@@ -2809,11 +2531,11 @@ Run `revdep_details(, "scDiffCom")` for more info
 
 <details>
 
-* Version: 0.3.3
+* Version: 0.3.5
 * GitHub: https://github.com/satijalab/sctransform
 * Source code: https://github.com/cran/sctransform
-* Date/Publication: 2022-01-13 08:20:02 UTC
-* Number of recursive dependencies: 69
+* Date/Publication: 2022-09-21 17:10:07 UTC
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "sctransform")` for more info
 
@@ -2834,7 +2556,7 @@ Run `revdep_details(, "sctransform")` for more info
 * GitHub: https://github.com/Abson-dev/sdmApp
 * Source code: https://github.com/cran/sdmApp
 * Date/Publication: 2021-07-07 08:30:02 UTC
-* Number of recursive dependencies: 167
+* Number of recursive dependencies: 171
 
 Run `revdep_details(, "sdmApp")` for more info
 
@@ -2848,37 +2570,48 @@ Run `revdep_details(, "sdmApp")` for more info
       All declared Imports should be used.
     ```
 
-# seer
+# sdmTMB
 
 <details>
 
-* Version: 1.1.7
-* GitHub: https://github.com/thiyangt/seer
-* Source code: https://github.com/cran/seer
-* Date/Publication: 2021-12-08 05:20:02 UTC
-* Number of recursive dependencies: 115
+* Version: 0.3.0
+* GitHub: https://github.com/pbs-assess/sdmTMB
+* Source code: https://github.com/cran/sdmTMB
+* Date/Publication: 2023-01-28 07:30:02 UTC
+* Number of recursive dependencies: 116
 
-Run `revdep_details(, "seer")` for more info
+Run `revdep_details(, "sdmTMB")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Namespace in Imports field not imported from: ‘MASS’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘INLA’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 78.3Mb
+      sub-directories of 1Mb or more:
+        libs  76.6Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘INLA’
     ```
 
 # sentopics
 
 <details>
 
-* Version: 0.6.2
+* Version: 0.7.1
 * GitHub: https://github.com/odelmarcelle/sentopics
 * Source code: https://github.com/cran/sentopics
-* Date/Publication: 2022-03-15 13:50:02 UTC
-* Number of recursive dependencies: 145
+* Date/Publication: 2022-05-18 13:20:02 UTC
+* Number of recursive dependencies: 165
 
 Run `revdep_details(, "sentopics")` for more info
 
@@ -2888,11 +2621,10 @@ Run `revdep_details(, "sentopics")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.8Mb
+      installed size is  8.0Mb
       sub-directories of 1Mb or more:
         data   1.2Mb
-        doc    7.4Mb
-        libs   4.8Mb
+        libs   6.1Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -2909,11 +2641,11 @@ Run `revdep_details(, "sentopics")` for more info
 
 <details>
 
-* Version: 4.1.0
+* Version: 4.3.0
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
-* Date/Publication: 2022-01-14 18:32:42 UTC
-* Number of recursive dependencies: 254
+* Date/Publication: 2022-11-18 23:30:08 UTC
+* Number of recursive dependencies: 259
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -2923,10 +2655,10 @@ Run `revdep_details(, "Seurat")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 12.0Mb
+      installed size is 14.5Mb
       sub-directories of 1Mb or more:
-        R      1.3Mb
-        libs  10.1Mb
+        R      1.4Mb
+        libs  12.4Mb
     ```
 
 *   checking Rd cross-references ... NOTE
@@ -2934,15 +2666,36 @@ Run `revdep_details(, "Seurat")` for more info
     Package unavailable to check Rd xrefs: ‘Signac’
     ```
 
+# SeuratObject
+
+<details>
+
+* Version: 4.1.3
+* GitHub: https://github.com/mojaveazure/seurat-object
+* Source code: https://github.com/cran/SeuratObject
+* Date/Publication: 2022-11-07 18:50:02 UTC
+* Number of recursive dependencies: 57
+
+Run `revdep_details(, "SeuratObject")` for more info
+
+</details>
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘plotly’
+    ```
+
 # shiny
 
 <details>
 
-* Version: 1.7.1
+* Version: 1.7.4
 * GitHub: https://github.com/rstudio/shiny
 * Source code: https://github.com/cran/shiny
-* Date/Publication: 2021-10-02 04:30:02 UTC
-* Number of recursive dependencies: 105
+* Date/Publication: 2022-12-15 13:10:02 UTC
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "shiny")` for more info
 
@@ -2952,10 +2705,10 @@ Run `revdep_details(, "shiny")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  9.3Mb
+      installed size is  9.6Mb
       sub-directories of 1Mb or more:
         R     1.6Mb
-        www   6.6Mb
+        www   6.9Mb
     ```
 
 # shiny.worker
@@ -2986,67 +2739,107 @@ Run `revdep_details(, "shiny.worker")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# shinyrecap
+# signeR
 
 <details>
 
-* Version: 0.1.0
-* GitHub: NA
-* Source code: https://github.com/cran/shinyrecap
-* Date/Publication: 2019-01-19 23:40:03 UTC
-* Number of recursive dependencies: 96
+* Version: 2.0.2
+* GitHub: https://github.com/rvalieris/signeR
+* Source code: https://github.com/cran/signeR
+* Date/Publication: 2023-01-19
+* Number of recursive dependencies: 242
 
-Run `revdep_details(, "shinyrecap")` for more info
+Run `revdep_details(, "signeR")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking installed package size ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘CARE1’ ‘LCMCR’ ‘coda’ ‘conting’ ‘dga’ ‘future’ ‘ggplot2’ ‘ipc’
-      ‘promises’ ‘reshape’ ‘shinycssloaders’ ‘testthat’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
+      installed size is  6.6Mb
+      sub-directories of 1Mb or more:
+        R     1.1Mb
+        doc   4.6Mb
     ```
 
-# simhelpers
+*   checking R code for possible problems ... NOTE
+    ```
+    covariate: no visible binding for global variable ‘.’
+    denovo: no visible binding for global variable
+      ‘BSgenome.Hsapiens.UCSC.hg19’
+    denovo: no visible binding for global variable
+      ‘BSgenome.Hsapiens.UCSC.hg38’
+    explorepage: no visible binding for global variable ‘.’
+    fitting: no visible binding for global variable
+      ‘BSgenome.Hsapiens.UCSC.hg19’
+    fitting: no visible binding for global variable
+      ‘BSgenome.Hsapiens.UCSC.hg38’
+    ...
+    ExposureCorrelation,SignExp-numeric: no visible binding for global
+      variable ‘exposure’
+    ExposureCorrelation,matrix-numeric: no visible binding for global
+      variable ‘Feature’
+    ExposureCorrelation,matrix-numeric: no visible binding for global
+      variable ‘exposure’
+    Undefined global functions or variables:
+      . BSgenome.Hsapiens.UCSC.hg19 BSgenome.Hsapiens.UCSC.hg38 Col Feature
+      Frequency Row Samples Signatures alt<- exposure fc project sig
+      sig_test
+    ```
+
+*   checking Rd files ... NOTE
+    ```
+    prepare_Rd: cosmic_data.Rd:91-93: Dropping empty section \details
+    prepare_Rd: cosmic_data.Rd:98-100: Dropping empty section \references
+    prepare_Rd: cosmic_data.Rd:101-102: Dropping empty section \examples
+    prepare_Rd: tcga_similarities.Rd:96-98: Dropping empty section \details
+    prepare_Rd: tcga_similarities.Rd:99-101: Dropping empty section \source
+    prepare_Rd: tcga_similarities.Rd:102-104: Dropping empty section \references
+    prepare_Rd: tcga_similarities.Rd:105-106: Dropping empty section \examples
+    prepare_Rd: tcga_tumors.Rd:18-20: Dropping empty section \details
+    prepare_Rd: tcga_tumors.Rd:21-23: Dropping empty section \source
+    prepare_Rd: tcga_tumors.Rd:24-26: Dropping empty section \references
+    prepare_Rd: tcga_tumors.Rd:27-28: Dropping empty section \examples
+    ```
+
+# SimDesign
 
 <details>
 
-* Version: 0.1.1
-* GitHub: https://github.com/meghapsimatrix/simhelpers
-* Source code: https://github.com/cran/simhelpers
-* Date/Publication: 2021-02-14 17:50:02 UTC
-* Number of recursive dependencies: 103
+* Version: 2.10.1
+* GitHub: https://github.com/philchalmers/SimDesign
+* Source code: https://github.com/cran/SimDesign
+* Date/Publication: 2023-02-01 15:30:02 UTC
+* Number of recursive dependencies: 104
 
-Run `revdep_details(, "simhelpers")` for more info
+Run `revdep_details(, "SimDesign")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking package dependencies ... NOTE
     ```
-    Namespaces in Imports field not imported from:
-      ‘future’ ‘magrittr’ ‘purrr’ ‘rlang’ ‘utils’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘doMPI’
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.7Mb
+      sub-directories of 1Mb or more:
+        doc   6.2Mb
     ```
 
 # skpr
 
 <details>
 
-* Version: 1.1.4
+* Version: 1.1.6
 * GitHub: https://github.com/tylermorganwall/skpr
 * Source code: https://github.com/cran/skpr
-* Date/Publication: 2022-04-08 19:40:02 UTC
-* Number of recursive dependencies: 125
+* Date/Publication: 2022-07-14 10:50:05 UTC
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "skpr")` for more info
 
@@ -3056,9 +2849,9 @@ Run `revdep_details(, "skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 47.8Mb
+      installed size is 56.7Mb
       sub-directories of 1Mb or more:
-        libs  46.3Mb
+        libs  55.2Mb
     ```
 
 # solitude
@@ -3069,7 +2862,7 @@ Run `revdep_details(, "skpr")` for more info
 * GitHub: https://github.com/talegari/solitude
 * Source code: https://github.com/cran/solitude
 * Date/Publication: 2021-07-29 20:00:02 UTC
-* Number of recursive dependencies: 125
+* Number of recursive dependencies: 127
 
 Run `revdep_details(, "solitude")` for more info
 
@@ -3084,83 +2877,15 @@ Run `revdep_details(, "solitude")` for more info
       All declared Imports should be used.
     ```
 
-# spacey
-
-<details>
-
-* Version: 0.1.1
-* GitHub: https://github.com/mikemahoney218/spacey
-* Source code: https://github.com/cran/spacey
-* Date/Publication: 2020-03-14 18:50:02 UTC
-* Number of recursive dependencies: 88
-
-Run `revdep_details(, "spacey")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘rgdal’
-      All declared Imports should be used.
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
-# SpaDES.core
-
-<details>
-
-* Version: 1.0.10
-* GitHub: https://github.com/PredictiveEcology/SpaDES.core
-* Source code: https://github.com/cran/SpaDES.core
-* Date/Publication: 2022-01-19 16:22:46 UTC
-* Number of recursive dependencies: 152
-
-Run `revdep_details(, "SpaDES.core")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.1.3-gcc8/lib64/R/bin/BATCH: line 60: 230522 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
-     ERROR
-    Running the tests in ‘tests/test-all.R’ failed.
-    Last 50 lines of output:
-      2b75ecc48000-2b75ece47000 ---p 00005000 00:27 15989972314921970648       /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/fastmatch/libs/fastmatch.so
-      2b75ece47000-2b75ece48000 r--p 00004000 00:27 15989972314921970648       /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/fastmatch/libs/fastmatch.so
-      2b75ece48000-2b75ece49000 rw-p 00005000 00:27 15989972314921970648       /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/fastmatch/libs/fastmatch.so
-      2b75ece49000-2b75ece68000 r-xp 00000000 00:27 4062816005967483540        /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/SpaDES.tools/libs/SpaDES.tools.so
-      2b75ece68000-2b75ed068000 ---p 0001f000 00:27 4062816005967483540        /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/SpaDES.tools/libs/SpaDES.tools.so
-    ...
-      2b75ef27c000-2b75ef47c000 rw-p 00000000 00:00 0 
-      2b75ef47c000-2b75ef47d000 ---p 00000000 00:00 0 
-      2b75ef47d000-2b75ef67d000 rw-p 00000000 00:00 0 
-      2b75ef67d000-2b75ef67f000 r-xp 00000000 00:27 11797017438089374939       /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/xfun/libs/xfun.so
-      2b75ef67f000-2b75ef87e000 ---p 00002000 00:27 11797017438089374939       /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/xfun/libs/xfun.so
-      2b75ef87e000-2b75ef87f000 r--p 00001000 00:27 11797017438089374939       /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/xfun/libs/xfun.so
-      2b75ef87f000-2b75ef880000 rw-p 00002000 00:27 11797017438089374939       /c4/home/henrik/repositories/future/revdep/library/SpaDES.core/xfun/libs/xfun.so
-      7ffe823ae000-7ffe82513000 rw-p 00000000 00:00 0                          [stack]
-      7ffe8252e000-7ffe82530000 r-xp 00000000 00:00 0                          [vdso]
-      ffffffffff600000-ffffffffff601000 r-xp 00000000 00:00 0                  [vsyscall]
-    ```
-
 # spaMM
 
 <details>
 
-* Version: 3.11.14
+* Version: 4.1.20
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
-* Date/Publication: 2022-04-09 23:30:02 UTC
-* Number of recursive dependencies: 100
+* Date/Publication: 2022-12-12 12:50:03 UTC
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "spaMM")` for more info
 
@@ -3170,27 +2895,30 @@ Run `revdep_details(, "spaMM")` for more info
 
 *   checking package dependencies ... NOTE
     ```
+    Packages suggested but not available for checking:
+      'Infusion', 'IsoriX', 'blackbox'
+    
     Packages which this enhances but not available for checking:
-      'multcomp', 'RLRsim'
+      'multcomp', 'RLRsim', 'lmerTest'
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 46.9Mb
+      installed size is 55.5Mb
       sub-directories of 1Mb or more:
-        R      2.2Mb
-        libs  43.6Mb
+        R      2.5Mb
+        libs  51.8Mb
     ```
 
 # sparrpowR
 
 <details>
 
-* Version: 0.2.5
+* Version: 0.2.6
 * GitHub: https://github.com/machiela-lab/sparrpowR
 * Source code: https://github.com/cran/sparrpowR
-* Date/Publication: 2022-02-05 00:30:02 UTC
-* Number of recursive dependencies: 98
+* Date/Publication: 2022-12-02 09:40:09 UTC
+* Number of recursive dependencies: 97
 
 Run `revdep_details(, "sparrpowR")` for more info
 
@@ -3209,11 +2937,11 @@ Run `revdep_details(, "sparrpowR")` for more info
 
 <details>
 
-* Version: 1.1.0
+* Version: 1.2.0
 * GitHub: https://github.com/NAU-CCL/SPARSEMODr
 * Source code: https://github.com/cran/SPARSEMODr
-* Date/Publication: 2021-07-01 17:50:02 UTC
-* Number of recursive dependencies: 119
+* Date/Publication: 2022-07-19 20:50:02 UTC
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "SPARSEMODr")` for more info
 
@@ -3232,11 +2960,11 @@ Run `revdep_details(, "SPARSEMODr")` for more info
 
 <details>
 
-* Version: 1.2.0
+* Version: 1.2.2
 * GitHub: https://github.com/FridleyLab/spatialTIME
 * Source code: https://github.com/cran/spatialTIME
-* Date/Publication: 2021-09-11 04:10:02 UTC
-* Number of recursive dependencies: 120
+* Date/Publication: 2022-11-22 17:30:02 UTC
+* Number of recursive dependencies: 91
 
 Run `revdep_details(, "spatialTIME")` for more info
 
@@ -3247,7 +2975,7 @@ Run `revdep_details(, "spatialTIME")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘ggpubr’ ‘pheatmap’ ‘rlist’ ‘stats’ ‘viridis’
+      ‘gridExtra’ ‘pheatmap’
       All declared Imports should be used.
     ```
 
@@ -3259,7 +2987,7 @@ Run `revdep_details(, "spatialTIME")` for more info
 * GitHub: https://github.com/spatial-ews/spatialwarnings
 * Source code: https://github.com/cran/spatialwarnings
 * Date/Publication: 2022-03-21 13:00:02 UTC
-* Number of recursive dependencies: 84
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "spatialwarnings")` for more info
 
@@ -3277,9 +3005,9 @@ Run `revdep_details(, "spatialwarnings")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.4Mb
+      installed size is  6.8Mb
       sub-directories of 1Mb or more:
-        libs   5.4Mb
+        libs   5.8Mb
     ```
 
 # sphunif
@@ -3290,7 +3018,7 @@ Run `revdep_details(, "spatialwarnings")` for more info
 * GitHub: https://github.com/egarpor/sphunif
 * Source code: https://github.com/cran/sphunif
 * Date/Publication: 2021-09-02 07:40:02 UTC
-* Number of recursive dependencies: 72
+* Number of recursive dependencies: 74
 
 Run `revdep_details(, "sphunif")` for more info
 
@@ -3300,9 +3028,9 @@ Run `revdep_details(, "sphunif")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 20.5Mb
+      installed size is 24.2Mb
       sub-directories of 1Mb or more:
-        libs  19.6Mb
+        libs  23.3Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -3314,11 +3042,11 @@ Run `revdep_details(, "sphunif")` for more info
 
 <details>
 
-* Version: 0.4.3.1
+* Version: 0.4.3.6
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
-* Date/Publication: 2022-04-23 23:50:02 UTC
-* Number of recursive dependencies: 148
+* Date/Publication: 2022-11-11 08:10:02 UTC
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "spNetwork")` for more info
 
@@ -3328,22 +3056,46 @@ Run `revdep_details(, "spNetwork")` for more info
 
 *   checking installed package size ... NOTE
     ```
+      installed size is 25.2Mb
+      sub-directories of 1Mb or more:
+        doc       1.0Mb
+        extdata   2.6Mb
+        libs     20.3Mb
+    ```
+
+# squat
+
+<details>
+
+* Version: 0.1.0
+* GitHub: NA
+* Source code: https://github.com/cran/squat
+* Date/Publication: 2022-12-22 11:20:02 UTC
+* Number of recursive dependencies: 123
+
+Run `revdep_details(, "squat")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
       installed size is 18.6Mb
       sub-directories of 1Mb or more:
-        doc       1.1Mb
-        extdata   2.6Mb
-        libs     13.5Mb
+        data   1.1Mb
+        libs  16.6Mb
     ```
 
 # ssdtools
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.0.2
 * GitHub: https://github.com/bcgov/ssdtools
 * Source code: https://github.com/cran/ssdtools
-* Date/Publication: 2022-04-10 21:40:02 UTC
-* Number of recursive dependencies: 141
+* Date/Publication: 2022-05-14 23:50:02 UTC
+* Number of recursive dependencies: 144
 
 Run `revdep_details(, "ssdtools")` for more info
 
@@ -3353,21 +3105,21 @@ Run `revdep_details(, "ssdtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 17.6Mb
+      installed size is 23.0Mb
       sub-directories of 1Mb or more:
         doc    1.2Mb
-        libs  15.1Mb
+        libs  20.6Mb
     ```
 
 # stars
 
 <details>
 
-* Version: 0.5-5
+* Version: 0.6-0
 * GitHub: https://github.com/r-spatial/stars
 * Source code: https://github.com/cran/stars
-* Date/Publication: 2021-12-19 03:20:02 UTC
-* Number of recursive dependencies: 148
+* Date/Publication: 2022-11-21 13:10:02 UTC
+* Number of recursive dependencies: 153
 
 Run `revdep_details(, "stars")` for more info
 
@@ -3382,21 +3134,21 @@ Run `revdep_details(, "stars")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  8.6Mb
+      installed size is  6.0Mb
       sub-directories of 1Mb or more:
-        doc   2.3Mb
-        nc    4.5Mb
+        doc   2.4Mb
+        nc    1.7Mb
     ```
 
 # synergyfinder
 
 <details>
 
-* Version: 3.2.10
+* Version: 3.6.2
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2022-03-31
-* Number of recursive dependencies: 181
+* Date/Publication: 2022-12-22
+* Number of recursive dependencies: 191
 
 Run `revdep_details(, "synergyfinder")` for more info
 
@@ -3410,31 +3162,6 @@ Run `revdep_details(, "synergyfinder")` for more info
     Namespaces in Imports field not imported from:
       ‘future’ ‘gstat’ ‘nleqslv’ ‘sp’ ‘tidyverse’
       All declared Imports should be used.
-    ```
-
-*   checking for code/documentation mismatches ... WARNING
-    ```
-    Codoc mismatches from documentation object 'PlotDoseResponse':
-    PlotDoseResponse
-      Code: function(data, block_ids = c(1), drugs = c(1, 2), adjusted =
-                     TRUE, statistic = NULL, summary_statistic = "mean",
-                     high_value_color = "#FF0000", low_value_color =
-                     "#00FF00", point_color = "#C24B40", curve_color =
-                     "black", curve_ylim = NULL, curve_grid = TRUE,
-                     text_size_scale = 1, heatmap_text_label_size_scale =
-                     1, heatmap_text_label_color = "#000000",
-                     heatmap_color_range = NULL, curve_plot_title = NULL,
-    ...
-                     high_value_color = "#A90217", low_value_color =
-                     "#2166AC", text_size_scale = 1,
-                     heatmap_text_label_size_scale = 1,
-                     heatmap_text_label_color = "#000000", grid = TRUE,
-                     dynamic = FALSE, display = TRUE, save_file = FALSE,
-                     file_type = "pdf", file_name = NULL, file_path = NULL,
-                     height = 6, width = 6, units = "in")
-      Mismatches in argument default values:
-        Name: 'high_value_color' Code: "#FF0000" Docs: "#A90217"
-        Name: 'low_value_color' Code: "#00FF00" Docs: "#2166AC"
     ```
 
 *   checking installed package size ... NOTE
@@ -3473,11 +3200,11 @@ Run `revdep_details(, "synergyfinder")` for more info
 
 <details>
 
-* Version: 1.1.1
+* Version: 1.1.2
 * GitHub: https://github.com/frictionlessdata/tableschema-r
 * Source code: https://github.com/cran/tableschema.r
-* Date/Publication: 2020-03-12 12:40:02 UTC
-* Number of recursive dependencies: 65
+* Date/Publication: 2022-09-29 20:00:03 UTC
+* Number of recursive dependencies: 66
 
 Run `revdep_details(, "tableschema.r")` for more info
 
@@ -3485,31 +3212,20 @@ Run `revdep_details(, "tableschema.r")` for more info
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘iterators’
-      All declared Imports should be used.
-    ```
-
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘parsedate’
-    ```
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
     ```
 
 # targeted
 
 <details>
 
-* Version: 0.2.0
+* Version: 0.3
 * GitHub: https://github.com/kkholst/targeted
 * Source code: https://github.com/cran/targeted
-* Date/Publication: 2021-10-26 14:40:02 UTC
-* Number of recursive dependencies: 76
+* Date/Publication: 2022-10-25 20:30:02 UTC
+* Number of recursive dependencies: 94
 
 Run `revdep_details(, "targeted")` for more info
 
@@ -3519,20 +3235,20 @@ Run `revdep_details(, "targeted")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.6Mb
+      installed size is 16.8Mb
       sub-directories of 1Mb or more:
-        libs  12.7Mb
+        libs  15.7Mb
     ```
 
 # text
 
 <details>
 
-* Version: 0.9.50
+* Version: 0.9.99.2
 * GitHub: https://github.com/OscarKjell/text
 * Source code: https://github.com/cran/text
-* Date/Publication: 2022-02-12 23:10:02 UTC
-* Number of recursive dependencies: 148
+* Date/Publication: 2022-09-20 22:00:02 UTC
+* Number of recursive dependencies: 150
 
 Run `revdep_details(, "text")` for more info
 
@@ -3549,11 +3265,11 @@ Run `revdep_details(, "text")` for more info
 
 <details>
 
-* Version: 1.1.1
+* Version: 1.2.0
 * GitHub: https://github.com/ms609/TreeSearch
 * Source code: https://github.com/cran/TreeSearch
-* Date/Publication: 2022-03-22 10:10:28 UTC
-* Number of recursive dependencies: 115
+* Date/Publication: 2022-08-10 22:40:17 UTC
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "TreeSearch")` for more info
 
@@ -3561,12 +3277,37 @@ Run `revdep_details(, "TreeSearch")` for more info
 
 ## In both
 
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘custom.Rmd’ using rmarkdown
+    Error reading bibliography file ../inst/REFERENCES.bib:
+    (line 348, column 1):
+    unexpected '@'
+    Error: processing vignette 'custom.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 25
+    --- failed re-building ‘custom.Rmd’
+    
+    --- re-building ‘getting-started.Rmd’ using rmarkdown
+    ...
+    unexpected '@'
+    Error: processing vignette 'tree-search.Rmd' failed with diagnostics:
+    pandoc document conversion failed with error 25
+    --- failed re-building ‘tree-search.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘custom.Rmd’ ‘profile-scores.Rmd’ ‘profile.Rmd’ ‘tree-search.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is  5.8Mb
+      installed size is  6.3Mb
       sub-directories of 1Mb or more:
         datasets   1.6Mb
-        libs       2.2Mb
+        libs       2.4Mb
     ```
 
 # TriDimRegression
@@ -3577,7 +3318,7 @@ Run `revdep_details(, "TreeSearch")` for more info
 * GitHub: https://github.com/alexander-pastukhov/tridim-regression
 * Source code: https://github.com/cran/TriDimRegression
 * Date/Publication: 2021-10-05 08:30:08 UTC
-* Number of recursive dependencies: 98
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "TriDimRegression")` for more info
 
@@ -3587,9 +3328,9 @@ Run `revdep_details(, "TriDimRegression")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 41.3Mb
+      installed size is 47.3Mb
       sub-directories of 1Mb or more:
-        libs  40.7Mb
+        libs  46.8Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -3604,27 +3345,6 @@ Run `revdep_details(, "TriDimRegression")` for more info
     GNU make is a SystemRequirements.
     ```
 
-# tsfeatures
-
-<details>
-
-* Version: 1.0.2
-* GitHub: https://github.com/robjhyndman/tsfeatures
-* Source code: https://github.com/cran/tsfeatures
-* Date/Publication: 2020-06-07 16:10:02 UTC
-* Number of recursive dependencies: 98
-
-Run `revdep_details(, "tsfeatures")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
-    ```
-
 # TSstudio
 
 <details>
@@ -3633,7 +3353,7 @@ Run `revdep_details(, "tsfeatures")` for more info
 * GitHub: https://github.com/RamiKrispin/TSstudio
 * Source code: https://github.com/cran/TSstudio
 * Date/Publication: 2020-01-21 05:30:02 UTC
-* Number of recursive dependencies: 142
+* Number of recursive dependencies: 156
 
 Run `revdep_details(, "TSstudio")` for more info
 
@@ -3655,7 +3375,7 @@ Run `revdep_details(, "TSstudio")` for more info
 * GitHub: https://github.com/nhejazi/txshift
 * Source code: https://github.com/cran/txshift
 * Date/Publication: 2022-02-09 22:30:02 UTC
-* Number of recursive dependencies: 110
+* Number of recursive dependencies: 111
 
 Run `revdep_details(, "txshift")` for more info
 
@@ -3672,11 +3392,11 @@ Run `revdep_details(, "txshift")` for more info
 
 <details>
 
-* Version: 1.1.7
+* Version: 1.1.9
 * GitHub: https://github.com/openbiox/UCSCXenaShiny
 * Source code: https://github.com/cran/UCSCXenaShiny
-* Date/Publication: 2022-04-13 07:52:38 UTC
-* Number of recursive dependencies: 187
+* Date/Publication: 2022-12-12 09:00:03 UTC
+* Number of recursive dependencies: 181
 
 Run `revdep_details(, "UCSCXenaShiny")` for more info
 
@@ -3686,9 +3406,9 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.0Mb
+      installed size is  6.6Mb
       sub-directories of 1Mb or more:
-        doc        1.1Mb
+        doc        1.4Mb
         shinyapp   3.3Mb
     ```
 
@@ -3696,10 +3416,10 @@ Run `revdep_details(, "UCSCXenaShiny")` for more info
 
 <details>
 
-* Version: 2.1.2
+* Version: 2.1.3
 * GitHub: https://github.com/dcgerard/updog
 * Source code: https://github.com/cran/updog
-* Date/Publication: 2022-01-24 21:50:02 UTC
+* Date/Publication: 2022-10-18 08:00:02 UTC
 * Number of recursive dependencies: 145
 
 Run `revdep_details(, "updog")` for more info
@@ -3710,9 +3430,9 @@ Run `revdep_details(, "updog")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.7Mb
+      installed size is  7.9Mb
       sub-directories of 1Mb or more:
-        libs   6.0Mb
+        libs   7.1Mb
     ```
 
 # vmeasur
@@ -3723,7 +3443,7 @@ Run `revdep_details(, "updog")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/vmeasur
 * Date/Publication: 2021-11-11 19:00:02 UTC
-* Number of recursive dependencies: 122
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "vmeasur")` for more info
 
@@ -3738,15 +3458,45 @@ Run `revdep_details(, "vmeasur")` for more info
     See ‘/c4/home/henrik/repositories/future/revdep/checks/vmeasur/new/vmeasur.Rcheck/00install.out’ for details.
     ```
 
+# wru
+
+<details>
+
+* Version: 1.0.1
+* GitHub: https://github.com/kosukeimai/wru
+* Source code: https://github.com/cran/wru
+* Date/Publication: 2022-10-21 17:30:02 UTC
+* Number of recursive dependencies: 87
+
+Run `revdep_details(, "wru")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  5.6Mb
+      sub-directories of 1Mb or more:
+        data   3.5Mb
+        libs   1.9Mb
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘future’
+      All declared Imports should be used.
+    ```
+
 # XNAString
 
 <details>
 
-* Version: 1.2.2
+* Version: 1.6.0
 * GitHub: NA
 * Source code: https://github.com/cran/XNAString
-* Date/Publication: 2021-11-30
-* Number of recursive dependencies: 98
+* Date/Publication: 2022-11-01
+* Number of recursive dependencies: 101
 
 Run `revdep_details(, "XNAString")` for more info
 
@@ -3756,9 +3506,9 @@ Run `revdep_details(, "XNAString")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 10.8Mb
+      installed size is 11.2Mb
       sub-directories of 1Mb or more:
-        libs   9.7Mb
+        libs   9.5Mb
     ```
 
 *   checking top-level files ... NOTE

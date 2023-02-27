@@ -9,6 +9,9 @@
 \alias{RngFutureWarning}
 \alias{RngFutureError}
 \alias{UnexpectedFutureResultError}
+\alias{GlobalEnvFutureCondition}
+\alias{GlobalEnvFutureWarning}
+\alias{GlobalEnvFutureError}
 \alias{FutureJournalCondition}
 \title{A condition (message, warning, or error) that occurred while orchestrating a future}
 \usage{
@@ -32,6 +35,18 @@ RngFutureWarning(...)
 RngFutureError(...)
 
 UnexpectedFutureResultError(future, hint = NULL)
+
+GlobalEnvFutureCondition(
+  message = NULL,
+  call = NULL,
+  globalenv = globalenv,
+  uuid = future$uuid,
+  future = NULL
+)
+
+GlobalEnvFutureWarning(...)
+
+GlobalEnvFutureError(...)
 
 FutureJournalCondition(
   message,

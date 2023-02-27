@@ -187,57 +187,6 @@ stopifnot(inherits(res, "try-error"))
 
 message("*** importParallel() ... DONE")
 
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# myInternalIP() and myExternalIP()
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-message("*** myInternalIP() ...")
-ips <- myInternalIP(mustWork = FALSE)
-message("myInternalIP(): ", paste(ips, collapse = ", "))
-message("*** myInternalIP() ... DONE")
-
-ips <- myInternalIP(force = TRUE, which = "first", mustWork = FALSE)
-message("myInternalIP(which = 'first'): ", paste(ips, collapse = ", "))
-message("*** myInternalIP() ... DONE")
-
-ips <- myInternalIP(force = TRUE, which = "last", mustWork = FALSE)
-message("myInternalIP(which = 'last'): ", paste(ips, collapse = ", "))
-message("*** myInternalIP() ... DONE")
-
-ips <- myInternalIP(force = TRUE, which = "all", mustWork = FALSE)
-message("myInternalIP(which = 'all'): ", paste(ips, collapse = ", "))
-message("*** myInternalIP() ... DONE")
-
-message("*** myExternalIP() ...")
-ip <- myExternalIP(mustWork = FALSE)
-message("myExternalIP(): ", ip)
-message("*** myExternalIP() ... DONE")
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# pid_exists()
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-message("*** pid_exists() ...")
-options(future.debug = TRUE)
-
-pid <- Sys.getpid()
-printf("Current PID: %d\n", pid)
-
-exists <- pid_exists(pid)
-printf("Does it exist: %s\n", exists)
-
-## Either pid_exists() works and return TRUE here, or it fails
-## to query the process information at all in case it returns NA
-## However, it should never return FALSE.
-stopifnot(is.logical(exists), length(exists) == 1L,
-          isTRUE(exists) || is.na(exists))
-
-message("*** pid_exists() ... DONE")
-
-message("*** inRCmdCheck() ...")
-cat(sprintf("R CMD check is running: %s\n", inRCmdCheck()))
-message("*** inRCmdCheck() ... DONE")
-
 message("*** utils ... DONE")
 
 source("incl/end.R")

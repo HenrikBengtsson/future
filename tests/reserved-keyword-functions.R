@@ -16,17 +16,18 @@ boom <- function(...) stop("Boom!")
 
 base_sprintf <- base::sprintf
 base_tryCatch <- base::tryCatch
+base_rm <- base::rm
 
 fails <- logical(length(...names))
 names(fails) <- ...names
 for (kk in seq_along(...names)) {
   name <- ...names[kk]
-  message(base_sprintf(" - %s: ", sQuote(name)), appendLF = FALSE)
+  message(base_sprintf(" - %d/%d %s: ", kk, length(...names), sQuote(name)), appendLF = FALSE)
   assign(name, boom)
   res <- base_tryCatch(suppressWarnings({
     future(NULL)
   }), error = identity)
-  rm(list = name)
+  base_rm(list = name)
   if (inherits(res, "error")) {
     fails[kk] <- TRUE
     message("FAIL")

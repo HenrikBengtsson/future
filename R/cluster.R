@@ -40,8 +40,8 @@
 #' @example incl/cluster.R
 #'
 #' @export
-cluster <- function(..., workers = availableWorkers(), envir = parent.frame()) {
-  future <- ClusterFuture(..., workers = workers, envir = envir)
+cluster <- function(..., persistent = FALSE, workers = availableWorkers(), envir = parent.frame()) {
+  future <- ClusterFuture(..., persistent = persistent, workers = workers, envir = envir)
   if (!future$lazy) future <- run(future)
   invisible(future)
 }

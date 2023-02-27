@@ -16,7 +16,7 @@ for (cores in 1:availCores) {
     42L
   })
   print(f)
-  stopifnot(inherits(f, "MultiprocessFuture") || inherits(f, "SequentialFuture"))
+  stopifnot(inherits(f, "SequentialFuture"))
 
   print(resolved(f))
   y <- value(f)
@@ -48,7 +48,7 @@ for (cores in 1:availCores) {
   x <- listenv()
   for (ii in 1:4) {
     message(sprintf(" - Creating multiprocess future #%d ...", ii))
-    x[[ii]] <- multiprocess({ ii })
+    x[[ii]] <- multiprocess({ ii }, globals = TRUE)
   }
   message(sprintf(" - Resolving %d multiprocess futures", length(x)))
   v <- sapply(x, FUN = value)
@@ -102,7 +102,7 @@ for (cores in 1:availCores) {
     yTruth <- sum(a)
     size <- object.size(a)
     cat(sprintf("a: %g bytes\n", size))
-    f <- multiprocess({ sum(a) }, workers = workers)
+    f <- multiprocess({ sum(a) }, globals = TRUE, workers = workers)
     print(f)
     rm(list = "a")
     v <- value(f)
@@ -115,7 +115,7 @@ for (cores in 1:availCores) {
     yTruth <- sum(a)
     size <- object.size(a)
     cat(sprintf("a: %g bytes\n", size))
-    res <- try(f <- multiprocess({ sum(a) }, workers = workers), silent = TRUE)
+    res <- try(f <- multiprocess({ sum(a) }, globals = TRUE, workers = workers), silent = TRUE)
     rm(list = "a")
     stopifnot(inherits(res, "try-error"))
   }
@@ -132,7 +132,7 @@ for (cores in 1:availCores) {
   b <- 3
   yTruth <- a * b
 
-  f <- multiprocess({ a * b }, workers = 1L)
+  f <- multiprocess({ a * b }, globals = TRUE, workers = 1L)
   rm(list = c("a", "b"))
 
   v <- value(f)

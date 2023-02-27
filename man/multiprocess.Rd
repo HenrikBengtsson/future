@@ -9,64 +9,20 @@ multiprocess(..., workers = availableCores(), envir = parent.frame())
 \arguments{
 \item{\dots}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
 
-\item{workers}{A positive numeric scalar or a function specifying the
-maximum number of parallel futures that can be active at the same time
-before blocking.
-If a function, it is called without arguments \emph{when the future
-is created} and its value is used to configure the workers.
-The function should return a numeric scalar.}
+\item{workers}{Ignored in \strong{future} (>= 1.31.0).}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
 }
 \value{
-A \link{MultiprocessFuture} implemented as either a
-\link{MulticoreFuture} or a \link{MultisessionFuture}.
+A \link{SequentialFuture} (sic!) since \strong{future} 1.31.0.
 }
 \description{
-A multiprocess future is a future that uses \link{multicore} evaluation
-if supported, otherwise it uses \link{multisession} evaluation.
-Regardless, its \emph{value is computed and resolved in
-parallel in another process}.\cr
-\cr
 \strong{WARNING: The 'multiprocess' future plan is deprecated.
 Instead, explicitly specify 'multisession' or 'multicore'.  The former works
 everywhere and is the recommended one between the two. \emph{Forked processing},
 which 'multicore' uses, is unstable in various environment and setups.
-The 'multiprocess' alias is therefore being phased out.}
-}
-\examples{
-\donttest{
-
-## Use multiprocess futures
-plan(multiprocess)
-
-## A global variable
-a <- 0
-
-## Create future (explicitly)
-f <- future({
-  b <- 3
-  c <- 2
-  a * b * c
-})
-
-## A multiprocess future is evaluated in a separate R process.
-## Changing the value of a global variable will not affect
-## the result of the future.
-a <- 7
-print(a)
-
-v <- value(f)
-print(v)
-stopifnot(v == 0)
-
-## Explicitly close multisession workers, if they were used
-plan(sequential)
-}
-}
-\seealso{
-Internally \code{\link[=multicore]{multicore()}} and \code{\link[=multisession]{multisession()}}
-are used.
+The 'multiprocess' alias is therefore being phased out, and is now
+equal to using 'sequential' (sic!)}
 }
 \keyword{internal}

@@ -13,7 +13,6 @@ resolve(
   signal = FALSE,
   force = FALSE,
   sleep = getOption("future.wait.interval", 0.01),
-  value = result,
   ...
 )
 }
@@ -40,8 +39,6 @@ otherwise not.}
 
 \item{sleep}{Number of seconds to wait before checking if futures have been
 resolved since last time.}
-
-\item{value}{(DEFUNCT) Use argument \code{result} instead.}
 
 \item{\dots}{Not used.}
 }

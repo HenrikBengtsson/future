@@ -4,10 +4,18 @@
 \alias{cluster}
 \title{Create a cluster future whose value will be resolved asynchronously in a parallel process}
 \usage{
-cluster(..., workers = availableWorkers(), envir = parent.frame())
+cluster(
+  ...,
+  persistent = FALSE,
+  workers = availableWorkers(),
+  envir = parent.frame()
+)
 }
 \arguments{
 \item{\dots}{Additional named elements passed to \code{\link[=ClusterFuture]{ClusterFuture()}}.}
+
+\item{persistent}{If FALSE, the evaluation environment is cleared
+from objects prior to the evaluation of the future.}
 
 \item{workers}{A \code{\link[parallel:makeCluster]{cluster}} object,
 a character vector of host names, a positive numeric scalar,
