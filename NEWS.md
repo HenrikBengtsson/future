@@ -9,6 +9,9 @@
    whether `FutureCondition` objects should have a copy of the
    `Future` object or not.
 
+ * Add prototype of an internal event-logging framework for the
+   purpose of profiling futures and their backends.
+
 ## Deprecated and Defunct
 
  * Add optional assertion of the internal Future `state` field.

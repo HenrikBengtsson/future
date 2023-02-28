@@ -455,6 +455,8 @@ stan
 stanfit
 calc
 conditionMessage
+difftime
+POSIXct
 setalloccol
 loadNamespace
 unhandled

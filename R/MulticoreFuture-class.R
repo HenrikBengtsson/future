@@ -51,17 +51,30 @@ run.MulticoreFuture <- function(future, ...) {
   expr <- getExpression(future)
   envir <- future$envir
 
+  t_start <- Sys.time()
+  
   ## Assign globals
   envir <- new.env(parent = envir)
   if (length(future$globals) > 0L) {
     envir <- assign_globals(envir, globals = future$globals)
   }
 
+  ## Get a free worker
   reg <- sprintf("multicore-%s", session_uuid())
   requestCore(
     await = function() FutureRegistry(reg, action = "collect-first", earlySignal = TRUE),
     workers = future$workers
   )
+
+  if (inherits(future$.journal, "FutureJournal")) {
+    appendToFutureJournal(future,
+         event = "getWorker",
+      category = "other",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
+    )
+  }
 
   ## Add to registry
   FutureRegistry(reg, action = "add", future = future, earlySignal = TRUE)

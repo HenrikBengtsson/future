@@ -43,6 +43,8 @@
 \alias{R_FUTURE_RESOLVED_TIMEOUT}
 \alias{future.output.windows.reencode}
 \alias{R_FUTURE_OUTPUT_WINDOWS_REENCODE}
+\alias{future.journal}
+\alias{R_FUTURE_JOURNAL}
 \title{Options used for futures}
 \description{
 Below are the \R options and environment variables that are used by the

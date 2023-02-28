@@ -102,7 +102,8 @@
 #' @name Future-class
 Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = list(), packages = NULL, seed = FALSE, lazy = FALSE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
-
+  t_start <- Sys.time()
+  
   if (is.null(seed)) {
   } else if (isFALSE(seed)) {
   } else if (is_lecyer_cmrg_seed(seed)) {
@@ -458,12 +459,55 @@ run.Future <- function(future, ...) {
   future
 }
 
-run <- function(...) UseMethod("run")
+#' @export
+#' @keywords internal
+run <- function(future, ...) {
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
+    start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(future,
+          event = "launch",
+       category = "overhead",
+          start = start,
+           stop = Sys.time()
+      )
+    })
+  }
+  UseMethod("run")
+}
 
 
 #' @export
 #' @keywords internal
-result <- function(...) UseMethod("result")
+result <- function(future, ...) {
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
+    start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(future,
+           event = "gather",
+        category = "overhead",
+           start = start,
+            stop = Sys.time()
+      )
+
+      ## Signal FutureJournalCondition?
+      if (!isTRUE(future$.journal_signalled)) {
+        journal <- journal(future)
+        label <- future$label
+        if (is.null(label)) label <- "<none>"
+        msg <- sprintf("A future ('%s') of class %s was resolved", label, class(future)[1])
+        cond <- FutureJournalCondition(message = msg, journal = journal) 
+        signalCondition(cond)
+        future$.journal_signalled <- TRUE
+      }
+    })
+  }
+  UseMethod("result")
+}
 
 #' Get the results of a resolved future
 #'

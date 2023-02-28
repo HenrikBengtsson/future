@@ -188,6 +188,7 @@
 #' @name future
 future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE, seed = FALSE, globals = TRUE, packages = NULL, stdout = TRUE, conditions = "condition", earlySignal = FALSE, label = NULL, gc = FALSE, ...) {
   if (substitute) expr <- substitute(expr)
+  t_start <- Sys.time()
 
   gp <- getGlobalsAndPackages(expr, envir = envir, tweak = tweakExpression, globals = globals)
   expr <- gp$expr
@@ -216,13 +217,18 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
   ## Comment: Only allowed for persistent 'cluster' futures
   future$.defaultLocal <- !is.element("local", names(list(...)))
 
+  ## Enable journaling?
+  if (getOption("future.journal", FALSE)) {
+    future <- makeFutureJournal(future, event = "create", category = "overhead", start = t_start)
+  }
+
   if (!lazy) {
     future <- run(future)
     future$lazy <- FALSE
     ## Assert that a future was returned
     stop_if_not(inherits(future, "Future"), !future$lazy)
   }
-
+  
   future
 }
 

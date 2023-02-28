@@ -348,6 +348,7 @@ makeExpression <- local({
     }
 
     ...future.result$conditions <- ...future.conditions
+    ...future.result$finished <- base::Sys.time()
     
     ...future.result
   })
