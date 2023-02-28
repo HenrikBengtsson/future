@@ -98,7 +98,7 @@ Run `revdep_details(, "baseballr")` for more info
     ...
     Quitting from lines 38-40 (using_statcast_pitch_data.Rmd) 
     Error: processing vignette 'using_statcast_pitch_data.Rmd' failed with diagnostics:
-    HTTP error 404.
+    Timeout was reached: [] Operation timed out after 10001 milliseconds with 0 out of 0 bytes received
     --- failed re-building ‘using_statcast_pitch_data.Rmd’
     
     SUMMARY: processing the following file failed:
@@ -1288,7 +1288,7 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 238761 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 117874 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
     
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
@@ -1465,7 +1465,53 @@ Run `revdep_details(, "MineICA")` for more info
 
 </details>
 
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘MineICA-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: IcaSet
+    > ### Title: Class to Contain and Describe an ICA decomposition of
+    > ###   High-Throughput Data.
+    > ### Aliases: class:IcaSet IcaSet IcaSet-class [ [,ANY,ANY,IcaSet-method
+    > ###   [,IcaSet,ANY-method [,IcaSet,ANY,ANY-method
+    > ###   [,IcaSet,ANY,ANY,ANY-method [<- [<-,IcaSet,ANY,ANY,ANY,ANY-method
+    > ###   [<-,IcaSet,ANY,ANY,ANY-method [<-,IcaSet,ANY,ANY-method organism
+    ...
+    > ### Keywords: classes
+    > 
+    > ### ** Examples
+    > 
+    > # create an instance of IcaSet
+    > new("IcaSet")
+    Error in curl::curl_fetch_memory(url, handle = handle) : 
+      Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 0 out of -1 bytes received
+    Calls: new ... request_fetch -> request_fetch.write_memory -> <Anonymous>
+    Execution halted
+    ```
+
 ## In both
+
+*   checking running R code from vignettes ...
+    ```
+      ‘MineICA.Rnw’... failed
+     ERROR
+    Errors in running code in vignettes:
+    when running code in ‘MineICA.Rnw’
+      ...
+    > resPath(params)
+    [1] "mainz/"
+    
+    > resW <- writeProjByComp(icaSet = icaSetMainz, params = params, 
+    +     mart = mart, level = "genes", selCutoffWrite = 2.5)
+    
+      When sourcing ‘MineICA.R’:
+    Error: task 2 failed - "Multiple cache results found.
+    Please clear your cache by running biomartCacheClear()"
+    Execution halted
+    ```
 
 *   checking dependencies in R code ... WARNING
     ```
@@ -1575,8 +1621,8 @@ Run `revdep_details(, "MineICA")` for more info
         IQR, mad, sd, var, xtabs
     
     ...
-    Error in { : task 2 failed - "Multiple cache results found.
-    Please clear your cache by running biomartCacheClear()"
+    Error in curl::curl_fetch_memory(url, handle = handle) : 
+      Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 108580 out of -1 bytes received
     
     --- failed re-building ‘MineICA.Rnw’
     
@@ -1726,10 +1772,10 @@ Run `revdep_details(, "oncomsm")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 55.3Mb
+      installed size is 55.6Mb
       sub-directories of 1Mb or more:
         doc    1.3Mb
-        libs  53.0Mb
+        libs  53.2Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
