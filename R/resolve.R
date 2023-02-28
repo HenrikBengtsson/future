@@ -61,7 +61,7 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
     on.exit({
       appendToFutureJournal(x,
         event = "resolve",
-        type = "overhead",
+        category = "overhead",
         start = t_start,
         stop = Sys.time(),
         skip = FALSE

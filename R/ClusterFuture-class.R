@@ -121,11 +121,11 @@ run.ClusterFuture <- function(future, ...) {
   
   if (inherits(future$.journal, "FutureJournal")) {
     appendToFutureJournal(future,
-       event = "getWorker",
-        type = "overhead",
-      parent = "launch",
-       start = t_start,
-        stop = Sys.time()
+         event = "getWorker",
+      category = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
     )
   }
 
@@ -139,11 +139,11 @@ run.ClusterFuture <- function(future, ...) {
     cluster_call(cl, fun = grmall, future = future, when = "call grmall() on")
     if (inherits(future$.journal, "FutureJournal")) {
       appendToFutureJournal(future,
-         event = "eraseWorker",
-          type = "overhead",
-        parent = "launch",
-         start = t_start,
-          stop = Sys.time()
+           event = "eraseWorker",
+        category = "overhead",
+          parent = "launch",
+           start = t_start,
+            stop = Sys.time()
       )
     }
   }
@@ -167,11 +167,11 @@ run.ClusterFuture <- function(future, ...) {
   
   if (inherits(future$.journal, "FutureJournal")) {
     appendToFutureJournal(future,
-       event = "attachPackages",
-        type = "overhead",
-      parent = "launch",
-       start = t_start,
-        stop = Sys.time()
+         event = "attachPackages",
+      category = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
     )
   }
 
@@ -204,11 +204,11 @@ run.ClusterFuture <- function(future, ...) {
     
     if (inherits(future$.journal, "FutureJournal")) {
       appendToFutureJournal(future,
-         event = "exportGlobals",
-          type = "overhead",
-        parent = "launch",
-         start = t_start,
-          stop = Sys.time()
+           event = "exportGlobals",
+        category = "overhead",
+          parent = "launch",
+           start = t_start,
+            stop = Sys.time()
       )
     }
   }
@@ -445,11 +445,11 @@ receiveMessageFromWorker <- function(future, ...) {
 
     if (inherits(future$.journal, "FutureJournal")) {
       appendToFutureJournal(future,
-         event = "receiveResult",
-          type = "overhead",
-        parent = "gather",
-         start = t_start,
-          stop = Sys.time()
+           event = "receiveResult",
+        category = "overhead",
+          parent = "gather",
+           start = t_start,
+            stop = Sys.time()
       )
     }
 

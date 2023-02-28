@@ -171,6 +171,8 @@
 #' R_FUTURE_RESOLVED_TIMEOUT
 #' future.output.windows.reencode
 #' R_FUTURE_OUTPUT_WINDOWS_REENCODE
+#' future.journal
+#' R_FUTURE_JOURNAL
 #'
 #' @name future.options
 NULL
@@ -333,4 +335,7 @@ update_package_options <- function(debug = FALSE) {
 
   ## future 1.32.0:
   update_package_option("future.state.onInvalid", mode = "character", debug = debug)
+
+  ## future 1.32.0:
+  update_package_option("future.journal", mode = "logical", debug = debug)
 }

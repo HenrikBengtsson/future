@@ -68,11 +68,11 @@ run.MulticoreFuture <- function(future, ...) {
 
   if (inherits(future$.journal, "FutureJournal")) {
     appendToFutureJournal(future,
-       event = "getWorker",
-        type = "other",
-      parent = "launch",
-       start = t_start,
-        stop = Sys.time()
+         event = "getWorker",
+      category = "other",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
     )
   }
 

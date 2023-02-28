@@ -219,7 +219,7 @@ future <- function(expr, envir = parent.frame(), substitute = TRUE, lazy = FALSE
 
   ## Enable journaling?
   if (getOption("future.journal", FALSE)) {
-    future <- makeFutureJournal(future, event = "create", type = "overhead", start = t_start)
+    future <- makeFutureJournal(future, event = "create", category = "overhead", start = t_start)
   }
 
   if (!lazy) {

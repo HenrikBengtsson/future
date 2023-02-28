@@ -14,38 +14,42 @@
 #' @return
 #' A data frame of class `FutureJournal` with columns:
 #'
-#'  1. `event` (character string)
-#'  2. `type` (character string)
-#'  3. `parent` (character string)
-#'  4. `start` (POSIXct)
-#'  5. `at` (difftime)
-#'  6. `duration` (difftime)
-#'  7. `future_label` (character string)
-#'  8. `future_uuid` (character string)
-#'  9. `session_uuid` (character string)
+#'  1. `event` (character string) - type of event that took place
+#'  2. `category` (character string) - the category of the event
+#'  3. `parent` (character string) - (to be describe)
+#'  4. `start` (POSIXct) - the timestamp when the event started
+#'  5. `at` (difftime) - the time when the event started relative to
+#'     first event
+#'  6. `duration` (difftime) - the duration of the event
+#'  7. `future_label` (character string) - the label of the future 
+#'  8. `future_uuid` (character string) - the UUID of the future
+#'  9. `session_uuid` (character string) - the UUID of the R session
+#'     where the event took place
 #'
-#' Common events are:
+#' The common events are:
 #'
 #'  * `create`   - the future was created (an `overhead`)
 #'  * `launch`   - the future was launched (an `overhead`)
 #'  * `evaluate` - the future was evaluated (an `evaluation`)
-#'  * `resolved` - the future was queried (may be occur multiple times) (an `overhead`)
+#'  * `resolved` - the future was queried (may be occur multiple times)
+#'                 (an `overhead`)
 #'  * `gather`   - the results was retrieved (an `overhead`)
 #'
 #' but others may be added by other Future classes.
 #'
-#' Common event types are:
+#' Common event categorys are:
 #'
 #'  * `evaluation` - processing time is spent on evaluation
 #'  * `overhead`   - processing time is spent on orchestrating the future
-#'  * `waiting`    - processing time is spent on waiting to set up or querying the future
+#'  * `waiting`    - processing time is spent on waiting to set up or
+#'                   querying the future
 #'
 #' but others may be added by other Future classes.
 #'
 #' The data frame is sorted by the `at` time.
 #' Note that the timestamps for the `evaluate` event are based on the local
 #' time on the worker. The system clocks on the worker and the calling R
-#' system may be out of sync.
+#' system may not be in perfect sync.
 #'
 #' @section Enabling and disabling event logging:
 #' To enable logging of events, set option `future.journal` is TRUE.
@@ -79,7 +83,7 @@ journal.Future <- function(x, ...) {
     stop_if_not(is.character(session_uuid))
     x <- appendToFutureJournal(x,
       event = "evaluate",
-      type  = "evaluation",
+      category  = "evaluation",
       start = x$result$started,
       stop = x$result$finished
     )
@@ -161,7 +165,7 @@ print.FutureJournal <- function(x, digits.secs = 3L, ...) {
 #' @export
 summary.FutureJournal <- function(object, ...) {
   ## To please 'R CMD check'
-  event <- future_uuid <- median <- parent <- type <- NULL
+  event <- future_uuid <- median <- parent <- category <- NULL
   
   dt_top <- subset(object, is.na(parent))
 
@@ -204,8 +208,8 @@ summary.FutureJournal <- function(object, ...) {
     uuid <- uuids[[kk]]
     dt_uuid <- subset(dt_top, future_uuid == uuid)
     res <- data.frame(
-      evaluate = subset(dt_uuid, type == "evaluation")[["duration"]],
-      overhead = sum(subset(dt_uuid, type == "overhead")[["duration"]])
+      evaluate = subset(dt_uuid, category == "evaluation")[["duration"]],
+      overhead = sum(subset(dt_uuid, category == "overhead")[["duration"]])
     )
     res[["duration"]] <- t_delta[kk]
     eff[[uuid]] <- res
@@ -254,18 +258,18 @@ print.FutureJournalSummary <- function(x, ...) {
 }
 
 
-makeFutureJournal <- function(x, event = "create", type = "other", parent = NA_character_, start = stop, stop = Sys.time()) {
+makeFutureJournal <- function(x, event = "create", category = "other", parent = NA_character_, start = stop, stop = Sys.time()) {
   stop_if_not(
     inherits(x, "Future"),
     is.null(x$.journal),
     length(event) == 1L, is.character(event), !is.na(event),
-    length(type) == 1L, is.character(type), !is.na(event),
+    length(category) == 1L, is.character(category), !is.na(event),
     length(parent) == 1L, is.character(parent),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
 
-  data <- data.frame(event = event, type = type, parent = parent, start = start, stop = stop)
+  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop)
   class(data) <- c("FutureJournal", class(data))
   x$.journal <- data
   invisible(x)
@@ -298,7 +302,7 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time()) {
 }
 
 
-appendToFutureJournal <- function(x, event, type = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), skip = TRUE) {
+appendToFutureJournal <- function(x, event, category = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), skip = TRUE) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
@@ -307,13 +311,13 @@ appendToFutureJournal <- function(x, event, type = "other", parent = NA_characte
   stop_if_not(
     inherits(x, "Future"),
     length(event) == 1L, is.character(event), !is.na(event),
-    length(type) == 1L, is.character(type), !is.na(event),
+    length(category) == 1L, is.character(category), !is.na(event),
     length(parent) == 1L, is.character(parent),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct")
   )
 
-  data <- data.frame(event = event, type = type, parent = parent, start = start, stop = stop)
+  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop)
   x$.journal <- rbind(x$.journal, data)
   invisible(x)
 }
