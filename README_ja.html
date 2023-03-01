@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9012</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9113</span>
       </span>
     </div>
 
@@ -304,9 +304,6 @@ cluster all external R sessions on current, local, and/or remote machines
 <td align="left">すべて</td>
 <td align="left">外部 R セッション（現行、ローカル、リモートマシン上）</td>
 </tr></tbody></table><!--
-_Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
---><p><strong>注意:</strong> future (&gt;= 1.20.0) では、<code>multiprocess</code> は非推奨となり、<code>multisession</code> または <code>multicore</code> の明確な指定が推奨される。</p>
-<!--
 The future package is designed such that support for additional strategies can be implemented as well. 
 For instance, the future.callr package provides future backends that evaluates futures in a background R process utilizing the callr package - they work similarly to multisession futures but has a few advantages. 
 Continuing, the future.batchtools package provides futures for all types of cluster functions (“backends”) that the batchtools package supports. 
@@ -370,8 +367,7 @@ Now we are ready to explore the different future strategies.
 <!--
 Synchronous futures are resolved one after another and most commonly by the R process that creates them. 
 When a synchronous future is being resolved it blocks the main process until resolved. 
-There are two types of synchronous futures in the future package, sequential and transparent.
---><p>同期的フューチャはフューチャを作成した R プロセスで一つひとつ解決される。 同期的フューチャが解決されている間、メインプロセスはブロックされる。 future パッケージの同期的フューチャには2つの種類がある。 <strong>逐次的フューチャ</strong>と<strong>透過的フューチャ</strong>である。</p>
+--><p>同期的フューチャはフューチャを作成した R プロセスで一つひとつ解決される。 同期的フューチャが解決されている間、メインプロセスはブロックされる。</p>
 <div class="section level4">
 <h4 id="逐次的フューチャ-sequential-future">逐次的フューチャ (Sequential Future)<a class="anchor" aria-label="anchor" href="#%E9%80%90%E6%AC%A1%E7%9A%84%E3%83%95%E3%83%A5%E3%83%BC%E3%83%81%E3%83%A3-sequential-future"></a></h4>
 <!--
@@ -414,14 +410,6 @@ Note also how pid in the calling environment, which was assigned the process ID 
 This is because futures are evaluated in a local environment. 
 Since synchronous (uni-)processing is used, future b is resolved by the main R process (still in a local environment), which is why the value of b and pid are the same.
 --><p>逐次的な評価がその場で行われるため、3つのフューチャは作成と同時に即座に解決される。 呼び出し環境の <code>pid</code>（これは現行プロセスのプロセス ID が代入されている）は上書きも削除もされないことに注意しよう。 これはフューチャがローカル環境で評価されるためである。 同期的な（単一の）プロセスが評価に使われるので、フューチャ <code>b</code> はメインの R プロセスによって（ローカル環境で）解決される 。 これが <code>b</code> の値と <code>pid</code> が一致する理由である。</p>
-</div>
-<div class="section level4">
-<h4 id="透過的フューチャ-transparent-future">透過的フューチャ (Transparent Future)<a class="anchor" aria-label="anchor" href="#%E9%80%8F%E9%81%8E%E7%9A%84%E3%83%95%E3%83%A5%E3%83%BC%E3%83%81%E3%83%A3-transparent-future"></a></h4>
-<!--
-For troubleshooting, transparent futures can be used by specifying plan(transparent).
-A transparent future is technically a sequential future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment. 
-Transparent futures are particularly useful for troubleshooting errors that are otherwise hard to narrow down.
---><p>透過的フューチャは <code>plan(transparent)</code> を指定することで利用できる。 このフューチャは、評価時にエラーや警告などの通知を即時的に行う逐次的フューチャであり、代入は呼び出し環境で行われる。 透過的フューチャは他の戦略では絞り込むことが難しいエラーのトラブルシューティングに役立つ。</p>
 </div>
 </div>
 <div class="section level3">
