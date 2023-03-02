@@ -38,8 +38,18 @@ Run `revdep_details(, "aroma.core")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
     ```
+      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
+    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/bioc/src/contrib:
+      cannot open URL 'https://bioconductor.org/packages/3.16/bioc/src/contrib/PACKAGES'
+    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/annotation/src/contrib:
+      cannot open URL 'https://bioconductor.org/packages/3.16/data/annotation/src/contrib/PACKAGES'
+    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/experiment/src/contrib:
+      cannot open URL 'https://bioconductor.org/packages/3.16/data/experiment/src/contrib/PACKAGES'
+    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/workflows/src/contrib:
+      cannot open URL 'https://bioconductor.org/packages/3.16/workflows/src/contrib/PACKAGES'
+     NOTE
     Packages suggested but not available for checking:
       'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
@@ -98,7 +108,7 @@ Run `revdep_details(, "baseballr")` for more info
     ...
     Quitting from lines 38-40 (using_statcast_pitch_data.Rmd) 
     Error: processing vignette 'using_statcast_pitch_data.Rmd' failed with diagnostics:
-    Timeout was reached: [] Operation timed out after 10001 milliseconds with 0 out of 0 bytes received
+    HTTP error 404.
     --- failed re-building ‘using_statcast_pitch_data.Rmd’
     
     SUMMARY: processing the following file failed:
@@ -124,8 +134,18 @@ Run `revdep_details(, "batchtools")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
     ```
+      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
+    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/bioc/src/contrib:
+      cannot open URL 'https://bioconductor.org/packages/3.16/bioc/src/contrib/PACKAGES'
+    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/annotation/src/contrib:
+      cannot open URL 'https://bioconductor.org/packages/3.16/data/annotation/src/contrib/PACKAGES'
+    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/experiment/src/contrib:
+      cannot open URL 'https://bioconductor.org/packages/3.16/data/experiment/src/contrib/PACKAGES'
+    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/workflows/src/contrib:
+      cannot open URL 'https://bioconductor.org/packages/3.16/workflows/src/contrib/PACKAGES'
+     NOTE
     Package suggested but not available for checking: ‘doMPI’
     ```
 
@@ -228,10 +248,10 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 <details>
 
-* Version: 0.4-6
+* Version: 0.4-7
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
-* Date/Publication: 2023-02-11 08:50:09 UTC
+* Date/Publication: 2023-03-01 12:10:02 UTC
 * Number of recursive dependencies: 99
 
 Run `revdep_details(, "blavaan")` for more info
@@ -249,6 +269,7 @@ Run `revdep_details(, "blavaan")` for more info
     ```
       installed size is 89.8Mb
       sub-directories of 1Mb or more:
+        R          1.0Mb
         libs      87.3Mb
         testdata   1.4Mb
     ```
@@ -350,30 +371,6 @@ Run `revdep_details(, "ChromSCape")` for more info
     prepare_Rd: raw_counts_to_sparse_matrix.Rd:6-8: Dropping empty section \source
     ```
 
-# civis
-
-<details>
-
-* Version: 3.1.0
-* GitHub: https://github.com/civisanalytics/civis-r
-* Source code: https://github.com/cran/civis
-* Date/Publication: 2023-02-22 23:10:06 UTC
-* Number of recursive dependencies: 88
-
-Run `revdep_details(, "civis")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required and available but unsuitable version: ‘future’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # codebook
 
 <details>
@@ -468,8 +465,10 @@ Run `revdep_details(, "DeclareDesign")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
     ```
+      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
+     NOTE
     Package suggested but not available for checking: ‘DesignLibrary’
     ```
 
@@ -991,10 +990,10 @@ Run `revdep_details(, "hwep")` for more info
 
 <details>
 
-* Version: 1.14.0
+* Version: 1.14.1
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
-* Date/Publication: 2022-11-02
+* Date/Publication: 2023-02-26
 * Number of recursive dependencies: 196
 
 Run `revdep_details(, "infercnv")` for more info
@@ -1002,6 +1001,31 @@ Run `revdep_details(, "infercnv")` for more info
 </details>
 
 ## In both
+
+*   checking for code/documentation mismatches ... WARNING
+    ```
+    Codoc mismatches from documentation object 'run':
+    run
+      Code: function(infercnv_obj, cutoff = 1, min_cells_per_gene = 3,
+                     out_dir = NULL, window_length = 101, smooth_method =
+                     c("pyramidinal", "runmeans", "coordinates"),
+                     num_ref_groups = NULL, ref_subtract_use_mean_bounds =
+                     TRUE, cluster_by_groups = FALSE, cluster_references =
+                     TRUE, k_obs_groups = 1, hclust_method = "ward.D2",
+                     max_centered_threshold = 3, scale_data = FALSE, HMM =
+                     FALSE, HMM_transition_prob = 1e-06, HMM_report_by =
+    ...
+                     remove_genes_at_chr_ends = FALSE, prune_outliers =
+                     FALSE, mask_nonDE_genes = FALSE, mask_nonDE_pval =
+                     0.05, test.use = "wilcoxon", require_DE_all_normals =
+                     "any", hspike_aggregate_normals = FALSE, no_plot =
+                     FALSE, no_prelim_plot = FALSE, write_expr_matrix =
+                     FALSE, output_format = "png", plot_chr_scale = FALSE,
+                     chr_lengths = NULL, useRaster = TRUE, up_to_step =
+                     100)
+      Mismatches in argument default values:
+        Name: 'per_chr_hmm_subclusters' Code: TRUE Docs: FALSE
+    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -1014,6 +1038,14 @@ Run `revdep_details(, "infercnv")` for more info
     ```
     Unexported object imported by a ':::' call: ‘HiddenMarkov:::makedensity’
       See the note in ?`:::` about the use of this operator.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    .whole_dataset_leiden_subclustering_per_chr: no visible binding for
+      global variable ‘tumor_group’
+    Undefined global functions or variables:
+      tumor_group
     ```
 
 # inlinedocs
@@ -1288,23 +1320,27 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 117874 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
+      Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > Sys.setenv("R_TESTS" = "")
-      > 
-      > library(testthat)
-      > library(lidR)
-      > test_check("lidR")
-      Tests using raster: terra 
-      Tests using future: TRUE 
-      Tests using OpenMP thread: 32 
-      OGR: Unsupported geometry type
-      OGR: Unsupported geometry type
-      terminate called after throwing an instance of 'std::length_error'
-        what():  basic_string::_S_create
+    Last 50 lines of output:
+       3.   └─lidR (local) algorithm(st_bbox(las))
+       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       5.       └─lidR:::raster_crop(chm, bbox)
+       6.         ├─sf::st_crop(raster, bbox)
+       7.         └─stars:::st_crop.stars(raster, bbox)
+      ── Error ('test-segment_trees.R:147'): Silva algorithm works with sfc ──────────
+    ...
+        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
+        8.   └─lidR (local) algorithm(st_bbox(las))
+        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
+       10.       └─lidR:::raster_crop(chm, bbox)
+       11.         ├─sf::st_crop(raster, bbox)
+       12.         └─stars:::st_crop.stars(raster, bbox)
+      
+      [ FAIL 20 | WARN 3 | SKIP 40 | PASS 1357 ]
+      Error: Test failures
+      Execution halted
     ```
 
 *   checking installed package size ... NOTE
@@ -1465,33 +1501,6 @@ Run `revdep_details(, "MineICA")` for more info
 
 </details>
 
-## Newly broken
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘MineICA-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: IcaSet
-    > ### Title: Class to Contain and Describe an ICA decomposition of
-    > ###   High-Throughput Data.
-    > ### Aliases: class:IcaSet IcaSet IcaSet-class [ [,ANY,ANY,IcaSet-method
-    > ###   [,IcaSet,ANY-method [,IcaSet,ANY,ANY-method
-    > ###   [,IcaSet,ANY,ANY,ANY-method [<- [<-,IcaSet,ANY,ANY,ANY,ANY-method
-    > ###   [<-,IcaSet,ANY,ANY,ANY-method [<-,IcaSet,ANY,ANY-method organism
-    ...
-    > ### Keywords: classes
-    > 
-    > ### ** Examples
-    > 
-    > # create an instance of IcaSet
-    > new("IcaSet")
-    Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 0 out of -1 bytes received
-    Calls: new ... request_fetch -> request_fetch.write_memory -> <Anonymous>
-    Execution halted
-    ```
-
 ## In both
 
 *   checking running R code from vignettes ...
@@ -1501,15 +1510,15 @@ Run `revdep_details(, "MineICA")` for more info
     Errors in running code in vignettes:
     when running code in ‘MineICA.Rnw’
       ...
-    > resPath(params)
-    [1] "mainz/"
+    [25] "hgu133aPFAM"          "hgu133aPMID"          "hgu133aPMID2PROBE"   
+    [28] "hgu133aPROSITE"       "hgu133aREFSEQ"        "hgu133aSYMBOL"       
+    [31] "hgu133aUNIPROT"       "hgu133a_dbInfo"       "hgu133a_dbconn"      
+    [34] "hgu133a_dbfile"       "hgu133a_dbschema"    
     
-    > resW <- writeProjByComp(icaSet = icaSetMainz, params = params, 
-    +     mart = mart, level = "genes", selCutoffWrite = 2.5)
+    > mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
     
       When sourcing ‘MineICA.R’:
-    Error: task 2 failed - "Multiple cache results found.
-    Please clear your cache by running biomartCacheClear()"
+    Error: Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 120135 out of -1 bytes received
     Execution halted
     ```
 
@@ -1622,7 +1631,7 @@ Run `revdep_details(, "MineICA")` for more info
     
     ...
     Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 108580 out of -1 bytes received
+      Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 121525 out of -1 bytes received
     
     --- failed re-building ‘MineICA.Rnw’
     
@@ -2278,7 +2287,7 @@ Run `revdep_details(, "sctransform")` for more info
 * GitHub: https://github.com/Abson-dev/sdmApp
 * Source code: https://github.com/cran/sdmApp
 * Date/Publication: 2021-07-07 08:30:02 UTC
-* Number of recursive dependencies: 171
+* Number of recursive dependencies: 169
 
 Run `revdep_details(, "sdmApp")` for more info
 
@@ -3115,10 +3124,10 @@ Run `revdep_details(, "txshift")` for more info
 
 <details>
 
-* Version: 1.1.9
+* Version: 1.1.10
 * GitHub: https://github.com/openbiox/UCSCXenaShiny
 * Source code: https://github.com/cran/UCSCXenaShiny
-* Date/Publication: 2022-12-12 09:00:03 UTC
+* Date/Publication: 2023-02-28 15:32:34 UTC
 * Number of recursive dependencies: 181
 
 Run `revdep_details(, "UCSCXenaShiny")` for more info
