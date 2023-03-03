@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9113</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9114</span>
       </span>
     </div>
 
@@ -158,9 +158,12 @@
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li><p>Added optional assertion against adding variables to the global environment by a future.</p></li>
-<li><p>Add option <code>future.onFutureCondition.keepFuture</code> for controlling whether <code>FutureCondition</code> objects should have a copy of the <code>Future</code> object or not.</p></li>
+<li><p>Add option <code>future.onFutureCondition.keepFuture</code> for controlling whether <code>FutureCondition</code> objects should keep a copy of the <code>Future</code> object or not. The default is to keep a copy, but if the future carries large global objects, then the <code>FutureCondition</code> will also be large, which can result in memory issues and slow downs.</p></li>
 <li><p>Add prototype of an internal event-logging framework for the purpose of profiling futures and their backends.</p></li>
 </ul></div>
+<div class="section level3">
+<h3 id="miscellaneous-development-version">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-development-version"></a></h3>
+<ul><li>Fix a <strong>future.tests</strong> check that occurred only on MS Windows.</li></ul></div>
 <div class="section level3">
 <h3 id="deprecated-and-defunct-development-version">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-development-version"></a></h3>
 <ul><li><p>Add optional assertion of the internal Future <code>state</code> field.</p></li>
