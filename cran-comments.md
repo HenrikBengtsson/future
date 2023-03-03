@@ -1,4 +1,4 @@
-# CRAN submission future 1.31.0
+# CRAN submission future 1.32.0
 
 on 2023-03-03
 
@@ -19,7 +19,7 @@ The package has been verified using `R CMD check --as-cran` on:
 | 3.6.x     | L      |        |                 |        |
 | 4.0.x     | L      |        |                 |        |
 | 4.1.x     | L M W  |   M    |                 |        |
-| 4.2.x     | L M W  | L   W  | M1 W            | W*     |
+| 4.2.x     | L M W  | L   W  | M1 W            |        |
 | devel     | L M W  | L      | M1 W            |        |
 
 _Legend: OS: L = Linux, M = macOS, M1 = macOS M1, W = Windows, * = msys2_
