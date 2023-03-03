@@ -6,11 +6,18 @@
    environment by a future.
 
  * Add option `future.onFutureCondition.keepFuture` for controlling
-   whether `FutureCondition` objects should have a copy of the
-   `Future` object or not.
+   whether `FutureCondition` objects should keep a copy of the
+   `Future` object or not.  The default is to keep a copy, but if the
+   future carries large global objects, then the `FutureCondition`
+   will also be large, which can result in memory issues and slow
+   downs.
 
  * Add prototype of an internal event-logging framework for the
    purpose of profiling futures and their backends.
+
+## Miscellaneous
+
+ * Fix a **future.tests** check that occurred only on MS Windows.
 
 ## Deprecated and Defunct
 
