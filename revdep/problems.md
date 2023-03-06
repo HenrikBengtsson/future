@@ -22,6 +22,88 @@ Run `revdep_details(, "AIPW")` for more info
       All declared Imports should be used.
     ```
 
+# alookr
+
+<details>
+
+* Version: 0.3.7
+* GitHub: https://github.com/choonghyunryu/alookr
+* Source code: https://github.com/cran/alookr
+* Date/Publication: 2022-06-12 15:30:02 UTC
+* Number of recursive dependencies: 158
+
+Run `revdep_details(, "alookr")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘alookr-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: run_models
+    > ### Title: Fit binary classification model
+    > ### Aliases: run_models
+    > 
+    > ### ** Examples
+    > 
+    > library(dplyr)
+    ...
+     10. │   ├─purrr:::call_with_cleanup(...)
+     11. │   └─alookr (local) .f(.x[[i]], ...)
+     12. │     ├─future::value(.x)
+     13. │     └─future:::value.Future(.x)
+     14. │       └─future:::signalConditions(...)
+     15. │         └─base::stop(condition)
+     16. └─purrr (local) `<fn>`(`<GlblEnFE>`)
+     17.   └─cli::cli_abort(...)
+     18.     └─rlang::abort(...)
+    Execution halted
+    ```
+
+# AlpsNMR
+
+<details>
+
+* Version: 4.0.4
+* GitHub: https://github.com/sipss/AlpsNMR
+* Source code: https://github.com/cran/AlpsNMR
+* Date/Publication: 2023-02-16
+* Number of recursive dependencies: 169
+
+Run `revdep_details(, "AlpsNMR")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
+    Warning in has_utility("pdfcrop") :
+      pdfcrop not installed or not in PATH
+    sh: pdfcrop: command not found
+    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
+      error in running command
+    sh: pdfcrop: command not found
+    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
+      error in running command
+    ...
+    Warning: (fancyhdr)                \setlength{\headheight}{46.27916pt}.
+    Warning: (fancyhdr)                You might also make \topmargin smaller to compensate:
+    Warning: (fancyhdr)                \addtolength{\topmargin}{-3.60004pt}.
+    --- finished re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # aroma.core
 
 <details>
@@ -38,18 +120,8 @@ Run `revdep_details(, "aroma.core")` for more info
 
 ## In both
 
-*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
+*   checking package dependencies ... NOTE
     ```
-      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/bioc/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/bioc/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/annotation/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/data/annotation/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/experiment/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/data/experiment/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/workflows/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/workflows/src/contrib/PACKAGES'
-     NOTE
     Packages suggested but not available for checking:
       'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
@@ -134,18 +206,8 @@ Run `revdep_details(, "batchtools")` for more info
 
 ## In both
 
-*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
+*   checking package dependencies ... NOTE
     ```
-      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/bioc/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/bioc/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/annotation/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/data/annotation/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/experiment/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/data/experiment/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/workflows/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/workflows/src/contrib/PACKAGES'
-     NOTE
     Package suggested but not available for checking: ‘doMPI’
     ```
 
@@ -371,6 +433,47 @@ Run `revdep_details(, "ChromSCape")` for more info
     prepare_Rd: raw_counts_to_sparse_matrix.Rd:6-8: Dropping empty section \source
     ```
 
+# civis
+
+<details>
+
+* Version: 3.1.1
+* GitHub: https://github.com/civisanalytics/civis-r
+* Source code: https://github.com/cran/civis
+* Date/Publication: 2023-02-28 08:02:29 UTC
+* Number of recursive dependencies: 88
+
+Run `revdep_details(, "civis")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(civis)
+      > 
+      > test_check("civis")
+      [ FAIL 1 | WARN 4 | SKIP 0 | PASS 1058 ]
+      
+    ...
+      Backtrace:
+          ▆
+       1. ├─civis::cancel(fut)
+       2. └─civis:::cancel.CivisFuture(fut)
+       3.   ├─base::`$<-`(`*tmp*`, "state", value = `<chr>`)
+       4.   └─future:::`$<-.Future`(`*tmp*`, "state", value = `<chr>`)
+      
+      [ FAIL 1 | WARN 4 | SKIP 0 | PASS 1058 ]
+      Error: Test failures
+      Execution halted
+    ```
+
 # codebook
 
 <details>
@@ -386,6 +489,31 @@ Run `revdep_details(, "codebook")` for more info
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘codebook.Rmd’ using rmarkdown
+    Failed with error:  'there is no package called 'GGally''
+    Failed with error:  'there is no package called 'GGally''
+    Failed with error:  'there is no package called 'GGally''
+    Failed with error:  'there is no package called 'GGally''
+    Quitting from lines 85-86 (codebook.Rmd) 
+    Error: processing vignette 'codebook.Rmd' failed with diagnostics:
+    UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".
+    --- failed re-building ‘codebook.Rmd’
+    ...
+    Failed with error:  'there is no package called 'GGally''
+    Failed with error:  'there is no package called 'GGally''
+    Failed with error:  'there is no package called 'GGally''
+    --- finished re-building ‘codebook_tutorial.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘codebook.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking package dependencies ... NOTE
     ```
@@ -419,6 +547,31 @@ Run `revdep_details(, "cSEM")` for more info
 </details>
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘cSEM-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: resampleData
+    > ### Title: Resample data
+    > ### Aliases: resampleData
+    > 
+    > ### ** Examples
+    > 
+    > # ===========================================================================
+    ...
+    Warning in split.default(x = seq_len(nrow(x)), f = f, drop = drop, ...) :
+      data length is not a multiple of split variable
+    Warning in split.default(x = seq_len(nrow(x)), f = f, drop = drop, ...) :
+      data length is not a multiple of split variable
+    Warning in split.default(x = seq_len(nrow(x)), f = f, drop = drop, ...) :
+      data length is not a multiple of split variable
+    Warning in split.default(x = seq_len(nrow(x)), f = f, drop = drop, ...) :
+      data length is not a multiple of split variable
+    Error: UNRELIABLE VALUE: One of the ‘future.apply’ iterations (‘future_lapply-1’) unexpectedly generated random numbers without declaring so. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'future.seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'future.seed = NULL', or set option 'future.rng.onMisuse' to "ignore".
+    Execution halted
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -465,10 +618,8 @@ Run `revdep_details(, "DeclareDesign")` for more info
 
 ## In both
 
-*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
+*   checking package dependencies ... NOTE
     ```
-      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
-     NOTE
     Package suggested but not available for checking: ‘DesignLibrary’
     ```
 
@@ -772,6 +923,47 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
+# future.tests
+
+<details>
+
+* Version: 0.5.0
+* GitHub: https://github.com/HenrikBengtsson/future.tests
+* Source code: https://github.com/cran/future.tests
+* Date/Publication: 2022-12-16 08:20:02 UTC
+* Number of recursive dependencies: 15
+
+Run `revdep_details(, "future.tests")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘Test-class.R’
+      Running ‘check.R’
+     ERROR
+    Running the tests in ‘tests/check.R’ failed.
+    Last 50 lines of output:
+      [[1]][[51]][[1]]
+      TestResult:
+      - Test:
+        - Title: 'value() - visibility'
+        - Tags: 'value', 'visibility'
+    ...
+      - args: function (..., envir = parent.frame())
+      - tweaked: FALSE
+      - call: plan(sequential)
+      
+      attr(,"exit_code")
+      [1] 1
+      Total number of errors: 1
+      > proc.time()
+         user  system elapsed 
+        5.376   0.434  14.418 
+    ```
+
 # geocmeans
 
 <details>
@@ -787,6 +979,31 @@ Run `revdep_details(, "geocmeans")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+        |======================================================================| 100%[1] "Calculating the Jaccard values..."
+      [1] "Extracting the centres of the clusters..."
+      [1] "Standardizing the data (set parameter to FALSE to avoid this step)"
+      
+        |                                                                            
+        |                                                                      |   0%
+    ...
+        8. │         ├─future::resolve(...)
+        9. │         └─future:::resolve.list(...)
+       10. │           └─future (local) signalConditionsASAP(obj, resignal = FALSE, pos = ii)
+       11. │             └─future:::signalConditions(...)
+       12. │               └─base::stop(condition)
+       13. └─future.apply (local) `<fn>`(`<RngFtrEr>`)
+      
+      [ FAIL 1 | WARN 5 | SKIP 0 | PASS 40 ]
+      Error: Test failures
+      Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
@@ -890,6 +1107,45 @@ Run `revdep_details(, "gsynth")` for more info
       installed size is  5.2Mb
       sub-directories of 1Mb or more:
         libs   4.9Mb
+    ```
+
+# gtfs2emis
+
+<details>
+
+* Version: 0.1.0
+* GitHub: https://github.com/ipeaGIT/gtfs2emis
+* Source code: https://github.com/cran/gtfs2emis
+* Date/Publication: 2022-11-14 11:30:05 UTC
+* Number of recursive dependencies: 96
+
+Run `revdep_details(, "gtfs2emis")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘gtfs2emis_emission_factor.Rmd’ using rmarkdown
+    --- finished re-building ‘gtfs2emis_emission_factor.Rmd’
+    
+    --- re-building ‘gtfs2emis_fleet_data.Rmd’ using rmarkdown
+    --- finished re-building ‘gtfs2emis_fleet_data.Rmd’
+    
+    --- re-building ‘gtfs2emis_intro_vignette.Rmd’ using rmarkdown
+    Quitting from lines 119-130 (gtfs2emis_intro_vignette.Rmd) 
+    Error: processing vignette 'gtfs2emis_intro_vignette.Rmd' failed with diagnostics:
+    UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".
+    --- failed re-building ‘gtfs2emis_intro_vignette.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘gtfs2emis_intro_vignette.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # gWQS
@@ -1277,6 +1533,67 @@ Run `revdep_details(, "keyATM")` for more info
         libs  23.6Mb
     ```
 
+# lava
+
+<details>
+
+* Version: 1.7.2.1
+* GitHub: https://github.com/kkholst/lava
+* Source code: https://github.com/cran/lava
+* Date/Publication: 2023-02-27 08:12:30 UTC
+* Number of recursive dependencies: 136
+
+Run `revdep_details(, "lava")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘test-all.R’
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 50 lines of output:
+      > #library("lava")
+      > suppressPackageStartupMessages(library("testthat"))
+      > test_check("lava")
+      Loading required package: lava
+      
+      Attaching package: 'lava'
+    ...
+       10. │           ├─future::resolve(...)
+       11. │           └─future:::resolve.list(...)
+       12. │             └─future (local) signalConditionsASAP(obj, resignal = FALSE, pos = ii)
+       13. │               └─future:::signalConditions(...)
+       14. │                 └─base::stop(condition)
+       15. └─future.apply (local) `<fn>`(`<RngFtrEr>`)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 254 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘correlation.Rmd’ using rmarkdown
+    Quitting from lines 250-253 (correlation.Rmd) 
+    Error: processing vignette 'correlation.Rmd' failed with diagnostics:
+    UNRELIABLE VALUE: One of the 'future.apply' iterations ('future_lapply-1') unexpectedly generated random numbers without declaring so. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'future.seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'future.seed = NULL', or set option 'future.rng.onMisuse' to "ignore".
+    --- failed re-building ‘correlation.Rmd’
+    
+    --- re-building ‘nonlinear.Rmd’ using rmarkdown
+    --- finished re-building ‘nonlinear.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘correlation.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 # lidR
 
 <details>
@@ -1320,27 +1637,23 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 37779 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       3.   └─lidR (local) algorithm(st_bbox(las))
-       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       5.       └─lidR:::raster_crop(chm, bbox)
-       6.         ├─sf::st_crop(raster, bbox)
-       7.         └─stars:::st_crop.stars(raster, bbox)
-      ── Error ('test-segment_trees.R:147'): Silva algorithm works with sfc ──────────
-    ...
-        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
-        8.   └─lidR (local) algorithm(st_bbox(las))
-        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       10.       └─lidR:::raster_crop(chm, bbox)
-       11.         ├─sf::st_crop(raster, bbox)
-       12.         └─stars:::st_crop.stars(raster, bbox)
-      
-      [ FAIL 20 | WARN 3 | SKIP 40 | PASS 1357 ]
-      Error: Test failures
-      Execution halted
+    Complete output:
+      > Sys.setenv("R_TESTS" = "")
+      > 
+      > library(testthat)
+      > library(lidR)
+      > test_check("lidR")
+      Tests using raster: terra 
+      Tests using future: TRUE 
+      Tests using OpenMP thread: 32 
+      OGR: Unsupported geometry type
+      OGR: Unsupported geometry type
+      terminate called after throwing an instance of 'std::length_error'
+        what():  basic_string::_S_create
     ```
 
 *   checking installed package size ... NOTE
@@ -1518,7 +1831,7 @@ Run `revdep_details(, "MineICA")` for more info
     > mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
     
       When sourcing ‘MineICA.R’:
-    Error: Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 120135 out of -1 bytes received
+    Error: Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 365789 out of -1 bytes received
     Execution halted
     ```
 
@@ -1630,8 +1943,8 @@ Run `revdep_details(, "MineICA")` for more info
         IQR, mad, sd, var, xtabs
     
     ...
-    Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 121525 out of -1 bytes received
+    Error in { : task 2 failed - "Multiple cache results found.
+    Please clear your cache by running biomartCacheClear()"
     
     --- failed re-building ‘MineICA.Rnw’
     
@@ -1680,6 +1993,31 @@ Run `revdep_details(, "mistyR")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      Generating paraview using 2 nearest neighbors per unit
+      
+      Generating paraview
+      
+      Generating paraview
+      [ FAIL 2 | WARN 74 | SKIP 0 | PASS 168 ]
+    ...
+       27.     └─rlang::abort(...)
+      ── Failure ('test-misty.R:212'): k for cv , n.bags for bagging can be changed and approx works ──
+      first.run < second.run is not TRUE
+      
+      `actual`:   FALSE
+      `expected`: TRUE 
+      
+      [ FAIL 2 | WARN 74 | SKIP 0 | PASS 168 ]
+      Error: Test failures
+      Execution halted
+    ```
 
 *   checking R code for possible problems ... NOTE
     ```
@@ -1808,6 +2146,48 @@ Run `revdep_details(, "OOS")` for more info
 
 ## In both
 
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(OOS)
+      > 
+      > test_check("OOS")
+      Error : UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".
+      Error : UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".
+    ...
+      Backtrace:
+          ▆
+       1. ├─testthat::expect_true(...) at test-forecast_multivariate.R:76:2
+       2. │ └─testthat::quasi_label(enquo(object), label, arg = "object")
+       3. │   └─rlang::eval_bare(expr, quo_get_env(quo))
+       4. └─base::is.data.frame(forecast.multi$forecasts)
+      
+      [ FAIL 3 | WARN 1004 | SKIP 0 | PASS 26 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘basic_introduction.Rmd’ using rmarkdown
+    Quitting from lines 68-78 (basic_introduction.Rmd) 
+    Error: processing vignette 'basic_introduction.Rmd' failed with diagnostics:
+    UNRELIABLE VALUE: Future ('<none>') unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".
+    --- failed re-building ‘basic_introduction.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘basic_introduction.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
@@ -1905,6 +2285,45 @@ Run `revdep_details(, "phylolm")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Packages unavailable to check Rd xrefs: ‘geiger’, ‘caper’
+    ```
+
+# PINstimation
+
+<details>
+
+* Version: 0.1.1
+* GitHub: https://github.com/monty-se/PINstimation
+* Source code: https://github.com/cran/PINstimation
+* Date/Publication: 2022-10-18 22:58:01 UTC
+* Number of recursive dependencies: 65
+
+Run `revdep_details(, "PINstimation")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘PINstimation.rmd’ using rmarkdown
+    Quitting from lines 255-256 (PINstimation.rmd) 
+    Error: processing vignette 'PINstimation.rmd' failed with diagnostics:
+    Future (<none>) added variables to the global environment. A future expression should never assign variables to the global environment - neither by assign() nor by <<-: [n=1] '.lwbound'
+    --- failed re-building ‘PINstimation.rmd’
+    
+    --- re-building ‘parallel_processing.rmd’ using rmarkdown
+    Quitting from lines 81-84 (parallel_processing.rmd) 
+    Error: processing vignette 'parallel_processing.rmd' failed with diagnostics:
+    Future (<none>) added variables to the global environment. A future expression should never assign variables to the global environment - neither by assign() nor by <<-: [n=1] '.lwbound'
+    --- failed re-building ‘parallel_processing.rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘PINstimation.rmd’ ‘parallel_processing.rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # PLNmodels
@@ -2023,6 +2442,23 @@ Run `revdep_details(, "prewas")` for more info
 </details>
 
 ## In both
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘getting_started_with_prewas.Rmd’ using rmarkdown
+    Quitting from lines 136-141 (getting_started_with_prewas.Rmd) 
+    Error: processing vignette 'getting_started_with_prewas.Rmd' failed with diagnostics:
+    UNRELIABLE VALUE: One of the 'future.apply' iterations ('future_apply-1') unexpectedly generated random numbers without declaring so. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'future.seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'future.seed = NULL', or set option 'future.rng.onMisuse' to "ignore".
+    --- failed re-building ‘getting_started_with_prewas.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘getting_started_with_prewas.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -2156,6 +2592,47 @@ Run `revdep_details(, "regmedint")` for more info
     ```
     Namespace in Imports field not imported from: ‘Deriv’
       All declared Imports should be used.
+    ```
+
+# reproducible
+
+<details>
+
+* Version: 1.2.16
+* GitHub: https://github.com/PredictiveEcology/reproducible
+* Source code: https://github.com/cran/reproducible
+* Date/Publication: 2022-12-22 09:50:02 UTC
+* Number of recursive dependencies: 104
+
+Run `revdep_details(, "reproducible")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 72596 Segmentation fault      ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 50 lines of output:
+        adding: scratch/henrik/1184987/Rtmpoj91ji/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
+        adding: scratch/henrik/1184987/Rtmpoj91ji/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
+      
+       *** caught segfault ***
+      address 0x40, cause 'memory not mapped'
+    ...
+      36: doTryCatch(return(expr), name, parentenv, handler)
+      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      38: tryCatchList(expr, classes, parentenv, handlers)
+      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
+      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
+      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
+      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
+      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
+      44: test_check("reproducible")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rgee
@@ -2332,6 +2809,47 @@ Run `revdep_details(, "sdmTMB")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘INLA’
+    ```
+
+# semtree
+
+<details>
+
+* Version: 0.9.18
+* GitHub: NA
+* Source code: https://github.com/cran/semtree
+* Date/Publication: 2022-05-13 20:20:02 UTC
+* Number of recursive dependencies: 105
+
+Run `revdep_details(, "semtree")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘invariance.R’
+      Running ‘lavaan.R’
+      Running ‘tree.R’
+      Running ‘vim.R’
+     ERROR
+    Running the tests in ‘tests/vim.R’ failed.
+    Last 50 lines of output:
+      +                               to=manifests,
+      +                               arrows=1,
+      +                               free=FALSE,
+    ...
+       Start values from best fit:
+      0.0517425665515153,0.0579964396186258,0.0467583826565627,0.0520836944320659,0.0361130740992484,2.41004055880336,0.477157334656551,0.973042342886596,3.49639424861343,-0.465977367752192
+      ✖ Variable noise is numeric but has only few unique values. Consider recoding as ordered factor.
+      ✔ Tree construction finished [took 6s].
+      ✖ Variable noise is numeric but has only few unique values. Consider recoding as ordered factor.
+      ✔ Tree construction finished [took 6s].
+      ✖ Variable noise is numeric but has only few unique values. Consider recoding as ordered factor.
+      ✔ Tree construction finished [took 5s].
+      Error: Future (future_mapply-1) added variables to the global environment. A future expression should never assign variables to the global environment - neither by assign() nor by <<-: [n=1] 'global.node.id'
+      Execution halted
     ```
 
 # sentopics
@@ -2562,6 +3080,45 @@ Run `revdep_details(, "SimDesign")` for more info
         doc   6.2Mb
     ```
 
+# simhelpers
+
+<details>
+
+* Version: 0.1.2
+* GitHub: https://github.com/meghapsimatrix/simhelpers
+* Source code: https://github.com/cran/simhelpers
+* Date/Publication: 2022-05-03 22:40:02 UTC
+* Number of recursive dependencies: 103
+
+Run `revdep_details(, "simhelpers")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘simhelpers-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: evaluate_by_row
+    > ### Title: Evaluate a simulation function on each row of a data frame or
+    > ###   tibble
+    > ### Aliases: evaluate_by_row
+    > 
+    > ### ** Examples
+    > 
+    > df <- data.frame(
+    +   n = 3:5,
+    +   lambda = seq(8, 16, 4)
+    + )
+    > 
+    > evaluate_by_row(df, rpois)
+    Error: UNRELIABLE VALUE: Future (‘<none>’) unexpectedly generated random numbers without specifying argument 'seed'. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'seed=NULL', or set option 'future.rng.onMisuse' to "ignore".
+    Timing stopped at: 0.227 0.035 0.614
+    Execution halted
+    ```
+
 # skpr
 
 <details>
@@ -2612,11 +3169,11 @@ Run `revdep_details(, "solitude")` for more info
 
 <details>
 
-* Version: 4.1.20
+* Version: 4.2.1
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
-* Date/Publication: 2022-12-12 12:50:03 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2023-03-03 15:20:02 UTC
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "spaMM")` for more info
 
@@ -2635,9 +3192,9 @@ Run `revdep_details(, "spaMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 55.5Mb
+      installed size is 55.7Mb
       sub-directories of 1Mb or more:
-        R      2.5Mb
+        R      2.6Mb
         libs  51.8Mb
     ```
 
@@ -2679,6 +3236,56 @@ Run `revdep_details(, "SPARSEMODr")` for more info
 </details>
 
 ## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘SPARSEMODr-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: model_parallel
+    > ### Title: Parallelized implementation of the SPARSE-MOD models
+    > ### Aliases: model_parallel
+    > 
+    > ### ** Examples
+    > 
+    > ## See vignettes for more detailed work-ups.
+    ...
+    Parameter input_R_pops was not specified; assuming to be zeroes.
+    Parameter input_D_pops was not specified; assuming to be zeroes.
+    > 
+    > covid_model_output <-
+    +     get_result(
+    +         input_realz_seeds = realz_seeds,
+    +         control = covid19_control
+    +     )
+    Error: UNRELIABLE VALUE: One of the ‘future.apply’ iterations (‘future_lapply-1’) unexpectedly generated random numbers without declaring so. There is a risk that those random numbers are not statistically sound and the overall results might be invalid. To fix this, specify 'future.seed=TRUE'. This ensures that proper, parallel-safe random numbers are produced via the L'Ecuyer-CMRG method. To disable this check, use 'future.seed = NULL', or set option 'future.rng.onMisuse' to "ignore".
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > if(require(testthat))test_check("SPARSEMODr")
+      Loading required package: testthat
+      Loading required package: SPARSEMODr
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 0 ]
+      
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+    ...
+       13. │                 ├─future::resolve(...)
+       14. │                 └─future:::resolve.list(...)
+       15. │                   └─future (local) signalConditionsASAP(obj, resignal = FALSE, pos = ii)
+       16. │                     └─future:::signalConditions(...)
+       17. │                       └─base::stop(condition)
+       18. └─future.apply (local) `<fn>`(`<RngFtrEr>`)
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 0 ]
+      Error: Test failures
+      Execution halted
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -2784,6 +3391,31 @@ Run `revdep_details(, "spNetwork")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+        5. │     ├─base::withCallingHandlers(...)
+        6. │     └─(function() {...
+        7. │       ├─future::value(fs)
+        8. │       └─future:::value.list(fs)
+        9. │         ├─future::resolve(...)
+       10. │         └─future:::resolve.list(...)
+    ...
+        9. │         ├─future::resolve(...)
+       10. │         └─future:::resolve.list(...)
+       11. │           └─future (local) signalConditionsASAP(obj, resignal = FALSE, pos = ii)
+       12. │             └─future:::signalConditions(...)
+       13. │               └─base::stop(condition)
+       14. └─future.apply (local) `<fn>`(`<RngFtrEr>`)
+      
+      [ FAIL 5 | WARN 3 | SKIP 0 | PASS 68 ]
+      Error: Test failures
+      Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
