@@ -1,9 +1,13 @@
-# Version 1.312.0 [2023-03-03]
+# Version 1.32.0 [2023-03-06]
 
 ## New Features
 
- * Added optional assertion against adding variables to the global
-   environment by a future.
+ * Add prototype of an internal event-logging framework for the
+   purpose of profiling futures and their backends.
+
+ * Add option `future.globalenv.onMisuse` for optionally assert that a
+   future expression does not result in variables being added to the
+   global environment.
 
  * Add option `future.onFutureCondition.keepFuture` for controlling
    whether `FutureCondition` objects should keep a copy of the
@@ -11,9 +15,6 @@
    future carries large global objects, then the `FutureCondition`
    will also be large, which can result in memory issues and slow
    downs.
-
- * Add prototype of an internal event-logging framework for the
-   purpose of profiling futures and their backends.
 
 ## Miscellaneous
 
