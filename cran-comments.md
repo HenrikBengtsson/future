@@ -1,10 +1,32 @@
 # CRAN submission future 1.32.0
 
-on 2023-03-03
+on 2023-03-06
 
-I've verified this submission has no negative impact on any of the 280 reverse package dependencies available on CRAN (n = 261) and Bioconductor (n = 19).
+I've checked this version towards 280 reverse package dependencies available on CRAN (n = 261) and Bioconductor (n = 19). This submission breaks three CRAN packages: dhReg, fiery, and prewas. This is because they use a function that has beeen deprecated since 2020 and their maintainers have been notified well in advance.  dhReg and prewas have been reminded several times since 2021 and fiery since 2023-02-01.
 
 Thank you
+
+
+## Resubmission 1
+ 
+I'm resubmitting, because previous submission reported:
+
+> Flavor: r-devel-windows-x86_64
+> Check: for detritus in the temp directory, Result: NOTE
+>   Found the following files/directories:
+>   'Rscript29dd03a4eb648'
+
+I suspect this is a false-positive due to some unknown hiccup. I cannot reproduce this elsewhere, including in win-builder. It was reported on win-builder neither prior to my previous submission  <https://win-builder.r-project.org/4WC6DY4KkGgs/00check.log> nor after <https://win-builder.r-project.org/451s0ozROTDJ/00check.log>.
+
+
+## Resubmission 2
+
+<Same error again. Submitted once more, and this third time, there was no NOTE.>
+
+
+## Explanation on revdep errors
+
+This submission breaks three CRAN packages: dhReg, fiery, and prewas. This is because they use a now defunct function that has been deprecated since 2020. The maintainers have been notified well in advance.  I have not received a response.  Maintainers of dhReg and prewas have been reminded many times since 2021. The maintainer of fiery has been reminded twice since 2023-02-01.
 
 
 ## Notes not sent to CRAN
