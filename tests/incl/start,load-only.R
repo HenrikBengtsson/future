@@ -111,9 +111,6 @@ supportedStrategies <- function(cores = NA_integer_, excl = "cluster", ...) {
     }
   }
   
-  ## Don't test deprecated 'multiprocess'
-  strategies <- setdiff(strategies, "multiprocess")
-  
   strategies
 }
 

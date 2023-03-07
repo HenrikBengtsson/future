@@ -1,11 +1,10 @@
 #' Create a multiprocess future whose value will be resolved asynchronously using multicore or a multisession evaluation
 #'
-#' **WARNING: The 'multiprocess' future plan is deprecated.
+#' **WARNING: The 'multiprocess' future plan is defunct.
 #' Instead, explicitly specify 'multisession' or 'multicore'.  The former works
 #' everywhere and is the recommended one between the two. _Forked processing_,
 #' which 'multicore' uses, is unstable in various environment and setups.
-#' The 'multiprocess' alias is therefore being phased out, and is now
-#' equal to using 'sequential' (sic!)**
+#' The 'multiprocess' alias is therefore being phased out.**
 #'
 #' @inheritParams ClusterFuture-class
 #' @inheritParams future

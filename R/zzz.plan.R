@@ -177,7 +177,7 @@ plan <- local({
   }
 
   warn_about_multiprocess <- function(stack) {
-    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.32.0) [2023-03-06]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'."))
+    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = "Strategy '%s' is %s in future (>= 1.32.0) [2023-03-06]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'.", ignore = "", defunct = "remote")
   }
 
   warn_about_remote <- function(stack) {
@@ -185,7 +185,7 @@ plan <- local({
   }
 
   warn_about_transparent <- function(stack) {
-    warn_about_deprecated(stack, strategy = "transparent", fmtstr = "Strategy '%s' is %s in future (>= 1.28.0) [2022-09-02]. It was designed to simplify interactive troubleshooting, but is now superseded by plan(sequential, split = TRUE).", defunct = "transparent")
+    warn_about_deprecated(stack, strategy = "transparent", fmtstr = "Strategy '%s' is %s in future (>= 1.28.0) [2022-09-02]. It was designed to simplify interactive troubleshooting, but is now superseded by plan(sequential, split = TRUE).", ignore = "", defunct = "transparent")
   }
 
   warn_about_multicore <- local({
@@ -294,9 +294,12 @@ plan <- local({
 
     assert_no_disallowed_strategies(newStack)
 
+    ## Assert that defunct backends are not used
     warn_about_multiprocess(newStack)
     warn_about_remote(newStack)
     warn_about_transparent(newStack)
+
+    ## Warn about 'multicore' on certain systems
     warn_about_multicore(newStack)
 
     stack <<- newStack
