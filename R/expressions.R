@@ -114,7 +114,9 @@ makeExpression <- local({
       }
 
       if (length(args) > 0) base::do.call(base::Sys.setenv, args = args)
-      base::rm(list = c("args", "names", "old_names", "NAMES", "envs", "common", "added", "removed"))
+
+      ## Not needed anymore
+      args <- names <- old_names <- NAMES <- envs <- common <- added <- removed <- NULL
     } else {
       base::do.call(base::Sys.setenv, args = base::as.list(...future.oldEnvVars))
     }
@@ -217,6 +219,11 @@ makeExpression <- local({
     ...future.conditions <- base::list()
     ...future.rng <- base::globalenv()$.Random.seed
 
+    if (.(globalenv)) {
+      ## Record names of variables in the global environment
+      ...future.globalenv.names <- c(base::names(base::.GlobalEnv), "...future.value", "...future.globalenv.names", ".Random.seed")
+    }
+
     ## NOTE: We don't want to use local(body) w/ on.exit() because
     ## evaluation in a local is optional, cf. argument 'local'.
     ## If this was mandatory, we could.  Instead we use
@@ -224,7 +231,14 @@ makeExpression <- local({
     ...future.result <- base::tryCatch({
       base::withCallingHandlers({
         ...future.value <- base::withVisible(.(expr))
-        future::FutureResult(value = ...future.value$value, visible = ...future.value$visible, rng = !identical(base::globalenv()$.Random.seed, ...future.rng), started = ...future.startTime, version = "1.8")
+        future::FutureResult(
+          value = ...future.value$value,
+          visible = ...future.value$visible,
+          rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
+          globalenv = if (.(globalenv)) list(added = base::setdiff(base::names(base::.GlobalEnv), ...future.globalenv.names)) else NULL,
+          started = ...future.startTime,
+          version = "1.8"
+        )
       }, condition = base::local({
         ## WORKAROUND: If the name of any of the below objects/functions
         ## coincides with a promise (e.g. a future assignment) then we
@@ -334,12 +348,13 @@ makeExpression <- local({
     }
 
     ...future.result$conditions <- ...future.conditions
+    ...future.result$finished <- base::Sys.time()
     
     ...future.result
   })
 
 
-  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), enter = NULL, exit = NULL, version = "1.8") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), globalenv = (getOption("future.globalenv.onMisuse", "ignore") != "ignore"), enter = NULL, exit = NULL, version = "1.8") {
     conditionClassesExclude <- attr(conditionClasses, "exclude", exact = TRUE)
     muffleInclude <- attr(conditionClasses, "muffleInclude", exact = TRUE)
     if (is.null(muffleInclude)) muffleInclude <- "^muffle"
@@ -369,7 +384,7 @@ makeExpression <- local({
     enter <- bquote_apply(tmpl_enter_workdir)
     enter <- bquote_apply(tmpl_enter_optenvar)
     enter <- bquote_apply(tmpl_enter_future_opts)
-    
+
     exit <- bquote_apply(tmpl_exit_future_opts)
     exit <- bquote_apply(tmpl_exit_optenvar)
     exit <- bquote_apply(tmpl_exit_workdir)

@@ -45,6 +45,10 @@ FutureCondition <- function(message, call = NULL, uuid = future$uuid, future = N
     stop_if_not(is.character(uuid), length(uuid) == 1L, !is.na(uuid))
   }
   if (!is.null(future)) stop_if_not(inherits(future, "Future"))
+
+  if (!getOption("future.onFutureCondition.keepFuture", TRUE)) {
+    future <- NULL
+  }
   
   ## Create a condition object
   class <- c("FutureCondition", class)
@@ -172,6 +176,41 @@ UnexpectedFutureResultError <- function(future, hint = NULL) {
                  result_string)
   cond <- FutureError(msg, future = future)
   class <- c("UnexpectedFutureResultError", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
+  cond
+}
+
+
+
+#' @rdname FutureCondition
+#' @export
+GlobalEnvFutureCondition <- function(message = NULL, call = NULL, globalenv = globalenv, uuid = future$uuid, future = NULL) {
+  if (is.null(message)) {
+    label <- future$label
+    if (is.null(label)) label <- "<none>"
+    message <- sprintf("Future (%s) added variables to the global environment. A future expression should never assign variables to the global environment - neither by assign() nor by <<-: [n=%d] %s", label, length(globalenv$added), paste(sQuote(globalenv$added), collapse = ", "))
+  }
+  cond <- FutureCondition(message = message, call = call, uuid = uuid, future = future)
+  cond$globalenv <- globalenv
+  class <- c("GlobalEnvFutureCondition", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
+  cond
+}
+
+#' @rdname FutureCondition
+#' @export
+GlobalEnvFutureWarning <- function(...) {
+  cond <- GlobalEnvFutureCondition(...)
+  class <- c("GlobalEnvFutureWarning", "FutureWarning", "warning", class(cond))
+  class(cond) <- class[!duplicated(class, fromLast = TRUE)]
+  cond
+}
+
+#' @rdname FutureCondition
+#' @export
+GlobalEnvFutureError <- function(...) {
+  cond <- GlobalEnvFutureCondition(...)
+  class <- c("GlobalEnvFutureError", "FutureError", "error", class(cond))
   class(cond) <- class[!duplicated(class, fromLast = TRUE)]
   cond
 }

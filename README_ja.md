@@ -226,12 +226,6 @@ cluster all external R sessions on current, local, and/or remote machines
 | `cluster`      | すべて                 | 外部 R セッション（現行、ローカル、リモートマシン上）                           |
 
 <!--
-_Comment:_ The alias strategy `multiprocess` was deprecated in future (>= 1.20.0) in favor of `multisession` and `multicore`.
--->
-
-**注意:** future (>= 1.20.0) では、`multiprocess` は非推奨となり、`multisession` または `multicore` の明確な指定が推奨される。
-
-<!--
 The future package is designed such that support for additional strategies can be implemented as well. 
 For instance, the future.callr package provides future backends that evaluates futures in a background R process utilizing the callr package - they work similarly to multisession futures but has a few advantages. 
 Continuing, the future.batchtools package provides futures for all types of cluster functions (“backends”) that the batchtools package supports. 
@@ -346,12 +340,11 @@ Now we are ready to explore the different future strategies.
 <!--
 Synchronous futures are resolved one after another and most commonly by the R process that creates them. 
 When a synchronous future is being resolved it blocks the main process until resolved. 
-There are two types of synchronous futures in the future package, sequential and transparent.
 -->
 
 同期的フューチャはフューチャを作成した R プロセスで一つひとつ解決される。
 同期的フューチャが解決されている間、メインプロセスはブロックされる。
-future パッケージの同期的フューチャには2つの種類がある。 **逐次的フューチャ**と**透過的フューチャ**である。
+
 
 #### 逐次的フューチャ (Sequential Future)
 
@@ -409,17 +402,6 @@ ID が代入されている）は上書きも削除もされないことに注�
 同期的な（単一の）プロセスが評価に使われるので、フューチャ `b` はメインの R
 プロセスによって（ローカル環境で）解決される 。 これが `b` の値と `pid` が一致する理由である。
 
-#### 透過的フューチャ (Transparent Future)
-
-<!--
-For troubleshooting, transparent futures can be used by specifying plan(transparent).
-A transparent future is technically a sequential future with instant signaling of conditions (including errors and warnings) and where evaluation, and therefore also assignments, take place in the calling environment. 
-Transparent futures are particularly useful for troubleshooting errors that are otherwise hard to narrow down.
--->
-
-透過的フューチャは `plan(transparent)` を指定することで利用できる。
-このフューチャは、評価時にエラーや警告などの通知を即時的に行う逐次的フューチャであり、代入は呼び出し環境で行われる。
-透過的フューチャは他の戦略では絞り込むことが難しいエラーのトラブルシューティングに役立つ。
 
 ### 非同期的フューチャ
 

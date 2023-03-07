@@ -73,6 +73,40 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
   }
 
 
+  ## Were there any variables added to the global enviroment?
+  if (length(result$globalenv$added) > 0L) {
+    onMisuse <- getOption("future.globalenv.onMisuse", "ignore")
+    if (onMisuse != "ignore") {
+      if (onMisuse == "error") {
+        cond <- GlobalEnvFutureError(globalenv = result$globalenv, future = future)
+      } else if (onMisuse == "warning") {
+        cond <- GlobalEnvFutureWarning(globalenv = result$globalenv, future = future)
+      } else {
+        cond <- NULL
+        warnf("Unknown value on option 'future.globalenv.onMisuse': %s",
+              sQuote(onMisuse))
+      }
+
+      if (!is.null(cond)) {
+        ## FutureCondition to stack of captured conditions
+        new <- list(condition = cond, signaled = FALSE)
+        conditions <- result$conditions
+        n <- length(conditions)
+      
+        ## An existing run-time error takes precedence
+        if (n > 0L && inherits(conditions[[n]]$condition, "error")) {
+          conditions[[n + 1L]] <- conditions[[n]]
+          conditions[[n]] <- new
+        } else {
+          conditions[[n + 1L]] <- new
+        }
+        
+        result$conditions <- conditions
+        future$result <- result
+      }
+    }
+  }
+
 
   ## Was RNG used without requesting RNG seeds?
   if (!isTRUE(future$.rng_checked) && isFALSE(future$seed) && isTRUE(result$rng)) {
@@ -87,41 +121,33 @@ value.Future <- function(future, stdout = TRUE, signal = TRUE, ...) {
     } else {
       onMisuse <- getOption("future.rng.onMisuse", "warning")
       if (onMisuse != "ignore") {
-        label <- future$label
-        if (is.null(label)) label <- "<none>"
-        cond <- RngFutureCondition(future = future)
-        msg <- conditionMessage(cond)
-        uuid <- future$uuid
-        if (getOption("future.rng.onMisuse.keepFuture", TRUE)) {
-          f <- future
-        } else {
-          f <- NULL
-        }
         if (onMisuse == "error") {
-          cond <- RngFutureError(msg, uuid = uuid, future = f)
+          cond <- RngFutureError(future = future)
         } else if (onMisuse == "warning") {
-          cond <- RngFutureWarning(msg, uuid = uuid, future = f)
+          cond <- RngFutureWarning(future = future)
         } else {
           cond <- NULL
           warnf("Unknown value on option 'future.rng.onMisuse': %s",
                   sQuote(onMisuse))
         }
 
-        ## RngFutureCondition to stack of captured conditions
-        new <- list(condition = cond, signaled = FALSE)
-        conditions <- result$conditions
-        n <- length(conditions)
-        
-        ## An existing run-time error takes precedence
-        if (n > 0L && inherits(conditions[[n]]$condition, "error")) {
-          conditions[[n + 1L]] <- conditions[[n]]
-          conditions[[n]] <- new
-        } else {
-          conditions[[n + 1L]] <- new
+        if (!is.null(cond)) {
+          ## RngFutureCondition to stack of captured conditions
+          new <- list(condition = cond, signaled = FALSE)
+          conditions <- result$conditions
+          n <- length(conditions)
+          
+          ## An existing run-time error takes precedence
+          if (n > 0L && inherits(conditions[[n]]$condition, "error")) {
+            conditions[[n + 1L]] <- conditions[[n]]
+            conditions[[n]] <- new
+          } else {
+            conditions[[n + 1L]] <- new
+          }
+          
+          result$conditions <- conditions
+          future$result <- result
         }
-        
-        result$conditions <- conditions
-        future$result <- result
       }
     }
   }

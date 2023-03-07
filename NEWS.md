@@ -1,6 +1,37 @@
+# Version 1.32.0 [2023-03-06]
+
+## New Features
+
+ * Add prototype of an internal event-logging framework for the
+   purpose of profiling futures and their backends.
+
+ * Add option `future.globalenv.onMisuse` for optionally assert that a
+   future expression does not result in variables being added to the
+   global environment.
+
+ * Add option `future.onFutureCondition.keepFuture` for controlling
+   whether `FutureCondition` objects should keep a copy of the
+   `Future` object or not.  The default is to keep a copy, but if the
+   future carries large global objects, then the `FutureCondition`
+   will also be large, which can result in memory issues and slow
+   downs.
+
+## Miscellaneous
+
+ * Fix a **future.tests** check that occurred only on MS Windows.
+
+## Deprecated and Defunct
+
+ * The 'multiprocess' strategy, which has been deprecated since future
+   1.20.0 [2020-10-30] is now defunct.  Please use 'multisession'
+   (recommended) or 'multicore' instead.
+ 
+ * Add optional assertion of the internal Future `state` field.
+
+
 # Version 1.31.0 [2023-01-31]
 
-## Signficant Changes
+## Significant Changes
 
  * Remove function `remote()`.  Note that `plan(remote, ...)` has been
    deprecated since **future** 1.24.0 [2022-02-19] and defunct since

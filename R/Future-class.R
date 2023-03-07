@@ -102,7 +102,8 @@
 #' @name Future-class
 Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdout = TRUE, conditions = "condition", globals = list(), packages = NULL, seed = FALSE, lazy = FALSE, gc = FALSE, earlySignal = FALSE, label = NULL, ...) {
   if (substitute) expr <- substitute(expr)
-
+  t_start <- Sys.time()
+  
   if (is.null(seed)) {
   } else if (isFALSE(seed)) {
   } else if (is_lecyer_cmrg_seed(seed)) {
@@ -163,28 +164,9 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
     .Defunct(msg = "Future field 'value' is defunct and must not be set", package = .packageName)
   }
 
-  ## 'local' is now defunct
+  ## 'local' is defunct
   if ("local" %in% args_names) {
-    dfcn <- .Defunct
-    msg <- "Argument 'local' is defunct as of future 1.31.0 (2023-01-31)"
-
-    ## SPECIAL CASE: Temporarily allow the 'civis' package to keep using
-    ## 'local' for a tad longer, although it has zero effect since a
-    ## long time (https://github.com/civisanalytics/civis-r/issues/244)
-    ## Only allow for this is local = TRUE.
-    ## /HB 2023-01-27
-    if (isTRUE(args$local) &&
-        Sys.getenv("R_FUTURE_CHECK_IGNORE_CIVIS", "true") == "true") {
-       for (call in sys.calls()) {
-         if ("CivisFuture" %in% as.character(call[[1]])) {
-           msg <- sprintf("%s. In this case it was because civis::CivisFuture() was used. Please contact the maintainers of the 'civis' package about this problem.", msg)
-           dfcn <- .Deprecated
-           break
-         }
-      }
-    }
-
-    dfcn(msg = msg, package = .packageName)
+    .Defunct(msg = "Argument 'local' is defunct as of future 1.31.0 (2023-01-31)", package = .packageName)
   }
 
   core <- new.env(parent = emptyenv())
@@ -477,12 +459,55 @@ run.Future <- function(future, ...) {
   future
 }
 
-run <- function(...) UseMethod("run")
+#' @export
+#' @keywords internal
+run <- function(future, ...) {
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
+    start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(future,
+          event = "launch",
+       category = "overhead",
+          start = start,
+           stop = Sys.time()
+      )
+    })
+  }
+  UseMethod("run")
+}
 
 
 #' @export
 #' @keywords internal
-result <- function(...) UseMethod("result")
+result <- function(future, ...) {
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
+    start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(future,
+           event = "gather",
+        category = "overhead",
+           start = start,
+            stop = Sys.time()
+      )
+
+      ## Signal FutureJournalCondition?
+      if (!isTRUE(future$.journal_signalled)) {
+        journal <- journal(future)
+        label <- future$label
+        if (is.null(label)) label <- "<none>"
+        msg <- sprintf("A future ('%s') of class %s was resolved", label, class(future)[1])
+        cond <- FutureJournalCondition(message = msg, journal = journal) 
+        signalCondition(cond)
+        future$.journal_signalled <- TRUE
+      }
+    })
+  }
+  UseMethod("result")
+}
 
 #' Get the results of a resolved future
 #'
@@ -819,6 +844,7 @@ getExpression.Future <- local({
   } ## getExpression()
 })
 
+
 globals <- function(future, ...) UseMethod("globals")
 
 globals.Future <- function(future, ...) {
@@ -829,4 +855,25 @@ packages <- function(future, ...) UseMethod("packages")
 
 packages.Future <- function(future, ...) {
   future[["packages"]]
+}
+
+
+#' @export
+`$<-.Future` <- function(x, name, value) {
+  if (name == "state") {
+    if (!is.element(value, c("created", "running", "finished", "failed", "interrupted"))) {
+      action <- getOption("future.state.onInvalid", "warning")
+      
+      if (action != "ignore") {
+        msg <- sprintf("Trying to assign an invalid value to the internal '%s' field of a %s object: %s", name, class(x)[1], value)
+        if (action == "error") {
+          stop(FutureError(msg, call = sys.call(), future = x))
+        } else {
+          warning(FutureWarning(msg, call = sys.call(), future = x))
+        }
+      }
+    }
+  }
+  
+  NextMethod()
 }

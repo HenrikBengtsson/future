@@ -42,7 +42,7 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, persistent = persistent, node = NA_integer_), args[future_args]), quote = FALSE)
 
   future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers), args[!future_args]), quote = TRUE)
-
+  
   future
 }
 
@@ -109,8 +109,8 @@ run.ClusterFuture <- function(future, ...) {
   ## FutureRegistry to use
   reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
 
-
   ## Next available cluster node
+  t_start <- Sys.time()
   node_idx <- requestNode(await = function() {
     FutureRegistry(reg, action = "collect-first", earlySignal = TRUE)
   }, workers = workers)
@@ -118,6 +118,16 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Cluster node to use
   cl <- workers[node_idx]
+  
+  if (inherits(future$.journal, "FutureJournal")) {
+    appendToFutureJournal(future,
+         event = "getWorker",
+      category = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
+    )
+  }
 
 
   ## (i) Reset global environment of cluster node such that
@@ -125,7 +135,17 @@ run.ClusterFuture <- function(future, ...) {
   ##     may happen even if the future is evaluated inside a
   ##     local, e.g. local({ a <<- 1 }).
   if (!persistent) {
+    t_start <- Sys.time()
     cluster_call(cl, fun = grmall, future = future, when = "call grmall() on")
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+           event = "eraseWorker",
+        category = "overhead",
+          parent = "launch",
+           start = t_start,
+            stop = Sys.time()
+      )
+    }
   }
 
 
@@ -133,6 +153,7 @@ run.ClusterFuture <- function(future, ...) {
   ##      NOTE: Already take care of by getExpression() of the Future class.
   ##      However, if we need to get an early error about missing packages,
   ##      we can get the error here before launching the future.
+  t_start <- Sys.time()
   packages <- packages(future)
   if (future$earlySignal && length(packages) > 0) {
     if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ...",
@@ -144,10 +165,20 @@ run.ClusterFuture <- function(future, ...) {
                       length(packages), hpaste(sQuote(packages)), node_idx)
   }
   
+  if (inherits(future$.journal, "FutureJournal")) {
+    appendToFutureJournal(future,
+         event = "attachPackages",
+      category = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
+    )
+  }
 
   ## (iii) Export globals
   globals <- globals(future)
   if (length(globals) > 0) {
+    t_start <- Sys.time()
     if (debug) {
       total_size <- asIEC(objectSize(globals))
       mdebugf("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node_idx)
@@ -170,6 +201,16 @@ run.ClusterFuture <- function(future, ...) {
       value <- NULL
     }
     if (debug) mdebugf("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node_idx)
+    
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+           event = "exportGlobals",
+        category = "overhead",
+          parent = "launch",
+           start = t_start,
+            stop = Sys.time()
+      )
+    }
   }
   ## Not needed anymore
   globals <- NULL
@@ -354,6 +395,8 @@ receiveMessageFromWorker <- function(future, ...) {
     }
   }
 
+  t_start <- Sys.time()
+
   ## If not, wait for process to finish, and
   ## then collect and record the value
   msg <- NULL
@@ -399,6 +442,16 @@ receiveMessageFromWorker <- function(future, ...) {
 
   if (inherits(msg, "FutureResult")) {
     result <- msg
+
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+           event = "receiveResult",
+        category = "overhead",
+          parent = "gather",
+           start = t_start,
+            stop = Sys.time()
+      )
+    }
 
     ## Add back already signaled and muffled conditions so that also
     ## they will be resignaled each time value() is called.

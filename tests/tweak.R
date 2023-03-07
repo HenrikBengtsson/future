@@ -41,6 +41,7 @@ stopifnot(!identical(sequential2, future::sequential))
 stopifnot(inherits(sequential2, "tweaked"))
 stopifnot(identical(formals(sequential2)$abc, FALSE))
 
+
 message("*** y <- tweak('sequential', abc = FALSE, abc = 1, def = TRUE) ...")
 res <- tryCatch({
   sequential2 <- future::tweak('sequential', abc = FALSE, abc = 1, def = TRUE)
@@ -53,6 +54,7 @@ print(args(sequential2))
 stopifnot(!identical(sequential2, future::sequential))
 stopifnot(inherits(sequential2, "tweaked"))
 stopifnot(identical(formals(sequential2)$abc, FALSE))
+
 
 
 message("*** y <- tweak(cluster, rscript_startup = quote(...)) ...")

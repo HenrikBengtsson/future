@@ -46,6 +46,10 @@
 #'
 #'  \item{\option{future.rng.onMisuse}: (_beta feature - may change_)}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that _no_ random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and `future.rng.onMisuse = "error"`, then an informative error message is produced.  If `"warning"`, then a warning message is produced.  If `"ignore"`, no check is performed. (Default: `"warning"`)}
 #'
+#'  \item{\option{future.globalenv.onMisuse}: (_beta feature - may change_)}{(character string) Assigning variables to the global environment for the purpose of using the variable at a later time makes no sense with futures, because the next future may be evaluated in different R process.  To protect against mistakes, the future framework attempts to detect when variables are added to the global environment.  If this is detected, and `future.globalenv.onMisuse = "error"`, then an informative error message is produced.  If `"warning"`, then a warning message is produced.  If `"ignore"`, no check is performed. (Default: `"ignore"`)}
+#'
+#'  \item{\option{future.onFutureCondition.keepFuture}:}{(logical) If `TRUE`, a `FutureCondition` keeps a copy of the `Future` object that triggered the condition. If `FALSE`, it is dropped. (Default: `TRUE`)}
+#'
 #'  \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: `30 * 24 * 60 * 60` (= 30 days))}
 #'
 #'  \item{\option{future.wait.interval}:}{(numeric) Initial interval (in
@@ -150,7 +154,13 @@
 #' R_FUTURE_GLOBALS_ONREFERENCE
 #' future.plan
 #' R_FUTURE_PLAN
+#' future.onFutureCondition.keepFuture
+#' R_FUTURE_ONFUTURECONDITION_KEEPFUTURE
 #' future.resolve.recursive
+#' R_FUTURE_RESOLVE_RECURSIVE
+#' future.globalenv.onMisuse
+#' R_FUTURE_GLOBALENV_ONMISUSE
+#' future.rng.onMisuse
 #' R_FUTURE_RNG_ONMISUSE
 #' future.wait.alpha
 #' R_FUTURE_WAIT_ALPHA
@@ -161,6 +171,8 @@
 #' R_FUTURE_RESOLVED_TIMEOUT
 #' future.output.windows.reencode
 #' R_FUTURE_OUTPUT_WINDOWS_REENCODE
+#' future.journal
+#' R_FUTURE_JOURNAL
 #'
 #' @name future.options
 NULL
@@ -262,7 +274,7 @@ update_package_options <- function(debug = FALSE) {
 
   update_package_option("future.deprecated.ignore", split = ",", debug = debug)
 
-  update_package_option("future.deprecated.defunct", mode = "character", split = ",", debug = debug)
+  update_package_option("future.deprecated.defunct", mode = "character", split = ",", default = "multiprocess", debug = debug)
 
   update_package_option("future.fork.multithreading.enable", mode = "logical", debug = debug)
 
@@ -295,9 +307,14 @@ update_package_options <- function(debug = FALSE) {
     update_package_option(name, mode = "numeric", debug = debug)
   }
 
+  ## Introduced in future 1.32.0:
+  update_package_option("future.onFutureCondition.keepFuture", mode = "logical", debug = debug)
+
   update_package_option("future.rng.onMisuse", debug = debug)
-  update_package_option("future.rng.onMisuse.keepFuture", mode = "logical", debug = debug)
   
+  ## Prototyping in future 1.32.0:
+  update_package_option("future.globalenv.onMisuse", debug = debug)
+
   update_package_option("future.wait.timeout", mode = "numeric", debug = debug)
   update_package_option("future.wait.interval", mode = "numeric", debug = debug)
   update_package_option("future.wait.alpha", mode = "numeric", debug = debug)
@@ -315,4 +332,10 @@ update_package_options <- function(debug = FALSE) {
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
+
+  ## future 1.32.0:
+  update_package_option("future.state.onInvalid", mode = "character", debug = debug)
+
+  ## future 1.32.0:
+  update_package_option("future.journal", mode = "logical", debug = debug)
 }

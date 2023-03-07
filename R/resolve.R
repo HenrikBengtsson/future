@@ -54,6 +54,21 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
     .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0) [2019-11-07]. Use 'result' instead.", package = .packageName)
   }
 
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
+    t_start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(x,
+        event = "resolve",
+        category = "overhead",
+        start = t_start,
+        stop = Sys.time(),
+        skip = FALSE
+      )
+    })
+  }
+
   if (is.logical(recursive)) {
     if (recursive) recursive <- getOption("future.resolve.recursive", 99)
   }

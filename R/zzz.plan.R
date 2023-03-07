@@ -75,16 +75,6 @@
 #' are available on high-performance compute (HPC) clusters, e.g. LSF,
 #' Slurm, TORQUE/PBS, Sun Grid Engine, and OpenLava.
 #'
-#' The following future strategies are _deprecated_ and must not be used:
-#'
-#' \itemize{
-#'  \item{[`multiprocess`]:}{(DEPRECATED since future 1.20.0)
-#'    If multicore evaluation is supported, that will be used,
-#'    otherwise multisession evaluation will be used.
-#'    _Please use `multisession`, or possibly `multicore` instead._
-#'  }
-#' }
-#' 
 #' To "close" any background workers (e.g. `multisession`), change
 #' the plan to something different; `plan(sequential)` is recommended
 #' for this.
@@ -162,6 +152,8 @@ plan <- local({
     if (class[1] == strategy) return(TRUE)
     if (length(class) == 1L) return(FALSE)
     if (class[1] == "tweaked" && class[2] == strategy) return(TRUE)
+    ## Special case for strategy == "multiprocess"
+    if (strategy == "multiprocess" && class[length(class)] == strategy) return(TRUE)
     FALSE
   }
 
@@ -185,7 +177,7 @@ plan <- local({
   }
 
   warn_about_multiprocess <- function(stack) {
-    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'."))
+    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.32.0) [2023-03-06]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'."))
   }
 
   warn_about_remote <- function(stack) {

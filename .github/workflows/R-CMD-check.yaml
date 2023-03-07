@@ -50,6 +50,7 @@ jobs:
       _R_CHECK_MATRIX_DATA_: true
       _R_CHECK_SUGGESTS_ONLY_: true
       _R_CHECK_THINGS_IN_TEMP_DIR_: true
+      RCMDCHECK_ERROR_ON: note
       ## Specific to futures
       R_FUTURE_RNG_ONMISUSE: error
       R_FUTURE_GLOBALS_KEEPWHERE: ${{ matrix.config.globals_keepWhere }}
@@ -100,9 +101,10 @@ jobs:
           R_FUTURE_FORK_MULTITHREADING_ENABLE: ${{ matrix.config.fork_multithreading_enable }}
           R_FUTURE_PSOCK_RELAY_IMMEDIATE: ${{ matrix.config.psock_relay_immediate }}
         run: |
+          if (nzchar(Sys.getenv("R_FUTURE_PLAN")) || getRversion() < "3.5.0") Sys.setenv(RCMDCHECK_ERROR_ON = "error")
           rcmdcheck::rcmdcheck(
-            args = c("--no-manual", "--as-cran"),
-            error_on = if (nzchar(Sys.getenv("R_FUTURE_PLAN"))) "error" else "note",
+            build_args = if (getRversion() < "3.5.0") "--no-build-vignettes",
+            args = c("--no-manual", "--as-cran", if (getRversion() < "3.5.0") c("--no-vignettes", "--no-build-vignettes", "--ignore-vignettes")),
             check_dir = "check"
           )
         shell: Rscript {0}
@@ -112,7 +114,6 @@ jobs:
         run: |
           rcmdcheck::rcmdcheck(
             args = c("--no-manual", "--as-cran", if (.Platform$OS.type == "windows" && getRversion() >= "4.2.0") "--no-multiarch"),
-            error_on = "note",
             check_dir = "check"
           )
         shell: Rscript {0}
