@@ -38,18 +38,8 @@ Run `revdep_details(, "aroma.core")` for more info
 
 ## In both
 
-*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
+*   checking package dependencies ... NOTE
     ```
-      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/bioc/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/bioc/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/annotation/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/data/annotation/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/experiment/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/data/experiment/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/workflows/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/workflows/src/contrib/PACKAGES'
-     NOTE
     Packages suggested but not available for checking:
       'sfit', 'expectile', 'HaarSeg', 'mpcbs'
     ```
@@ -134,18 +124,8 @@ Run `revdep_details(, "batchtools")` for more info
 
 ## In both
 
-*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
+*   checking package dependencies ... NOTE
     ```
-      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/bioc/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/bioc/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/annotation/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/data/annotation/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/data/experiment/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/data/experiment/src/contrib/PACKAGES'
-    Warning: unable to access index for repository https://bioconductor.org/packages/3.16/workflows/src/contrib:
-      cannot open URL 'https://bioconductor.org/packages/3.16/workflows/src/contrib/PACKAGES'
-     NOTE
     Package suggested but not available for checking: ‘doMPI’
     ```
 
@@ -465,11 +445,50 @@ Run `revdep_details(, "DeclareDesign")` for more info
 
 ## In both
 
-*   checking package dependencies ...Warning: unable to access index for repository https://cloud.r-project.org/src/contrib:
+*   checking package dependencies ... NOTE
     ```
-      cannot open URL 'https://cloud.r-project.org/src/contrib/PACKAGES'
-     NOTE
     Package suggested but not available for checking: ‘DesignLibrary’
+    ```
+
+# dhReg
+
+<details>
+
+* Version: 0.1.1
+* GitHub: NA
+* Source code: https://github.com/cran/dhReg
+* Date/Publication: 2021-02-28 12:30:02 UTC
+* Number of recursive dependencies: 68
+
+Run `revdep_details(, "dhReg")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > # install.packages("testthat")
+      > library(testthat)
+      > # install.packages("forecast")
+      > # library(forecast)
+      > # install.packages("stats")
+      > # library(stats)
+    ...
+       1. dhReg::dhr(...)
+       2. future::plan(future::multiprocess)
+       3. future (local) plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
+       4. future (local) warn_about_multiprocess(newStack)
+       5. future (local) warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'."))
+       6. base (local) dfcn(msg = msg, package = .packageName)
+      
+      Error in reporter$stop_if_needed() : Test failed
+      Calls: test_that -> <Anonymous>
+      Execution halted
     ```
 
 # dipsaus
@@ -695,6 +714,47 @@ Run `revdep_details(, "fect")` for more info
     ```
     Namespace in Imports field not imported from: ‘panelView’
       All declared Imports should be used.
+    ```
+
+# fiery
+
+<details>
+
+* Version: 1.1.4
+* GitHub: https://github.com/thomasp85/fiery
+* Source code: https://github.com/cran/fiery
+* Date/Publication: 2022-08-16 07:20:06 UTC
+* Number of recursive dependencies: 74
+
+Run `revdep_details(, "fiery")` for more info
+
+</details>
+
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(fiery)
+      > 
+      > test_check("fiery")
+      
+      [ FAIL 1 | WARN 0 | SKIP 1 | PASS 253 ]
+    ...
+       2.   └─private$ASYNC$add(substitute(expr), then, substituted = TRUE)
+       3.     └─private$make_future(expr, then, ...)
+       4.       ├─base::do.call(private$catcher, list(expr = expr, lazy = private$lazy))
+       5.       └─future::multiprocess(...)
+       6.         └─future (local) dfcn(msg = msg, package = .packageName)
+       7.           └─base::.Defunct(...)
+      
+      [ FAIL 1 | WARN 0 | SKIP 1 | PASS 253 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # flowGraph
@@ -1320,27 +1380,23 @@ Run `revdep_details(, "lidR")` for more info
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’
+      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60:  9093 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       3.   └─lidR (local) algorithm(st_bbox(las))
-       4.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       5.       └─lidR:::raster_crop(chm, bbox)
-       6.         ├─sf::st_crop(raster, bbox)
-       7.         └─stars:::st_crop.stars(raster, bbox)
-      ── Error ('test-segment_trees.R:147'): Silva algorithm works with sfc ──────────
-    ...
-        7. └─lidR:::segment_trees.LAS(las, silva2016(chm, ttops_shifted500))
-        8.   └─lidR (local) algorithm(st_bbox(las))
-        9.     └─lidR:::crop_special_its(treetops, chm, bbox)
-       10.       └─lidR:::raster_crop(chm, bbox)
-       11.         ├─sf::st_crop(raster, bbox)
-       12.         └─stars:::st_crop.stars(raster, bbox)
-      
-      [ FAIL 20 | WARN 3 | SKIP 40 | PASS 1357 ]
-      Error: Test failures
-      Execution halted
+    Complete output:
+      > Sys.setenv("R_TESTS" = "")
+      > 
+      > library(testthat)
+      > library(lidR)
+      > test_check("lidR")
+      Tests using raster: terra 
+      Tests using future: TRUE 
+      Tests using OpenMP thread: 32 
+      OGR: Unsupported geometry type
+      OGR: Unsupported geometry type
+      terminate called after throwing an instance of 'std::length_error'
+        what():  basic_string::_S_create
     ```
 
 *   checking installed package size ... NOTE
@@ -1501,6 +1557,33 @@ Run `revdep_details(, "MineICA")` for more info
 
 </details>
 
+## Newly broken
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘MineICA-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: clusterFastICARuns
+    > ### Title: Run of fastICA and JADE algorithms
+    > ### Aliases: clusterFastICARuns
+    > 
+    > ### ** Examples
+    > 
+    > ## generate a data
+    ...
+    > ## Random initializations are used for each iteration of FastICA
+    > ## Estimates are clustered using hierarchical clustering with average linkage
+    > res <- clusterFastICARuns(X=M, nbComp=2, alg.type="deflation",
+    +                           nbIt=3, funClus="hclust", method="average")
+    FastICA iteration 1
+    Warning: executing %dopar% sequentially: no parallel backend registered
+    FastICA iteration 2
+    FastICA iteration 3
+    Error: Strategy 'multiprocess' is defunct in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'.
+    Execution halted
+    ```
+
 ## In both
 
 *   checking running R code from vignettes ...
@@ -1510,15 +1593,15 @@ Run `revdep_details(, "MineICA")` for more info
     Errors in running code in vignettes:
     when running code in ‘MineICA.Rnw’
       ...
-    [25] "hgu133aPFAM"          "hgu133aPMID"          "hgu133aPMID2PROBE"   
-    [28] "hgu133aPROSITE"       "hgu133aREFSEQ"        "hgu133aSYMBOL"       
-    [31] "hgu133aUNIPROT"       "hgu133a_dbInfo"       "hgu133a_dbconn"      
-    [34] "hgu133a_dbfile"       "hgu133a_dbschema"    
+    > resPath(params)
+    [1] "mainz/"
     
-    > mart <- useMart(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
+    > resW <- writeProjByComp(icaSet = icaSetMainz, params = params, 
+    +     mart = mart, level = "genes", selCutoffWrite = 2.5)
     
       When sourcing ‘MineICA.R’:
-    Error: Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 120135 out of -1 bytes received
+    Error: task 2 failed - "Multiple cache results found.
+    Please clear your cache by running biomartCacheClear()"
     Execution halted
     ```
 
@@ -1631,7 +1714,7 @@ Run `revdep_details(, "MineICA")` for more info
     
     ...
     Error in curl::curl_fetch_memory(url, handle = handle) : 
-      Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 121525 out of -1 bytes received
+      Timeout was reached: [www.ensembl.org:443] Operation timed out after 10000 milliseconds with 0 out of -1 bytes received
     
     --- failed re-building ‘MineICA.Rnw’
     
@@ -2022,6 +2105,50 @@ Run `revdep_details(, "prewas")` for more info
 
 </details>
 
+## Newly broken
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+       3.     └─future (local) plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
+       4.       └─future (local) warn_about_multiprocess(newStack)
+       5.         └─future (local) warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'."))
+       6.           └─base (local) dfcn(msg = msg, package = .packageName)
+      ── Error ('test-reference_alleles.R:89'): remove_unknown_alleles correctly removes Ns when given valid input ──
+      <defunctError/error/condition>
+    ...
+       1. └─prewas:::get_ancestral_alleles(tree = temp_tree, mat = temp_dna_list$variant_only_dna_mat) at test-reference_alleles.R:258:2
+       2.   └─future::plan(future::multiprocess)
+       3.     └─future (local) plan_set(newStack, skip = .skip, cleanup = .cleanup, init = .init)
+       4.       └─future (local) warn_about_multiprocess(newStack)
+       5.         └─future (local) warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = sprintf("Strategy '%%s' is %%s in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'."))
+       6.           └─base (local) dfcn(msg = msg, package = .packageName)
+      
+      [ FAIL 6 | WARN 0 | SKIP 0 | PASS 312 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘getting_started_with_prewas.Rmd’ using rmarkdown
+    Quitting from lines 136-141 (getting_started_with_prewas.Rmd) 
+    Error: processing vignette 'getting_started_with_prewas.Rmd' failed with diagnostics:
+    Strategy 'multiprocess' is defunct in future (>= 1.20.0) [2020-10-30]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'. Starting with future 1.31.0 [2023-01-31], 'multiprocess' is the same as 'sequential'.
+    --- failed re-building ‘getting_started_with_prewas.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘getting_started_with_prewas.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
 ## In both
 
 *   checking dependencies in R code ... NOTE
@@ -2136,6 +2263,47 @@ Run `revdep_details(, "RAINBOWR")` for more info
         libs  36.5Mb
     ```
 
+# rangeMapper
+
+<details>
+
+* Version: 2.0.3
+* GitHub: https://github.com/mpio-be/rangeMapper
+* Source code: https://github.com/cran/rangeMapper
+* Date/Publication: 2022-10-03 22:20:02 UTC
+* Number of recursive dependencies: 113
+
+Run `revdep_details(, "rangeMapper")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(rangeMapper)
+      rangeMapper 2.0.3
+      > 
+      > test_check("rangeMapper")
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 58 ]
+    ...
+       24. │                               └─terra:::error(f, x@ptr$getError())
+       25. │                                 └─base::stop("[", f, "] ", emsg, ..., call. = FALSE)
+       26. └─base::.handleSimpleError(`<fn>`, "[rast] empty srs", base::quote(NULL))
+       27.   └─base (local) h(simpleError(msg, call))
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 58 ]
+      Error: Test failures
+      In addition: Warning message:
+      call dbDisconnect() when finished working with a connection 
+      Execution halted
+    ```
+
 # regmedint
 
 <details>
@@ -2156,6 +2324,47 @@ Run `revdep_details(, "regmedint")` for more info
     ```
     Namespace in Imports field not imported from: ‘Deriv’
       All declared Imports should be used.
+    ```
+
+# reproducible
+
+<details>
+
+* Version: 1.2.16
+* GitHub: https://github.com/PredictiveEcology/reproducible
+* Source code: https://github.com/cran/reproducible
+* Date/Publication: 2022-12-22 09:50:02 UTC
+* Number of recursive dependencies: 104
+
+Run `revdep_details(, "reproducible")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 72435 Segmentation fault      ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 50 lines of output:
+        adding: scratch/henrik/1187620/RtmpLUtHcR/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
+        adding: scratch/henrik/1187620/RtmpLUtHcR/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
+      
+       *** caught segfault ***
+      address 0x8, cause 'memory not mapped'
+    ...
+      36: doTryCatch(return(expr), name, parentenv, handler)
+      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      38: tryCatchList(expr, classes, parentenv, handlers)
+      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
+      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
+      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
+      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
+      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
+      44: test_check("reproducible")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rgee
@@ -2612,11 +2821,11 @@ Run `revdep_details(, "solitude")` for more info
 
 <details>
 
-* Version: 4.1.20
+* Version: 4.2.1
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
-* Date/Publication: 2022-12-12 12:50:03 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2023-03-03 15:20:02 UTC
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "spaMM")` for more info
 
@@ -2635,9 +2844,9 @@ Run `revdep_details(, "spaMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 55.5Mb
+      installed size is 55.7Mb
       sub-directories of 1Mb or more:
-        R      2.5Mb
+        R      2.6Mb
         libs  51.8Mb
     ```
 

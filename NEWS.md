@@ -1,9 +1,13 @@
-# Version (development version)
+# Version 1.32.0 [2023-03-06]
 
 ## New Features
 
- * Added optional assertion against adding variables to the global
-   environment by a future.
+ * Add prototype of an internal event-logging framework for the
+   purpose of profiling futures and their backends.
+
+ * Add option `future.globalenv.onMisuse` for optionally assert that a
+   future expression does not result in variables being added to the
+   global environment.
 
  * Add option `future.onFutureCondition.keepFuture` for controlling
    whether `FutureCondition` objects should keep a copy of the
@@ -12,21 +16,18 @@
    will also be large, which can result in memory issues and slow
    downs.
 
- * Add prototype of an internal event-logging framework for the
-   purpose of profiling futures and their backends.
-
 ## Miscellaneous
 
  * Fix a **future.tests** check that occurred only on MS Windows.
 
 ## Deprecated and Defunct
 
+ * The 'multiprocess' strategy, which has been deprecated since future
+   1.20.0 [2020-10-30] is now defunct.  Please use 'multisession'
+   (recommended) or 'multicore' instead.
+ 
  * Add optional assertion of the internal Future `state` field.
 
- * Deprecated `plan(multiprocess, ...)` is now defunct when running in
-   interactive mode.  The next step is to make it defunct also when
-   running in batch mode.
-   
 
 # Version 1.31.0 [2023-01-31]
 

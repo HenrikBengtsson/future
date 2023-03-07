@@ -21,6 +21,7 @@ jobs:
           - { plan: 'multisession'                        }
           - { plan: 'sequential'                          }
           - { plan: 'future.batchtools::batchtools_local' }
+          - { plan: 'future.batchtools::batchtools_bash'  }
           - { plan: 'future.callr::callr'                 }
 
     env:
@@ -28,7 +29,6 @@ jobs:
       RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## R CMD check
-      _R_CHECK_LENGTH_1_CONDITION_: true
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
       _R_CHECK_CRAN_INCOMING_: false

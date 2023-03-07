@@ -274,7 +274,7 @@ update_package_options <- function(debug = FALSE) {
 
   update_package_option("future.deprecated.ignore", split = ",", debug = debug)
 
-  update_package_option("future.deprecated.defunct", mode = "character", split = ",", default = if (interactive()) "multiprocess" else NULL, debug = debug)
+  update_package_option("future.deprecated.defunct", mode = "character", split = ",", default = "multiprocess", debug = debug)
 
   update_package_option("future.fork.multithreading.enable", mode = "logical", debug = debug)
 
