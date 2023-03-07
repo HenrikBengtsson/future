@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9114</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0</span>
       </span>
     </div>
 
@@ -307,7 +307,6 @@
 </tr>
 </tbody>
 </table>
-<p><em>Comment:</em> The alias strategy <code>multiprocess</code> was deprecated in future (&gt;= 1.20.0) in favor of <code>multisession</code> and <code>multicore</code>.</p>
 <p>The future package is designed such that support for additional strategies can be implemented as well. For instance, the <a href="https://cran.r-project.org/package=future.callr" class="external-link">future.callr</a> package provides future backends that evaluates futures in a background R process utilizing the <a href="https://cran.r-project.org/package=callr" class="external-link">callr</a> package - they work similarly to <code>multisession</code> futures but has a few advantages. Continuing, the <a href="https://cran.r-project.org/package=future.batchtools" class="external-link">future.batchtools</a> package provides futures for all types of <em>cluster functions</em> (“backends”) that the <a href="https://cran.r-project.org/package=batchtools" class="external-link">batchtools</a> package supports. Specifically, futures for evaluating R expressions via job schedulers such as Slurm, TORQUE/PBS, Oracle/Sun Grid Engine (SGE) and Load Sharing Facility (LSF) are also available.</p>
 <p>By default, future expressions are evaluated eagerly (= instantaneously) and synchronously (in the current R session). This evaluation strategy is referred to as “sequential”. In this section, we will go through each of these strategies and discuss what they have in common and how they differ.</p>
 <div class="section level3">

@@ -25,7 +25,7 @@ e.g. sequentially or in parallel."><meta property="og:image" content="https://fu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.31.0-9114</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0</span>
       </span>
     </div>
 
@@ -258,12 +258,7 @@ on top of the <span class="pkg">batchtools</span> package, e.g.
 These types of futures are resolved via job schedulers, which typically
 are available on high-performance compute (HPC) clusters, e.g. LSF,
 Slurm, TORQUE/PBS, Sun Grid Engine, and OpenLava.</p>
-<p>The following future strategies are <em>deprecated</em> and must not be used:</p>
-<ul><li><p><code><a href="multiprocess.html">multiprocess</a></code>:(DEPRECATED since future 1.20.0)
-If multicore evaluation is supported, that will be used,
-otherwise multisession evaluation will be used.
-<em>Please use <code>multisession</code>, or possibly <code>multicore</code> instead.</em></p></li>
-</ul><p>To "close" any background workers (e.g. <code>multisession</code>), change
+<p>To "close" any background workers (e.g. <code>multisession</code>), change
 the plan to something different; <code>plan(sequential)</code> is recommended
 for this.</p>
     </div>
