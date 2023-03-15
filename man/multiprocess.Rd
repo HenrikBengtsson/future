@@ -18,11 +18,10 @@ identified.}
 A \link{SequentialFuture} (sic!) since \strong{future} 1.31.0.
 }
 \description{
-\strong{WARNING: The 'multiprocess' future plan is deprecated.
+\strong{WARNING: The 'multiprocess' future plan is defunct.
 Instead, explicitly specify 'multisession' or 'multicore'.  The former works
 everywhere and is the recommended one between the two. \emph{Forked processing},
 which 'multicore' uses, is unstable in various environment and setups.
-The 'multiprocess' alias is therefore being phased out, and is now
-equal to using 'sequential' (sic!)}
+The 'multiprocess' alias is therefore being phased out.}
 }
 \keyword{internal}
