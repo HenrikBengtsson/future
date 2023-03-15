@@ -123,6 +123,15 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   args <- list(...)
   args_names <- names(args)
 
+  ## Backend resource specifications
+  if ("resources" %in% args_names) {
+    resources <- args[["resources"]]
+    args[["resources"]] <- NULL
+    args_names <- setdiff(args_names, "resources")
+  } else {
+    resources <- NULL
+  }
+
   ## WORKAROUND: Skip scanning of globals if already done /HB 2021-01-18
   if (!inherits(globals, "Globals") ||
       !isTRUE(attr(globals, "already-done", exact = TRUE))) {
@@ -207,6 +216,15 @@ Future <- function(expr = NULL, envir = parent.frame(), substitute = TRUE, stdou
   ## 'created', 'running', 'finished', 'failed', 'interrupted'.
   core$state <- "created"
 
+  if (!is.null(resources)) {
+    if (inherits(resources, "formula")) {
+      stop_if_not(length(resources) == 2L)
+    } else {
+      stop(FutureError(sprintf("Unknown value of argument 'resources': %s", class(resources)[1]), future = future))
+    }
+    core[["resources"]] <- resources
+  }
+ 
   ## Additional named arguments
   for (key in args_names) core[[key]] <- args[[key]]
 
@@ -506,6 +524,7 @@ result <- function(future, ...) {
       }
     })
   }
+  
   UseMethod("result")
 }
 
@@ -758,7 +777,7 @@ getExpression.Future <- local({
     ## .(exit)
   })
 
-  function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, split = future$split, mc.cores = NULL, exit = NULL, ...) {
+  function(future, expr = future$expr, local = future$local, stdout = future$stdout, conditionClasses = future$conditions, resources = future$resources, split = future$split, mc.cores = NULL, exit = NULL, ...) {
     debug <- getOption("future.debug", FALSE)
     ##  mdebug("getExpression() ...")
   
@@ -835,7 +854,7 @@ getExpression.Future <- local({
       enter <- bquote_apply(tmpl_enter_rng)
     }
   
-    expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, split = split, enter = enter, exit = exit, ..., version = version)
+    expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, resources = resources, split = split, enter = enter, exit = exit, ..., version = version)
     if (getOption("future.debug", FALSE)) mprint(expr)
   
   ##  mdebug("getExpression() ... DONE")

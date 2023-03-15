@@ -41,7 +41,7 @@ run.MulticoreFuture <- function(future, ...) {
     if (is.null(label)) label <- "<none>"
     stop(FutureError(sprintf("A future ('%s') can only be launched once.", label), future = future))
   }
-  
+
   ## Assert that the process that created the future is
   ## also the one that evaluates/resolves/queries it.
   assertOwner(future)
@@ -254,16 +254,19 @@ result.MulticoreFuture <- function(future, ...) {
   
   future$result <- result
 
-  future$state <- "finished"
-
   ## Remove from registry
   reg <- sprintf("multicore-%s", session_uuid())
   FutureRegistry(reg, action = "remove", future = future, earlySignal = TRUE)
-  
+
+  ## If resource specifications are supported, retry as a sequential future
+  result <- rerunAsSequentialFuture(result, future = future)
+
+  future$state <- "finished"
+
   ## Always signal immediateCondition:s and as soon as possible.
   ## They will always be signaled if they exist.
   signalImmediateConditions(future)
-
+  
   result
 }
 

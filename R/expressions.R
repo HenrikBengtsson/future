@@ -3,6 +3,19 @@ makeExpression <- local({
 
   tmpl_expr_local <- bquote_compile(base::local(.(expr)))
 
+  tmpl_expr_resources <- bquote_compile({
+    resources <- .(resources)
+    fbr <- .(FutureBackendResources())
+    if (!fbr$test(resources[[2]], substitute = FALSE)) {
+      msg <- sprintf("Requested resources are not support: %s", paste(deparse(resources), collapse = "; "))
+      ex <- simpleError(msg)
+      class(ex) <- c("NonSupportedResourcesFutureError", "FutureError", "FutureCondition", class(ex))
+      stop(ex)
+    }
+
+    .(expr)
+  })
+
   tmpl_enter_optenvar <- bquote_compile({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
@@ -186,7 +199,6 @@ makeExpression <- local({
     .(exit)
   })
 
-
   tmpl_expr_evaluate <- bquote_compile({
     ## covr: skip=6
     .(enter)
@@ -354,7 +366,7 @@ makeExpression <- local({
   })
 
 
-  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), globalenv = (getOption("future.globalenv.onMisuse", "ignore") != "ignore"), enter = NULL, exit = NULL, version = "1.8") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, resources = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), globalenv = (getOption("future.globalenv.onMisuse", "ignore") != "ignore"), enter = NULL, exit = NULL, version = "1.8") {
     conditionClassesExclude <- attr(conditionClasses, "exclude", exact = TRUE)
     muffleInclude <- attr(conditionClasses, "muffleInclude", exact = TRUE)
     if (is.null(muffleInclude)) muffleInclude <- "^muffle"
@@ -378,6 +390,11 @@ makeExpression <- local({
     if (local) {
       expr <- bquote_apply(tmpl_expr_local)
       skip <- skip.local
+    }
+
+    ## Assert that resources specifications can be met?
+    if (!is.null(resources)) {
+      expr <- bquote_apply(tmpl_expr_resources)
     }
   
     ## Set and reset certain properties and states

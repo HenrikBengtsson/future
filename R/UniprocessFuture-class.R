@@ -144,3 +144,45 @@ SequentialFuture <- function(expr = NULL, envir = parent.frame(), substitute = T
   f <- UniprocessFuture(expr = expr, envir = envir, substitute = FALSE, lazy = lazy, globals = globals, ...)
   structure(f, class = c("SequentialFuture", class(f)))
 }
+
+
+as.SequentialFuture <- function(future) {
+  stop_if_not(inherits(future, "Future"))
+  
+  ## Nothing to do?
+  if (inherits(future, "SequentialFuture") && class(future)[1] == "SequentialFuture") return(future)
+
+  SequentialFuture(expr = future[["expr"]], substitute = FALSE, envir = future[["envir"]], lazy = future[["lazy"]], globals = future[["globals"]], packages = future[["packages"]], stdout = future[["stdout"]], conditions = future[["conditions"]], seed = future[["seed"]], label = future[["label"]], gc = future[["gc"]], earlySignal = future[["earlySignal"]], resources = future[["resources"]])
+}
+
+rerunAsSequentialFuture <- function(result, future) {
+  stop_if_not(
+    inherits(future, "Future"),
+    inherits(result, "FutureResult")
+  )
+
+  conditions <- result$conditions
+  if (length(conditions) != 1L) return(result)
+  
+  first <- conditions[[1]][[1]]
+  if (!inherits(first, "NonSupportedResourcesFutureError")) return(result)
+  
+  tmp_future <- as.SequentialFuture(future)
+  tmp_future <- run(tmp_future)
+  result <- result(tmp_future)
+  tmp_future <- NULL
+
+  ## Are resource specifications still not met? If so, throw a FutureError.
+  conditions <- result$conditions
+  if (length(conditions) == 1L) {
+    first <- conditions[[1]][[1]]
+    if (inherits(first, "NonSupportedResourcesFutureError")) {
+      stop(first)
+    }
+  }
+
+  result$reruns <- 1L
+  future$result <- result
+  
+  result
+}

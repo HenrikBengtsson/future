@@ -352,12 +352,15 @@ result.ClusterFuture <- function(future, ...) {
     return(result)
   }
 
-  msg <- NULL
-  while (!inherits(msg, "FutureResult")) {
-    msg <- receiveMessageFromWorker(future, ...)
+  result <- NULL
+  while (!inherits(result, "FutureResult")) {
+    result <- receiveMessageFromWorker(future, ...)
   }
 
-  msg
+  ## If resource specifications are supported, retry as a sequential future
+  result <- rerunAsSequentialFuture(result, future = future)
+  
+  result
 }
 
 
