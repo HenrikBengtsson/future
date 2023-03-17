@@ -91,16 +91,6 @@ These types of futures are resolved via job schedulers, which typically
 are available on high-performance compute (HPC) clusters, e.g. LSF,
 Slurm, TORQUE/PBS, Sun Grid Engine, and OpenLava.
 
-The following future strategies are \emph{deprecated} and must not be used:
-
-\itemize{
-\item{\code{\link{multiprocess}}:}{(DEPRECATED since future 1.20.0)
-If multicore evaluation is supported, that will be used,
-otherwise multisession evaluation will be used.
-\emph{Please use \code{multisession}, or possibly \code{multicore} instead.}
-}
-}
-
 To "close" any background workers (e.g. \code{multisession}), change
 the plan to something different; \code{plan(sequential)} is recommended
 for this.
