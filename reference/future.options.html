@@ -28,7 +28,7 @@ further notice."><meta property="og:image" content="https://future.futureverse.o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9002</span>
       </span>
     </div>
 
@@ -271,8 +271,8 @@ If this option is not specified, environment variable <code class="env">R_FUTURE
 <dd><p>(logical) Enable or disable <em>multi-threading</em> while using <em>forked</em> parallel processing.  If <code>FALSE</code>, different multi-thread library settings are overridden such that they run in single-thread mode. Specifically, multi-threading will be disabled for OpenMP (which requires the <span class="pkg">RhpcBLASctl</span> package) and for <strong>RcppParallel</strong>. If <code>TRUE</code>, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using <code>plan(multicore)</code> but also when using, for instance, <code>mclapply()</code> of the <span class="pkg">parallel</span> package. (Default: not set)</p></dd>
 
 
-<dt><span class="option">future.output.windows.reencode</span> (<em>beta feature - may change</em>):</dt>
-<dd><p>(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  On MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (<code>"\u2713"</code>) would be relayed as <code>"&lt;U+2713&gt;"</code> (a string with eight ASCII characters).  This option will cause <code><a href="value.html">value()</a></code> to attempt to recover the intended UTF-8 symbols from <code>&lt;U+nnnn&gt;</code> string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: <code>TRUE</code>)</p></dd>
+<dt><span class="option">future.output.windows.reencode</span>:</dt>
+<dd><p>(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  In R (&lt; 4.2.0) and on older versions of MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (<code>"\u2713"</code>) would be relayed as <code>"&lt;U+2713&gt;"</code> (a string with eight ASCII characters).  Setting this option to <code>TRUE</code> will cause <code><a href="value.html">value()</a></code> to attempt to recover the intended UTF-8 symbols from <code>&lt;U+nnnn&gt;</code> string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: <code>TRUE</code>)</p></dd>
 
 
 </dl><p>See also <a href="https://parallelly.futureverse.org/reference/parallelly.options.html" class="external-link">parallelly::parallelly.options</a>.</p>
