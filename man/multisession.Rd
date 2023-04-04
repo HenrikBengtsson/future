@@ -13,9 +13,16 @@ multisession(
 )
 }
 \arguments{
-\item{...}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
+\item{\dots}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
 
-\item{workers}{Ignored in \strong{future} (>= 1.31.0).}
+\item{workers}{A \code{\link[parallel:makeCluster]{cluster}} object,
+a character vector of host names, a positive numeric scalar,
+or a function.
+If a character vector or a numeric scalar, a \code{cluster} object
+is created using \code{\link[parallelly:makeClusterPSOCK]{makeClusterPSOCK}(workers)}.
+If a function, it is called without arguments \emph{when the future
+is created} and its value is used to configure the workers.
+The function should return any of the above types.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}

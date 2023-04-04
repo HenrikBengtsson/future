@@ -15,7 +15,6 @@
 #' ```
 #'
 #' @inheritParams future
-#' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' 
 #' @return
