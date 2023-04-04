@@ -176,10 +176,6 @@ plan <- local({
     }
   }
 
-  warn_about_multiprocess <- function(stack) {
-    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = "Strategy '%s' is %s in future (>= 1.32.0) [2023-03-06]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'.", ignore = "", defunct = "remote")
-  }
-
   warn_about_remote <- function(stack) {
     warn_about_deprecated(stack, strategy = "remote", fmtstr = "Strategy '%s' is %s in future (>= 1.30.0) [2022-12-15]. Instead, use plan(cluster, ..., persistent = TRUE).", ignore = "", defunct = "remote")
   }
@@ -295,7 +291,6 @@ plan <- local({
     assert_no_disallowed_strategies(newStack)
 
     ## Assert that defunct backends are not used
-    warn_about_multiprocess(newStack)
     warn_about_remote(newStack)
     warn_about_transparent(newStack)
 
