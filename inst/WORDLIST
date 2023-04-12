@@ -473,3 +473,17 @@ globalenv
 hexcode
 hpp
 Rscriptbd
+addNamespace
+exampleData
+getNodeSet
+readRDS
+saveRDS
+tagnames
+xmlAttrs
+xmlDeserializeHook
+xmlGetAttr
+XMLInternalElementNode
+XMLInternalNode
+xmlParse
+xmlSerializeHook
+xyz
