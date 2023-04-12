@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9005</span>
       </span>
     </div>
 
@@ -183,11 +183,12 @@
 
       
 
-      </header><script src="future-3-topologies_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Future for R: Future Topologies</h1>
-                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
+                        <h4 data-toc-skip class="author">Henrik
+Bengtsson</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/vignettes/future-3-topologies.md.rsp" class="external-link"><code>vignettes/future-3-topologies.md.rsp</code></a></small>
@@ -197,7 +198,9 @@
 
     
     
-<p>Futures can be nested in R such that one future creates another set of futures and so on. This may, for instance, occur within nested for loops, e.g.</p>
+<p>Futures can be nested in R such that one future creates another set
+of futures and so on. This may, for instance, occur within nested for
+loops, e.g.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span></span>
@@ -213,12 +216,25 @@
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## [1] 1.1 1.2 1.3 2.1 2.2 2.3 3.1 3.2 3.3</span></span></code></pre></div>
-<p>The default is to use synchronous futures unless otherwise specified, which is also true for nested futures. If we for instance specify, <code>plan(multisession)</code>, the first layer of futures (<code>x[[ii]] %&lt;-% { expr }</code>) will be processed asynchronously in background R processes, and the futures in the second layer of futures (<code>y[[jj]] %&lt;-% { expr }</code>) will be processed synchronously in the separate background R processes. If we wish to be explicit about this, we can specify <code>plan(list(multisession, sequential))</code>.</p>
+<p>The default is to use synchronous futures unless otherwise specified,
+which is also true for nested futures. If we for instance specify,
+<code>plan(multisession)</code>, the first layer of futures
+(<code>x[[ii]] %&lt;-% { expr }</code>) will be processed asynchronously
+in background R processes, and the futures in the second layer of
+futures (<code>y[[jj]] %&lt;-% { expr }</code>) will be processed
+synchronously in the separate background R processes. If we wish to be
+explicit about this, we can specify
+<code>plan(list(multisession, sequential))</code>.</p>
 <div class="section level2">
 <h2 id="example-high-throughput-sequencing">Example: High-Throughput Sequencing<a class="anchor" aria-label="anchor" href="#example-high-throughput-sequencing"></a>
 </h2>
-<p>Consider a high-throughput sequencing (HT-Seq) project with 50 human DNA samples where we have one FASTQ file per sample containing the raw sequence reads as they come out of the sequencing machine. With this data, we wish to align each FASTQ to a reference genome such that we generate 24 individual BAM files per sample - one per chromosome.</p>
-<p>Here is the layout of what such an analysis could look like in R using futures.</p>
+<p>Consider a high-throughput sequencing (HT-Seq) project with 50 human
+DNA samples where we have one FASTQ file per sample containing the raw
+sequence reads as they come out of the sequencing machine. With this
+data, we wish to align each FASTQ to a reference genome such that we
+generate 24 individual BAM files per sample - one per chromosome.</p>
+<p>Here is the layout of what such an analysis could look like in R
+using futures.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span></span>
@@ -238,7 +254,10 @@
 <span>  <span class="op">}</span></span>
 <span><span class="op">}</span></span>
 <span><span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">bams</span><span class="op">)</span></span></code></pre></div>
-<p>The default is to use synchronous futures, so without further specifications, the above will process each sample and each chromosome sequentially. Next, we will consider what can be done with the following two computer setups:</p>
+<p>The default is to use synchronous futures, so without further
+specifications, the above will process each sample and each chromosome
+sequentially. Next, we will consider what can be done with the following
+two computer setups:</p>
 <ul>
 <li>A single machine with 8 cores</li>
 <li>A compute cluster with 3 machines each with 16 cores</li>
@@ -246,56 +265,106 @@
 <div class="section level3">
 <h3 id="one-multi-core-machine">One multi-core machine<a class="anchor" aria-label="anchor" href="#one-multi-core-machine"></a>
 </h3>
-<p>With a single machine of 8 cores, we could choose to process multiple samples at the same time while processing chromosomes sequentially. In other words, we would like to evaluate the outer layer of futures using multisession futures and the inner ones as sequential futures. This can be specified as:</p>
+<p>With a single machine of 8 cores, we could choose to process multiple
+samples at the same time while processing chromosomes sequentially. In
+other words, we would like to evaluate the outer layer of futures using
+multisession futures and the inner ones as sequential futures. This can
+be specified as:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">sequential</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>The internals for processing multisession future queries <code><a href="../reference/re-exports.html">availableCores()</a></code> to infer how many cores can be used simultaneously, so there is no need to explicitly specify that there are 8 cores available.</p>
-<p><em>Comment</em>: Since synchronous is the default future, we could skip trailing sequential futures in the setup, e.g. <code>plan(list(multisession))</code> or just <code>plan(multisession)</code>. However, it does not hurt to be explicit.</p>
-<p>If we instead would like to process the sample sequentially and the chromosomes in parallel, we can use:</p>
+<p>The internals for processing multisession future queries
+<code><a href="../reference/re-exports.html">availableCores()</a></code> to infer how many cores can be used
+simultaneously, so there is no need to explicitly specify that there are
+8 cores available.</p>
+<p><em>Comment</em>: Since synchronous is the default future, we could
+skip trailing sequential futures in the setup,
+e.g. <code>plan(list(multisession))</code> or just
+<code>plan(multisession)</code>. However, it does not hurt to be
+explicit.</p>
+<p>If we instead would like to process the sample sequentially and the
+chromosomes in parallel, we can use:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">sequential</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="built-in-protection-against-recursive-parallelism">Built-in protection against recursive parallelism<a class="anchor" aria-label="anchor" href="#built-in-protection-against-recursive-parallelism"></a>
 </h4>
-<p>Above we have processed either the outer or the inner set of future in parallel. What if we want to process both layers in parallel? It’s tempting to use:</p>
+<p>Above we have processed either the outer or the inner set of future
+in parallel. What if we want to process both layers in parallel? It’s
+tempting to use:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">multisession</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>Although this does not give an error, we will find that the inner layer of futures will be processed sequentially just as if we would use <code>plan(list(multisession, sequential))</code>. This behavior is due to the built-in protection against nested parallelism. If both layers would run in parallel, each using the 8 cores available on the machine, we would be running 8 * 8 = 64 parallel processes - that would for sure overload our computer. What happens internally is that for the outer layer, <code><a href="../reference/re-exports.html">availableCores()</a></code> equals eight (8), whereas for the inner layer it equals one (1).</p>
-<p>Now, we could imagine that we process the outer layer with, say, two parallel futures, and then the inner layer with four parallel futures. In that case, we would end up running on at most eight cores (= 2 * 4). This can be achieved by forcing a fixed number of workers at each layer:</p>
+<p>Although this does not give an error, we will find that the inner
+layer of futures will be processed sequentially just as if we would use
+<code>plan(list(multisession, sequential))</code>. This behavior is due
+to the built-in protection against nested parallelism. If both layers
+would run in parallel, each using the 8 cores available on the machine,
+we would be running 8 * 8 = 64 parallel processes - that would for sure
+overload our computer. What happens internally is that for the outer
+layer, <code><a href="../reference/re-exports.html">availableCores()</a></code> equals eight (8), whereas for the
+inner layer it equals one (1).</p>
+<p>Now, we could imagine that we process the outer layer with, say, two
+parallel futures, and then the inner layer with four parallel futures.
+In that case, we would end up running on at most eight cores (= 2 * 4).
+This can be achieved by forcing a fixed number of workers at each
+layer:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>When using this approach, there is a risk of setting up too many concurrent workers. To make sure the setup respects <code><a href="../reference/re-exports.html">availableCores()</a></code>, use something like:</p>
+<p>When using this approach, there is a risk of setting up too many
+concurrent workers. To make sure the setup respects
+<code><a href="../reference/re-exports.html">availableCores()</a></code>, use something like:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="../reference/re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">4</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>However, before using nested parallelization on a single machine, make sure it is actually more efficient than using parallelization in only one of the layers.</p>
+<p>However, before using nested parallelization on a single machine,
+make sure it is actually more efficient than using parallelization in
+only one of the layers.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="an-ad-hoc-compute-cluster">An ad-hoc compute cluster<a class="anchor" aria-label="anchor" href="#an-ad-hoc-compute-cluster"></a>
 </h3>
-<p>With a compute cluster of 3 machines each with 16 cores, we can run up to 48 alignment processes in parallel. A natural setup is to have one machine process one sample in parallel. We could specify this as:</p>
+<p>With a compute cluster of 3 machines each with 16 cores, we can run
+up to 48 alignment processes in parallel. A natural setup is to have one
+machine process one sample in parallel. We could specify this as:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><em>Comment:</em> Multisession futures are agile to its environment, that is, they will query the machine they are running on to find out how many parallel processes it can run at the same time.</p>
-<p>One possible downside to the above setup is that we might not utilize all available cores all the time. This is because the alignment of the shorter chromosomes will finish sooner than the longer ones, which means that we might at the end of each sample have only a few alignment processes running on each machine leaving the remaining cores idle/unused. An alternative set up is then to use the following setup:</p>
+<p><em>Comment:</em> Multisession futures are agile to its environment,
+that is, they will query the machine they are running on to find out how
+many parallel processes it can run at the same time.</p>
+<p>One possible downside to the above setup is that we might not utilize
+all available cores all the time. This is because the alignment of the
+shorter chromosomes will finish sooner than the longer ones, which means
+that we might at the end of each sample have only a few alignment
+processes running on each machine leaving the remaining cores
+idle/unused. An alternative set up is then to use the following
+setup:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>This will cause up to 24 (= 3*8) samples to be processed in parallel each processing two chromosomes at the same time.</p>
+<p>This will cause up to 24 (= 3*8) samples to be processed in parallel
+each processing two chromosomes at the same time.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="example-a-remote-compute-cluster">Example: A Remote Compute Cluster<a class="anchor" aria-label="anchor" href="#example-a-remote-compute-cluster"></a>
 </h2>
-<p>Imagine we have access to a remote compute cluster, with login node <code>remote.server.org</code>, and that the cluster has three nodes <code>n1</code>, <code>n2</code>, and <code>n3</code>. Also, let us assume we have already set up the cluster such that we can log in via public key authentication via SSH, i.e. when we do <code>ssh remote.server.org</code> authentication is done automatically.</p>
-<p>With the above setup, we can use nested futures in our local R session to evaluate R expression on the remote compute cluster and its three nodes. Here is a proof of concept illustrating how the different nested futures are evaluated on different machines.</p>
+<p>Imagine we have access to a remote compute cluster, with login node
+<code>remote.server.org</code>, and that the cluster has three nodes
+<code>n1</code>, <code>n2</code>, and <code>n3</code>. Also, let us
+assume we have already set up the cluster such that we can log in via
+public key authentication via SSH, i.e. when we do
+<code>ssh remote.server.org</code> authentication is done
+automatically.</p>
+<p>With the above setup, we can use nested futures in our local R
+session to evaluate R expression on the remote compute cluster and its
+three nodes. Here is a proof of concept illustrating how the different
+nested futures are evaluated on different machines.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://listenv.futureverse.org" class="external-link">listenv</a></span><span class="op">)</span></span>
@@ -353,7 +422,9 @@
 <span><span class="co">## 6    3    login  391547       n3  392527   n3 394048</span></span>
 <span><span class="co">## 7    4    login  391547       n1  391878   n1 393959</span></span>
 <span><span class="co">## 8    4    login  391547       n1  391878   n1 393966</span></span></code></pre></div>
-<p>Try the above <code>x %&lt;-% { ... }</code> future with, say, <code>plan(list(sequential, multisession))</code> and see what the output will be.</p>
+<p>Try the above <code>x %&lt;-% { ... }</code> future with, say,
+<code>plan(list(sequential, multisession))</code> and see what the
+output will be.</p>
 </div>
 <div class="section level2">
 <h2 id="example-adjust-the-number-of-workers-for-each-cluster-node">Example: Adjust the Number of Workers for Each Cluster Node<a class="anchor" aria-label="anchor" href="#example-adjust-the-number-of-workers-for-each-cluster-node"></a>
@@ -362,13 +433,22 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>, <span class="va">multisession</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>the number of workers used on each of the nodes (<code>n1</code>, <code>n2</code>, and <code>n3</code>) is given by the value of <code><a href="../reference/re-exports.html">availableCores()</a></code> on each of those nodes. In turn, <code><a href="../reference/re-exports.html">availableCores()</a></code> typically defaults to the number of cores on those nodes. Now, imagine you want to use only 50% of these cores. This can be done by tweaking the <code>multisession</code> plan by passing a function to <code>workers</code>;</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>halfCores &lt;-<span class="st"> </span><span class="cf">function</span>() { <span class="kw">max</span>(<span class="dv">1</span>, <span class="kw">round</span>(<span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span><span class="kw">availableCores</span>()))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">plan</span>(<span class="kw">list</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>  <span class="kw">tweak</span>(cluster, <span class="dt">workers =</span> nodes),</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>  <span class="kw">tweak</span>(multisession, <span class="dt">workers =</span> halfCores)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>))</span></code></pre></div>
-<p>With this, each node will use at most 50% of the cores available. For instance, if <code>n1</code> and <code>n2</code> have eight cores, and <code>n3</code> has 32 cores, then they nodes will use four, four, and 16 cores, respectively.</p>
+<p>the number of workers used on each of the nodes (<code>n1</code>,
+<code>n2</code>, and <code>n3</code>) is given by the value of
+<code><a href="../reference/re-exports.html">availableCores()</a></code> on each of those nodes. In turn,
+<code><a href="../reference/re-exports.html">availableCores()</a></code> typically defaults to the number of cores
+on those nodes. Now, imagine you want to use only 50% of these cores.
+This can be done by tweaking the <code>multisession</code> plan by
+passing a function to <code>workers</code>;</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>halfCores <span class="ot">&lt;-</span> <span class="cf">function</span>() { <span class="fu">max</span>(<span class="dv">1</span>, <span class="fu">round</span>(<span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">availableCores</span>()))</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">list</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">tweak</span>(cluster, <span class="at">workers =</span> nodes),</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">tweak</span>(multisession, <span class="at">workers =</span> halfCores)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>))</span></code></pre></div>
+<p>With this, each node will use at most 50% of the cores available. For
+instance, if <code>n1</code> and <code>n2</code> have eight cores, and
+<code>n3</code> has 32 cores, then they nodes will use four, four, and
+16 cores, respectively.</p>
 <p>Another example is:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">customWorkers</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -383,7 +463,9 @@
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="va">customWorkers</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>In this case, node <code>n1</code> will always use two cores, <code>n2</code> three cores, and <code>n3</code> will respect what <code><a href="../reference/re-exports.html">availableCores()</a></code> returns.</p>
+<p>In this case, node <code>n1</code> will always use two cores,
+<code>n2</code> three cores, and <code>n3</code> will respect what
+<code><a href="../reference/re-exports.html">availableCores()</a></code> returns.</p>
 </div>
   </div>
 

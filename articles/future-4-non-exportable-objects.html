@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9005</span>
       </span>
     </div>
 
@@ -183,11 +183,12 @@
 
       
 
-      </header><script src="future-4-non-exportable-objects_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>A Future for R: Non-Exportable Objects</h1>
-                        <h4 data-toc-skip class="author">Henrik Bengtsson</h4>
+                        <h4 data-toc-skip class="author">Henrik
+Bengtsson</h4>
             
       
       <small class="dont-index">Source: <a href="https://github.com/HenrikBengtsson/future/blob/HEAD/vignettes/future-4-non-exportable-objects.md.rsp" class="external-link"><code>vignettes/future-4-non-exportable-objects.md.rsp</code></a></small>
@@ -197,19 +198,31 @@
 
     
     
-<p>Certain types of objects are tied to a given R session. Such objects cannot be saved to file by one R process and then later be reloaded in another R process and expected to work correctly. If attempted, we will often get an informative error but not always. For the same reason, these type of objects cannot be exported to another R processes(*) for parallel processing regardless of which parallelization framework we use. We refer to these type of objects as “non-exportable objects”.</p>
-<p>(*) The exception <em>might be</em> when <em>forked</em> processes are used, i.e. <code>plan(multicore)</code>. However, such attempts to work around the underlying problem, which is non-exportable objects, should be avoided and considered non-stable. Moreover, such code will fail to parallelize when using other future backends.</p>
+<p>Certain types of objects are tied to a given R session. Such objects
+cannot be saved to file by one R process and then later be reloaded in
+another R process and expected to work correctly. If attempted, we will
+often get an informative error but not always. For the same reason,
+these type of objects cannot be exported to another R processes(*) for
+parallel processing regardless of which parallelization framework we
+use. We refer to these type of objects as “non-exportable objects”.</p>
+<p>(*) The exception <em>might be</em> when <em>forked</em> processes
+are used, i.e. <code>plan(multicore)</code>. However, such attempts to
+work around the underlying problem, which is non-exportable objects,
+should be avoided and considered non-stable. Moreover, such code will
+fail to parallelize when using other future backends.</p>
 <div class="section level2">
 <h2 id="a-first-example---file-connections">A first example - file connections<a class="anchor" aria-label="anchor" href="#a-first-example---file-connections"></a>
 </h2>
-<p>An example of a non-exportable object is a connection, e.g. a file connection. For instance, if you create a file connection,</p>
+<p>An example of a non-exportable object is a connection, e.g. a file
+connection. For instance, if you create a file connection,</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">file</a></span><span class="op">(</span><span class="st">"output.log"</span>, open <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"hello "</span>, file <span class="op">=</span> <span class="va">con</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">flush</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"output.log"</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">## [1] "hello "</span></span></code></pre></div>
-<p>it will not work when used in another R process. If we try, the result is “unknown”, e.g.</p>
+<p>it will not work when used in another R process. If we try, the
+result is “unknown”, e.g.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -219,29 +232,45 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">close</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="st">"output.log"</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">## [1] "hello "</span></span></code></pre></div>
-<p>In other words, the output <code>"world!"</code> written by the R worker is completely lost.</p>
-<p>The culprit here is that the connection uses a so called <em>external pointer</em>:</p>
+<p>In other words, the output <code>"world!"</code> written by the R
+worker is completely lost.</p>
+<p>The culprit here is that the connection uses a so called <em>external
+pointer</em>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
 <span><span class="co">## Classes 'file', 'connection'  atomic [1:1] 3</span></span>
 <span><span class="co">##   ..- attr(*, "conn_id")=&lt;externalptr&gt; </span></span></code></pre></div>
-<p>which is bound to the main R process and makes no sense to the worker. Ideally, the R process of the worker would detect this and produce an informative error message, but as seen here, that does not always occur.</p>
+<p>which is bound to the main R process and makes no sense to the
+worker. Ideally, the R process of the worker would detect this and
+produce an informative error message, but as seen here, that does not
+always occur.</p>
 </div>
 <div class="section level2">
 <h2 id="protect-against-non-exportable-objects">Protect against non-exportable objects<a class="anchor" aria-label="anchor" href="#protect-against-non-exportable-objects"></a>
 </h2>
-<p>To help avoiding exporting non-exportable objects by mistakes, which typically happens because a global variable is non-exportable, the future framework provides a mechanism for automatically detecting such objects. To enable it, do:</p>
+<p>To help avoiding exporting non-exportable objects by mistakes, which
+typically happens because a global variable is non-exportable, the
+future framework provides a mechanism for automatically detecting such
+objects. To enable it, do:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"world!"</span>, file <span class="op">=</span> <span class="va">con</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">flush</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span>
 <span><span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the globals</span></span>
 <span><span class="co">## ('con' of class 'file') used in the future expression</span></span></code></pre></div>
-<p><em>Comment</em>: The <code>future.globals.onReference</code> options is set to <code>"ignore"</code> by default due to the extra overhead <code>"error"</code> introduces, which can be significant for very large nested objects. Furthermore, some subclasses of external pointers can be exported without causing problems.</p>
+<p><em>Comment</em>: The <code>future.globals.onReference</code> options
+is set to <code>"ignore"</code> by default due to the extra overhead
+<code>"error"</code> introduces, which can be significant for very large
+nested objects. Furthermore, some subclasses of external pointers can be
+exported without causing problems.</p>
 </div>
 <div class="section level2">
 <h2 id="packages-with-non-exportable-objects">Packages with non-exportable objects<a class="anchor" aria-label="anchor" href="#packages-with-non-exportable-objects"></a>
 </h2>
-<p>The below table and sections provide a few examples of non-exportable R objects that you may run into when trying to parallelize your code, or simply from trying reload objects saved in a previous R session. <em>If you identify other cases, please consider <a href="https://github.com/HenrikBengtsson/future/issues/" class="external-link">reporting</a> them so they can be documented here and possibly even be fixed.</em></p>
+<p>The below table and sections provide a few examples of non-exportable
+R objects that you may run into when trying to parallelize your code, or
+simply from trying reload objects saved in a previous R session. <em>If
+you identify other cases, please consider <a href="https://github.com/HenrikBengtsson/future/issues/" class="external-link">reporting</a>
+them so they can be documented here and possibly even be fixed.</em></p>
 <table class="table">
 <colgroup>
 <col width="26%">
@@ -258,7 +287,8 @@
 </tr>
 <tr class="even">
 <td align="left"><strong>cpp11</strong></td>
-<td align="left">E.g. functions created by <code>cpp_source()</code>
+<td align="left">E.g. functions created by
+<code>cpp_source()</code>
 </td>
 </tr>
 <tr class="odd">
@@ -267,11 +297,13 @@
 </tr>
 <tr class="even">
 <td align="left"><strong>inline</strong></td>
-<td align="left">CFunc (<code>externalptr</code> of class DLLHandle)</td>
+<td align="left">CFunc (<code>externalptr</code> of class
+DLLHandle)</td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>keras</strong></td>
-<td align="left">keras.engine.sequential.Sequential (<code>externalptr</code>)</td>
+<td align="left">keras.engine.sequential.Sequential
+(<code>externalptr</code>)</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>magick</strong></td>
@@ -283,11 +315,13 @@
 </tr>
 <tr class="even">
 <td align="left"><strong>parallel</strong></td>
-<td align="left">cluster and cluster nodes (<code>connection</code>)</td>
+<td align="left">cluster and cluster nodes
+(<code>connection</code>)</td>
 </tr>
 <tr class="odd">
 <td align="left"><strong>raster</strong></td>
-<td align="left">RasterLayer (<code>externalptr</code>; <em>not all</em>)</td>
+<td align="left">RasterLayer (<code>externalptr</code>; <em>not
+all</em>)</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>Rcpp</strong></td>
@@ -295,7 +329,8 @@
 </tr>
 <tr class="odd">
 <td align="left"><strong>reticulate</strong></td>
-<td align="left">python.builtin.function (<code>externalptr</code>), python.builtin.module (<code>externalptr</code>)</td>
+<td align="left">python.builtin.function (<code>externalptr</code>),
+python.builtin.module (<code>externalptr</code>)</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>rJava</strong></td>
@@ -303,7 +338,8 @@
 </tr>
 <tr class="odd">
 <td align="left"><strong>ShortRead</strong></td>
-<td align="left">FastqFile, FastqStreamer, FastqStreamerList (<code>connection</code>)</td>
+<td align="left">FastqFile, FastqStreamer, FastqStreamerList
+(<code>connection</code>)</td>
 </tr>
 <tr class="even">
 <td align="left"><strong>sparklyr</strong></td>
@@ -322,13 +358,20 @@
 <td align="left">xgb.DMatrix (<code>externalptr</code>)</td>
 </tr>
 <tr class="even">
+<td align="left"><strong>XML</strong></td>
+<td align="left">XMLInternalElementNode (<code>externalptr</code>)</td>
+</tr>
+<tr class="odd">
 <td align="left"><strong>xml2</strong></td>
 <td align="left">xml_document (<code>externalptr</code>)</td>
 </tr>
 </tbody>
 </table>
-<p>These are illustrated in sections ‘Packages that rely on external pointers’ and ‘Packages with other types of non-external objects’ below.</p>
-<p>Importantly, there are objects with external pointer than can indeed be exported. Here are some example,</p>
+<p>These are illustrated in sections ‘Packages that rely on external
+pointers’ and ‘Packages with other types of non-external objects’
+below.</p>
+<p>Importantly, there are objects with external pointer than can indeed
+be exported. Here are some example,</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Package</th>
@@ -345,7 +388,8 @@
 </tr>
 </tbody>
 </table>
-<p>These are discussed in sections ‘False positives - packages with exportable external pointers’ at the very end of this vignette.</p>
+<p>These are discussed in sections ‘False positives - packages with
+exportable external pointers’ at the very end of this vignette.</p>
 <div class="section level3">
 <h3 id="packages-with-connections">Packages with connections<a class="anchor" aria-label="anchor" href="#packages-with-connections"></a>
 </h3>
@@ -364,7 +408,9 @@
 <span><span class="va">y</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">parSapply</span><span class="op">(</span><span class="va">cl</span>, X <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, FUN <span class="op">=</span> <span class="va">sqrt</span><span class="op">)</span></span>
 <span><span class="va">y</span></span>
 <span><span class="co">## Error in summary.connection(connection) : invalid connection</span></span></code></pre></div>
-<p>If we turn on <code>options(future.globals.onReference = "error")</code>, we will catch this already when we create the future:</p>
+<p>If we turn on
+<code>options(future.globals.onReference = "error")</code>, we will
+catch this already when we create the future:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">y</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">parSapply</span><span class="op">(</span><span class="va">cl</span>, X <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">3</span>, FUN <span class="op">=</span> <span class="va">sqrt</span><span class="op">)</span></span>
 <span><span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the globals</span></span>
@@ -374,13 +420,27 @@
 <div class="section level3">
 <h3 id="packages-that-rely-on-external-pointers">Packages that rely on external pointers<a class="anchor" aria-label="anchor" href="#packages-that-rely-on-external-pointers"></a>
 </h3>
-<p>If an object carries an <em>external pointer</em>, it is likely that it can only be used in the R session where it was created. If it is exported to and used in a parallel process, it will likely cause an error there. As shown above, and in below examples, setting option <code>future.globals.onReference</code> to <code>"error"</code> will make <strong>future</strong> to scan for <em>external pointer</em>:s before launching the future on a parallel worker, and throw an error if one is detected.</p>
-<p>However, there are objects with <em>external pointer</em>:s that can be exported, e.g. <code>data.table</code> objects of the <strong><a href="https://cran.r-project.org/package=data.table" class="external-link">data.table</a></strong> package is one such example. In other words, the existence of a <em>external pointer</em> is just a suggestion for an object being non-exportable - it is not a sufficient condition.</p>
-<p>Below are some examples of packages who produce non-exportable objects with <em>external pointer</em>:s.</p>
+<p>If an object carries an <em>external pointer</em>, it is likely that
+it can only be used in the R session where it was created. If it is
+exported to and used in a parallel process, it will likely cause an
+error there. As shown above, and in below examples, setting option
+<code>future.globals.onReference</code> to <code>"error"</code> will
+make <strong>future</strong> to scan for <em>external pointer</em>:s
+before launching the future on a parallel worker, and throw an error if
+one is detected.</p>
+<p>However, there are objects with <em>external pointer</em>:s that can
+be exported, e.g. <code>data.table</code> objects of the <strong><a href="https://cran.r-project.org/package=data.table" class="external-link">data.table</a></strong>
+package is one such example. In other words, the existence of a
+<em>external pointer</em> is just a suggestion for an object being
+non-exportable - it is not a sufficient condition.</p>
+<p>Below are some examples of packages who produce non-exportable
+objects with <em>external pointer</em>:s.</p>
 <div class="section level4">
 <h4 id="package-cpp11">Package: cpp11<a class="anchor" aria-label="anchor" href="#package-cpp11"></a>
 </h4>
-<p>Another example is <strong><a href="https://cran.r-project.org/package=cpp11" class="external-link">cpp11</a></strong>, which allows us to easily create R functions that are implemented in C++, e.g.</p>
+<p>Another example is <strong><a href="https://cran.r-project.org/package=cpp11" class="external-link">cpp11</a></strong>,
+which allows us to easily create R functions that are implemented in
+C++, e.g.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">cpp11</span><span class="fu">::</span><span class="fu"><a href="https://cpp11.r-lib.org/reference/cpp_source.html" class="external-link">cpp_source</a></span><span class="op">(</span>code <span class="op">=</span> <span class="st">'</span></span>
 <span><span class="st">#include "cpp11/doubles.hpp"</span></span>
@@ -408,7 +468,11 @@
 <div class="section level4">
 <h4 id="package-dbi">Package: DBI<a class="anchor" aria-label="anchor" href="#package-dbi"></a>
 </h4>
-<p><strong><a href="https://cran.r-project.org/package=DBI" class="external-link">DBI</a></strong> provides a unified database interface for communication between R and various database engines. Analogously to regular connections in R, DBIConnection objects can <em>not</em> safely be exported to another R process, e.g.</p>
+<p><strong><a href="https://cran.r-project.org/package=DBI" class="external-link">DBI</a></strong> provides
+a unified database interface for communication between R and various
+database engines. Analogously to regular connections in R, DBIConnection
+objects can <em>not</em> safely be exported to another R process,
+e.g.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
@@ -422,7 +486,9 @@
 <div class="section level4">
 <h4 id="package-inline">Package: inline<a class="anchor" aria-label="anchor" href="#package-inline"></a>
 </h4>
-<p>Another example is <strong><a href="https://cran.r-project.org/package=inline" class="external-link">inline</a></strong>, which allows us to easily create R functions that are implemented in C and C++, e.g.</p>
+<p>Another example is <strong><a href="https://cran.r-project.org/package=inline" class="external-link">inline</a></strong>,
+which allows us to easily create R functions that are implemented in C
+and C++, e.g.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/eddelbuettel/inline" class="external-link">inline</a></span><span class="op">)</span></span>
 <span><span class="va">code</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
@@ -433,7 +499,8 @@
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">sum_1_to_n</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span><span class="op">$</span><span class="va">x</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
 <span><span class="co">## 55</span></span></code></pre></div>
-<p>However, if we would attempt to call <code>sum_1_to_n()</code> in a future, we get an error:</p>
+<p>However, if we would attempt to call <code>sum_1_to_n()</code> in a
+future, we get an error:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span>
@@ -452,30 +519,44 @@
 <div class="section level4">
 <h4 id="package-keras">Package: keras<a class="anchor" aria-label="anchor" href="#package-keras"></a>
 </h4>
-<p>The <strong><a href="https://cran.r-project.org/package=DBI" class="external-link">keras</a></strong> package provides an R interface to <a href="https://keras.io/" class="external-link">Keras</a>, which “is a high-level neural networks API developed with a focus on enabling fast experimentation”. The R implementation accesses the Keras Python API via <strong><a href="https://cran.r-project.org/package=reticulate" class="external-link">reticulate</a></strong>. However, Keras model instances in R make use of R connections and external pointers, which prevents them from being exported to external R processes. For example, if the attempt to use a Keras model in a multisession workers, the worker will produce a run-time error:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="kw">library</span>(keras)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">library</span>(future)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="kw">plan</span>(multisession)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>model &lt;-<span class="st"> </span><span class="kw">keras_model_sequential</span>()</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>f &lt;-<span class="st"> </span><span class="kw">future</span>(model <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="st">       </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">256</span>, <span class="dt">activation =</span> <span class="st">'relu'</span>, <span class="dt">input_shape =</span> <span class="kw">c</span>(<span class="dv">784</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a><span class="st">       </span><span class="kw">layer_dropout</span>(<span class="dt">rate =</span> <span class="fl">0.4</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a><span class="st">       </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">128</span>, <span class="dt">activation =</span> <span class="st">'relu'</span>) <span class="op">%&gt;%</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a><span class="st">       </span><span class="kw">layer_dropout</span>(<span class="dt">rate =</span> <span class="fl">0.3</span>) <span class="op">%&gt;%</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a><span class="st">       </span><span class="kw">layer_dense</span>(<span class="dt">units =</span> <span class="dv">10</span>, <span class="dt">activation =</span> <span class="st">'softmax'</span>))</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a>model2 &lt;-<span class="st"> </span><span class="kw">value</span>(f)</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true"></a>Error <span class="cf">in</span> object<span class="op">$</span><span class="kw">add</span>(layer) <span class="op">:</span><span class="st"> </span>attempt to apply non<span class="op">-</span><span class="cf">function</span></span></code></pre></div>
-<p>If we turn on <code>options(future.globals.onReference = "error")</code>, we will catch this already when we create the future:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>Error<span class="op">:</span><span class="st"> </span>Detected a non<span class="op">-</span>exportable <span class="kw">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">globals</span> (<span class="st">'model'</span> of class <span class="st">'keras.engine.sequential.Sequential'</span>) used <span class="cf">in</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>the future expression</span></code></pre></div>
+<p>The <strong><a href="https://cran.r-project.org/package=DBI" class="external-link">keras</a></strong> package
+provides an R interface to <a href="https://keras.io/" class="external-link">Keras</a>, which
+“is a high-level neural networks API developed with a focus on enabling
+fast experimentation”. The R implementation accesses the Keras Python
+API via <strong><a href="https://cran.r-project.org/package=reticulate" class="external-link">reticulate</a></strong>.
+However, Keras model instances in R make use of R connections and
+external pointers, which prevents them from being exported to external R
+processes. For example, if the attempt to use a Keras model in a
+multisession workers, the worker will produce a run-time error:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">library</span>(keras)</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">keras_model_sequential</span>()</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">future</span>(model <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">256</span>, <span class="at">activation =</span> <span class="st">'relu'</span>, <span class="at">input_shape =</span> <span class="fu">c</span>(<span class="dv">784</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>       <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.4</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">128</span>, <span class="at">activation =</span> <span class="st">'relu'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>       <span class="fu">layer_dropout</span>(<span class="at">rate =</span> <span class="fl">0.3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>       <span class="fu">layer_dense</span>(<span class="at">units =</span> <span class="dv">10</span>, <span class="at">activation =</span> <span class="st">'softmax'</span>))</span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">value</span>(f)</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>Error <span class="cf">in</span> object<span class="sc">$</span><span class="fu">add</span>(layer) <span class="sc">:</span> attempt to apply non<span class="sc">-</span><span class="cf">function</span></span></code></pre></div>
+<p>If we turn on
+<code>options(future.globals.onReference = "error")</code>, we will
+catch this already when we create the future:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="fu">globals</span> (<span class="st">'model'</span> of class <span class="st">'keras.engine.sequential.Sequential'</span>) used <span class="cf">in</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>the future expression</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="package-magic">Package: magic<a class="anchor" aria-label="anchor" href="#package-magic"></a>
 </h4>
-<p>The <strong><a href="https://cran.r-project.org/package=magick" class="external-link">magick</a></strong> package provides an R-level API for <a href="https://imagemagick.org/" class="external-link">ImageMagick</a> to work with images. When working with this API, the images are represented internally as external pointers of class ‘magick_image’ that cannot be be exported to another R process, e.g.</p>
+<p>The <strong><a href="https://cran.r-project.org/package=magick" class="external-link">magick</a></strong>
+package provides an R-level API for <a href="https://imagemagick.org/" class="external-link">ImageMagick</a> to work with images.
+When working with this API, the images are represented internally as
+external pointers of class ‘magick_image’ that cannot be be exported to
+another R process, e.g.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -488,37 +569,47 @@
 <p>If we set:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span></code></pre></div>
-<p>we’ll see that this is caught even before attempting to run this in parallel;</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="op">&gt;</span><span class="st"> </span>f &lt;-<span class="st"> </span><span class="kw">future</span>(<span class="kw">image_fill</span>(frink, <span class="st">"orange"</span>, <span class="st">"+100+200"</span>, <span class="dv">20</span>))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a><span class="co">## Error: Detected a non-exportable reference ('externalptr' of class</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a><span class="co">## 'magick-image') in one of the globals ('frink' of class 'magick-image')</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a><span class="co">## used in the future expression</span></span></code></pre></div>
+<p>we’ll see that this is caught even before attempting to run this in
+parallel;</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>(<span class="fu">image_fill</span>(frink, <span class="st">"orange"</span>, <span class="st">"+100+200"</span>, <span class="dv">20</span>))</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="do">## Error: Detected a non-exportable reference ('externalptr' of class</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a><span class="do">## 'magick-image') in one of the globals ('frink' of class 'magick-image')</span></span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a><span class="do">## used in the future expression</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="package-raster">Package: raster<a class="anchor" aria-label="anchor" href="#package-raster"></a>
 </h4>
-<p>The <strong><a href="https://cran.r-project.org/package=raster" class="external-link">raster</a></strong> package provides methods for working with spatial data, which are held in ‘RasterLayer’ objects. Not all but some of these objects use an external pointer. For example,</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">library</span>(future)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a><span class="kw">plan</span>(multisession)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a><span class="kw">library</span>(raster)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a>r &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="kw">system.file</span>(<span class="st">"external/test.grd"</span>, <span class="dt">package =</span> <span class="st">"raster"</span>))</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a>tf &lt;-<span class="st"> </span><span class="kw">tempfile</span>(<span class="dt">fileext =</span> <span class="st">".grd"</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>s &lt;-<span class="st"> </span><span class="kw">writeStart</span>(r, <span class="dt">filename =</span> tf,  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true"></a></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true"></a>f &lt;-<span class="st"> </span><span class="kw">future</span>({</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true"></a>  <span class="kw">print</span>(<span class="kw">dim</span>(r))</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true"></a>  <span class="kw">print</span>(<span class="kw">dim</span>(s))</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true"></a>})</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true"></a>Error<span class="op">:</span><span class="st"> </span>Detected a non<span class="op">-</span>exportable <span class="kw">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true"></a><span class="kw">globals</span> (<span class="st">'s'</span> of class <span class="st">'RasterLayer'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
-<p>Note that it is only the RasterLayer object <code>s</code> that carries an external pointer. If we dig deeper, we find that this is because <code>attr(s@file, "con")</code> is file connection opened for writing. This is why <code>s</code> cannot be passed on to an external worker. In contrast, RasterLayer object <code>r</code> does not have this problem and would be fine to pass on to a worker.</p>
+<p>The <strong><a href="https://cran.r-project.org/package=raster" class="external-link">raster</a></strong>
+package provides methods for working with spatial data, which are held
+in ‘RasterLayer’ objects. Not all but some of these objects use an
+external pointer. For example,</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a><span class="fu">library</span>(raster)</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="fu">system.file</span>(<span class="st">"external/test.grd"</span>, <span class="at">package =</span> <span class="st">"raster"</span>))</span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>tf <span class="ot">&lt;-</span> <span class="fu">tempfile</span>(<span class="at">fileext =</span> <span class="st">".grd"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a>s <span class="ot">&lt;-</span> <span class="fu">writeStart</span>(r, <span class="at">filename =</span> tf,  <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">future</span>({</span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">dim</span>(r))</span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">dim</span>(s))</span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a>})</span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of the</span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a><span class="fu">globals</span> (<span class="st">'s'</span> of class <span class="st">'RasterLayer'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
+<p>Note that it is only the RasterLayer object <code>s</code> that
+carries an external pointer. If we dig deeper, we find that this is
+because <code>attr(s@file, "con")</code> is file connection opened for
+writing. This is why <code>s</code> cannot be passed on to an external
+worker. In contrast, RasterLayer object <code>r</code> does not have
+this problem and would be fine to pass on to a worker.</p>
 </div>
 <div class="section level4">
 <h4 id="package-rcpp">Package: Rcpp<a class="anchor" aria-label="anchor" href="#package-rcpp"></a>
 </h4>
-<p>Similarly to <strong>cpp11</strong>, <strong><a href="https://cran.r-project.org/package=Rcpp" class="external-link">Rcpp</a></strong> can be use to create R functions that are implemented in C++, e.g.</p>
+<p>Similarly to <strong>cpp11</strong>, <strong><a href="https://cran.r-project.org/package=Rcpp" class="external-link">Rcpp</a></strong> can be
+use to create R functions that are implemented in C++, e.g.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">Rcpp</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/Rcpp/man/sourceCpp.html" class="external-link">sourceCpp</a></span><span class="op">(</span>code <span class="op">=</span> <span class="st">'</span></span>
 <span><span class="st">#include &lt;Rcpp.h&gt;</span></span>
@@ -533,7 +624,8 @@
 <pre><code><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
 <span><span class="fu">my_length</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="co">## [1] 10</span></span></code></pre>
-<p>However, since this function uses an external pointer internally, we cannot pass it to another R process:</p>
+<p>However, since this function uses an external pointer internally, we
+cannot pass it to another R process:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -552,7 +644,10 @@
 <div class="section level4">
 <h4 id="package-reticulate">Package: reticulate<a class="anchor" aria-label="anchor" href="#package-reticulate"></a>
 </h4>
-<p>The <strong><a href="https://cran.r-project.org/package=reticulate" class="external-link">reticulate</a></strong> package provides methods for creating and calling Python code from within R. If one attempt to use Python-binding objects from this package, we get errors like:</p>
+<p>The <strong><a href="https://cran.r-project.org/package=reticulate" class="external-link">reticulate</a></strong>
+package provides methods for creating and calling Python code from
+within R. If one attempt to use Python-binding objects from this
+package, we get errors like:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -562,13 +657,15 @@
 <span><span class="va">pwd</span></span>
 <span><span class="co">## Error in eval(quote(os$getcwd()), new.env()) : </span></span>
 <span><span class="co">##   attempt to apply non-function</span></span></code></pre></div>
-<p>and by telling the <strong>future</strong> package to validate globals further, we get:</p>
+<p>and by telling the <strong>future</strong> package to validate
+globals further, we get:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
 <span><span class="va">pwd</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="va">os</span><span class="op">$</span><span class="fu">getcwd</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span></span>
 <span><span class="co">## globals ('os' of class 'python.builtin.module') used in the future expression</span></span></code></pre></div>
-<p>Another reticulate example is when we try to use a Python function that we create ourselves as in:</p>
+<p>Another reticulate example is when we try to use a Python function
+that we create ourselves as in:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">"def twice(x):\n    return 2*x\n"</span>, file <span class="op">=</span> <span class="st">"twice.py"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rstudio.github.io/reticulate/reference/source_python.html" class="external-link">source_python</a></span><span class="op">(</span><span class="st">"twice.py"</span><span class="op">)</span></span>
@@ -589,7 +686,8 @@
 <div class="section level4">
 <h4 id="package-rjava">Package: rJava<a class="anchor" aria-label="anchor" href="#package-rjava"></a>
 </h4>
-<p>Here is an example that shows how <strong><a href="https://cran.r-project.org/package=rJava" class="external-link">rJava</a></strong> objects cannot be exported to external R processes.</p>
+<p>Here is an example that shows how <strong><a href="https://cran.r-project.org/package=rJava" class="external-link">rJava</a></strong>
+objects cannot be exported to external R processes.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -608,7 +706,8 @@
 <span><span class="va">d1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
 <span><span class="va">d1</span></span>
 <span><span class="co">## [1] "Java-Object&lt;null&gt;"</span></span></code></pre></div>
-<p>Although no error is produced, we see that the value <code>d1</code> is a Java NULL Object. As before, we can catch this by using:</p>
+<p>Although no error is produced, we see that the value <code>d1</code>
+is a Java NULL Object. As before, we can catch this by using:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span></span>
@@ -621,8 +720,14 @@
 <div class="section level4">
 <h4 id="package-shortread">Package: ShortRead<a class="anchor" aria-label="anchor" href="#package-shortread"></a>
 </h4>
-<p>The <strong><a href="https://bioconductor.org/packages/ShortRead/" class="external-link">ShortRead</a></strong> package from Bioconductor implements efficient methods for sampling, iterating, and reading FASTQ files. Some of the helper objects used cannot be saved to file or exported to a parallel worker, because they comprise of connections and other non-exportable objects.</p>
-<p>Here is an example that illustrates how an attempt to use a ‘FastqStreamer’ object created in the main R session fails when used in a parallel worker:</p>
+<p>The <strong><a href="https://bioconductor.org/packages/ShortRead/" class="external-link">ShortRead</a></strong>
+package from Bioconductor implements efficient methods for sampling,
+iterating, and reading FASTQ files. Some of the helper objects used
+cannot be saved to file or exported to a parallel worker, because they
+comprise of connections and other non-exportable objects.</p>
+<p>Here is an example that illustrates how an attempt to use a
+‘FastqStreamer’ object created in the main R session fails when used in
+a parallel worker:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -636,7 +741,8 @@
 <span><span class="va">reads</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">yield</span><span class="op">(</span><span class="va">fs</span><span class="op">)</span></span>
 <span><span class="va">reads</span></span>
 <span><span class="co">## Error in status(update = TRUE) : invalid FastqStreamer</span></span></code></pre></div>
-<p>To catch this earlier, and to get a more informative error message, we do as before;</p>
+<p>To catch this earlier, and to get a more informative error message,
+we do as before;</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
 <span></span>
@@ -672,22 +778,22 @@
 <div class="section level4">
 <h4 id="package-terra">Package: terra<a class="anchor" aria-label="anchor" href="#package-terra"></a>
 </h4>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true"></a><span class="kw">library</span>(future)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true"></a><span class="kw">plan</span>(multisession)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true"></a><span class="kw">library</span>(terra)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true"></a></span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true"></a>file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="dt">package =</span> <span class="st">"terra"</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true"></a>v &lt;-<span class="st"> </span><span class="kw">vect</span>(file)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true"></a>dv <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">dim</span>(v)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true"></a>dv</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true"></a>Error <span class="cf">in</span> x<span class="op">@</span>ptr<span class="op">$</span><span class="kw">nrow</span>() <span class="op">:</span><span class="st"> </span>external pointer is not valid</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true"></a></span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true"></a>file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="dt">package =</span> <span class="st">"terra"</span>)</span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true"></a>r &lt;-<span class="st"> </span><span class="kw">rast</span>(file)</span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true"></a>dr <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">dim</span>(r)</span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true"></a>dr</span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true"></a><span class="co">## Error in .External(list(name = "CppMethod__invoke_notvoid", address = &lt;pointer: (nil)&gt;,  : </span></span>
-<span id="cb34-16"><a href="#cb34-16" aria-hidden="true"></a><span class="co">##  NULL value passed as symbol address</span></span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">vect</span>(file)</span>
+<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a>dv <span class="sc">%&lt;-%</span> <span class="fu">dim</span>(v)</span>
+<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a>dv</span>
+<span id="cb34-9"><a href="#cb34-9" tabindex="-1"></a>Error <span class="cf">in</span> x<span class="sc">@</span>ptr<span class="sc">$</span><span class="fu">nrow</span>() <span class="sc">:</span> external pointer is not valid</span>
+<span id="cb34-10"><a href="#cb34-10" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
+<span id="cb34-12"><a href="#cb34-12" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(file)</span>
+<span id="cb34-13"><a href="#cb34-13" tabindex="-1"></a>dr <span class="sc">%&lt;-%</span> <span class="fu">dim</span>(r)</span>
+<span id="cb34-14"><a href="#cb34-14" tabindex="-1"></a>dr</span>
+<span id="cb34-15"><a href="#cb34-15" tabindex="-1"></a><span class="do">## Error in .External(list(name = "CppMethod__invoke_notvoid", address = &lt;pointer: (nil)&gt;,  : </span></span>
+<span id="cb34-16"><a href="#cb34-16" tabindex="-1"></a><span class="do">##  NULL value passed as symbol address</span></span></code></pre></div>
 <p>To catch this as soon as possible,</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
@@ -701,27 +807,30 @@
 <span><span class="co">## Error: Detected a non-exportable reference ('externalptr' of class</span></span>
 <span><span class="co">## 'RegisteredNativeSymbol') in one of the globals ('r' of class</span></span>
 <span><span class="co">## 'SpatRaster') used in the future expression</span></span></code></pre></div>
-<p>Functions <code>wrap()</code> and <code>vect()</code> of the <strong>terra</strong> package can be used as workaround to marshal and unmarshal non-exportable <strong>terra</strong> objects, e.g.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true"></a><span class="kw">library</span>(future)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true"></a><span class="kw">plan</span>(multisession)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true"></a><span class="kw">library</span>(terra)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true"></a></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true"></a>file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="dt">package =</span> <span class="st">"terra"</span>)</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true"></a>v &lt;-<span class="st"> </span><span class="kw">vect</span>(file)</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true"></a>.v &lt;-<span class="st"> </span><span class="kw">wrap</span>(v)</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true"></a>dv <span class="op">%&lt;-%</span><span class="st"> </span>{ v &lt;-<span class="st"> </span><span class="kw">vect</span>(.v); <span class="kw">dim</span>(v) }</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true"></a><span class="kw">rm</span>(.v) <span class="co">## not needed anymore</span></span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true"></a>dv</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true"></a>[<span class="dv">1</span>] <span class="dv">12</span>  <span class="dv">6</span></span></code></pre></div>
+<p>Functions <code>wrap()</code> and <code>vect()</code> of the
+<strong>terra</strong> package can be used as workaround to marshal and
+unmarshal non-exportable <strong>terra</strong> objects, e.g.</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/lux.shp"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">vect</span>(file)</span>
+<span id="cb36-7"><a href="#cb36-7" tabindex="-1"></a>.v <span class="ot">&lt;-</span> <span class="fu">wrap</span>(v)</span>
+<span id="cb36-8"><a href="#cb36-8" tabindex="-1"></a>dv <span class="sc">%&lt;-%</span> { v <span class="ot">&lt;-</span> <span class="fu">vect</span>(.v); <span class="fu">dim</span>(v) }</span>
+<span id="cb36-9"><a href="#cb36-9" tabindex="-1"></a><span class="fu">rm</span>(.v) <span class="do">## not needed anymore</span></span>
+<span id="cb36-10"><a href="#cb36-10" tabindex="-1"></a>dv</span>
+<span id="cb36-11"><a href="#cb36-11" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">12</span>  <span class="dv">6</span></span></code></pre></div>
 <p>and</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true"></a>file &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="dt">package =</span> <span class="st">"terra"</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true"></a>r &lt;-<span class="st"> </span><span class="kw">rast</span>(file)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true"></a>.r &lt;-<span class="st"> </span><span class="kw">wrap</span>(v)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true"></a>dr <span class="op">%&lt;-%</span><span class="st"> </span>{ r &lt;-<span class="st"> </span><span class="kw">vect</span>(.r); <span class="kw">dim</span>(r) }</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true"></a><span class="kw">rm</span>(.r) <span class="co">## not needed anymore</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true"></a>dr</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true"></a>[<span class="dv">1</span>] <span class="dv">12</span>  <span class="dv">6</span></span></code></pre></div>
-<p>For more details, see <code>help("wrap", package = "terra")</code>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a>file <span class="ot">&lt;-</span> <span class="fu">system.file</span>(<span class="st">"ex/elev.tif"</span>, <span class="at">package =</span> <span class="st">"terra"</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">rast</span>(file)</span>
+<span id="cb37-3"><a href="#cb37-3" tabindex="-1"></a>.r <span class="ot">&lt;-</span> <span class="fu">wrap</span>(v)</span>
+<span id="cb37-4"><a href="#cb37-4" tabindex="-1"></a>dr <span class="sc">%&lt;-%</span> { r <span class="ot">&lt;-</span> <span class="fu">vect</span>(.r); <span class="fu">dim</span>(r) }</span>
+<span id="cb37-5"><a href="#cb37-5" tabindex="-1"></a><span class="fu">rm</span>(.r) <span class="do">## not needed anymore</span></span>
+<span id="cb37-6"><a href="#cb37-6" tabindex="-1"></a>dr</span>
+<span id="cb37-7"><a href="#cb37-7" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">12</span>  <span class="dv">6</span></span></code></pre></div>
+<p>For more details, see
+<code>help("wrap", package = "terra")</code>.</p>
 </div>
 <div class="section level4">
 <h4 id="package-udpipe">Package: udpipe<a class="anchor" aria-label="anchor" href="#package-udpipe"></a>
@@ -742,12 +851,17 @@
 <span><span class="va">x</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">udpipe_annotate</span><span class="op">(</span><span class="va">udmodel</span>, x <span class="op">=</span> <span class="st">"Ik ging op reis en ik nam mee."</span><span class="op">)</span></span>
 <span><span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span></span>
 <span><span class="co">## globals ('udmodel' of class 'udpipe_model') used in the future expression</span></span></code></pre></div>
-<p>Now, it is indeed possible to parallelize <strong><a href="https://cran.r-project.org/package=udpipe" class="external-link">udpipe</a></strong> calls. For details on how to do this, see the ‘UDPipe Natural Language Processing - Parallel’ vignette that comes with the <strong>udpipe</strong> package.</p>
+<p>Now, it is indeed possible to parallelize <strong><a href="https://cran.r-project.org/package=udpipe" class="external-link">udpipe</a></strong>
+calls. For details on how to do this, see the ‘UDPipe Natural Language
+Processing - Parallel’ vignette that comes with the
+<strong>udpipe</strong> package.</p>
 </div>
 <div class="section level4">
 <h4 id="package-xgboost">Package: xgboost<a class="anchor" aria-label="anchor" href="#package-xgboost"></a>
 </h4>
-<p>The <strong><a href="https://cran.r-project.org/package=xgboost" class="external-link">xgboost</a></strong> package provides fast gradient-boosting methods. Some of its data structures use external pointers. For example,</p>
+<p>The <strong><a href="https://cran.r-project.org/package=xgboost" class="external-link">xgboost</a></strong>
+package provides fast gradient-boosting methods. Some of its data
+structures use external pointers. For example,</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
@@ -761,7 +875,9 @@
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">dtrain</span><span class="op">)</span></span>
 <span><span class="va">d</span></span>
 <span><span class="co">## [1] 6513  126</span></span></code></pre></div>
-<p>works just fine but if we attempt to pass on the ‘xgb.DMatrix’ object <code>train</code> to an external worker, we silently get a incorrect value:</p>
+<p>works just fine but if we attempt to pass on the ‘xgb.DMatrix’ object
+<code>train</code> to an external worker, we silently get a incorrect
+value:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">dtrain</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
@@ -773,13 +889,86 @@
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">dtrain</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Error: Detected a non-exportable reference ('externalptr' of class 'xgb.DMatrix')</span></span>
 <span><span class="co">## in one of the globals ('dtrain' of class 'xgb.DMatrix') used in the future expression</span></span></code></pre></div>
-<p>This is because <code>train</code> itself is an external pointer, i.e. <code>mode(train) == "externalptr"</code>.</p>
+<p>This is because <code>train</code> itself is an external pointer,
+i.e. <code>mode(train) == "externalptr"</code>.</p>
+</div>
+<div class="section level4">
+<h4 id="package-xml">Package: XML<a class="anchor" aria-label="anchor" href="#package-xml"></a>
+</h4>
+<p>Another example is XML objects of the <strong><a href="https://cran.r-project.org/package=XML" class="external-link">XML</a></strong> package,
+which may produce evaluation error, or even cause R to abort if used in
+another R process, e.g.</p>
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.omegahat.net/RSXML/" class="external-link">XML</a></span><span class="op">)</span></span>
+<span><span class="va">doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/XML/man/xmlTreeParse.html" class="external-link">xmlParse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"exampleData"</span>, <span class="st">"tagnames.xml"</span>, package <span class="op">=</span> <span class="st">"XML"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/XML/man/getNodeSet.html" class="external-link">getNodeSet</a></span><span class="op">(</span><span class="va">doc</span>, <span class="st">"/doc//a[@status]"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/XML/man/xmlGetAttr.html" class="external-link">xmlGetAttr</a></span><span class="op">(</span><span class="va">a</span>, <span class="st">"status"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span><span class="co">## Error in unserialize(node$con) :</span></span>
+<span><span class="co">##   MultisessionFuture (&lt;none&gt;) failed to receive results from cluster</span></span>
+<span><span class="co">## RichSOCKnode #1 (PID 31541 on localhost 'localhost'). The reason</span></span>
+<span><span class="co">## reported was 'error reading from connection'. Post-mortem diagnostic:</span></span>
+<span><span class="co">## No process exists with this PID, i.e. the localhost worker is no</span></span>
+<span><span class="co">## longer alive. Detected a non-exportable reference ('externalptr' of</span></span>
+<span><span class="co">## class 'XMLInternalElementNode') in one of the globals ('a' of class</span></span>
+<span><span class="co">## 'XMLInternalElementNode') used in the future expression. The total</span></span>
+<span><span class="co">## size of the 1 globals exported is 520 bytes. There is one global: 'a'</span></span>
+<span><span class="co">## (520 bytes of class 'externalptr')</span></span></code></pre></div>
+<p>This is an example, where we end up exporting an
+<code>XMLInternalElementNode</code> object to another R process, where
+it is no longer valid. When we try to use it there by calling
+<code><a href="https://rdrr.io/pkg/XML/man/xmlGetAttr.html" class="external-link">xmlGetAttr()</a></code> on it, <strong>XML</strong> causes R to crash
+and abort. To illustrate what’s going on the parallel workers, if we
+save the object to file using <code>saveRDS(a, "a.rds")</code>, and try
+to use it in <em>another</em> R session, the following happens:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="sc">$</span> R <span class="sc">--</span>quiet <span class="sc">--</span>vanilla</span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a><span class="sc">&gt;</span> a <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">"a.rds"</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a><span class="sc">&gt;</span> XML<span class="sc">::</span><span class="fu">xmlGetAttr</span>(a, <span class="st">"status"</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a> <span class="sc">**</span><span class="er">*</span> caught segfault <span class="sc">**</span><span class="er">*</span></span>
+<span id="cb44-6"><a href="#cb44-6" tabindex="-1"></a>address <span class="dv">0x40</span>, cause <span class="st">'memory not mapped'</span></span>
+<span id="cb44-7"><a href="#cb44-7" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" tabindex="-1"></a>Traceback<span class="sc">:</span></span>
+<span id="cb44-9"><a href="#cb44-9" tabindex="-1"></a> <span class="dv">1</span><span class="sc">:</span> <span class="fu">xmlAttrs.XMLInternalNode</span>(node, addNamespace)</span>
+<span id="cb44-10"><a href="#cb44-10" tabindex="-1"></a> <span class="dv">2</span><span class="sc">:</span> <span class="fu">xmlAttrs</span>(node, addNamespace)</span>
+<span id="cb44-11"><a href="#cb44-11" tabindex="-1"></a> <span class="dv">3</span><span class="sc">:</span> XML<span class="sc">::</span><span class="fu">xmlGetAttr</span>(a, <span class="st">"status"</span>)</span>
+<span id="cb44-12"><a href="#cb44-12" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="#cb44-13" tabindex="-1"></a>Possible actions<span class="sc">:</span></span>
+<span id="cb44-14"><a href="#cb44-14" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span> <span class="fu">abort</span> (with core dump, <span class="cf">if</span> enabled)</span>
+<span id="cb44-15"><a href="#cb44-15" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span> normal R exit</span>
+<span id="cb44-16"><a href="#cb44-16" tabindex="-1"></a><span class="dv">3</span><span class="sc">:</span> exit R without saving workspace</span>
+<span id="cb44-17"><a href="#cb44-17" tabindex="-1"></a><span class="dv">4</span><span class="sc">:</span> exit R saving workspace</span>
+<span id="cb44-18"><a href="#cb44-18" tabindex="-1"></a>Selection<span class="sc">:</span> </span></code></pre></div>
+<p>This is a very harsh way of telling us that we cannot export all
+types of objects produced by <strong>XML</strong>. Ideally,
+<strong>XML</strong> would detect this and give am informative error
+message and not crash R like this.</p>
+<p>A workaround for working around this is to marshal the problematic
+objects before exporting them to a parallel R process, and unmarshal
+them before working with them there. For example,</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.omegahat.net/RSXML/" class="external-link">XML</a></span><span class="op">)</span></span>
+<span><span class="va">doc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/XML/man/xmlTreeParse.html" class="external-link">xmlParse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"exampleData"</span>, <span class="st">"tagnames.xml"</span>, package <span class="op">=</span> <span class="st">"XML"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/XML/man/getNodeSet.html" class="external-link">getNodeSet</a></span><span class="op">(</span><span class="va">doc</span>, <span class="st">"/doc//a[@status]"</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">## Marshall the non-exportable XMLInternalElementNode object</span></span>
+<span><span class="va">a_m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/XML/man/xmlSerializeHook.html" class="external-link">xmlSerializeHook</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span> <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/XML/man/xmlSerializeHook.html" class="external-link">xmlDeserializeHook</a></span><span class="op">(</span><span class="va">a_m</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/pkg/XML/man/xmlGetAttr.html" class="external-link">xmlGetAttr</a></span><span class="op">(</span><span class="va">a</span>, <span class="st">"status"</span><span class="op">)</span> <span class="op">}</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
+<span><span class="co">## [1] "xyz"</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="package-xml2">Package: xml2<a class="anchor" aria-label="anchor" href="#package-xml2"></a>
 </h4>
-<p>Another example is XML objects of the <strong><a href="https://cran.r-project.org/package=xml2" class="external-link">xml2</a></strong> package, which may produce evaluation errors (or just invalid results depending on how they are used), e.g.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<p>Yet another example is XML objects of the <strong><a href="https://cran.r-project.org/package=xml2" class="external-link">xml2</a></strong>
+package, which may produce evaluation errors (or just invalid results
+depending on how they are used), e.g.</p>
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://xml2.r-lib.org/" class="external-link">xml2</a></span><span class="op">)</span></span>
@@ -787,14 +976,21 @@
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html" class="external-link">xml_children</a></span><span class="op">(</span><span class="va">doc</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
 <span><span class="co">## Error: external pointer is not valid</span></span></code></pre></div>
-<p>The future framework can help detect this <em>before</em> sending off the future to the worker;</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<p>The future framework can help detect this <em>before</em> sending off
+the future to the worker;</p>
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="st">"error"</span><span class="op">)</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="fu"><a href="http://xml2.r-lib.org/reference/xml_children.html" class="external-link">xml_children</a></span><span class="op">(</span><span class="va">xml</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Error: Detected a non-exportable reference ('externalptr') in one of the</span></span>
 <span><span class="co">## globals ('xml' of class 'xml_document') used in the future expression</span></span></code></pre></div>
-<p>One workaround when dealing with non-exportable objects is to look for ways to encode the object such that it can be exported, and the decoded on the receiving end. With <strong>xml2</strong>, we can use <code><a href="http://xml2.r-lib.org/reference/xml_serialize.html" class="external-link">xml2::xml_serialize()</a></code> and <code><a href="http://xml2.r-lib.org/reference/xml_serialize.html" class="external-link">xml2::xml_unserialize()</a></code> to do this. Here is how we can rewrite the above example such that we can pass <strong>xml2</strong> object back and forth between the main R session and R workers:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<p>One workaround when dealing with non-exportable objects is to look
+for ways to encode the object such that it can be exported, and the
+decoded on the receiving end. With <strong>xml2</strong>, we can use
+<code><a href="http://xml2.r-lib.org/reference/xml_serialize.html" class="external-link">xml2::xml_serialize()</a></code> and
+<code><a href="http://xml2.r-lib.org/reference/xml_serialize.html" class="external-link">xml2::xml_unserialize()</a></code> to do this. Here is how we can
+rewrite the above example such that we can pass <strong>xml2</strong>
+object back and forth between the main R session and R workers:</p>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Encode the 'xml_document' object 'doc' as a 'raw' object</span></span>
 <span><span class="va">doc_raw</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/xml_serialize.html" class="external-link">xml_serialize</a></span><span class="op">(</span><span class="va">doc</span>, connection <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
@@ -821,22 +1017,27 @@
 <div class="section level4">
 <h4 id="package-ncdf4">Package: ncdf4<a class="anchor" aria-label="anchor" href="#package-ncdf4"></a>
 </h4>
-<p>Package <strong><a href="https://cran.r-project.org/package=ncdf4" class="external-link">ncdf4</a></strong> provides an R API to work with data that live in netCDF files. For example, we can create a simple netCDF file that holds a variable ‘x’:</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<p>Package <strong><a href="https://cran.r-project.org/package=ncdf4" class="external-link">ncdf4</a></strong>
+provides an R API to work with data that live in netCDF files. For
+example, we can create a simple netCDF file that holds a variable
+‘x’:</p>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cirrus.ucsd.edu/~pierce/ncdf/" class="external-link">ncdf4</a></span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">ncvar_def</span><span class="op">(</span><span class="st">"x"</span>, units <span class="op">=</span> <span class="st">"count"</span>, dim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">nc_create</span><span class="op">(</span><span class="st">"example.nc"</span>, <span class="va">x</span><span class="op">)</span></span>
 <span><span class="fu">ncvar_put</span><span class="op">(</span><span class="va">file</span>, <span class="va">x</span>, <span class="fl">42</span><span class="op">)</span></span>
 <span><span class="fu">nc_close</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
 <p>We can now use this netCDF file next time we start R, e.g.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cirrus.ucsd.edu/~pierce/ncdf/" class="external-link">ncdf4</a></span><span class="op">)</span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">nc_open</span><span class="op">(</span><span class="st">"example.nc"</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">ncvar_get</span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
 <span><span class="va">y</span></span>
 <span><span class="co">## [1] 42</span></span></code></pre></div>
-<p>However, it would fail if we attempt to use <code>file</code>, which is an object of class ‘ncdf4’, in a parallel worker, we will get an error:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<p>However, it would fail if we attempt to use <code>file</code>, which
+is an object of class ‘ncdf4’, in a parallel worker, we will get an
+error:</p>
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cirrus.ucsd.edu/~pierce/ncdf/" class="external-link">ncdf4</a></span><span class="op">)</span></span>
@@ -845,9 +1046,14 @@
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/value.html">value</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span>
 <span><span class="co">## Error in R_nc4_inq_varndims: NetCDF: Not a valid ID</span></span>
 <span><span class="co">## Error in ncvar_ndims(ncid, varid) : error returned from C call</span></span></code></pre></div>
-<p>This is because ncdf4 objects make use of internal references that are unique to the R session where they were created. However, these are <em>not</em> formal <em>external pointer</em>:s, meaning the future framework cannot detect them. That is, using <code>options(future.globals.onReference = "error")</code> is of no help here.</p>
+<p>This is because ncdf4 objects make use of internal references that
+are unique to the R session where they were created. However, these are
+<em>not</em> formal <em>external pointer</em>:s, meaning the future
+framework cannot detect them. That is, using
+<code>options(future.globals.onReference = "error")</code> is of no help
+here.</p>
 <p>A workaround is to open the netCDF in each worker, e.g.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org">future</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://cirrus.ucsd.edu/~pierce/ncdf/" class="external-link">ncdf4</a></span><span class="op">)</span></span>
@@ -868,8 +1074,13 @@
 <div class="section level4">
 <h4 id="package-data-table">Package data.table<a class="anchor" aria-label="anchor" href="#package-data-table"></a>
 </h4>
-<p>The <strong><a href="https://cran.r-project.org/package=data.table" class="external-link">data.table</a></strong> package creates objects comprising external pointers. Contrary to above non-exportable examples, such objects can be saved to file and used in another R session, or exported to a parallel worker. This is because <strong>data.table</strong> is capable of restoring these objects to a valid state. Consider the following example:</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<p>The <strong><a href="https://cran.r-project.org/package=data.table" class="external-link">data.table</a></strong>
+package creates objects comprising external pointers. Contrary to above
+non-exportable examples, such objects can be saved to file and used in
+another R session, or exported to a parallel worker. This is because
+<strong>data.table</strong> is capable of restoring these objects to a
+valid state. Consider the following example:</p>
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
 <span><span class="va">DT</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, b <span class="op">=</span> <span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
@@ -878,16 +1089,18 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">row</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    a b</span></span>
 <span><span class="co">#&gt; 1: 2 b</span></span></code></pre></div>
-<p>If we would try the last step with a future with strict checking for references enabled, we would get an error:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true"></a><span class="kw">library</span>(future)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true"></a><span class="kw">plan</span>(multisession)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true"></a></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true"></a>row <span class="op">%&lt;-%</span><span class="st"> </span>DT[<span class="dv">2</span>]</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true"></a>Error<span class="op">:</span><span class="st"> </span>Detected a non<span class="op">-</span>exportable <span class="kw">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true"></a>the <span class="kw">globals</span> (<span class="st">'DT'</span> of class <span class="st">'data.table'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
-<p>This is a false positive. If we relax the checks, it does indeed work:</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<p>If we would try the last step with a future with strict checking for
+references enabled, we would get an error:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb54-2"><a href="#cb54-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb54-3"><a href="#cb54-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
+<span id="cb54-4"><a href="#cb54-4" tabindex="-1"></a></span>
+<span id="cb54-5"><a href="#cb54-5" tabindex="-1"></a>row <span class="sc">%&lt;-%</span> DT[<span class="dv">2</span>]</span>
+<span id="cb54-6"><a href="#cb54-6" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span>) <span class="cf">in</span> one of</span>
+<span id="cb54-7"><a href="#cb54-7" tabindex="-1"></a>the <span class="fu">globals</span> (<span class="st">'DT'</span> of class <span class="st">'data.table'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
+<p>This is a false positive. If we relax the checks, it does indeed
+work:</p>
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">row</span> <span class="op">&lt;-</span> <span class="va">DT</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span></span>
@@ -898,8 +1111,14 @@
 <div class="section level4">
 <h4 id="package-rstan">Package rstan<a class="anchor" aria-label="anchor" href="#package-rstan"></a>
 </h4>
-<p>The <strong><a href="https://cran.r-project.org/package=rstan" class="external-link">rstan</a></strong> package creates objects comprising external pointers. Contrary to above non-exportable examples, such objects can be saved to file and used in another R session, or exported to a parallel worker. This is because <strong>rstan</strong> is capable of restoring these objects to a valid state. Consider the following example from <code>example("rstan", package = "rstan")</code>:</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<p>The <strong><a href="https://cran.r-project.org/package=rstan" class="external-link">rstan</a></strong>
+package creates objects comprising external pointers. Contrary to above
+non-exportable examples, such objects can be saved to file and used in
+another R session, or exported to a parallel worker. This is because
+<strong>rstan</strong> is capable of restoring these objects to a valid
+state. Consider the following example from
+<code>example("rstan", package = "rstan")</code>:</p>
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/rstan/" class="external-link">rstan</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">code</span> <span class="op">&lt;-</span> <span class="st">"</span></span>
@@ -920,24 +1139,27 @@
 <span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">20</span><span class="op">)</span> </span>
 <span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>N <span class="op">=</span> <span class="fl">20</span>, y <span class="op">=</span> <span class="va">y</span><span class="op">)</span>; </span>
-<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">stan</span><span class="op">(</span>model_code <span class="op">=</span> <span class="va">code</span>, model_name <span class="op">=</span> <span class="st">"example"</span>, </span>
+<span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stan.html" class="external-link">stan</a></span><span class="op">(</span>model_code <span class="op">=</span> <span class="va">code</span>, model_name <span class="op">=</span> <span class="st">"example"</span>, </span>
 <span>            data <span class="op">=</span> <span class="va">data</span>, iter <span class="op">=</span> <span class="fl">2012L</span>, chains <span class="op">=</span> <span class="fl">3L</span>,</span>
 <span>            sample_file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"norm.csv"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu">extract</span><span class="op">(</span><span class="va">fit</span>, permuted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p>If we would try the last step with a future with strict checking for references enabled, we would get an error:</p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true"></a><span class="kw">library</span>(future)</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true"></a><span class="kw">plan</span>(multisession)</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true"></a><span class="kw">options</span>(<span class="dt">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true"></a></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true"></a>e <span class="op">%&lt;-%</span><span class="st"> </span><span class="kw">extract</span>(fit, <span class="dt">permuted =</span> <span class="ot">FALSE</span>)</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true"></a>Error<span class="op">:</span><span class="st"> </span>Detected a non<span class="op">-</span>exportable <span class="kw">reference</span> (<span class="st">'externalptr'</span> of class <span class="st">'DLLHandle'</span>)</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true"></a><span class="cf">in</span> one of the <span class="kw">globals</span> (<span class="st">'fit'</span> of class <span class="st">'stanfit'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
-<p>However, this is a false positive. The <code>fit</code> object, which is of class ‘stanfit’, can indeed be exported to be used in an external R process, e.g.</p>
-<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
+<span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">fit</span>, permuted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p>If we would try the last step with a future with strict checking for
+references enabled, we would get an error:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a><span class="fu">library</span>(future)</span>
+<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a><span class="fu">plan</span>(multisession)</span>
+<span id="cb57-3"><a href="#cb57-3" tabindex="-1"></a><span class="fu">options</span>(<span class="at">future.globals.onReference =</span> <span class="st">"error"</span>)</span>
+<span id="cb57-4"><a href="#cb57-4" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" tabindex="-1"></a>e <span class="sc">%&lt;-%</span> <span class="fu">extract</span>(fit, <span class="at">permuted =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb57-6"><a href="#cb57-6" tabindex="-1"></a>Error<span class="sc">:</span> Detected a non<span class="sc">-</span>exportable <span class="fu">reference</span> (<span class="st">'externalptr'</span> of class <span class="st">'DLLHandle'</span>)</span>
+<span id="cb57-7"><a href="#cb57-7" tabindex="-1"></a><span class="cf">in</span> one of the <span class="fu">globals</span> (<span class="st">'fit'</span> of class <span class="st">'stanfit'</span>) used <span class="cf">in</span> the future expression</span></code></pre></div>
+<p>However, this is a false positive. The <code>fit</code> object, which
+is of class ‘stanfit’, can indeed be exported to be used in an external
+R process, e.g.</p>
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.onReference <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">e</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu">extract</span><span class="op">(</span><span class="va">fit</span>, permuted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">e</span> <span class="op"><a href="../reference/future.html">%&lt;-%</a></span> <span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html" class="external-link">extract</a></span><span class="op">(</span><span class="va">fit</span>, permuted <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  num [1:1006, 1:3, 1:2] -0.3028 -0.4017 -0.3379 -0.2358 0.0443 ...</span></span>
 <span><span class="co">#&gt;  - attr(*, "dimnames")=List of 3</span></span>
