@@ -149,6 +149,12 @@ resolved.MulticoreFuture <- function(x, run = TRUE, timeout = NULL, ...) {
 
 #' @export
 result.MulticoreFuture <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  if (debug) {
+    mdebugf("result() for %s ...", class(future)[1])
+    on.exit(mdebugf("result() for %s ... done", class(future)[1]))
+  }
+
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
@@ -184,7 +190,15 @@ result.MulticoreFuture <- function(future, ...) {
   rmChild(child = job)
 
   ## Sanity checks
-  if (!inherits(result, "FutureResult")) {    
+  if (!inherits(result, "FutureResult")) {
+    if (debug) mdebugf("Detected non-FutureResult result ...")
+    alive <- NA
+    pid <- job$pid
+    if (is.numeric(pid)) {
+      pid_exists <- import_parallelly("pid_exists")
+      alive <- pid_exists(pid)
+    }
+    
     ## SPECIAL: Check for fallback 'fatal error in wrapper code'
     ## try-error from parallel:::mcparallel().  If detected, then
     ## turn into an error with a more informative error message, cf.
@@ -193,7 +207,6 @@ result.MulticoreFuture <- function(future, ...) {
       label <- future$label
       if (is.null(label)) label <- "<none>"
 
-      pid <- job$pid
       pid_info <- if (is.numeric(pid)) sprintf("PID %.0f", pid) else NULL
       info <- pid_info
       msg <- sprintf("Failed to retrieve the result of %s (%s) from the forked worker (on localhost; %s)", class(future)[1], label, info)
@@ -207,8 +220,6 @@ result.MulticoreFuture <- function(future, ...) {
       
       ## (a) Did the localhost worker process terminate?
       if (is.numeric(pid)) {
-        pid_exists <- import_parallelly("pid_exists")
-        alive <- pid_exists(pid)
         if (is.na(alive)) {
           msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether the forked localhost worker is alive or not"
         } else if (alive) {
@@ -234,10 +245,25 @@ result.MulticoreFuture <- function(future, ...) {
       msg <- paste(msg, collapse = ". ")
       
       ex <- FutureError(msg, future = future)
+
     } else {
       ex <- UnexpectedFutureResultError(future)
+      alive <- NA  ## For now, don't remove future when there's an unexpected error /HB 2023-04-19
     }
     future$result <- ex
+    
+    ## Remove future from FutureRegistry?
+    if (!is.na(alive) && !alive) {
+      reg <- sprintf("multicore-%s", session_uuid())
+      exists <- FutureRegistry(reg, action = "contains", future = future)
+      if (exists) {
+        if (debug) mdebugf("Removing %s from FutureRegistry (%s)", class(future)[1], reg)
+        FutureRegistry(reg, action = "remove", future = future, earlySignal = TRUE)
+      }
+    }
+
+    if (debug) mdebugf("Detected non-FutureResult result ... done")
+
     stop(ex)
   }
 

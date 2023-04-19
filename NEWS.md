@@ -1,6 +1,9 @@
 # Version (development version)
 
- * ...
+## Bug Fixes
+
+ * If a multicore future failed because the parallel processed
+   crashed, it did not release the corresponding parallel-worker slot.
 
 
 # Version 1.32.0 [2023-03-06]
