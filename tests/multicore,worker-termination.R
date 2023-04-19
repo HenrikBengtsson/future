@@ -1,16 +1,27 @@
 source("incl/start.R")
-library("listenv")
 
 message("*** multicore() - terminating workers ...")
 
 if (supportsMulticore() && availableCores("multicore") >= 2L) {
   plan(multicore, workers = 2L)
 
+  all <- nbrOfWorkers()
+  free <- nbrOfFreeWorkers()
+  stopifnot(
+    nbrOfWorkers() == 2L,
+    nbrOfFreeWorkers() == 2L
+  )
+  
   ## Force R worker to quit
-  x %<-% tools::pskill(pid = Sys.getpid())
-  res <- tryCatch(y <- x, error = identity)
+  f <- future({ tools::pskill(pid = Sys.getpid()) })
+  res <- tryCatch(value(f), error = identity)
   print(res)
   stopifnot(inherits(res, "FutureError"))
+
+  stopifnot(
+    nbrOfWorkers() == all,
+    nbrOfFreeWorkers() == free
+  )
 }
 
 message("*** multicore() - terminating workers ... DONE")
