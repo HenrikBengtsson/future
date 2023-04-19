@@ -483,6 +483,7 @@ xmlAttrs
 xmlDeserializeHook
 xmlGetAttr
 XMLInternalElementNode
+XMLInternalDocument
 XMLInternalNode
 xmlParse
 xmlSerializeHook

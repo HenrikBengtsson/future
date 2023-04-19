@@ -92,7 +92,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **terra**       | SpatRaster, SpatVector (`externalptr`)
   **udpipe**      | udpipe_model (`externalptr`)
   **xgboost**     | xgb.DMatrix (`externalptr`)
-  **XML**         | XMLInternalElementNode (`externalptr`)
+  **XML**         | XMLInternalDocument, XMLInternalElementNode (`externalptr`)
   **xml2**        | xml_document (`externalptr`)
 
 These are illustrated in sections 'Packages that rely on external pointers' and 'Packages with other types of non-external objects' below.
@@ -723,6 +723,24 @@ a <- getNodeSet(doc, "/doc//a[@status]")[[1]]
 a_m <- xmlSerializeHook(a)
 
 f <- future({ a <- xmlDeserializeHook(a_m); xmlGetAttr(a, "status") })
+value(f)
+## [1] "xyz"
+```
+
+An alternative, more generic workaround, is to always create the `doc`
+element, an `XMLInternalDocument` object, on the parallel workers,
+i.e.
+
+```r
+library(future)
+plan(multisession)
+library(XML)
+
+f <- future({
+  doc <- xmlParse(system.file("exampleData", "tagnames.xml", package = "XML"))
+  a <- getNodeSet(doc, "/doc//a[@status]")[[1]]
+  xmlGetAttr(a, "status")
+})
 value(f)
 ## [1] "xyz"
 ```
