@@ -2,8 +2,8 @@
 
 ## Bug Fixes
 
- * If a multicore future failed because the parallel processed
-   crashed, it did not release the corresponding parallel-worker slot.
+ * If a 'multicore' future failed, because the parallel process
+   crashed, the corresponding parallel-worker slot was never released.
 
 
 # Version 1.32.0 [2023-03-06]
