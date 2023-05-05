@@ -8,7 +8,7 @@ jobs:
 
     timeout-minutes: 30
     
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     name: future.plan=${{ matrix.future.plan }}
 
@@ -26,7 +26,7 @@ jobs:
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      RSPM: https://packagemanager.rstudio.com/cran/__linux__/focal/latest
+      RSPM: https://packagemanager.rstudio.com/cran/__linux__/jammy/latest
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## R CMD check
       _R_CHECK_LENGTH_1_LOGIC2_: true
