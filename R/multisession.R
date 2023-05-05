@@ -18,6 +18,7 @@
 #' plan(multisession, workers = 2)
 #' ```
 #'
+#' @inheritParams multicore
 #' @inheritParams cluster
 #' @inheritParams Future-class
 #' @inheritParams future

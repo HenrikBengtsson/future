@@ -24,7 +24,6 @@
 #' @param workers The number of parallel processes to use.
 #' If a function, it is called without arguments _when the future
 #' is created_ and its value is used to configure the workers.
-#' The function should return any of the above types.
 #'
 #' @return
 #' A \link{MulticoreFuture}.

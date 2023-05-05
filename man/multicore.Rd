@@ -15,8 +15,7 @@ multicore(
 
 \item{workers}{The number of parallel processes to use.
 If a function, it is called without arguments \emph{when the future
-is created} and its value is used to configure the workers.
-The function should return any of the above types.}
+is created} and its value is used to configure the workers.}
 
 \item{envir}{The \link{environment} from where global objects should be
 identified.}
