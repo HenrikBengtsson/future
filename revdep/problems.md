@@ -42,16 +42,16 @@ Run `revdep_details(, "AlpsNMR")` for more info
     ```
     Error(s) in re-building vignettes:
     --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
-    Warning in has_utility("pdfcrop") :
-      pdfcrop not installed or not in PATH
-    sh: pdfcrop: command not found
-    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
-      error in running command
-    sh: pdfcrop: command not found
-    Warning in system2("pdfcrop", shQuote(c(x, x)), stdout = if (quiet) FALSE else "") :
-      error in running command
+    ! LuaTeX error .../texlive/texmf-dist/scripts/oberdiek/oberdiek.luatex.lua:55: b
+    ad argument #1 to 'insert' (table expected, got nil)
+    stack traceback:
+    	[C]: in function 'insert'
+    	.../texlive/texmf-dist/scripts/oberdiek/oberdiek.luatex.lua:55: in main chunk
+    	[C]: in function 'dofile'
+    	[string "\directlua "]:6: in main chunk.
+    l.139   }
     ...
-    LaTeX failed to compile /c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig02-handling-metadata-and-annotations.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips.
+    LaTeX failed to compile /c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig02-handling-metadata-and-annotations.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See Vig02-handling-metadata-and-annotations.log for more info.
     --- failed re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
     
     SUMMARY: processing the following files failed:
@@ -93,7 +93,7 @@ Run `revdep_details(, "aroma.core")` for more info
 * GitHub: https://github.com/c7rishi/BAMBI
 * Source code: https://github.com/cran/BAMBI
 * Date/Publication: 2023-03-08 23:10:05 UTC
-* Number of recursive dependencies: 51
+* Number of recursive dependencies: 43
 
 Run `revdep_details(, "BAMBI")` for more info
 
@@ -112,10 +112,10 @@ Run `revdep_details(, "BAMBI")` for more info
 
 <details>
 
-* Version: 0.9.16
+* Version: 0.9.17
 * GitHub: https://github.com/mllg/batchtools
 * Source code: https://github.com/cran/batchtools
-* Date/Publication: 2023-02-03 13:52:38 UTC
+* Date/Publication: 2023-04-20 14:20:06 UTC
 * Number of recursive dependencies: 83
 
 Run `revdep_details(, "batchtools")` for more info
@@ -123,11 +123,6 @@ Run `revdep_details(, "batchtools")` for more info
 </details>
 
 ## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘doMPI’
-    ```
 
 *   checking Rd cross-references ... NOTE
     ```
@@ -439,54 +434,6 @@ Run `revdep_details(, "CSGo")` for more info
       All declared Imports should be used.
     ```
 
-# dhReg
-
-<details>
-
-* Version: 0.1.1
-* GitHub: NA
-* Source code: https://github.com/cran/dhReg
-* Date/Publication: 2021-02-28 12:30:02 UTC
-* Number of recursive dependencies: 68
-
-Run `revdep_details(, "dhReg")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking dependencies in R code ... WARNING
-    ```
-    Missing or unexported object: ‘future::multiprocess’
-    ```
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > # install.packages("testthat")
-      > library(testthat)
-      > # install.packages("forecast")
-      > # library(forecast)
-      > # install.packages("stats")
-      > # library(stats)
-    ...
-      +   M <- dhr(Data=Data_ts,XREG=NULL,Range=list(1:2,1),Frequency=c(24,168),Criteria="aicc")
-      + })
-      ── Error (???): summary of Dynamic harmonic regression model ───────────────────
-      Error: 'multiprocess' is not an exported object from 'namespace:future'
-      Backtrace:
-       1. dhReg::dhr(...)
-      
-      Error in reporter$stop_if_needed() : Test failed
-      Calls: test_that -> <Anonymous>
-      Execution halted
-    ```
-
 # dipsaus
 
 <details>
@@ -515,11 +462,11 @@ Run `revdep_details(, "dipsaus")` for more info
 
 <details>
 
-* Version: 0.8.1
+* Version: 0.8.2
 * GitHub: https://github.com/DiskFrame/disk.frame
 * Source code: https://github.com/cran/disk.frame
-* Date/Publication: 2023-03-08 15:00:06 UTC
-* Number of recursive dependencies: 103
+* Date/Publication: 2023-04-07 17:50:15 UTC
+* Number of recursive dependencies: 99
 
 Run `revdep_details(, "disk.frame")` for more info
 
@@ -542,9 +489,9 @@ Run `revdep_details(, "disk.frame")` for more info
 ** package ‘disk.frame’ successfully unpacked and MD5 sums checked
 ** using staged installation
 ** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c hashstr2i.cpp -o hashstr2i.o
-g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o disk.frame.so RcppExports.o hashstr2i.o -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c hashstr2i.cpp -o hashstr2i.o
+g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/lib -L/usr/local/lib64 -o disk.frame.so RcppExports.o hashstr2i.o -L/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/lib -lR
 installing to /c4/home/henrik/repositories/future/revdep/checks/disk.frame/new/disk.frame.Rcheck/00LOCK-disk.frame/00new/disk.frame/libs
 ** R
 ** inst
@@ -563,9 +510,9 @@ ERROR: lazy loading failed for package ‘disk.frame’
 ** package ‘disk.frame’ successfully unpacked and MD5 sums checked
 ** using staged installation
 ** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c hashstr2i.cpp -o hashstr2i.o
-g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o disk.frame.so RcppExports.o hashstr2i.o -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c hashstr2i.cpp -o hashstr2i.o
+g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/lib -L/usr/local/lib64 -o disk.frame.so RcppExports.o hashstr2i.o -L/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/lib -lR
 installing to /c4/home/henrik/repositories/future/revdep/checks/disk.frame/old/disk.frame.Rcheck/00LOCK-disk.frame/00new/disk.frame/libs
 ** R
 ** inst
@@ -644,6 +591,27 @@ Run `revdep_details(, "dragon")` for more info
       All declared Imports should be used.
     ```
 
+# drake
+
+<details>
+
+* Version: 7.13.5
+* GitHub: https://github.com/ropensci/drake
+* Source code: https://github.com/cran/drake
+* Date/Publication: 2023-03-24 13:10:02 UTC
+* Number of recursive dependencies: 164
+
+Run `revdep_details(, "drake")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘disk.frame’
+    ```
+
 # EFAtools
 
 <details>
@@ -681,7 +649,7 @@ Run `revdep_details(, "EFAtools")` for more info
 * GitHub: https://github.com/lance-waller-lab/envi
 * Source code: https://github.com/cran/envi
 * Date/Publication: 2023-02-02 00:40:02 UTC
-* Number of recursive dependencies: 155
+* Number of recursive dependencies: 121
 
 Run `revdep_details(, "envi")` for more info
 
@@ -696,14 +664,19 @@ Run `revdep_details(, "envi")` for more info
     See ‘/c4/home/henrik/repositories/future/revdep/checks/envi/new/envi.Rcheck/00install.out’ for details.
     ```
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘RStoolbox’
+    ```
+
 # EpiNow2
 
 <details>
 
-* Version: 1.3.4
+* Version: 1.3.5
 * GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
-* Date/Publication: 2023-02-12 21:52:20 UTC
+* Date/Publication: 2023-04-27 13:20:04 UTC
 * Number of recursive dependencies: 129
 
 Run `revdep_details(, "EpiNow2")` for more info
@@ -712,68 +685,19 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 ## In both
 
-*   checking whether package ‘EpiNow2’ can be installed ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/EpiNow2/new/EpiNow2.Rcheck/00install.out’ for details.
+      installed size is 229.4Mb
+      sub-directories of 1Mb or more:
+        help    1.4Mb
+        libs  227.2Mb
     ```
 
-## Installation
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘EpiNow2’ ...
-** package ‘EpiNow2’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-
-
-g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/EpiNow2/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppParallel/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/StanHeaders/include' -I/usr/local/include   -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
-In file included from /c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/Core:397,
-                 from /c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/Dense:1,
-                 from /c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/RcppEigenForward.h:30,
-...
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/src/Core/ProductEvaluators.h:35:90:   required from ‘Eigen::internal::evaluator<Eigen::Product<Lhs, Rhs, Option> >::evaluator(const XprType&) [with Lhs = Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>; Rhs = Eigen::Matrix<double, -1, 1>; int Options = 0; Eigen::internal::evaluator<Eigen::Product<Lhs, Rhs, Option> >::XprType = Eigen::Product<Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>, Eigen::Matrix<double, -1, 1>, 0>]’
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/src/Core/Product.h:132:22:   required from ‘Eigen::internal::dense_product_base<Lhs, Rhs, Option, 6>::operator const Scalar() const [with Lhs = Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>; Rhs = Eigen::Matrix<double, -1, 1>; int Option = 0; Eigen::internal::dense_product_base<Lhs, Rhs, Option, 6>::Scalar = double]’
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/StanHeaders/include/src/stan/mcmc/hmc/hamiltonians/dense_e_metric.hpp:23:56:   required from ‘double stan::mcmc::dense_e_metric<Model, BaseRNG>::T(stan::mcmc::dense_e_point&) [with Model = model_tune_inv_gamma_namespace::model_tune_inv_gamma; BaseRNG = boost::random::additive_combine_engine<boost::random::linear_congruential_engine<unsigned int, 40014, 0, 2147483563>, boost::random::linear_congruential_engine<unsigned int, 40692, 0, 2147483399> >]’
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/StanHeaders/include/src/stan/mcmc/hmc/hamiltonians/dense_e_metric.hpp:22:10:   required from here
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:55:30: warning: ignoring attributes on template argument ‘Eigen::internal::packet_traits<double>::type’ {aka ‘__m128d’} [-Wignored-attributes]
-g++: fatal error: Killed signal terminated program cc1plus
-compilation terminated.
-make: *** [/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/etc/Makeconf:176: stanExports_tune_inv_gamma.o] Error 1
-ERROR: compilation failed for package ‘EpiNow2’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/EpiNow2/new/EpiNow2.Rcheck/EpiNow2’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘EpiNow2’ ...
-** package ‘EpiNow2’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-
-
-g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/EpiNow2/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppParallel/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/StanHeaders/include' -I/usr/local/include   -I'/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
-In file included from /c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/Core:397,
-                 from /c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/Dense:1,
-                 from /c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/RcppEigenForward.h:30,
-...
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/src/Core/ProductEvaluators.h:35:90:   required from ‘Eigen::internal::evaluator<Eigen::Product<Lhs, Rhs, Option> >::evaluator(const XprType&) [with Lhs = Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>; Rhs = Eigen::Matrix<double, -1, 1>; int Options = 0; Eigen::internal::evaluator<Eigen::Product<Lhs, Rhs, Option> >::XprType = Eigen::Product<Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>, Eigen::Matrix<double, -1, 1>, 0>]’
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/src/Core/Product.h:132:22:   required from ‘Eigen::internal::dense_product_base<Lhs, Rhs, Option, 6>::operator const Scalar() const [with Lhs = Eigen::Product<Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<double, double>, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Matrix<double, 1, -1> >, const Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >, Eigen::Matrix<double, -1, -1>, 0>; Rhs = Eigen::Matrix<double, -1, 1>; int Option = 0; Eigen::internal::dense_product_base<Lhs, Rhs, Option, 6>::Scalar = double]’
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/StanHeaders/include/src/stan/mcmc/hmc/hamiltonians/dense_e_metric.hpp:23:56:   required from ‘double stan::mcmc::dense_e_metric<Model, BaseRNG>::T(stan::mcmc::dense_e_point&) [with Model = model_tune_inv_gamma_namespace::model_tune_inv_gamma; BaseRNG = boost::random::additive_combine_engine<boost::random::linear_congruential_engine<unsigned int, 40014, 0, 2147483563>, boost::random::linear_congruential_engine<unsigned int, 40692, 0, 2147483399> >]’
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/StanHeaders/include/src/stan/mcmc/hmc/hamiltonians/dense_e_metric.hpp:22:10:   required from here
-/c4/home/henrik/repositories/future/revdep/library/EpiNow2/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:55:30: warning: ignoring attributes on template argument ‘Eigen::internal::packet_traits<double>::type’ {aka ‘__m128d’} [-Wignored-attributes]
-g++: fatal error: Killed signal terminated program cc1plus
-compilation terminated.
-make: *** [/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/etc/Makeconf:176: stanExports_tune_inv_gamma.o] Error 1
-ERROR: compilation failed for package ‘EpiNow2’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/EpiNow2/old/EpiNow2.Rcheck/EpiNow2’
-
-
-```
 # epitweetr
 
 <details>
@@ -861,29 +785,6 @@ Run `revdep_details(, "flowGraph")` for more info
     Package unavailable to check Rd xrefs: ‘doParallel’
     ```
 
-# foieGras
-
-<details>
-
-* Version: 0.7-6
-* GitHub: https://github.com/ianjonsen/foieGras
-* Source code: https://github.com/cran/foieGras
-* Date/Publication: 2021-04-26 22:10:07 UTC
-* Number of recursive dependencies: 141
-
-Run `revdep_details(, "foieGras")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 50.0Mb
-      sub-directories of 1Mb or more:
-        libs  49.0Mb
-    ```
-
 # forecastML
 
 <details>
@@ -939,7 +840,7 @@ Run `revdep_details(, "geocmeans")` for more info
 * GitHub: https://github.com/cloudyr/googleComputeEngineR
 * Source code: https://github.com/cran/googleComputeEngineR
 * Date/Publication: 2019-05-04 22:40:02 UTC
-* Number of recursive dependencies: 69
+* Number of recursive dependencies: 68
 
 Run `revdep_details(, "googleComputeEngineR")` for more info
 
@@ -960,7 +861,7 @@ Run `revdep_details(, "googleComputeEngineR")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/googleTagManageR
 * Date/Publication: 2022-04-16 18:12:29 UTC
-* Number of recursive dependencies: 71
+* Number of recursive dependencies: 70
 
 Run `revdep_details(, "googleTagManageR")` for more info
 
@@ -993,7 +894,7 @@ Run `revdep_details(, "greed")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 36.7Mb
+      installed size is 36.6Mb
       sub-directories of 1Mb or more:
         libs  34.4Mb
     ```
@@ -1231,10 +1132,10 @@ Run `revdep_details(, "interflex")` for more info
 
 <details>
 
-* Version: 1.8.1
+* Version: 1.8.3
 * GitHub: https://github.com/calabrialab/ISAnalytics
 * Source code: https://github.com/cran/ISAnalytics
-* Date/Publication: 2022-12-01
+* Date/Publication: 2023-04-03
 * Number of recursive dependencies: 172
 
 Run `revdep_details(, "ISAnalytics")` for more info
@@ -1242,31 +1143,6 @@ Run `revdep_details(, "ISAnalytics")` for more info
 </details>
 
 ## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘ISAnalytics-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: import_Vispa2_stats
-    > ### Title: Import Vispa2 stats given the aligned association file.
-    > ### Aliases: import_Vispa2_stats
-    > 
-    > ### ** Examples
-    > 
-    > fs_path <- generate_default_folder_structure(type = "correct")
-    ...
-      2. │ ├─ISAnalytics:::.manage_association_file(...)
-      3. │ │ └─ISAnalytics:::.check_file_system_alignment(...)
-      4. │ │   └─proj_fold_col %in% colnames(df)
-      5. │ └─dplyr::if_else(...)
-      6. │   └─dplyr:::vec_case_when(...)
-      7. │     └─vctrs::list_check_all_vectors(values, arg = values_arg, call = call)
-      8. └─vctrs:::stop_scalar_type(`<fn>`(NULL), "false", `<env>`)
-      9.   └─vctrs:::stop_vctrs(...)
-     10.     └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = call)
-    Execution halted
-    ```
 
 *   checking tests ...
     ```
@@ -1276,70 +1152,29 @@ Run `revdep_details(, "ISAnalytics")` for more info
     Complete output:
       > library(testthat)
       > library(ISAnalytics)
-      Loading required package: magrittr
-      
-      Attaching package: 'magrittr'
-      
+      > 
+      > test_check("ISAnalytics")
+      Loading required namespace: plotly
+      Loading required namespace: rmarkdown
     ...
-       13. │                       ├─ISAnalytics:::.manage_association_file(...)
-       14. │                       │ └─ISAnalytics:::.check_file_system_alignment(...)
-       15. │                       │   └─proj_fold_col %in% colnames(df)
-       16. │                       └─dplyr::if_else(...)
-       17. │                         └─dplyr:::vec_case_when(...)
-       18. │                           └─vctrs::list_check_all_vectors(values, arg = values_arg, call = call)
-       19. └─vctrs:::stop_scalar_type(`<fn>`(NULL), "false", `<env>`)
-       20.   └─vctrs:::stop_vctrs(...)
-       21.     └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = call)
+      
+      ══ Failed tests ════════════════════════════════════════════════════════════════
+      ── Failure ('test-dynamic-vars.R:555:5'): set_annotation_IS_vars signals missing tags ──
+      `{ ... }` did not throw the expected message.
+      ── Failure ('test-dynamic-vars.R:592:5'): set_af_columns_def works as expected ──
+      `{ ... }` did not throw the expected message.
+      
+      [ FAIL 2 | WARN 2 | SKIP 0 | PASS 831 ]
+      Error: Test failures
       Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘ISAnalytics.Rmd’ using rmarkdown
-    --- finished re-building ‘ISAnalytics.Rmd’
-    
-    --- re-building ‘sharing_analyses.Rmd’ using rmarkdown
-    --- finished re-building ‘sharing_analyses.Rmd’
-    
-    --- re-building ‘workflow_start.Rmd’ using rmarkdown
-    Quitting from lines 466-470 (workflow_start.Rmd) 
-    Error: processing vignette 'workflow_start.Rmd' failed with diagnostics:
-    `false` must be a vector, not `NULL`.
-    --- failed re-building ‘workflow_start.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘workflow_start.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.9Mb
+      installed size is  7.1Mb
       sub-directories of 1Mb or more:
         data   1.4Mb
-        doc    4.4Mb
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    .sh_row_permut: no visible global function definition for ‘.’
-    .sharing_multdf_mult_key: no visible binding for global variable ‘.’
-    .sharing_multdf_single_key: no visible binding for global variable ‘.’
-    .sharing_singledf_mult_key: no visible binding for global variable ‘.’
-    .sharing_singledf_single_key: no visible binding for global variable
-      ‘.’
-    cumulative_is: no visible binding for global variable ‘is’
-    gene_frequency_fisher: no visible binding for global variable ‘.’
-    Undefined global functions or variables:
-      . is
-    Consider adding
-      importFrom("methods", "is")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
-    contains 'methods').
+        doc    3.4Mb
     ```
 
 # ivmte
@@ -1387,39 +1222,15 @@ Run `revdep_details(, "jstor")` for more info
     See section 'Cross-references' in the 'Writing R Extensions' manual.
     ```
 
-# kernelboot
-
-<details>
-
-* Version: 0.1.9
-* GitHub: https://github.com/twolodzko/kernelboot
-* Source code: https://github.com/cran/kernelboot
-* Date/Publication: 2022-09-04 14:20:02 UTC
-* Number of recursive dependencies: 64
-
-Run `revdep_details(, "kernelboot")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking Rd cross-references ... WARNING
-    ```
-    Missing link or links in documentation object 'kernelboot.Rd':
-      ‘[future]{multiprocess}’
-    
-    See section 'Cross-references' in the 'Writing R Extensions' manual.
-    ```
-
 # keyATM
 
 <details>
 
-* Version: 0.4.2
+* Version: 0.5.0
 * GitHub: https://github.com/keyATM/keyATM
 * Source code: https://github.com/cran/keyATM
-* Date/Publication: 2023-01-06 18:50:52 UTC
-* Number of recursive dependencies: 107
+* Date/Publication: 2023-05-11 07:20:03 UTC
+* Number of recursive dependencies: 106
 
 Run `revdep_details(, "keyATM")` for more info
 
@@ -1429,9 +1240,9 @@ Run `revdep_details(, "keyATM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 23.9Mb
+      installed size is 22.6Mb
       sub-directories of 1Mb or more:
-        libs  23.6Mb
+        libs  22.2Mb
     ```
 
 # lidR
@@ -1455,30 +1266,29 @@ Run `revdep_details(, "lidR")` for more info
     Running examples in ‘lidR-Ex.R’ failed
     The error most likely occurred in:
     
-    > ### Name: its_silva2016
-    > ### Title: Individual Tree Segmentation Algorithm
-    > ### Aliases: its_silva2016 silva2016
+    > ### Name: catalog_apply
+    > ### Title: LAScatalog processing engine
+    > ### Aliases: catalog_apply catalog_sapply catalog_map
     > 
     > ### ** Examples
     > 
-    > LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
+    > # More examples might be avaible in the official lidR vignettes or
     ...
-    > chm <- rasterize_canopy(las, res = 0.5, p2r(0.3), pkg = "raster")
-    > ker <- matrix(1,3,3)
-    > chm <- raster::focal(chm, w = ker, fun = mean, na.rm = TRUE)
+    + }
     > 
-    > ttops <- locate_trees(chm, lmf(4, 2))
-    > las   <- segment_trees(las, silva2016(chm, ttops))
-    Error in geos_op2_geom("intersection", x, y, ...) : 
-      st_crs(x) == st_crs(y) is not TRUE
-    Calls: segment_trees ... st_intersection.sf -> geos_op2_df -> geos_op2_geom -> stopifnot
+    > # 2. Build a collection of file
+    > # (here, a single file LAScatalog for the purposes of this simple example).
+    > LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
+    > ctg <- readLAScatalog(LASfile)
+    Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+      there is no package called ‘lwgeom’
+    Calls: readLAScatalog ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
     Execution halted
     ```
 
 *   checking tests ...
     ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 197014 Aborted                 (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
+      Running ‘testthat.R’
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Complete output:
@@ -1488,18 +1298,47 @@ Run `revdep_details(, "lidR")` for more info
       > library(lidR)
       > test_check("lidR")
       Tests using raster: terra 
-      Tests using future: TRUE 
-      Tests using OpenMP thread: 32 
-      OGR: Unsupported geometry type
-      OGR: Unsupported geometry type
-      Chunk 1 of 1 (100%): state ✓
-      terminate called after throwing an instance of 'std::length_error'
-        what():  basic_string::_S_create
+    ...
+       20. │ ├─base::namespaceImportFrom(...)
+       21. │ │ └─base::asNamespace(ns)
+       22. │ └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
+       23. │   ├─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+       24. │   │ └─base (local) withOneRestart(expr, restarts[[1L]])
+       25. │   │   └─base (local) doWithOneRestart(return(expr), restart)
+       26. │   └─base::stop(cond)
+       27. └─testthat (local) `<fn>`(`<pckgNtFE>`)
+       28.   └─rlang::abort(...)
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘lidR-LAS-class.Rmd’ using rmarkdown
+    --- finished re-building ‘lidR-LAS-class.Rmd’
+    
+    --- re-building ‘lidR-LAScatalog-class.Rmd’ using rmarkdown
+    Quitting from lines 22-105 (lidR-LAScatalog-class.Rmd) 
+    Error: processing vignette 'lidR-LAScatalog-class.Rmd' failed with diagnostics:
+    there is no package called 'lwgeom'
+    --- failed re-building ‘lidR-LAScatalog-class.Rmd’
+    
+    ...
+    Error: processing vignette 'lidR-computation-speed-LAScatalog.Rmd' failed with diagnostics:
+    there is no package called 'lwgeom'
+    --- failed re-building ‘lidR-computation-speed-LAScatalog.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘lidR-LAScatalog-class.Rmd’ ‘lidR-LAScatalog-engine.Rmd’
+      ‘lidR-computation-speed-LAScatalog.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 19.6Mb
+      installed size is 19.7Mb
       sub-directories of 1Mb or more:
         R         1.2Mb
         extdata   1.1Mb
@@ -1559,11 +1398,11 @@ Run `revdep_details(, "MAI")` for more info
 
 <details>
 
-* Version: 0.11.1
+* Version: 0.11.2
 * GitHub: https://github.com/vincentarelbundock/marginaleffects
 * Source code: https://github.com/cran/marginaleffects
-* Date/Publication: 2023-03-31 18:30:07 UTC
-* Number of recursive dependencies: 369
+* Date/Publication: 2023-05-13 10:50:08 UTC
+* Number of recursive dependencies: 368
 
 Run `revdep_details(, "marginaleffects")` for more info
 
@@ -1858,7 +1697,7 @@ Run `revdep_details(, "MineICA")` for more info
 * GitHub: https://github.com/grossSBM/missSBM
 * Source code: https://github.com/cran/missSBM
 * Date/Publication: 2022-08-23 12:10:06 UTC
-* Number of recursive dependencies: 112
+* Number of recursive dependencies: 113
 
 Run `revdep_details(, "missSBM")` for more info
 
@@ -1914,6 +1753,27 @@ Run `revdep_details(, "mistyR")` for more info
       .data
     ```
 
+# mlr3
+
+<details>
+
+* Version: 0.16.0
+* GitHub: https://github.com/mlr-org/mlr3
+* Source code: https://github.com/cran/mlr3
+* Date/Publication: 2023-05-05 17:40:02 UTC
+* Number of recursive dependencies: 55
+
+Run `revdep_details(, "mlr3")` for more info
+
+</details>
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘glmnet’
+    ```
+
 # momentuHMM
 
 <details>
@@ -1943,10 +1803,10 @@ Run `revdep_details(, "momentuHMM")` for more info
 
 <details>
 
-* Version: 0.1.3
+* Version: 0.1.4
 * GitHub: https://github.com/Boehringer-Ingelheim/oncomsm
 * Source code: https://github.com/cran/oncomsm
-* Date/Publication: 2023-03-11 10:20:02 UTC
+* Date/Publication: 2023-04-17 07:00:02 UTC
 * Number of recursive dependencies: 125
 
 Run `revdep_details(, "oncomsm")` for more info
@@ -1961,12 +1821,6 @@ Run `revdep_details(, "oncomsm")` for more info
       sub-directories of 1Mb or more:
         doc    1.0Mb
         libs  53.6Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘rstantools’
-      All declared Imports should be used.
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -2044,11 +1898,11 @@ Run `revdep_details(, "pavo")` for more info
 
 <details>
 
-* Version: 2.1.2
+* Version: 2.1.3
 * GitHub: https://github.com/cdmuir/photosynthesis
 * Source code: https://github.com/cran/photosynthesis
-* Date/Publication: 2023-03-31 18:30:02 UTC
-* Number of recursive dependencies: 137
+* Date/Publication: 2023-05-11 21:20:02 UTC
+* Number of recursive dependencies: 143
 
 Run `revdep_details(, "photosynthesis")` for more info
 
@@ -2058,7 +1912,7 @@ Run `revdep_details(, "photosynthesis")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  7.0Mb
+      installed size is  7.1Mb
       sub-directories of 1Mb or more:
         doc   6.0Mb
     ```
@@ -2144,7 +1998,7 @@ Run `revdep_details(, "portvine")` for more info
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
 * Date/Publication: 2022-11-01
-* Number of recursive dependencies: 120
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "ppcseq")` for more info
 
@@ -2208,7 +2062,7 @@ Run `revdep_details(, "ppcseq")` for more info
 ** libs
 
 
-g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include' -I/usr/local/include   -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include' -I/usr/local/include   -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
 In file included from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/Eigen/Core:397,
                  from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/Eigen/Dense:1,
                  from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/RcppEigenForward.h:30,
@@ -2235,7 +2089,7 @@ ERROR: lazy loading failed for package ‘ppcseq’
 ** libs
 
 
-g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include' -I/usr/local/include   -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include' -I/usr/local/include   -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
 In file included from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/Eigen/Core:397,
                  from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/Eigen/Dense:1,
                  from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/RcppEigenForward.h:30,
@@ -2254,90 +2108,15 @@ In file included from /c4/home/henrik/repositories/future/revdep/library/ppcseq/
 
 
 ```
-# prewas
-
-<details>
-
-* Version: 1.1.1
-* GitHub: https://github.com/Snitkin-Lab-Umich/prewas
-* Source code: https://github.com/cran/prewas
-* Date/Publication: 2021-04-02 12:20:05 UTC
-* Number of recursive dependencies: 77
-
-Run `revdep_details(, "prewas")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking dependencies in R code ... WARNING
-    ```
-    Namespace in Imports field not imported from: ‘stats’
-      All declared Imports should be used.
-    Missing or unexported object: ‘future::multiprocess’
-    ```
-
-## Newly fixed
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘stats’
-      All declared Imports should be used.
-    ```
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      optimize rate matrix:  -2413.691 --> -2413.691 
-      optimize edge weights:  -2413.691 --> -2413.691 
-      optimize base frequencies:  -2413.691 --> -2413.691 
-      optimize rate matrix:  -2413.691 --> -2413.691 
-      optimize edge weights:  -2413.691 --> -2413.691 
-      optimize base frequencies:  -2413.691 --> -2413.691 
-    ...
-       1. └─prewas:::get_ancestral_alleles(tree = temp_tree, mat = temp_dna_list$variant_only_dna_mat) at test-reference_alleles.R:202:2
-      ── Error ('test-reference_alleles.R:258:3'): parse_snpeff gives error when given invalid input ──
-      Error: 'multiprocess' is not an exported object from 'namespace:future'
-      Backtrace:
-          ▆
-       1. └─prewas:::get_ancestral_alleles(tree = temp_tree, mat = temp_dna_list$variant_only_dna_mat) at test-reference_alleles.R:258:2
-      
-      [ FAIL 6 | WARN 0 | SKIP 0 | PASS 312 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘getting_started_with_prewas.Rmd’ using rmarkdown
-    Quitting from lines 136-141 (getting_started_with_prewas.Rmd) 
-    Error: processing vignette 'getting_started_with_prewas.Rmd' failed with diagnostics:
-    'multiprocess' is not an exported object from 'namespace:future'
-    --- failed re-building ‘getting_started_with_prewas.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘getting_started_with_prewas.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
 # projpred
 
 <details>
 
-* Version: 2.4.0
+* Version: 2.5.0
 * GitHub: https://github.com/stan-dev/projpred
 * Source code: https://github.com/cran/projpred
-* Date/Publication: 2023-02-12 13:30:02 UTC
-* Number of recursive dependencies: 150
+* Date/Publication: 2023-04-05 18:50:02 UTC
+* Number of recursive dependencies: 151
 
 Run `revdep_details(, "projpred")` for more info
 
@@ -2369,6 +2148,27 @@ Run `revdep_details(, "promises")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
+    ```
+
+# pseudohouseholds
+
+<details>
+
+* Version: 0.1.0
+* GitHub: https://github.com/chris31415926535/pseudohouseholds
+* Source code: https://github.com/cran/pseudohouseholds
+* Date/Publication: 2023-05-04 19:10:06 UTC
+* Number of recursive dependencies: 106
+
+Run `revdep_details(, "pseudohouseholds")` for more info
+
+</details>
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 596 marked UTF-8 strings
     ```
 
 # QDNAseq
@@ -2433,47 +2233,6 @@ Run `revdep_details(, "RAINBOWR")` for more info
       installed size is 37.7Mb
       sub-directories of 1Mb or more:
         libs  36.5Mb
-    ```
-
-# rangeMapper
-
-<details>
-
-* Version: 2.0.3
-* GitHub: https://github.com/mpio-be/rangeMapper
-* Source code: https://github.com/cran/rangeMapper
-* Date/Publication: 2022-10-03 22:20:02 UTC
-* Number of recursive dependencies: 114
-
-Run `revdep_details(, "rangeMapper")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(rangeMapper)
-      rangeMapper 2.0.3
-      > 
-      > test_check("rangeMapper")
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 58 ]
-    ...
-       24. │                               └─terra:::error(f, x@ptr$getError())
-       25. │                                 └─base::stop("[", f, "] ", emsg, ..., call. = FALSE)
-       26. └─base::.handleSimpleError(`<fn>`, "[rast] empty srs", base::quote(NULL))
-       27.   └─base (local) h(simpleError(msg, call))
-      
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 58 ]
-      Error: Test failures
-      In addition: Warning message:
-      call dbDisconnect() when finished working with a connection 
-      Execution halted
     ```
 
 # regmedint
@@ -2552,6 +2311,29 @@ Run `revdep_details(, "robotstxt")` for more info
 *   checking LazyData ... NOTE
     ```
       'LazyData' is specified without a 'data' directory
+    ```
+
+# rpm
+
+<details>
+
+* Version: 0.7-1
+* GitHub: https://github.com/handcock/rpm
+* Source code: https://github.com/cran/rpm
+* Date/Publication: 2023-04-21 23:30:02 UTC
+* Number of recursive dependencies: 66
+
+Run `revdep_details(, "rpm")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is 11.1Mb
+      sub-directories of 1Mb or more:
+        libs  10.6Mb
     ```
 
 # sapfluxnetr
@@ -2716,7 +2498,7 @@ Run `revdep_details(, "sentopics")` for more info
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
 * Date/Publication: 2022-11-18 23:30:08 UTC
-* Number of recursive dependencies: 259
+* Number of recursive dependencies: 260
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -2810,6 +2592,31 @@ Run `revdep_details(, "shiny.worker")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
+# sigminer
+
+<details>
+
+* Version: 2.2.0
+* GitHub: https://github.com/ShixiangWang/sigminer
+* Source code: https://github.com/cran/sigminer
+* Date/Publication: 2023-04-06 09:00:06 UTC
+* Number of recursive dependencies: 202
+
+Run `revdep_details(, "sigminer")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.8Mb
+      sub-directories of 1Mb or more:
+        extdata   1.6Mb
+        help      1.7Mb
+        libs      1.3Mb
+    ```
+
 # signeR
 
 <details>
@@ -2890,11 +2697,6 @@ Run `revdep_details(, "SimDesign")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘doMPI’
-    ```
-
 *   checking installed package size ... NOTE
     ```
       installed size is  6.7Mb
@@ -2956,7 +2758,7 @@ Run `revdep_details(, "solitude")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
 * Date/Publication: 2023-03-03 15:20:02 UTC
-* Number of recursive dependencies: 119
+* Number of recursive dependencies: 122
 
 Run `revdep_details(, "spaMM")` for more info
 
@@ -3090,10 +2892,10 @@ Run `revdep_details(, "sphunif")` for more info
 
 <details>
 
-* Version: 0.4.3.6
+* Version: 0.4.3.7
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
-* Date/Publication: 2022-11-11 08:10:02 UTC
+* Date/Publication: 2023-04-11 15:50:02 UTC
 * Number of recursive dependencies: 150
 
 Run `revdep_details(, "spNetwork")` for more info
@@ -3111,39 +2913,15 @@ Run `revdep_details(, "spNetwork")` for more info
         libs     20.2Mb
     ```
 
-# squat
-
-<details>
-
-* Version: 0.1.0
-* GitHub: NA
-* Source code: https://github.com/cran/squat
-* Date/Publication: 2022-12-22 11:20:02 UTC
-* Number of recursive dependencies: 124
-
-Run `revdep_details(, "squat")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 18.6Mb
-      sub-directories of 1Mb or more:
-        data   1.1Mb
-        libs  16.6Mb
-    ```
-
 # ssdtools
 
 <details>
 
-* Version: 1.0.2
+* Version: 1.0.4
 * GitHub: https://github.com/bcgov/ssdtools
 * Source code: https://github.com/cran/ssdtools
-* Date/Publication: 2022-05-14 23:50:02 UTC
-* Number of recursive dependencies: 149
+* Date/Publication: 2023-05-17 04:40:02 UTC
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "ssdtools")` for more info
 
@@ -3163,11 +2941,11 @@ Run `revdep_details(, "ssdtools")` for more info
 
 <details>
 
-* Version: 0.6-0
+* Version: 0.6-1
 * GitHub: https://github.com/r-spatial/stars
 * Source code: https://github.com/cran/stars
-* Date/Publication: 2022-11-21 13:10:02 UTC
-* Number of recursive dependencies: 154
+* Date/Publication: 2023-04-06 11:40:02 UTC
+* Number of recursive dependencies: 156
 
 Run `revdep_details(, "stars")` for more info
 
@@ -3182,7 +2960,7 @@ Run `revdep_details(, "stars")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.0Mb
+      installed size is  6.1Mb
       sub-directories of 1Mb or more:
         doc   2.4Mb
         nc    1.7Mb
@@ -3288,29 +3066,6 @@ Run `revdep_details(, "targeted")` for more info
         libs  15.7Mb
     ```
 
-# tcplfit2
-
-<details>
-
-* Version: 0.1.3
-* GitHub: NA
-* Source code: https://github.com/cran/tcplfit2
-* Date/Publication: 2021-10-13 18:02:05 UTC
-* Number of recursive dependencies: 39
-
-Run `revdep_details(, "tcplfit2")` for more info
-
-</details>
-
-## Newly broken
-
-*   checking R code for possible problems ... NOTE
-    ```
-    hitcont: no visible binding for global variable ‘multiprocess’
-    Undefined global functions or variables:
-      multiprocess
-    ```
-
 # text
 
 <details>
@@ -3336,11 +3091,11 @@ Run `revdep_details(, "text")` for more info
 
 <details>
 
-* Version: 1.3.1
+* Version: 1.3.2
 * GitHub: https://github.com/ms609/TreeSearch
 * Source code: https://github.com/cran/TreeSearch
-* Date/Publication: 2023-03-29 12:30:02 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2023-04-27 12:52:38 UTC
+* Number of recursive dependencies: 124
 
 Run `revdep_details(, "TreeSearch")` for more info
 
@@ -3534,7 +3289,7 @@ Run `revdep_details(, "wru")` for more info
     ```
       installed size is  5.5Mb
       sub-directories of 1Mb or more:
-        data   3.5Mb
+        data   3.4Mb
         libs   1.9Mb
     ```
 
