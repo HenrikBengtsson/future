@@ -29,9 +29,10 @@ Run `revdep_details(, "disk.frame")` for more info
 ** package ‘disk.frame’ successfully unpacked and MD5 sums checked
 ** using staged installation
 ** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c hashstr2i.cpp -o hashstr2i.o
-g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/lib -L/usr/local/lib64 -o disk.frame.so RcppExports.o hashstr2i.o -L/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/lib -lR
+using C++ compiler: ‘g++ (GCC) 10.2.1 20210130 (Red Hat 10.2.1-11)’
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include    -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include    -fpic  -g -O2  -c hashstr2i.cpp -o hashstr2i.o
+g++ -std=gnu++17 -shared -L/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/lib -L/usr/local/lib64 -o disk.frame.so RcppExports.o hashstr2i.o -L/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/lib -lR
 installing to /c4/home/henrik/repositories/future/revdep/checks/disk.frame/new/disk.frame.Rcheck/00LOCK-disk.frame/00new/disk.frame/libs
 ** R
 ** inst
@@ -50,11 +51,13 @@ ERROR: lazy loading failed for package ‘disk.frame’
 ** package ‘disk.frame’ successfully unpacked and MD5 sums checked
 ** using staged installation
 ** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c hashstr2i.cpp -o hashstr2i.o
-g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/lib -L/usr/local/lib64 -o disk.frame.so RcppExports.o hashstr2i.o -L/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/lib -lR
+using C++ compiler: ‘g++ (GCC) 10.2.1 20210130 (Red Hat 10.2.1-11)’
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include    -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/disk.frame/Rcpp/include' -I/usr/local/include    -fpic  -g -O2  -c hashstr2i.cpp -o hashstr2i.o
+g++ -std=gnu++17 -shared -L/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/lib -L/usr/local/lib64 -o disk.frame.so RcppExports.o hashstr2i.o -L/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/lib -lR
 installing to /c4/home/henrik/repositories/future/revdep/checks/disk.frame/old/disk.frame.Rcheck/00LOCK-disk.frame/00new/disk.frame/libs
 ** R
+...
 ** inst
 ** byte-compile and prepare package for lazy loading
 ** help
@@ -72,10 +75,10 @@ installing to /c4/home/henrik/repositories/future/revdep/checks/disk.frame/old/d
 
 <details>
 
-* Version: 1.6.0
+* Version: 1.8.0
 * GitHub: https://github.com/stemangiola/ppcseq
 * Source code: https://github.com/cran/ppcseq
-* Date/Publication: 2022-11-01
+* Date/Publication: 2023-04-25
 * Number of recursive dependencies: 119
 
 Run `revdep_details(, "ppcseq")` for more info
@@ -94,10 +97,10 @@ Run `revdep_details(, "ppcseq")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 53.3Mb
+      installed size is 65.3Mb
       sub-directories of 1Mb or more:
         data   1.5Mb
-        libs  50.4Mb
+        libs  62.5Mb
     ```
 
 *   checking R code for possible problems ... NOTE
@@ -138,13 +141,13 @@ Run `revdep_details(, "ppcseq")` for more info
 * installing *source* package ‘ppcseq’ ...
 ** using staged installation
 ** libs
+using C++ compiler: ‘g++ (GCC) 10.2.1 20210130 (Red Hat 10.2.1-11)’
+using C++17
 
 
-g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include' -I/usr/local/include   -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include' -I/usr/local/include    -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
 In file included from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/Eigen/Core:397,
                  from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/Eigen/Dense:1,
-                 from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/RcppEigenForward.h:30,
-                 from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/RcppEigen.h:25,
 ...
 installing to /c4/home/henrik/repositories/future/revdep/checks/ppcseq/new/ppcseq.Rcheck/00LOCK-ppcseq/00new/ppcseq/libs
 ** R
@@ -165,13 +168,13 @@ ERROR: lazy loading failed for package ‘ppcseq’
 * installing *source* package ‘ppcseq’ ...
 ** using staged installation
 ** libs
+using C++ compiler: ‘g++ (GCC) 10.2.1 20210130 (Red Hat 10.2.1-11)’
+using C++17
 
 
-g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include' -I/usr/local/include   -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
+g++ -std=gnu++17 -I"/software/c4/cbi/software/R-4.3.0-gcc10/lib64/R/include" -DNDEBUG -I"../inst/include" -I"/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include/src" -DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG -DBOOST_MATH_OVERFLOW_ERROR_POLICY=errno_on_error  -D_HAS_AUTO_PTR_ETC=0 -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/BH/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/rstan/include' -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/StanHeaders/include' -I/usr/local/include    -I'/c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppParallel/include' -D_REENTRANT -DSTAN_THREADS   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
 In file included from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/Eigen/Core:397,
                  from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/Eigen/Dense:1,
-                 from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/RcppEigenForward.h:30,
-                 from /c4/home/henrik/repositories/future/revdep/library/ppcseq/RcppEigen/include/RcppEigen.h:25,
 ...
 ** help
 *** installing help indices
