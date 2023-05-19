@@ -665,6 +665,49 @@ Run `revdep_details(, "dragon")` for more info
       All declared Imports should be used.
     ```
 
+# drake
+
+<details>
+
+* Version: 7.13.5
+* GitHub: https://github.com/ropensci/drake
+* Source code: https://github.com/cran/drake
+* Date/Publication: 2023-03-24 13:10:02 UTC
+* Number of recursive dependencies: 164
+
+Run `revdep_details(, "drake")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘disk.frame’
+    ```
+
+# easyalluvial
+
+<details>
+
+* Version: 0.3.1
+* GitHub: https://github.com/erblast/easyalluvial
+* Source code: https://github.com/cran/easyalluvial
+* Date/Publication: 2022-07-05 07:30:08 UTC
+* Number of recursive dependencies: 149
+
+Run `revdep_details(, "easyalluvial")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking:
+      'nycflights13', 'xgboost'
+    ```
+
 # EFAtools
 
 <details>
@@ -1011,6 +1054,27 @@ Run `revdep_details(, "greed")` for more info
 *   checking data for non-ASCII characters ... NOTE
     ```
       Note: found 989 marked UTF-8 strings
+    ```
+
+# greta
+
+<details>
+
+* Version: 0.4.3
+* GitHub: https://github.com/greta-dev/greta
+* Source code: https://github.com/cran/greta
+* Date/Publication: 2022-09-08 14:12:56 UTC
+* Number of recursive dependencies: 175
+
+Run `revdep_details(, "greta")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘MCMCpack’
     ```
 
 # gsynth
@@ -1421,6 +1485,27 @@ Run `revdep_details(, "marginaleffects")` for more info
     Package unavailable to check Rd xrefs: ‘robustlmm’
     ```
 
+# merTools
+
+<details>
+
+* Version: 0.6.1
+* GitHub: https://github.com/jknowles/merTools
+* Source code: https://github.com/cran/merTools
+* Date/Publication: 2023-03-20 16:50:06 UTC
+* Number of recursive dependencies: 143
+
+Run `revdep_details(, "merTools")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘rstanarm’
+    ```
+
 # metabolomicsR
 
 <details>
@@ -1784,6 +1869,48 @@ Run `revdep_details(, "mlr3")` for more info
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘glmnet’
+    ```
+
+# mlr3
+
+<details>
+
+* Version: 0.16.0
+* GitHub: https://github.com/mlr-org/mlr3
+* Source code: https://github.com/cran/mlr3
+* Date/Publication: 2023-05-05 17:40:02 UTC
+* Number of recursive dependencies: 55
+
+Run `revdep_details(, "mlr3")` for more info
+
+</details>
+
+## In both
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘glmnet’
+    ```
+
+# modelsummary
+
+<details>
+
+* Version: 1.4.0
+* GitHub: https://github.com/vincentarelbundock/modelsummary
+* Source code: https://github.com/cran/modelsummary
+* Date/Publication: 2023-04-26 04:50:02 UTC
+* Number of recursive dependencies: 276
+
+Run `revdep_details(, "modelsummary")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘rstanarm’
     ```
 
 # momentuHMM
@@ -2441,6 +2568,47 @@ Run `revdep_details(, "regmedint")` for more info
     ```
     Namespace in Imports field not imported from: ‘Deriv’
       All declared Imports should be used.
+    ```
+
+# reproducible
+
+<details>
+
+* Version: 2.0.2
+* GitHub: https://github.com/PredictiveEcology/reproducible
+* Source code: https://github.com/cran/reproducible
+* Date/Publication: 2023-05-07 05:00:02 UTC
+* Number of recursive dependencies: 102
+
+Run `revdep_details(, "reproducible")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.3-gcc10/lib64/R/bin/BATCH: line 60: 252904 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
+    
+     ERROR
+    Running the tests in ‘tests/test-all.R’ failed.
+    Last 50 lines of output:
+        adding: scratch/henrik/1320930/RtmpbYCtCB/reproducible/GtTT75_037/CAtRpJJ.tif (stored 0%)
+        adding: scratch/henrik/1320930/RtmpbYCtCB/reproducible/GtTT75_037/gNzDPpA.grd (stored 0%)
+      
+       *** caught segfault ***
+      address 0x41, cause 'memory not mapped'
+    ...
+      36: doTryCatch(return(expr), name, parentenv, handler)
+      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
+      38: tryCatchList(expr, classes, parentenv, handlers)
+      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
+      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
+      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
+      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
+      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
+      44: test_check("reproducible")
+      An irrecoverable exception occurred. R is aborting now ...
     ```
 
 # rgee
@@ -3204,6 +3372,31 @@ Run `revdep_details(, "ssdtools")` for more info
 </details>
 
 ## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+      • hp/hp49.csv
+      • hp/hp57.csv
+      • hp/hp65.csv
+      • hp/hp73.csv
+      • hp/hp81.csv
+      • hp/hp89.csv
+    ...
+      • ssd-plot/boron_pred_ribbon.png
+      • ssd-plot/boron_pred_shift_x.png
+      • ssd-plot/boron_shape.png
+      • ssd-plot/missing_order.png
+      • tidy/tidy.csv
+      • weibull/hc_anona.csv
+      • weibull/tidy.csv
+      • weibull/tidy_anona.csv
+      Error: Test failures
+      Execution halted
+    ```
 
 *   checking installed package size ... NOTE
     ```
