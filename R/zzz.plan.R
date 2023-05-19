@@ -157,29 +157,6 @@ plan <- local({
     FALSE
   }
 
-  warn_about_deprecated <- function(stack, strategy, fmtstr, ignore = NULL, defunct = NULL) {
-    for (kk in seq_along(stack)) {
-      if (evaluator_uses(stack[[kk]], strategy)) {
-        if (is.null(ignore)) ignore <- getOption("future.deprecated.ignore")
-        if (!is.element(strategy, ignore)) {
-          if (is.null(defunct)) defunct <- getOption("future.deprecated.defunct")
-          if (is.element(strategy, defunct)) {
-            msg <- sprintf(fmtstr, strategy, "defunct")
-            dfcn <- .Defunct
-          } else {
-            msg <- sprintf(fmtstr, strategy, "deprecated")
-            dfcn <- .Deprecated
-          }
-          dfcn(msg = msg, package = .packageName)
-        }
-      }
-    }
-  }
-
-  warn_about_multiprocess <- function(stack) {
-    warn_about_deprecated(stack, strategy = "multiprocess", fmtstr = "Strategy '%s' is %s in future (>= 1.32.0) [2023-03-06]. Instead, explicitly specify either 'multisession' (recommended) or 'multicore'.", ignore = "", defunct = "remote")
-  }
-
   warn_about_multicore <- local({
     .warn <- TRUE
 
@@ -285,9 +262,6 @@ plan <- local({
     }
 
     assert_no_disallowed_strategies(newStack)
-
-    ## Assert that defunct backends are not used
-    warn_about_multiprocess(newStack)
 
     ## Warn about 'multicore' on certain systems
     warn_about_multicore(newStack)

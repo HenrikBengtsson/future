@@ -5,6 +5,11 @@
  * If a 'multicore' future failed, because the parallel process
    crashed, the corresponding parallel-worker slot was never released.
 
+## Deprecated and Defunct
+
+ * The 'multiprocess' strategy has now been fully removed.  Please use
+   'multisession' (recommended) or 'multicore' instead.
+
 
 # Version 1.32.0 [2023-03-06]
 
