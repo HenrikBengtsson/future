@@ -13,9 +13,9 @@
  * Add prototype of an internal event-logging framework for the
    purpose of profiling futures and their backends.
 
- * Add option `future.globalenv.onMisuse` for optionally assert that a
-   future expression does not result in variables being added to the
-   global environment.
+ * Add option `future.globalenv.onMisuse` for optionally asserting
+   that a future expression does not result in variables being added
+   to the global environment.
 
  * Add option `future.onFutureCondition.keepFuture` for controlling
    whether `FutureCondition` objects should keep a copy of the
