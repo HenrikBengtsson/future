@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9105</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9106</span>
       </span>
     </div>
 
@@ -81,9 +81,6 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="https://BiocParallel.FutureParam.futureverse.org" class="external-link">BiocParallel.FutureParam</a>
-    </li>
-    <li>
       <a href="https://doFuture.futureverse.org" class="external-link">doFuture</a>
     </li>
     <li>
@@ -115,6 +112,12 @@
     </li>
     <li>
       <a href="https://progressr.futureverse.org" class="external-link">progressr</a>
+    </li>
+    <li>
+      <a href="https://BiocParallel.FutureParam.futureverse.org" class="external-link">BiocParallel.FutureParam (experimental)</a>
+    </li>
+    <li>
+      <a href="https://future.tools.futureverse.org" class="external-link">future.tools (experimental)</a>
     </li>
     <li>
       <a href="https://future.mapreduce.futureverse.org" class="external-link">future.mapreduce (experimental)</a>
@@ -198,9 +201,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> tryCatch(withCallingHandlers({</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpBnqdUL/callr-fun-15cb65c876f1"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpdXc8on/callr-fun-f2a5613f927ec"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/henrik/RtmpBnqdUL/callr-res-15cb610f8d729", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/henrik/RtmpdXc8on/callr-res-f2a5636d884f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stdout())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stderr())</span>
@@ -225,7 +228,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpBnqdUL/callr-res-15cb610f8d729", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpdXc8on/callr-res-f2a5636d884f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
@@ -247,7 +250,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpBnqdUL/callr-res-15cb610f8d729", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpdXc8on/callr-res-f2a5636d884f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, callr_message = function(e) {</span>
@@ -292,9 +295,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> withCallingHandlers({</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpBnqdUL/callr-fun-15cb65c876f1"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpdXc8on/callr-fun-f2a5613f927ec"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/henrik/RtmpBnqdUL/callr-res-15cb610f8d729", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/henrik/RtmpdXc8on/callr-res-f2a5636d884f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stdout())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stderr())</span>
@@ -319,7 +322,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpBnqdUL/callr-res-15cb610f8d729", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpdXc8on/callr-res-f2a5636d884f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
@@ -341,7 +344,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpBnqdUL/callr-res-15cb610f8d729", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpdXc8on/callr-res-f2a5636d884f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, callr_message = function(e) {</span>
@@ -349,13 +352,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpBnqdUL/callr-fun-15cb65c876f1"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpdXc8on/callr-fun-f2a5613f927ec"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE), file = "/tmp/henrik/RtmpBnqdUL/callr-res-15cb610f8d729", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE), file = "/tmp/henrik/RtmpdXc8on/callr-res-f2a5636d884f", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> do.call(do.call, c(readRDS("/tmp/henrik/RtmpBnqdUL/callr-fun-15cb65c876f1"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> do.call(do.call, c(readRDS("/tmp/henrik/RtmpdXc8on/callr-fun-f2a5613f927ec"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -372,21 +375,20 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     options(cli.num_colors = cli_colors, crayon.colors = cli_colors, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         pkgdown.internet = pkgdown_internet)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown::build_site(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }), base::quote(list(pkg = list(package = "future", version = "1.32.0-9105", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/henrik/RtmpBnqdUL/future", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     dst_path = "/tmp/henrik/RtmpBnqdUL/future/docs", install_metadata = FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }), base::quote(list(pkg = list(package = "future", version = "1.32.0-9106", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/henrik/RtmpdXc8on/future", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     dst_path = "/tmp/henrik/RtmpdXc8on/future/docs", install_metadata = FALSE, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     desc = &lt;environment&gt;, meta = list(url = "https://future.futureverse.org", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         home = list(links = list(list(text = "Roadmap/Milestones", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             href = "https://github.com/HenrikBengtsson/future/milestones"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "The Futureverse Project", href = "https://www.futureverse.org/"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "Futureverse User Forum (new!)", href = "https://github.com/HenrikBengtsson/future/discussions"))), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "Futureverse User Forum", href = "https://github.com/HenrikBengtsson/future/discussions"))), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         navbar = list(structure = list(right = c("futureverse", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "pkgs", "cran", "github")), components = list(futureverse = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             icon = "fas fa-fast-backward", href = "https://www.futureverse.org/"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             pkgs = list(text = "Packages", menu = list(list(text = "BiocParallel.FutureParam", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 href = "https://BiocParallel.FutureParam.futureverse.org"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "doFuture", href = "https://doFuture.futureverse.org"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "furrr", href = "https://furrr.futureverse.org"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             pkgs = list(text = "Packages", menu = list(list(text = "doFuture", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 href = "https://doFuture.futureverse.org"), list(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 text = "furrr", href = "https://furrr.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future", href = "https://future.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future.apply", href = "https://future.apply.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future.batchtools", href = "https://future.batchtools.futureverse.org"), </span>
@@ -396,6 +398,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "listenv", href = "https://listenv.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "progressr", href = "https://progressr.futureverse.org"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "BiocParallel.FutureParam (experimental)", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   href = "https://BiocParallel.FutureParam.futureverse.org"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future.tools (experimental)", href = "https://future.tools.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future.mapreduce (experimental)", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   href = "https://future.mapreduce.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "marshal (experimental)", href = "https://marshal.futureverse.org"))), </span>
@@ -2588,21 +2593,20 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     options(cli.num_colors = cli_colors, crayon.colors = cli_colors, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         pkgdown.internet = pkgdown_internet)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown::build_site(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> })(pkg = base::quote(list(package = "future", version = "1.32.0-9105", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/henrik/RtmpBnqdUL/future", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     dst_path = "/tmp/henrik/RtmpBnqdUL/future/docs", install_metadata = FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })(pkg = base::quote(list(package = "future", version = "1.32.0-9106", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/henrik/RtmpdXc8on/future", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     dst_path = "/tmp/henrik/RtmpdXc8on/future/docs", install_metadata = FALSE, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     desc = &lt;environment&gt;, meta = list(url = "https://future.futureverse.org", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         home = list(links = list(list(text = "Roadmap/Milestones", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             href = "https://github.com/HenrikBengtsson/future/milestones"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "The Futureverse Project", href = "https://www.futureverse.org/"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "Futureverse User Forum (new!)", href = "https://github.com/HenrikBengtsson/future/discussions"))), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             list(text = "Futureverse User Forum", href = "https://github.com/HenrikBengtsson/future/discussions"))), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         navbar = list(structure = list(right = c("futureverse", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "pkgs", "cran", "github")), components = list(futureverse = list(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             icon = "fas fa-fast-backward", href = "https://www.futureverse.org/"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             pkgs = list(text = "Packages", menu = list(list(text = "BiocParallel.FutureParam", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 href = "https://BiocParallel.FutureParam.futureverse.org"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "doFuture", href = "https://doFuture.futureverse.org"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "furrr", href = "https://furrr.futureverse.org"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             pkgs = list(text = "Packages", menu = list(list(text = "doFuture", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 href = "https://doFuture.futureverse.org"), list(</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 text = "furrr", href = "https://furrr.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future", href = "https://future.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future.apply", href = "https://future.apply.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future.batchtools", href = "https://future.batchtools.futureverse.org"), </span>
@@ -2612,6 +2616,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "listenv", href = "https://listenv.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "parallelly", href = "https://parallelly.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "progressr", href = "https://progressr.futureverse.org"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "BiocParallel.FutureParam (experimental)", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   href = "https://BiocParallel.FutureParam.futureverse.org"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future.tools (experimental)", href = "https://future.tools.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "future.mapreduce (experimental)", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   href = "https://future.mapreduce.futureverse.org"), </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 list(text = "marshal (experimental)", href = "https://marshal.futureverse.org"))), </span>
