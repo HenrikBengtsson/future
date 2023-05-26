@@ -6,7 +6,7 @@ home:
     href: https://github.com/HenrikBengtsson/future/milestones
   - text: The Futureverse Project
     href: https://www.futureverse.org/
-  - text: Futureverse User Forum (new!)
+  - text: Futureverse User Forum
     href: https://github.com/HenrikBengtsson/future/discussions
 
 navbar:
@@ -14,13 +14,11 @@ navbar:
     right: [futureverse, pkgs, cran, github]
   components:
     futureverse:
-      icon: fas fa-fast-backward
+      icon: fas fa-home
       href: https://www.futureverse.org/
     pkgs:
       text: Packages
       menu:
-      - text: BiocParallel.FutureParam 
-        href: https://BiocParallel.FutureParam.futureverse.org
       - text: doFuture 
         href: https://doFuture.futureverse.org
       - text: furrr 
@@ -43,6 +41,10 @@ navbar:
         href: https://parallelly.futureverse.org
       - text: progressr 
         href: https://progressr.futureverse.org
+      - text: BiocParallel.FutureParam (experimental)
+        href: https://BiocParallel.FutureParam.futureverse.org
+      - text: future.tools (experimental)
+        href: https://future.tools.futureverse.org
       - text: future.mapreduce (experimental)
         href: https://future.mapreduce.futureverse.org
       - text: marshal (experimental)
