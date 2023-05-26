@@ -302,6 +302,9 @@ update_package_options <- function(debug = FALSE) {
 
   update_package_option("future.resolve.recursive", mode = "integer", debug = debug)
 
+  ## Introduced in future 1.33.0:
+  update_package_option("future.alive.timeout", mode = "numeric", debug = debug)
+
   ## Introduced in future 1.22.0:
   for (name in c("future.resolved.timeout", "future.cluster.resolved.timeout", "future.multicore.resolved.timeout")) {
     update_package_option(name, mode = "numeric", debug = debug)

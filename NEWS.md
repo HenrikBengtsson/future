@@ -1,5 +1,14 @@
 # Version (development version)
 
+## New Features
+
+ * When a 'cluster' future fails to communicate with the parallel
+   worker, it does a post-mortem analysis to figure out why, including
+   inspecting whether the worker process is still alive or not.  In
+   previous versions, this only worked for workers running on the
+   current machine. Starting with this version, it also attempts to
+   check this for remote versions.
+
 ## Bug Fixes
 
  * If a 'multicore' future failed, because the parallel process
