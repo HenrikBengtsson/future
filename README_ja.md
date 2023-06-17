@@ -630,6 +630,24 @@ Note that with automatic authentication setup (e.g. SSH key pairs), there is not
 
 SSH キーペアなどの自動認証設定があるなら、リモートマシンのクラスタが同じ方法で使用できる。
 
+<!--
+If you want to run multiple workers on each node, just replicate the node name as many times as the number of workers to run on that node.
+For example,
+-->
+
+各ノードで複数のワーカを実行したい場合は、次のようにノード名を複数回書けばよい。
+
+```
+> plan(cluster, workers = c(rep("n1", times = 3), "n2", rep("n3", times = 5)))
+```
+
+<!--
+will run three workers on `n1`, one on `n2`, and five on `n3`, in total nine parallel workers.
+-->
+
+この例では、`n1` では3つ、`n2` では1つ、`n3` では5つと、合計9つのワーカにより並列実行される。
+
+
 ### フューチャのネストと評価トポロジー
 
 <!--
