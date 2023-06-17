@@ -69,7 +69,7 @@ Here is the same code snippet modified to use futures instead:
 上のコードをフューチャを使った式に書き換えよう。
 
 ``` r
-> library("future")
+> library(future)
 > v %<-% {
 +   cat("Hello world!\n")
 +   3.14
@@ -99,7 +99,7 @@ Because we can choose to evaluate the future expression in a separate R process 
 フューチャは何が便利なのだろうか？ 式をフューチャにしておくと、式の評価を非同期実行したいときに、次のように簡単に切り替えることができる。
 
 ``` r
-> library("future")
+> library(future)
 > plan(multisession)
 > v %<-% {
 +   cat("Hello world!\n")
@@ -140,7 +140,7 @@ future パッケージには、フューチャを作成する方法として、*
 <- value(f)` という2つの関数を使うスタイルがある。 上記の例を明示的なスタイルに書き換えると次のようになる。
 
 ``` r
-> library("future")
+> library(future)
 > f <- future({
 +   cat("Hello world!\n")
 +   3.14
@@ -1035,7 +1035,7 @@ For example,
 上記のコードでリストをリスト環境に置き換えると、数値インデックスを使って非明示的フューチャを代入できるようになる。
 
 ``` r
-> library("listenv")
+> library(listenv)
 > plan(multisession)
 > v <- listenv()
 > for (ii in 1:3) {
@@ -1068,7 +1068,7 @@ First, try with the sequential evaluation,
 デモを実行するとよい。 まず、逐次評価で実行してみよう。
 
 ``` r
-library("future")
+library(future)
 plan(sequential)
 demo("mandelbrot", package = "future", ask = FALSE)
 ```
