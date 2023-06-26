@@ -25,7 +25,7 @@ the meanwhile retrieving values of already resolved futures."><meta property="og
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9106</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9108</span>
       </span>
     </div>
 
@@ -198,11 +198,14 @@ no recursion is performed.</p></dd>
 
 
 <dt>result</dt>
-<dd><p>(internal) If TRUE, the results are retrieved, otherwise not.</p></dd>
+<dd><p>(internal) If TRUE, the results are <em>retrieved</em>, otherwise not.
+Note that this only collects the results from the parallel worker, which
+can help lower the overall latency if there are multiple concurrent futures.
+This does <em>not</em> return the collected results.</p></dd>
 
 
 <dt>stdout</dt>
-<dd><p>(internal) If TRUE, captured standard output is relayed, otherwise note.</p></dd>
+<dd><p>(internal) If TRUE, captured standard output is relayed, otherwise not.</p></dd>
 
 
 <dt>signal</dt>
