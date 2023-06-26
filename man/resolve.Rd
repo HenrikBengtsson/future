@@ -27,9 +27,12 @@ elements to check.}
 should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
 no recursion is performed.}
 
-\item{result}{(internal) If TRUE, the results are retrieved, otherwise not.}
+\item{result}{(internal) If TRUE, the results are \emph{retrieved}, otherwise not.
+Note that this only collects the results from the parallel worker, which
+can help lower the overall latency if there are multiple concurrent futures.
+This does \emph{not} return the collected results.}
 
-\item{stdout}{(internal) If TRUE, captured standard output is relayed, otherwise note.}
+\item{stdout}{(internal) If TRUE, captured standard output is relayed, otherwise not.}
 
 \item{signal}{(internal) If TRUE, captured \link[base]{conditions} are relayed,
 otherwise not.}
