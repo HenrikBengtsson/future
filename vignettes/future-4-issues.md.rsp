@@ -115,7 +115,7 @@ Error in get(var) : object 'a' not found
 ```
 
 This is because the static code inspection done on the future expression `my_sum("a")` does not reveal object `a` as a global object.  In that expression alone, there are only three objects: the function `my_sum()`, the primitive function `(`, and the string `"a"`, and none of those are object `a`.  The future framework will also scan these three objects for globals, which in this example means that it scans also `my_sum()`.  This recursive search for globals will identify three additional globals, namely, the primitive function `{`, the function `sum()`, and the function `get()`, but, as before, none of these source will identify `a` as a global object.
-In order for `a` to be identified, the future framework would need to have a built-in understanding on how `get(var)` works, which would be a daunting task, especially if it need to know it acts for different data types of `var` and various choices on arguments `envir` and `enclos`.  In fact, this can often not be inferred until run time, that is, it is not possible to identify what objects are needed without actually running the code.  In short, it is not possible to automatically identify global variables specified via a character string.
+In order for `a` to be identified, the future framework would need to have a built-in understanding on how `get(var)` works, which would be a daunting task, especially if it need to know how it acts for different data types of `var` and various choices on arguments `envir` and `enclos`.  In fact, this can often not be inferred until run time, that is, it is not possible to identify what objects are needed without actually running the code.  In short, it is not possible to automatically identify global variables specified via a character string.
 
 The workaround is to tell the future framework what _additional_ globals are needed.  This can be done via argument `globals` using:
 
@@ -126,7 +126,7 @@ The workaround is to tell the future framework what _additional_ globals are nee
 [1] 6
 ```
 
-or ny injecting variable `a` at the beginning of the future expression, e.g.
+or by injecting variable `a` at the beginning of the future expression, e.g.
 
 ```r
 > f <- future({ a; my_sum("a") })
