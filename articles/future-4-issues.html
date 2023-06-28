@@ -324,8 +324,8 @@ identify three additional globals, namely, the primitive function
 <code>a</code> as a global object. In order for <code>a</code> to be
 identified, the future framework would need to have a built-in
 understanding on how <code>get(var)</code> works, which would be a
-daunting task, especially if it need to know it acts for different data
-types of <code>var</code> and various choices on arguments
+daunting task, especially if it need to know how it acts for different
+data types of <code>var</code> and various choices on arguments
 <code>envir</code> and <code>enclos</code>. In fact, this can often not
 be inferred until run time, that is, it is not possible to identify what
 objects are needed without actually running the code. In short, it is
@@ -338,7 +338,7 @@ character string.</p>
 <span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="ot">&lt;-</span> <span class="fu">value</span>(f)</span>
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a><span class="sc">&gt;</span> y</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">6</span></span></code></pre></div>
-<p>or ny injecting variable <code>a</code> at the beginning of the
+<p>or by injecting variable <code>a</code> at the beginning of the
 future expression, e.g.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="sc">&gt;</span> f <span class="ot">&lt;-</span> <span class="fu">future</span>({ a; <span class="fu">my_sum</span>(<span class="st">"a"</span>) })</span>
 <span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a><span class="sc">&gt;</span> y <span class="ot">&lt;-</span> <span class="fu">value</span>(f)</span>
