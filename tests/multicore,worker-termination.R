@@ -19,7 +19,12 @@ if (supportsMulticore() && availableCores("multicore") >= 2L) {
   stopifnot(inherits(res, "FutureError"))
 
   stopifnot(nbrOfWorkers() == all)
-  if (!is.na(f$job$alive)) stopifnot(nbrOfFreeWorkers() == free)
+  ## Assert that the worker slot was released? Not always possible
+  if (!is.na(f$job$alive)) {
+    stopifnot(nbrOfFreeWorkers() == free)
+  } else {
+    stopifnot(nbrOfFreeWorkers() <= free)
+  }
 }
 
 message("*** multicore() - terminating workers ... DONE")
