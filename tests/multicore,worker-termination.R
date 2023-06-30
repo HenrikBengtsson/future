@@ -12,6 +12,7 @@ if (supportsMulticore() && availableCores("multicore") >= 2L) {
     nbrOfFreeWorkers() == 2L
   )
 
+  options(parallelly.debug = TRUE)
   options(future.debug = TRUE)
   
   ## Force R worker to quit
