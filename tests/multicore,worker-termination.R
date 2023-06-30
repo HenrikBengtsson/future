@@ -11,6 +11,8 @@ if (supportsMulticore() && availableCores("multicore") >= 2L) {
     nbrOfWorkers() == 2L,
     nbrOfFreeWorkers() == 2L
   )
+
+  options(future.debug = TRUE)
   
   ## Force R worker to quit
   f <- future({ tools::pskill(pid = Sys.getpid()) })

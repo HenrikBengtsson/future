@@ -54,7 +54,7 @@ res <- rhub::check(platforms = c(
   "debian-clang-devel", 
   "fedora-gcc-devel",
   "debian-gcc-patched", 
-  "macos-highsierra-release-cran",
+#  "macos-highsierra-release-cran",
   "windows-x86_64-release"
 ))
 print(res)
