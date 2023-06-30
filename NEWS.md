@@ -13,8 +13,8 @@
 
  * If a 'multicore' future failed, because the parallel process
    crashed, the corresponding parallel-worker slot was never released.
-   Now it is removed if it can be inferred whether the forked worker
-   process is alive or not.
+   Now it is removed if it can confirm that the forked worker process
+   is no longer alive.
 
 ## Deprecated and Defunct
 

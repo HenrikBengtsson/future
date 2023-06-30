@@ -16,11 +16,14 @@ if (supportsMulticore() && availableCores("multicore") >= 2L) {
   f <- future({ tools::pskill(pid = Sys.getpid()) })
   res <- tryCatch(value(f), error = identity)
   print(res)
+  print(conditionMessage(res))
   stopifnot(inherits(res, "FutureError"))
 
   stopifnot(nbrOfWorkers() == all)
   ## Assert that the worker slot was released? Not always possible
-  if (!is.na(f$job$alive)) {
+  str(f$job)
+  cat(sprintf("nbrOfFreeWorkers(): %d\n", nbrOfFreeWorkers()))
+  if (!is.na(f$job$alive) && !f$job$alive) {
     stopifnot(nbrOfFreeWorkers() == free)
   } else {
     stopifnot(nbrOfFreeWorkers() <= free)

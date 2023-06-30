@@ -1,6 +1,6 @@
 # CRAN submission future 1.33.0
 
-on 2023-06-30
+on 2023-07-01
 
 I've checked this version towards 292 reverse package dependencies available on CRAN (n = 273) and Bioconductor (n = 19).
 
@@ -43,37 +43,39 @@ print(res)
 gives
 
 ```
-── future 1.32.0-9110: OK
+── future 1.32.0-9115: OK
 
-  Build ID:   future_1.32.0-9110.tar.gz-2cfdb50ff29b40c8a2a376efd96857b3
+  Build ID:   future_1.32.0-9115.tar.gz-ada9133dcbd34b03899066463a021e9b
   Platform:   Debian Linux, R-devel, clang, ISO-8859-15 locale
-  Submitted:  14m 6.3s ago
-  Build time: 13m 53.9s
+  Submitted:  14m 32.1s ago
+  Build time: 14m 28.2s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.32.0-9110: OK
+── future 1.32.0-9115: OK
 
-  Build ID:   future_1.32.0-9110.tar.gz-f55c9521d111452e9a2568c0da437070
+  Build ID:   future_1.32.0-9115.tar.gz-0411c118672a4fb98da3fc376f3507e6
   Platform:   Fedora Linux, R-devel, GCC
-  Submitted:  14m 58.8s ago
-  Build time: 13m 58.9s
+  Submitted:  14m 32.1s ago
+  Build time: 11m 26.2s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.32.0-9110: IN-PROGRESS
+── future 1.32.0-9115: OK
 
-  Build ID:   future_1.32.0-9110.tar.gz-254b6663f8f6464b89007b67486a519c
+  Build ID:   future_1.32.0-9115.tar.gz-a000c2b84c26406b8269f27f8bcddc73
   Platform:   Debian Linux, R-patched, GCC
-  Submitted:  14m 58.8s ago
+  Submitted:  14m 32.1s ago
+  Build time: 13m 45.6s
 
+0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.32.0-9110: OK
+── future 1.32.0-9115: OK
 
-  Build ID:   future_1.32.0-9110.tar.gz-0081ebe52174491db3f212c2e20fb027
+  Build ID:   future_1.32.0-9115.tar.gz-fa49907794cd48558b6d7a111fa544ee
   Platform:   Windows Server 2022, R-release, 32/64 bit
-  Submitted:  14m 58.8s ago
-  Build time: 7m 2.2s
+  Submitted:  14m 32.1s ago
+  Build time: 7m 17.7s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 ```
