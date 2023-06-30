@@ -199,6 +199,10 @@ result.MulticoreFuture <- function(future, ...) {
       alive <- pid_exists(pid)
     }
     
+    ## AD HOC: Record whether the forked process is alive or not
+    job$alive <- alive
+    future$job <- job
+
     ## SPECIAL: Check for fallback 'fatal error in wrapper code'
     ## try-error from parallel:::mcparallel().  If detected, then
     ## turn into an error with a more informative error message, cf.

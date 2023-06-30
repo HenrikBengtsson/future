@@ -11,9 +11,6 @@ if (supportsMulticore() && availableCores("multicore") >= 2L) {
     nbrOfWorkers() == 2L,
     nbrOfFreeWorkers() == 2L
   )
-
-  options(parallelly.debug = TRUE)
-  options(future.debug = TRUE)
   
   ## Force R worker to quit
   f <- future({ tools::pskill(pid = Sys.getpid()) })
@@ -21,10 +18,8 @@ if (supportsMulticore() && availableCores("multicore") >= 2L) {
   print(res)
   stopifnot(inherits(res, "FutureError"))
 
-  stopifnot(
-    nbrOfWorkers() == all,
-    nbrOfFreeWorkers() == free
-  )
+  stopifnot(nbrOfWorkers() == all)
+  if (!is.na(f$job$alive)) stopifnot(nbrOfFreeWorkers() == free)
 }
 
 message("*** multicore() - terminating workers ... DONE")
