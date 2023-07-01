@@ -78,7 +78,7 @@
 #' \describe{
 #'  \item{\option{future.fork.multithreading.enable} (_beta feature - may change_):}{(logical) Enable or disable _multi-threading_ while using _forked_ parallel processing.  If `FALSE`, different multi-thread library settings are overridden such that they run in single-thread mode. Specifically, multi-threading will be disabled for OpenMP (which requires the \pkg{RhpcBLASctl} package) and for **RcppParallel**. If `TRUE`, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using `plan(multicore)` but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package. (Default: not set)}
 #'
-#'  \item{\option{future.output.windows.reencode} (_beta feature - may change_):}{(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  On MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (`"\u2713"`) would be relayed as `"<U+2713>"` (a string with eight ASCII characters).  This option will cause `value()` to attempt to recover the intended UTF-8 symbols from `<U+nnnn>` string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: `TRUE`)}
+#'  \item{\option{future.output.windows.reencode}:}{(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  In R (< 4.2.0) and on older versions of MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (`"\u2713"`) would be relayed as `"<U+2713>"` (a string with eight ASCII characters).  Setting this option to `TRUE` will cause `value()` to attempt to recover the intended UTF-8 symbols from `<U+nnnn>` string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: `TRUE`)}
 #' }
 #'
 #' See also [parallelly::parallelly.options].
@@ -274,7 +274,7 @@ update_package_options <- function(debug = FALSE) {
 
   update_package_option("future.deprecated.ignore", split = ",", debug = debug)
 
-  update_package_option("future.deprecated.defunct", mode = "character", split = ",", default = "multiprocess", debug = debug)
+  update_package_option("future.deprecated.defunct", mode = "character", split = ",", debug = debug)
 
   update_package_option("future.fork.multithreading.enable", mode = "logical", debug = debug)
 
@@ -301,6 +301,9 @@ update_package_options <- function(debug = FALSE) {
   update_package_option("future.relay.immediate", mode = "logical", debug = debug)
 
   update_package_option("future.resolve.recursive", mode = "integer", debug = debug)
+
+  ## Introduced in future 1.33.0:
+  update_package_option("future.alive.timeout", mode = "numeric", debug = debug)
 
   ## Introduced in future 1.22.0:
   for (name in c("future.resolved.timeout", "future.cluster.resolved.timeout", "future.multicore.resolved.timeout")) {
@@ -329,13 +332,13 @@ update_package_options <- function(debug = FALSE) {
   ## Prototyping in future 1.26.0:
   update_package_option("future.globals.globalsOf.locals", mode = "logical", debug = debug)
 
-  ## SETTINGS USED FOR DEPRECATING FEATURES
-  ## future 1.22.0:
-  update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
-
   ## future 1.32.0:
   update_package_option("future.state.onInvalid", mode = "character", debug = debug)
 
   ## future 1.32.0:
   update_package_option("future.journal", mode = "logical", debug = debug)
+
+  ## SETTINGS USED FOR DEPRECATING FEATURES
+  ## future 1.22.0:
+  update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
 }

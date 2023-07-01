@@ -14,9 +14,12 @@
 #' should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
 #' no recursion is performed.
 #' 
-#' @param result (internal) If TRUE, the results are retrieved, otherwise not.
+#' @param result (internal) If TRUE, the results are _retrieved_, otherwise not.
+#' Note that this only collects the results from the parallel worker, which
+#' can help lower the overall latency if there are multiple concurrent futures.
+#' This does _not_ return the collected results.
 #' 
-#' @param stdout (internal) If TRUE, captured standard output is relayed, otherwise note.
+#' @param stdout (internal) If TRUE, captured standard output is relayed, otherwise not.
 #' 
 #' @param signal (internal) If TRUE, captured \link[base]{conditions} are relayed,
 #' otherwise not.

@@ -149,6 +149,12 @@ resolved.MulticoreFuture <- function(x, run = TRUE, timeout = NULL, ...) {
 
 #' @export
 result.MulticoreFuture <- function(future, ...) {
+  debug <- getOption("future.debug", FALSE)
+  if (debug) {
+    mdebugf("result() for %s ...", class(future)[1])
+    on.exit(mdebugf("result() for %s ... done", class(future)[1]))
+  }
+
   ## Has the result already been collected?
   result <- future$result
   if (!is.null(result)) {
@@ -185,32 +191,39 @@ result.MulticoreFuture <- function(future, ...) {
 
   ## Sanity checks
   if (!inherits(result, "FutureResult")) {
+    if (debug) mdebugf("Detected non-FutureResult result ...")
+    alive <- NA
+    pid <- job$pid
+    if (is.numeric(pid)) {
+      pid_exists <- import_parallelly("pid_exists")
+      alive <- pid_exists(pid)
+    }
+    
+    ## AD HOC: Record whether the forked process is alive or not
+    job$alive <- alive
+    future$job <- job
+
     ## SPECIAL: Check for fallback 'fatal error in wrapper code'
     ## try-error from parallel:::mcparallel().  If detected, then
     ## turn into an error with a more informative error message, cf.
     ## https://github.com/HenrikBengtsson/future/issues/35
-    if (identical(result, structure("fatal error in wrapper code", class = "try-error"))) {
-      label <- future$label
-      if (is.null(label)) label <- "<none>"
-      msg <- result
-      ex <- FutureError(sprintf("Detected an error (%s) by the 'parallel' package while trying to retrieve the value of a %s (%s). This could be because the forked R process that evaluates the future was terminated before it was completed: %s", sQuote(msg), class(future)[1], sQuote(label), sQuote(hexpr(future$expr))), future = future)
-    } else if (is.null(result)) {
+    if (is.null(result) || identical(result, structure("fatal error in wrapper code", class = "try-error"))) {
       label <- future$label
       if (is.null(label)) label <- "<none>"
 
-      pid <- job$pid
       pid_info <- if (is.numeric(pid)) sprintf("PID %.0f", pid) else NULL
-
       info <- pid_info
       msg <- sprintf("Failed to retrieve the result of %s (%s) from the forked worker (on localhost; %s)", class(future)[1], label, info)
 
+      if (identical(result, structure("fatal error in wrapper code", class = "try-error"))) {
+        msg <- c(msg, sprintf("Error %s was reported by the 'parallel' package, which could be because the forked R process that evaluates the future was terminated before it was completed", sQuote(result)))
+      }
+
       ## POST-MORTEM ANALYSIS:
       postmortem <- list()
-    
-      ## (a) Did a localhost worker process terminate?
+      
+      ## (a) Did the localhost worker process terminate?
       if (is.numeric(pid)) {
-        pid_exists <- import_parallelly("pid_exists")
-        alive <- pid_exists(pid)
         if (is.na(alive)) {
           msg2 <- "Failed to determined whether a process with this PID exists or not, i.e. cannot infer whether the forked localhost worker is alive or not"
         } else if (alive) {
@@ -231,14 +244,30 @@ result.MulticoreFuture <- function(future, ...) {
       if (!is.null(postmortem)) {
          postmortem <- sprintf("Post-mortem diagnostic: %s",
                                paste(postmortem, collapse = ". "))
-         msg <- paste0(msg, ". ", postmortem)
+         msg <- c(msg, postmortem)
       }
-
+      msg <- paste(msg, collapse = ". ")
+      
       ex <- FutureError(msg, future = future)
+
     } else {
       ex <- UnexpectedFutureResultError(future)
+      alive <- NA  ## For now, don't remove future when there's an unexpected error /HB 2023-04-19
     }
     future$result <- ex
+    
+    ## Remove future from FutureRegistry?
+    if (!is.na(alive) && !alive) {
+      reg <- sprintf("multicore-%s", session_uuid())
+      exists <- FutureRegistry(reg, action = "contains", future = future)
+      if (exists) {
+        if (debug) mdebugf("Removing %s from FutureRegistry (%s)", class(future)[1], reg)
+        FutureRegistry(reg, action = "remove", future = future, earlySignal = TRUE)
+      }
+    }
+
+    if (debug) mdebugf("Detected non-FutureResult result ... done")
+
     stop(ex)
   }
 

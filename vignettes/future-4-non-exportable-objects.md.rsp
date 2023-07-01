@@ -92,6 +92,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **terra**       | SpatRaster, SpatVector (`externalptr`)
   **udpipe**      | udpipe_model (`externalptr`)
   **xgboost**     | xgb.DMatrix (`externalptr`)
+  **XML**         | XMLInternalDocument, XMLInternalElementNode (`externalptr`)
   **xml2**        | xml_document (`externalptr`)
 
 These are illustrated in sections 'Packages that rely on external pointers' and 'Packages with other types of non-external objects' below.
@@ -648,10 +649,108 @@ f <- future(dim(dtrain))
 This is because `train` itself is an external pointer, i.e. `mode(train) == "externalptr"`.
 
 
+#### Package: XML
+
+Another example is XML objects of the **[XML]** package, which may
+produce evaluation error, or even cause R to abort if used in another
+R process, e.g.
+
+```r
+library(future)
+plan(multisession)
+library(XML)
+doc <- xmlParse(system.file("exampleData", "tagnames.xml", package = "XML"))
+a <- getNodeSet(doc, "/doc//a[@status]")[[1]]
+f <- future(xmlGetAttr(a, "status"))
+value(f)
+## Error in unserialize(node$con) :
+##   MultisessionFuture (<none>) failed to receive results from cluster
+## RichSOCKnode #1 (PID 31541 on localhost 'localhost'). The reason
+## reported was 'error reading from connection'. Post-mortem diagnostic:
+## No process exists with this PID, i.e. the localhost worker is no
+## longer alive. Detected a non-exportable reference ('externalptr' of
+## class 'XMLInternalElementNode') in one of the globals ('a' of class
+## 'XMLInternalElementNode') used in the future expression. The total
+## size of the 1 globals exported is 520 bytes. There is one global: 'a'
+## (520 bytes of class 'externalptr')
+```
+
+This is an example, where we end up exporting an
+`XMLInternalElementNode` object to another R process, where it is no
+longer valid.  When we try to use it there by calling `xmlGetAttr()`
+on it, **XML** causes R to crash and abort.  To illustrate what's
+going on the parallel workers, if we save the object to file using
+`saveRDS(a, "a.rds")`, and try to use it in _another_ R session, the
+following happens:
+
+```r
+$ R --quiet --vanilla
+> a <- readRDS("a.rds")
+> XML::xmlGetAttr(a, "status")
+
+ *** caught segfault ***
+address 0x40, cause 'memory not mapped'
+
+Traceback:
+ 1: xmlAttrs.XMLInternalNode(node, addNamespace)
+ 2: xmlAttrs(node, addNamespace)
+ 3: XML::xmlGetAttr(a, "status")
+
+Possible actions:
+1: abort (with core dump, if enabled)
+2: normal R exit
+3: exit R without saving workspace
+4: exit R saving workspace
+Selection: 
+```
+
+This is a very harsh way of telling us that we cannot export all types
+of objects produced by **XML**.  Ideally, **XML** would detect this
+and give am informative error message and not crash R like this.
+
+A workaround for working around this is to marshal the problematic
+objects before exporting them to a parallel R process, and unmarshal
+them before working with them there.  For example,
+
+```r
+library(future)
+plan(multisession)
+library(XML)
+doc <- xmlParse(system.file("exampleData", "tagnames.xml", package = "XML"))
+a <- getNodeSet(doc, "/doc//a[@status]")[[1]]
+
+## Marshall the non-exportable XMLInternalElementNode object
+a_m <- xmlSerializeHook(a)
+
+f <- future({ a <- xmlDeserializeHook(a_m); xmlGetAttr(a, "status") })
+value(f)
+## [1] "xyz"
+```
+
+An alternative, more generic workaround, is to always create the `doc`
+element, an `XMLInternalDocument` object, on the parallel workers,
+i.e.
+
+```r
+library(future)
+plan(multisession)
+library(XML)
+
+f <- future({
+  doc <- xmlParse(system.file("exampleData", "tagnames.xml", package = "XML"))
+  a <- getNodeSet(doc, "/doc//a[@status]")[[1]]
+  xmlGetAttr(a, "status")
+})
+value(f)
+## [1] "xyz"
+```
+
 
 #### Package: xml2
 
-Another example is XML objects of the **[xml2]** package, which may produce evaluation errors (or just invalid results depending on how they are used), e.g.
+Yet another example is XML objects of the **[xml2]** package, which
+may produce evaluation errors (or just invalid results depending on
+how they are used), e.g.
 
 ```r
 library(future)
@@ -868,5 +967,6 @@ str(e)
 [rstan]: https://cran.r-project.org/package=rstan
 [udpipe]: https://cran.r-project.org/package=udpipe
 [xgboost]: https://cran.r-project.org/package=xgboost
+[XML]: https://cran.r-project.org/package=XML
 [xml2]: https://cran.r-project.org/package=xml2
 [ShortRead]: https://bioconductor.org/packages/ShortRead/

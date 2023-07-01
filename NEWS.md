@@ -1,3 +1,27 @@
+# Version 1.33.0 [2023-07-01]
+
+## New Features
+
+ * When a 'cluster' future fails to communicate with the parallel
+   worker, it does a post-mortem analysis to figure out why, including
+   inspecting whether the worker process is still alive or not.  In
+   previous versions, this only worked for workers running on the
+   current machine. Starting with this version, it also attempts to
+   check this for remote versions.
+
+## Bug Fixes
+
+ * If a 'multicore' future failed, because the parallel process
+   crashed, the corresponding parallel-worker slot was never released.
+   Now it is removed if it can confirm that the forked worker process
+   is no longer alive.
+
+## Deprecated and Defunct
+
+ * The 'multiprocess' strategy has now been fully removed.  Please use
+   'multisession' (recommended) or 'multicore' instead.
+
+
 # Version 1.32.0 [2023-03-06]
 
 ## New Features
@@ -5,9 +29,9 @@
  * Add prototype of an internal event-logging framework for the
    purpose of profiling futures and their backends.
 
- * Add option `future.globalenv.onMisuse` for optionally assert that a
-   future expression does not result in variables being added to the
-   global environment.
+ * Add option `future.globalenv.onMisuse` for optionally asserting
+   that a future expression does not result in variables being added
+   to the global environment.
 
  * Add option `future.onFutureCondition.keepFuture` for controlling
    whether `FutureCondition` objects should keep a copy of the
@@ -35,7 +59,7 @@
 
  * Remove function `remote()`.  Note that `plan(remote, ...)` has been
    deprecated since **future** 1.24.0 [2022-02-19] and defunct since
-   **future** 1.3.0 (2022-12-15).
+   **future** 1.30.0 (2022-12-15).
 
 ## Documentation
 

@@ -52,7 +52,7 @@ oenvs2 <- Sys.unsetenv(c(
 
 oplan <- future::plan()
 
-## Use eager futures by default
+## Use sequential futures by default
 future::plan("sequential")
 
 fullTest <- (Sys.getenv("_R_CHECK_FULL_") != "")
@@ -106,13 +106,9 @@ supportedStrategies <- function(cores = NA_integer_, excl = "cluster", ...) {
     if (cores == 1L) {
       strategies <- setdiff(strategies, c("multicore", "multisession"))
     } else if (cores > 1L) {
-      strategies <- setdiff(strategies,
-                            c("sequential", "uniprocess", "eager", "lazy"))
+      strategies <- setdiff(strategies, "sequential")
     }
   }
-  
-  ## Don't test deprecated 'multiprocess'
-  strategies <- setdiff(strategies, "multiprocess")
   
   strategies
 }

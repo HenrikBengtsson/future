@@ -1,4 +1,4 @@
-_This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2021-05-24](https://github.com/HenrikBengtsson/future/blob/74aea903791cbead5be7341766004571d4e0135b/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
+_This is a translation of [README.md](https://github.com/HenrikBengtsson/future/blob/develop/README.md) as of [2023-06-17](https://github.com/HenrikBengtsson/future/blob/2a675abff2e3a729e6108d40710d0dcb22cc705b/README.md) done by [hoxo_m](https://github.com/hoxo-m)._
 
 <div id="badges"><!-- pkgdown markup -->
 <a href="https://CRAN.R-project.org/web/checks/check_results_future.html"><img border="0" src="https://www.r-pkg.org/badges/version/future" alt="CRAN check status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3AR-CMD-check"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop" alt="R CMD check status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3Arevdepcheck-top"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/revdepcheck-top.yaml/badge.svg?branch=develop" alt="Top reverse-dependency checks status"/></a> <a href="https://github.com/HenrikBengtsson/future/actions?query=workflow%3Afuture_tests"><img border="0" src="https://github.com/HenrikBengtsson/future/actions/workflows/future_tests.yaml/badge.svg?branch=develop" alt="future.tests checks status"/></a>   <a href="https://app.codecov.io/gh/HenrikBengtsson/future"><img border="0" src="https://codecov.io/gh/HenrikBengtsson/future/branch/develop/graph/badge.svg" alt="Coverage Status"/></a> 
@@ -69,7 +69,7 @@ Here is the same code snippet modified to use futures instead:
 上のコードをフューチャを使った式に書き換えよう。
 
 ``` r
-> library("future")
+> library(future)
 > v %<-% {
 +   cat("Hello world!\n")
 +   3.14
@@ -99,7 +99,7 @@ Because we can choose to evaluate the future expression in a separate R process 
 フューチャは何が便利なのだろうか？ 式をフューチャにしておくと、式の評価を非同期実行したいときに、次のように簡単に切り替えることができる。
 
 ``` r
-> library("future")
+> library(future)
 > plan(multisession)
 > v %<-% {
 +   cat("Hello world!\n")
@@ -140,7 +140,7 @@ future パッケージには、フューチャを作成する方法として、*
 <- value(f)` という2つの関数を使うスタイルがある。 上記の例を明示的なスタイルに書き換えると次のようになる。
 
 ``` r
-> library("future")
+> library(future)
 > f <- future({
 +   cat("Hello world!\n")
 +   3.14
@@ -213,7 +213,7 @@ sequential  all sequentially and in the current R process
 asynchronous:       parallel:
 multisession    all background R sessions (on current machine)
 multicore   not Windows forked R processes (on current machine)
-cluster all external R sessions on current, local, and/or remote machines
+cluster all external R sessions on current, local, and remote machines
 -->
 
 | 名前             | OS                  | 説明                                                     |
@@ -362,7 +362,7 @@ Here is an example illustrating their properties:
 > plan(sequential)
 > pid <- Sys.getpid()
 > pid
-[1] 23153
+[1] 1427324
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -380,14 +380,14 @@ Here is an example illustrating their properties:
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 23153
+[1] 1427324
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 23153
+[1] 1427324
 ```
 
 <!--
@@ -433,7 +433,7 @@ Here is our example with multisession evaluation:
 > plan(multisession)
 > pid <- Sys.getpid()
 > pid
-[1] 23153
+[1] 1427324
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -451,14 +451,14 @@ Here is our example with multisession evaluation:
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 23246
+[1] 1427382
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 23153
+[1] 1427324
 ```
 
 <!--
@@ -567,7 +567,7 @@ For instance, assume you have access to three nodes n1, n2 and n3, you can then 
 > plan(cluster, workers = c("n1", "n2", "n3"))
 > pid <- Sys.getpid()
 > pid
-[1] 23153
+[1] 1427324
 > a %<-% {
 +     pid <- Sys.getpid()
 +     cat("Future 'a' ...\n")
@@ -585,14 +585,14 @@ For instance, assume you have access to three nodes n1, n2 and n3, you can then 
 Future 'a' ...
 > b
 Future 'b' ...
-[1] 23352
+[1] 1427499
 > c
 Future 'c' ...
 [1] 6.28
 > a
 [1] 3.14
 > pid
-[1] 23153
+[1] 1427324
 ```
 
 <!--
@@ -629,6 +629,24 @@ Note that with automatic authentication setup (e.g. SSH key pairs), there is not
 -->
 
 SSH キーペアなどの自動認証設定があるなら、リモートマシンのクラスタが同じ方法で使用できる。
+
+<!--
+If you want to run multiple workers on each node, just replicate the node name as many times as the number of workers to run on that node.
+For example,
+-->
+
+各ノードで複数のワーカを実行したい場合は、次のようにノード名を複数回書けばよい。
+
+```
+> plan(cluster, workers = c(rep("n1", times = 3), "n2", rep("n3", times = 5)))
+```
+
+<!--
+will run three workers on `n1`, one on `n2`, and five on `n3`, in total nine parallel workers.
+-->
+
+この例では、`n1` では3つ、`n2` では1つ、`n3` では5つと、合計9つのワーカにより並列実行される。
+
 
 ### フューチャのネストと評価トポロジー
 
@@ -668,28 +686,28 @@ For instance, here is an example of two “top” futures (a and b) that uses mu
 +     c(b.pid = Sys.getpid(), b1.pid = b1, b2.pid = b2)
 + }
 > pid
-[1] 23153
+[1] 1427324
 > a
 Future 'a' ...
-[1] 23429
+[1] 1427606
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
- b.pid b1.pid b2.pid 
- 23430  23430  23430 
+  b.pid  b1.pid  b2.pid
+1427607 1427607 1427607
 ```
 
 <!--
 By inspection the process IDs, we see that there are in total three different processes involved for resolving the futures.
-There is the main R process (pid 23153), and there are the two processes used by a (pid 23429) and b (pid 23430). 
+There is the main R process (pid 1427324), and there are the two processes used by a (pid 1427606) and b (pid 1427607). 
 However, the two futures (b1 and b2) that is nested by b are evaluated by the same R process as b.
 This is because nested futures use sequential evaluation unless otherwise specified. 
 There are a few reasons for this, but the main reason is that it protects us from spawning off a large number of background processes by mistake, e.g. via recursive calls.
 -->
 
-プロセスIDを見ると、3つの異なるプロセスがフューチャの解決に使われていることがわかる。 メインプロセス (pid 23153)、`a`
-に使われるプロセス (pid 23429)、`b` に使われるプロセス (pid 23430) である。 しかし、`b`
+プロセスIDを見ると、3つの異なるプロセスがフューチャの解決に使われていることがわかる。 メインプロセス (pid 1427324)、`a`
+に使われるプロセス (pid 1427606)、`b` に使われるプロセス (pid 1427607) である。 しかし、`b`
 にネストされている2つのフューチャ `b1` と `b2` は `b` と同じプロセスで評価されている。
 これは、特に指定しない限り、ネストされたフューチャは逐次戦略を使って評価されるためである。
 これにはいくつかの理由があるが、主な理由は、再帰呼び出しなどによって、誤って多くのバックグラウンドプロセスが発生するのを防ぐためである。
@@ -716,16 +734,16 @@ We would actually get the same behavior if we try with multiple levels of multis
 > plan(list(multisession, multisession))
 [...]
 > pid
-[1] 23153
+[1] 1427324
 > a
 Future 'a' ...
-[1] 23431
+[1] 1427721
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
- b.pid b1.pid b2.pid 
- 23432  23432  23432 
+  b.pid  b1.pid  b2.pid
+1427722 1427722 1427722
 ```
 
 <!--
@@ -748,24 +766,24 @@ Continuing, if we start off by sequential evaluation and then use multisession e
 > plan(list(sequential, multisession))
 [...]
 > pid
-[1] 23153
+[1] 1427324
 > a
 Future 'a' ...
-[1] 23153
+[1] 1427324
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
- b.pid b1.pid b2.pid 
- 23153  23433  23434 
+  b.pid  b1.pid  b2.pid
+1427324 1427855 1427854
 ```
 
 <!--
-which clearly show that a and b are resolved in the calling process (pid 23153) whereas the two nested futures (b1 and b2) are resolved in two separate R processes (pids 23433 and 23434).
+which clearly show that a and b are resolved in the calling process (pid 1427324) whereas the two nested futures (b1 and b2) are resolved in two separate R processes (pids 1427855  and 1427854).
 -->
 
-`a` と `b` は呼び出しプロセス (pid 23153) で解決され、ネストされた2つのフューチャ（`b1` と
-`b2`）はそれぞれ別のプロセス (pid 23433 と 23434) で解決されることがわかる。
+`a` と `b` は呼び出しプロセス (pid 1427324) で解決され、ネストされた2つのフューチャ（`b1` と
+`b2`）はそれぞれ別のプロセス (pid 1427855 と 1427854) で解決されることがわかる。
 
 <!--
 Having said this, it is indeed possible to use nested multisession evaluation strategies, if we explicitly specify (read force) the number of cores available at each level. 
@@ -780,25 +798,25 @@ In order to do this we need to “tweak” the default settings, which can be do
 +     workers = 2)))
 [...]
 > pid
-[1] 23153
+[1] 1427324
 > a
 Future 'a' ...
-[1] 23435
+[1] 1427973
 > b
 Future 'b' ...
 Future 'b1' ...
 Future 'b2' ...
- b.pid b1.pid b2.pid 
- 23436  23437  23438 
+  b.pid  b1.pid  b2.pid
+1427972 1428098 1428099
 ```
 
 <!--
-First, we see that both a and b are resolved in different processes (pids 23435 and 23436) than the calling process (pid 23153).
-Second, the two nested futures (b1 and b2) are resolved in yet two other R processes (pids 23437 and 23438).
+First, we see that both a and b are resolved in different processes (pids 1427973 and 1427972) than the calling process (pid 1427324).
+Second, the two nested futures (b1 and b2) are resolved in yet two other R processes (pids 1428098 and 1428099).
 -->
 
-まず、`a` と `b` は呼び出しプロセス (pid 23153) とは異なるプロセス（pid 23435 と 23436）で解決される。
-次に、2つのネストされたフューチャ（`b1` と `b2`）もまた異なるプロセス（pid 23437 と 23438）で解決される。
+まず、`a` と `b` は呼び出しプロセス (pid 1427324) とは異なるプロセス（pid 1427973 と 1427972）で解決される。
+次に、2つのネストされたフューチャ（`b1` と `b2`）もまた異なるプロセス（pid 1428098 と 1428099）で解決される。
 
 <!--
 For more details on working with nested futures and different evaluation strategies at each level, see Vignette 'Futures in R: Future Topologies'.
@@ -848,7 +866,7 @@ Waiting for 'a' to be resolved ...
 Waiting for 'a' to be resolved ... DONE
 > a
 Future 'a' ...done
-[1] 23439
+[1] 1428185
 ```
 
 ## フューチャにおけるエラー処理
@@ -981,9 +999,9 @@ For instance, we can create several of them in a loop and assign them to a list,
 > v <- lapply(f, FUN = value)
 > str(v)
 List of 3
- $ : int 23443
- $ : int 23444
- $ : int 23445
+ $ : int 1428291
+ $ : int 1428290
+ $ : int 1428291
 ```
 
 <!--
@@ -1009,9 +1027,9 @@ envir)` と同じ動作である。
 > v <- as.list(v)
 > str(v)
 List of 3
- $ a: int 23446
- $ b: int 23447
- $ c: int 23448
+ $ a: int 1428405
+ $ b: int 1428406
+ $ c: int 1428405
 ```
 
 <!--
@@ -1035,7 +1053,7 @@ For example,
 上記のコードでリストをリスト環境に置き換えると、数値インデックスを使って非明示的フューチャを代入できるようになる。
 
 ``` r
-> library("listenv")
+> library(listenv)
 > plan(multisession)
 > v <- listenv()
 > for (ii in 1:3) {
@@ -1046,9 +1064,9 @@ For example,
 > v <- as.list(v)
 > str(v)
 List of 3
- $ : int 23449
- $ : int 23450
- $ : int 23451
+ $ : int 1428523
+ $ : int 1428522
+ $ : int 1428523
 ```
 
 <!--
@@ -1068,7 +1086,7 @@ First, try with the sequential evaluation,
 デモを実行するとよい。 まず、逐次評価で実行してみよう。
 
 ``` r
-library("future")
+library(future)
 plan(sequential)
 demo("mandelbrot", package = "future", ask = FALSE)
 ```
