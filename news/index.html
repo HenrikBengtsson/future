@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.32.0-9108</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.0-9000</span>
       </span>
     </div>
 
@@ -158,16 +158,20 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<ul><li>…</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.33.0" id="version-1330">Version 1.33.0<small>2023-07-01</small><a class="anchor" aria-label="anchor" href="#version-1330"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-1-33-0">New Features<a class="anchor" aria-label="anchor" href="#new-features-1-33-0"></a></h3>
 <ul><li>When a ‘cluster’ future fails to communicate with the parallel worker, it does a post-mortem analysis to figure out why, including inspecting whether the worker process is still alive or not. In previous versions, this only worked for workers running on the current machine. Starting with this version, it also attempts to check this for remote versions.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
-<ul><li>If a ‘multicore’ future failed, because the parallel process crashed, the corresponding parallel-worker slot was never released.</li>
+<h3 id="bug-fixes-1-33-0">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-33-0"></a></h3>
+<ul><li>If a ‘multicore’ future failed, because the parallel process crashed, the corresponding parallel-worker slot was never released. Now it is removed if it can confirm that the forked worker process is no longer alive.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="deprecated-and-defunct-development-version">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-development-version"></a></h3>
+<h3 id="deprecated-and-defunct-1-33-0">Deprecated and Defunct<a class="anchor" aria-label="anchor" href="#deprecated-and-defunct-1-33-0"></a></h3>
 <ul><li>The ‘multiprocess’ strategy has now been fully removed. Please use ‘multisession’ (recommended) or ‘multicore’ instead.</li>
 </ul></div>
 </div>
