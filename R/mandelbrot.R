@@ -1,18 +1,5 @@
 #' Mandelbrot convergence counts
 #'
-#' @param Z               A complex matrix for which convergence
-#'                        counts should be calculated.
-#' @param xmid,ymid,side,resolution Alternative specification of
-#'                        the complex plane `Z`, where
-#'                        `mean(Re(Z)) == xmid`,
-#'                        `mean(Im(Z)) == ymid`,
-#'                        `diff(range(Re(Z))) == side`,
-#'                        `diff(range(Im(Z))) == side`, and
-#'                        `dim(Z) == c(resolution, resolution)`.
-#' @param maxIter         Maximum number of iterations per bin.
-#' @param tau             A threshold; the radius when calling
-#'                        divergence (Mod(z) > tau).
-#'
 #' @return Returns an integer matrix (of class Mandelbrot) with
 #' non-negative counts.
 #'
@@ -32,11 +19,29 @@
 #' from ftp://stat.ethz.ch/U/maechler/R/ on 2005-02-18 (sic!).
 #'
 #' @aliases as.raster.Mandelbrot plot.Mandelbrot mandelbrot_tiles
-#' @export
-#'
 #' @keywords internal
+#'
+#' @export
 mandelbrot <- function(...) UseMethod("mandelbrot")
 
+
+#' @param Z               A complex matrix for which convergence
+#'                        counts should be calculated.
+#'
+#' @param maxIter         Maximum number of iterations per bin.
+#'
+#' @param tau             A threshold; the radius when calling
+#'                        divergence (Mod(z) > tau).
+#'
+#' @param xmid,ymid,side,resolution Alternative specification of
+#'                        the complex plane `Z`, where
+#'                        `mean(Re(Z)) == xmid`,
+#'                        `mean(Im(Z)) == ymid`,
+#'                        `diff(range(Re(Z))) == side`,
+#'                        `diff(range(Im(Z))) == side`, and
+#'                        `dim(Z) == c(resolution, resolution)`.
+#'
+#' @rdname mandelbrot
 #' @export
 mandelbrot.matrix <- function(Z, maxIter = 200L, tau = 2.0, ...) {
   stop_if_not(is.matrix(Z), mode(Z) == "complex")
@@ -82,6 +87,20 @@ mandelbrot.matrix <- function(Z, maxIter = 200L, tau = 2.0, ...) {
 }
 
 
+#' @param xmid,ymid,side,resolution Alternative specification of
+#'                        the complex plane `Z`, where
+#'                        `mean(Re(Z)) == xmid`,
+#'                        `mean(Im(Z)) == ymid`,
+#'                        `diff(range(Re(Z))) == side`,
+#'                        `diff(range(Im(Z))) == side`, and
+#'                        `dim(Z) == c(resolution, resolution)`.
+#'
+#' @param maxIter         Maximum number of iterations per bin.
+#'
+#' @param tau             A threshold; the radius when calling
+#'                        divergence (Mod(z) > tau).
+#'
+#' @rdname mandelbrot
 #' @export
 mandelbrot.numeric <- function(xmid = -0.75, ymid = 0.0, side = 3.0,
                                resolution = 400L, maxIter = 200L,
