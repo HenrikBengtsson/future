@@ -14,8 +14,10 @@ Suggests:
     R.rsp,
     markdown
 VignetteBuilder: R.rsp
-Authors@R: c(person("Henrik", "Bengtsson", role=c("aut", "cre", "cph"),
-                                          email = "henrikb@braju.com"))
+Authors@R: c(person("Henrik", "Bengtsson",
+             role = c("aut", "cre", "cph"),
+             email = "henrikb@braju.com"),
+             comment = c(ORCID = "0000-0002-7579-5165"))
 Description: The purpose of this package is to provide a lightweight and
     unified Future API for sequential and parallel processing of R
     expression via futures.  The simplest way to evaluate an expression
