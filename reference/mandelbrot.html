@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.0-9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.0-9003</span>
       </span>
     </div>
 
@@ -165,7 +165,21 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mandelbrot</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mandelbrot</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for matrix</span></span>
+<span><span class="fu">mandelbrot</span><span class="op">(</span><span class="va">Z</span>, maxIter <span class="op">=</span> <span class="fl">200L</span>, tau <span class="op">=</span> <span class="fl">2</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for numeric</span></span>
+<span><span class="fu">mandelbrot</span><span class="op">(</span></span>
+<span>  xmid <span class="op">=</span> <span class="op">-</span><span class="fl">0.75</span>,</span>
+<span>  ymid <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  side <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  resolution <span class="op">=</span> <span class="fl">400L</span>,</span>
+<span>  maxIter <span class="op">=</span> <span class="fl">200L</span>,</span>
+<span>  tau <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -173,6 +187,15 @@
     <dl><dt>Z</dt>
 <dd><p>A complex matrix for which convergence
 counts should be calculated.</p></dd>
+
+
+<dt>maxIter</dt>
+<dd><p>Maximum number of iterations per bin.</p></dd>
+
+
+<dt>tau</dt>
+<dd><p>A threshold; the radius when calling
+divergence (Mod(z) &gt; tau).</p></dd>
 
 
 <dt>xmid, ymid, side, resolution</dt>
@@ -183,15 +206,6 @@ the complex plane <code>Z</code>, where
 <code>diff(range(Re(Z))) == side</code>,
 <code>diff(range(Im(Z))) == side</code>, and
 <code>dim(Z) == c(resolution, resolution)</code>.</p></dd>
-
-
-<dt>maxIter</dt>
-<dd><p>Maximum number of iterations per bin.</p></dd>
-
-
-<dt>tau</dt>
-<dd><p>A threshold; the radius when calling
-divergence (Mod(z) &gt; tau).</p></dd>
 
 </dl></div>
     <div id="value">
