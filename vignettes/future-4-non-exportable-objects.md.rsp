@@ -950,9 +950,9 @@ model {
 } 
 "
 
-y <- rnorm(20) 
-data <- list(N = 20, y = y); 
-fit <- stan(model_code = code, model_name = "example", 
+y <- rnorm(20)
+data <- list(N = 20, y = y)
+fit <- stan(model_code = code, model_name = "example",
             data = data, iter = 2012L, chains = 3L,
             sample_file = file.path(tempdir(), "norm.csv"))
 
