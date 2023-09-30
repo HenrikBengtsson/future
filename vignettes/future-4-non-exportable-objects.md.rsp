@@ -298,7 +298,7 @@ str(pred)
 ```
 
 
-#### Package: magic
+#### Package: magick
 
 The **[magick]** package provides an R-level API for [ImageMagick](https://imagemagick.org/) to work with images.  When working with this API, the images are represented internally as external pointers of class 'magick_image' that cannot be be exported to another R process, e.g.
 
