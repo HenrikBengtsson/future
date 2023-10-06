@@ -14,7 +14,7 @@ futureSessionInfo <- function(test = TRUE, anonymize = TRUE) {
   mprint0 <- function(...) mprint(..., prefix = NULL, debug = TRUE)
   mprintf0 <- function(...) mdebugf(..., prefix = NULL, debug = TRUE)   
   mstr0 <- function(...) mstr(..., prefix = NULL, debug = TRUE)
-
+  
   message("*** Package versions")
   p <- c("future", "parallelly", "parallel", "globals", "listenv")
   v <- vapply(p, FUN = function(pkg) {
@@ -93,11 +93,14 @@ futureSessionInfo <- function(test = TRUE, anonymize = TRUE) {
     if (anonymize) vs <- anonymize_info(vs)
     message("Main R session details:")
     mprint0(vs)
-    
+
+    delay <- getOption("future.futureSessionInfo.delay", 1.0)  ## seconds
+
     ## Information on the workers
     fs <- list()
     for (ii in seq_len(nbrOfWorkers())) {
       fs[[ii]] <- future({
+        Sys.sleep(delay)
         data.frame(
           worker = ii,
           pid    = Sys.getpid(),
