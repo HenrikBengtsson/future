@@ -55,7 +55,7 @@ To reset the strategy back to the default, use \code{plan("default")}.
 
 The \pkg{future} package provides the following built-in backends:
 
-\itemize{
+\describe{
 \item{\code{\link{sequential}}:}{
 Resolves futures sequentially in the current \R process, e.g.
 \code{plan(sequential)}.
