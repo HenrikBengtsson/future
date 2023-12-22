@@ -25,7 +25,7 @@ e.g. sequentially or in parallel."><meta property="og:image" content="https://fu
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1</span>
       </span>
     </div>
 
@@ -236,25 +236,30 @@ To reset the strategy back to the default, use <code>plan("default")</code>.</p>
     
 
 <p>The <span class="pkg">future</span> package provides the following built-in backends:</p>
-<ul><li><p><code><a href="sequential.html">sequential</a></code>:
-Resolves futures sequentially in the current <span style="R">R</span> process, e.g.
-<code>plan(sequential)</code>.</p></li>
-<li><p><code><a href="multisession.html">multisession</a></code>:
-Resolves futures asynchronously (in parallel) in separate
+<dl><dt><code><a href="sequential.html">sequential</a></code>:</dt>
+<dd><p>Resolves futures sequentially in the current <span style="R">R</span> process, e.g.
+<code>plan(sequential)</code>.</p></dd>
+
+<dt><code><a href="multisession.html">multisession</a></code>:</dt>
+<dd><p>Resolves futures asynchronously (in parallel) in separate
 <span style="R">R</span> sessions running in the background on the same machine, e.g.
-<code>plan(multisession)</code> and <code>plan(multisession, workers = 2)</code>.</p></li>
-<li><p><code><a href="multicore.html">multicore</a></code>:
-Resolves futures asynchronously (in parallel) in separate
+<code>plan(multisession)</code> and <code>plan(multisession, workers = 2)</code>.</p></dd>
+
+<dt><code><a href="multicore.html">multicore</a></code>:</dt>
+<dd><p>Resolves futures asynchronously (in parallel) in separate
 <em>forked</em> <span style="R">R</span> processes running in the background on
 the same machine, e.g.
 <code>plan(multicore)</code> and <code>plan(multicore, workers = 2)</code>.
-This backend is not supported on Windows.</p></li>
-<li><p><code><a href="cluster.html">cluster</a></code>:
-Resolves futures asynchronously (in parallel) in separate
+This backend is not supported on Windows.</p></dd>
+
+<dt><code><a href="cluster.html">cluster</a></code>:</dt>
+<dd><p>Resolves futures asynchronously (in parallel) in separate
 <span style="R">R</span> sessions running typically on one or more machines, e.g.
 <code>plan(cluster)</code>, <code>plan(cluster, workers = 2)</code>, and
-<code>plan(cluster, workers = c("n1", "n1", "n2", "server.remote.org"))</code>.</p></li>
-</ul><p>Other package provide additional evaluation strategies.
+<code>plan(cluster, workers = c("n1", "n1", "n2", "server.remote.org"))</code>.</p></dd>
+
+
+</dl><p>Other package provide additional evaluation strategies.
 For example, the <span class="pkg">future.callr</span> package implements an alternative
 to the <code>multisession</code> backend on top of the <span class="pkg">callr</span> package, e.g.
 <code>plan(future.callr::callr, workers = 2)</code>.

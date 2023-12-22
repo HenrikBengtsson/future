@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.0-9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1</span>
       </span>
     </div>
 
@@ -289,7 +289,7 @@ parallel or sequentially. This often result in code like:</p>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">oplan</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">future_lapply</span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span> <span class="co">## from future.apply package</span></span>
 <span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span></span>
+<span>    <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">x</span>, FUN <span class="op">=</span> <span class="va">analyze</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="fu">summarize</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
