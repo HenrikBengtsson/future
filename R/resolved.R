@@ -1,7 +1,7 @@
 #' Check whether a future is resolved or not
 #'
 #' @param x A \link{Future}, a list, or an environment (which also
-#' includes \link[listenv:listenv]{list environment}.
+#' includes \link[listenv:listenv]{list environment}).
 #'
 #' @param \dots Not used.
 #'

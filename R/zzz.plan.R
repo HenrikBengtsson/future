@@ -39,7 +39,7 @@
 #' @section Built-in evaluation strategies:
 #' The \pkg{future} package provides the following built-in backends:
 #'
-#' \itemize{
+#' \describe{
 #'  \item{[`sequential`]:}{
 #'    Resolves futures sequentially in the current \R process, e.g.
 #'    `plan(sequential)`.

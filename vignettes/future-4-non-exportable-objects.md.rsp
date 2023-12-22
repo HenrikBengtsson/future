@@ -79,7 +79,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **cpp11**       | E.g. functions created by `cpp_source()`
   **DBI**         | DBIConnection (`externalptr`)
   **inline**      | CFunc (`externalptr` of class DLLHandle)
-  **keras**       | keras.engine.sequential.Sequential (`externalptr`)
+  **keras**       | keras.engine.sequential.Sequential (`externalptr`), keras.engine.base_layer.Layer (`externalptr`)
   **magick**      | magick-image (`externalptr`)
   **ncdf4**       | ncdf4 (custom reference; _non-detectable_)
   **parallel**    | cluster and cluster nodes (`connection`)
@@ -237,7 +237,14 @@ f <- future(sum_1_to_n(10, 0))
 
 #### Package: keras
 
-The **[keras]** package provides an R interface to [Keras](https://keras.io/), which "is a high-level neural networks API developed with a focus on enabling fast experimentation".  The R implementation accesses the Keras Python API via **[reticulate]**.  However, Keras model instances in R make use of R connections and external pointers, which prevents them from being exported to external R processes.  For example, if the attempt to use a Keras model in a multisession workers, the worker will produce a run-time error:
+The **[keras]** package provides an R interface to
+[Keras](https://keras.io/), which "is a high-level neural networks API
+developed with a focus on enabling fast experimentation".  The R
+implementation accesses the Keras Python API via **[reticulate]**.
+However, Keras model instances in R make use of R connections and
+external pointers, which prevents them from being exported to external
+R processes.  For example, if the attempt to use a Keras model in a
+multisession workers, the worker will produce a run-time error:
 
 ```r
 library(keras)
@@ -245,27 +252,53 @@ library(keras)
 library(future)
 plan(multisession)
 
-model <- keras_model_sequential()
-f <- future(model %>% 
-       layer_dense(units = 256, activation = 'relu', input_shape = c(784)) %>% 
-       layer_dropout(rate = 0.4) %>% 
-       layer_dense(units = 128, activation = 'relu') %>%
-       layer_dropout(rate = 0.3) %>%
-       layer_dense(units = 10, activation = 'softmax'))
-model2 <- value(f)
-Error in object$add(layer) : attempt to apply non-function
+## Adopted from the 'keras' vignettes
+inputs <- layer_input(shape = shape(32))
+outputs <- layer_dense(inputs, units = 1L)
+model <- keras_model(inputs, outputs)
+model <- compile(model, optimizer = "adam", loss = "mean_squared_error")
+
+test_input <- array(runif(128 * 32), dim = c(128, 32))
+test_target <- array(runif(128), dim = c(128, 1))
+fit(model, test_input, test_target)
+
+f <- future({
+  stats::predict(model, test_input)
+}, seed = TRUE)
+pred <- value(f)
+## Error in do.call(object$predict, args) : 
+##   'what' must be a function or character string
 ```
 
-If we turn on `options(future.globals.onReference = "error")`, we will catch this already when we create the future:
+This is error message is not very helpful.  But, if we turn on
+`options(future.globals.onReference = "error")`, we get more
+clues;
 
 ```r
 Error: Detected a non-exportable reference ('externalptr') in one of the
-globals ('model' of class 'keras.engine.sequential.Sequential') used in
+globals ('model' of class 'keras.engine.functional.Functional') used in
 the future expression
 ```
 
+Functions `serialize_model()` and `unserialize_model()` of the
+**keras** package can be used as workaround to marshal and unmarshal
+non-exportable **keras** objects, e.g.
 
-#### Package: magic
+```r
+.model <- serialize_model(model)
+f <- future({
+  model <- unserialize_model(.model)
+  stats::predict(model, test_input)
+}, seed = TRUE)
+rm(.model) ## not needed anymore
+
+pred <- value(f)
+str(pred)
+## num [1:128, 1] 0.6937 -0.048 0.2996 -0.0818 1.0673 ...
+```
+
+
+#### Package: magick
 
 The **[magick]** package provides an R-level API for [ImageMagick](https://imagemagick.org/) to work with images.  When working with this API, the images are represented internally as external pointers of class 'magick_image' that cannot be be exported to another R process, e.g.
 
@@ -917,9 +950,9 @@ model {
 } 
 "
 
-y <- rnorm(20) 
-data <- list(N = 20, y = y); 
-fit <- stan(model_code = code, model_name = "example", 
+y <- rnorm(20)
+data <- list(N = 20, y = y)
+fit <- stan(model_code = code, model_name = "example",
             data = data, iter = 2012L, chains = 3L,
             sample_file = file.path(tempdir(), "norm.csv"))
 

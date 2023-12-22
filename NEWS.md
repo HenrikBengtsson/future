@@ -1,3 +1,14 @@
+# Version 1.33.1 [2023-12-21]
+
+## Bug Fixes
+
+ * `getExpression()` on 'cluster' future could under some
+   circumstances call `local()` on the global search path rather than
+   `base::local()` as intended.  For example, if a package that
+   exports its own `local()` function was attached, then that would be
+   called instead, often leading to a hard to troubleshoot error.
+ 
+
 # Version 1.33.0 [2023-07-01]
 
 ## New Features

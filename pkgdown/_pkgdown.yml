@@ -45,6 +45,8 @@ navbar:
         href: https://BiocParallel.FutureParam.futureverse.org
       - text: future.tools (experimental)
         href: https://future.tools.futureverse.org
+      - text: future.mirai (experimental)
+        href: https://future.mirai.futureverse.org
       - text: future.mapreduce (experimental)
         href: https://future.mapreduce.futureverse.org
       - text: marshal (experimental)

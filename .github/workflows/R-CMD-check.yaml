@@ -27,7 +27,7 @@ jobs:
           - {os: ubuntu-latest,  r: 'oldrel'   }
           - {os: ubuntu-latest,  r: 'oldrel-1' }
           - {os: ubuntu-latest,  r: 'oldrel-2' }
-          - {os: ubuntu-latest,  r: '3.4'      }
+          - {os: ubuntu-latest,  r: '3.5'      }
           - {os: ubuntu-latest,  r: 'release'  , language: ko,    label: ko    }
           - {os: ubuntu-latest,  r: 'release'  , language: zh_CN, label: zh_CN }
           - {os: ubuntu-latest,  r: 'release'  , language: zh_TW, label: zh_TW }
@@ -57,7 +57,7 @@ jobs:
       R_FUTURE_GLOBALS_KEEPWHERE: ${{ matrix.config.globals_keepWhere }}
       
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -92,7 +92,7 @@ jobs:
           tryCatch(log("a"), error = conditionMessage)
         shell: Rscript {0}
 
-      - name: Check (!Windows)
+      - name: Check
         if: runner.os != 'Windows'
         env:
           ## FIXME: Eventually update to 'R_FUTURE_GLOBALS_ONREFERENCE=error'

@@ -5,13 +5,32 @@
 \alias{as.raster.Mandelbrot}
 \alias{plot.Mandelbrot}
 \alias{mandelbrot_tiles}
+\alias{mandelbrot.matrix}
+\alias{mandelbrot.numeric}
 \title{Mandelbrot convergence counts}
 \usage{
 mandelbrot(...)
+
+\method{mandelbrot}{matrix}(Z, maxIter = 200L, tau = 2, ...)
+
+\method{mandelbrot}{numeric}(
+  xmid = -0.75,
+  ymid = 0,
+  side = 3,
+  resolution = 400L,
+  maxIter = 200L,
+  tau = 2,
+  ...
+)
 }
 \arguments{
 \item{Z}{A complex matrix for which convergence
 counts should be calculated.}
+
+\item{maxIter}{Maximum number of iterations per bin.}
+
+\item{tau}{A threshold; the radius when calling
+divergence (Mod(z) > tau).}
 
 \item{xmid, ymid, side, resolution}{Alternative specification of
 the complex plane \code{Z}, where
@@ -20,11 +39,6 @@ the complex plane \code{Z}, where
 \code{diff(range(Re(Z))) == side},
 \code{diff(range(Im(Z))) == side}, and
 \code{dim(Z) == c(resolution, resolution)}.}
-
-\item{maxIter}{Maximum number of iterations per bin.}
-
-\item{tau}{A threshold; the radius when calling
-divergence (Mod(z) > tau).}
 }
 \value{
 Returns an integer matrix (of class Mandelbrot) with

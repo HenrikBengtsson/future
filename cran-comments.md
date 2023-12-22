@@ -1,12 +1,10 @@
-# CRAN submission future 1.33.0
+# CRAN submission future 1.33.1
 
-on 2023-07-01
+on 2023-12-21
 
-I've checked this version towards 292 reverse package dependencies available on CRAN (n = 273) and Bioconductor (n = 19).
+## Notes sent to CRAN
 
-This submission breaks five (n = 5) CRAN packages: disk.frame (ERROR), jstor (WARNING), metabolomicsR(WARNING), tcplfit2 (WARNING), and TSstudio (WARNING). This is because they depend on a function that has been deprecated since 2020. The maintainers have been notified well in advance and multiple times. They have been reminded about since at least 2023-04-04 and some even since 2021.
-
-Thank you
+Thanks in advance
 
 
 ## Notes not sent to CRAN
@@ -18,9 +16,8 @@ The package has been verified using `R CMD check --as-cran` on:
 | R version | GitHub | R-hub  | mac/win-builder |
 | --------- | ------ | ------ | --------------- |
 | 3.5.x     | L      |        |                 |
-| 3.6.x     | L      |        |                 |
 | 4.1.x     | L      |        |                 |
-| 4.2.x     | L M W  | L   W  | M1 W            |
+| 4.2.x     | L M W  | L   W  |                 |
 | 4.3.x     | L M W  | L   W  | M1 W            |
 | devel     | L M W  | L      |    W            |
 
@@ -34,7 +31,6 @@ res <- rhub::check(platforms = c(
   "debian-clang-devel", 
   "fedora-gcc-devel",
   "debian-gcc-patched", 
-#  "macos-highsierra-release-cran",
   "windows-x86_64-release"
 ))
 print(res)
@@ -43,39 +39,39 @@ print(res)
 gives
 
 ```
-── future 1.32.0-9115: OK
+── future 1.33.1: OK
 
-  Build ID:   future_1.32.0-9115.tar.gz-ada9133dcbd34b03899066463a021e9b
+  Build ID:   future_1.33.1.tar.gz-2f034a059c5d407aa6167d7fbe0ee504
   Platform:   Debian Linux, R-devel, clang, ISO-8859-15 locale
-  Submitted:  14m 32.1s ago
-  Build time: 14m 28.2s
+  Submitted:  45m 55.3s ago
+  Build time: 41m 47.9s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.32.0-9115: OK
+── future 1.33.1: OK
 
-  Build ID:   future_1.32.0-9115.tar.gz-0411c118672a4fb98da3fc376f3507e6
+  Build ID:   future_1.33.1.tar.gz-f385f4998fac446bb0e2c5efc02f36d3
   Platform:   Fedora Linux, R-devel, GCC
-  Submitted:  14m 32.1s ago
-  Build time: 11m 26.2s
+  Submitted:  45m 55.3s ago
+  Build time: 28m 25.3s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.32.0-9115: OK
+── future 1.33.1: OK
 
-  Build ID:   future_1.32.0-9115.tar.gz-a000c2b84c26406b8269f27f8bcddc73
+  Build ID:   future_1.33.1.tar.gz-5e83389a128540c48a35112d8f06810c
   Platform:   Debian Linux, R-patched, GCC
-  Submitted:  14m 32.1s ago
-  Build time: 13m 45.6s
+  Submitted:  45m 55.3s ago
+  Build time: 39m 28.8s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.32.0-9115: OK
+── future 1.33.1: OK
 
-  Build ID:   future_1.32.0-9115.tar.gz-fa49907794cd48558b6d7a111fa544ee
+  Build ID:   future_1.33.1.tar.gz-121079216c7b4f02a6ae2aceb1c2ba0b
   Platform:   Windows Server 2022, R-release, 32/64 bit
-  Submitted:  14m 32.1s ago
-  Build time: 7m 17.7s
+  Submitted:  45m 55.3s ago
+  Build time: 6m 57.4s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 ```
