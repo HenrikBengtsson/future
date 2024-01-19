@@ -1,6 +1,12 @@
 # Version (development version)
 
- * ...
+## Performance
+
+ * Decreased the overhead of launching futures that occurred for future
+   strategies that used a complex `workers` argument. For example,
+   `plan(cluster, workers = cl)`, where `cl` is a `cluster` object,
+   would come with an extra overhead, because the `workers` object was
+   unnecessarily transferred to the cluster nodes.
 
 
 # Version 1.33.1 [2023-12-21]
