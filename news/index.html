@@ -164,11 +164,11 @@
 <ul><li>…</li>
 </ul></div>
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.33.1" id="version-1331">Version 1.33.1<a class="anchor" aria-label="anchor" href="#version-1331"></a></h2>
+<h2 class="page-header" data-toc-text="1.33.1" id="version-1331">Version 1.33.1<small>2023-12-22</small><a class="anchor" aria-label="anchor" href="#version-1331"></a></h2>
 <div class="section level3">
 <h3 id="bug-fixes-1-33-1">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-33-1"></a></h3>
 <ul><li>
-<code><a href="../reference/getExpression.html">getExpression()</a></code> on ‘cluster’ future could under some circumstances call <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">local()</a></code> on the global search path rather than <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">base::local()</a></code> as intended. For example, if a package that exports its own <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">local()</a></code> function was attached, then that would be called instead, often leading to a hard to troubleshoot error.</li>
+<code><a href="../reference/getExpression.html">getExpression()</a></code> on ‘cluster’ future could under some circumstances call <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">local()</a></code> on the global search path rather than <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">base::local()</a></code> as intended. For example, if a package that exports its own <code><a href="https://rdrr.io/r/base/eval.html" class="external-link">local()</a></code> function was attached, then that would be called instead, often leading to a hard-to-troubleshoot error.</li>
 </ul></div>
 </div>
     <div class="section level2">

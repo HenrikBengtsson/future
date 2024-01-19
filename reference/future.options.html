@@ -206,7 +206,7 @@ See the <a href="https://parallelly.futureverse.org/reference/parallelly.options
 
 
 <dt><span class="option">future.globals.onReference</span>: (<em>beta feature - may change</em>)</dt>
-<dd><p>(character string) Controls whether the identified globals should be scanned for so called <em>references</em> (e.g. external pointers and connections) or not.  It is unlikely that another <span style="R">R</span> process ("worker") can use a global that uses a internal reference of the master <span style="R">R</span> process - we call such objects <em>non-exportable globals</em>.
+<dd><p>(character string) Controls whether the identified globals should be scanned for so called <em>references</em> (e.g. external pointers and connections) or not.  It is unlikely that another <span style="R">R</span> process ("worker") can use a global that uses a internal reference of the master <span style="R">R</span> process---we call such objects <em>non-exportable globals</em>.
 If this option is <code>"error"</code>, an informative error message is produced if a non-exportable global is detected.
 If <code>"warning"</code>, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master <span style="R">R</span> process (e.g. <code>plan(sequential)</code> and <code>plan(multicore)</code>).
 If <code>"ignore"</code>, no scan is performed.
@@ -259,7 +259,7 @@ the polling frequency of <code><a href="resolve.html">resolve()</a></code>. (Def
     
 
 <dl><dt><span class="option">future.startup.script</span>:</dt>
-<dd><p>(character vector or a logical) Specifies zero of more future startup scripts to be sourced when the <span class="pkg">future</span> package is <em>attached</em>. It is only the first existing script that is sourced. If none of the specified files exist, nothing is sourced - there will be neither a warning nor an error.
+<dd><p>(character vector or a logical) Specifies zero of more future startup scripts to be sourced when the <span class="pkg">future</span> package is <em>attached</em>. It is only the first existing script that is sourced. If none of the specified files exist, nothing is sourced---there will be neither a warning nor an error.
 If this option is not specified, environment variable <code class="env">R_FUTURE_STARTUP_SCRIPT</code> is considered, where multiple scripts may be separated by either a colon (<code>:</code>) or a semicolon (<code>;</code>). If neither is set, or either is set to <code>TRUE</code>, the default is to look for a <code class="file">.future.R</code> script in the current directory and then in the user's home directory.  To disable future startup scripts, set the option or the environment variable to <code>FALSE</code>.  <em>Importantly</em>, this option is <em>always</em> set to <code>FALSE</code> if the <span class="pkg">future</span> package is loaded as part of a future expression being evaluated, e.g. in a background process. In order words, they are sourced in the main <span style="R">R</span> process but not in future processes. (Default: <code>TRUE</code> in main <span style="R">R</span> process and <code>FALSE</code> in future processes / during future evaluation)</p></dd>
 
 
