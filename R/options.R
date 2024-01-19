@@ -33,7 +33,7 @@
 #'
 #'  \item{\option{future.globals.maxSize}:}{(numeric) Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. If set of `+Inf`, then the check for large globals is skipped. (Default: `500 * 1024 ^ 2` = 500 MiB)}
 #'
-#'   \item{\option{future.globals.onReference}: (_beta feature - may change_)}{(character string) Controls whether the identified globals should be scanned for so called _references_ (e.g. external pointers and connections) or not.  It is unlikely that another \R process ("worker") can use a global that uses a internal reference of the master \R process - we call such objects _non-exportable globals_.
+#'   \item{\option{future.globals.onReference}: (_beta feature - may change_)}{(character string) Controls whether the identified globals should be scanned for so called _references_ (e.g. external pointers and connections) or not.  It is unlikely that another \R process ("worker") can use a global that uses a internal reference of the master \R process---we call such objects _non-exportable globals_.
 #'    If this option is `"error"`, an informative error message is produced if a non-exportable global is detected.
 #'    If `"warning"`, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. `plan(sequential)` and `plan(multicore)`).
 #'    If `"ignore"`, no scan is performed.
@@ -67,7 +67,7 @@
 #'
 #' @section Options for controlling package startup:
 #' \describe{
-#'  \item{\option{future.startup.script}:}{(character vector or a logical) Specifies zero of more future startup scripts to be sourced when the \pkg{future} package is _attached_. It is only the first existing script that is sourced. If none of the specified files exist, nothing is sourced - there will be neither a warning nor an error.
+#'  \item{\option{future.startup.script}:}{(character vector or a logical) Specifies zero of more future startup scripts to be sourced when the \pkg{future} package is _attached_. It is only the first existing script that is sourced. If none of the specified files exist, nothing is sourced---there will be neither a warning nor an error.
 #'  If this option is not specified, environment variable \env{R_FUTURE_STARTUP_SCRIPT} is considered, where multiple scripts may be separated by either a colon (`:`) or a semicolon (`;`). If neither is set, or either is set to `TRUE`, the default is to look for a \file{.future.R} script in the current directory and then in the user's home directory.  To disable future startup scripts, set the option or the environment variable to `FALSE`.  _Importantly_, this option is _always_ set to `FALSE` if the \pkg{future} package is loaded as part of a future expression being evaluated, e.g. in a background process. In order words, they are sourced in the main \R process but not in future processes. (Default: `TRUE` in main \R process and `FALSE` in future processes / during future evaluation)}
 #'
 #'  \item{\option{future.cmdargs}:}{(character vector) Overrides \code{\link[base]{commandArgs}()} when the \pkg{future} package is _loaded_.}

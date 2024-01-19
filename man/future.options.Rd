@@ -84,7 +84,7 @@ See the \link[parallelly:parallelly.options]{parallelly::parallelly.options} pag
 
 \item{\option{future.globals.maxSize}:}{(numeric) Maximum allowed total size (in bytes) of global variables identified. Used to prevent too large exports. If set of \code{+Inf}, then the check for large globals is skipped. (Default: \code{500 * 1024 ^ 2} = 500 MiB)}
 
-\item{\option{future.globals.onReference}: (\emph{beta feature - may change})}{(character string) Controls whether the identified globals should be scanned for so called \emph{references} (e.g. external pointers and connections) or not.  It is unlikely that another \R process ("worker") can use a global that uses a internal reference of the master \R process - we call such objects \emph{non-exportable globals}.
+\item{\option{future.globals.onReference}: (\emph{beta feature - may change})}{(character string) Controls whether the identified globals should be scanned for so called \emph{references} (e.g. external pointers and connections) or not.  It is unlikely that another \R process ("worker") can use a global that uses a internal reference of the master \R process---we call such objects \emph{non-exportable globals}.
 If this option is \code{"error"}, an informative error message is produced if a non-exportable global is detected.
 If \code{"warning"}, a warning is produced, but the processing will continue; it is likely that the future will be resolved with a run-time error unless processed in the master \R process (e.g. \code{plan(sequential)} and \code{plan(multicore)}).
 If \code{"ignore"}, no scan is performed.
@@ -120,7 +120,7 @@ the polling frequency of \code{resolve()}. (Default: \code{0.01} = 0.01 seconds)
 \section{Options for controlling package startup}{
 
 \describe{
-\item{\option{future.startup.script}:}{(character vector or a logical) Specifies zero of more future startup scripts to be sourced when the \pkg{future} package is \emph{attached}. It is only the first existing script that is sourced. If none of the specified files exist, nothing is sourced - there will be neither a warning nor an error.
+\item{\option{future.startup.script}:}{(character vector or a logical) Specifies zero of more future startup scripts to be sourced when the \pkg{future} package is \emph{attached}. It is only the first existing script that is sourced. If none of the specified files exist, nothing is sourced---there will be neither a warning nor an error.
 If this option is not specified, environment variable \env{R_FUTURE_STARTUP_SCRIPT} is considered, where multiple scripts may be separated by either a colon (\code{:}) or a semicolon (\verb{;}). If neither is set, or either is set to \code{TRUE}, the default is to look for a \file{.future.R} script in the current directory and then in the user's home directory.  To disable future startup scripts, set the option or the environment variable to \code{FALSE}.  \emph{Importantly}, this option is \emph{always} set to \code{FALSE} if the \pkg{future} package is loaded as part of a future expression being evaluated, e.g. in a background process. In order words, they are sourced in the main \R process but not in future processes. (Default: \code{TRUE} in main \R process and \code{FALSE} in future processes / during future evaluation)}
 
 \item{\option{future.cmdargs}:}{(character vector) Overrides \code{\link[base]{commandArgs}()} when the \pkg{future} package is \emph{loaded}.}
