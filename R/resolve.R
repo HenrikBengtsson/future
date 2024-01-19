@@ -14,9 +14,12 @@
 #' should be done.  If TRUE, an infinite recursion is used.  If FALSE or zero,
 #' no recursion is performed.
 #' 
-#' @param result (internal) If TRUE, the results are retrieved, otherwise not.
+#' @param result (internal) If TRUE, the results are _retrieved_, otherwise not.
+#' Note that this only collects the results from the parallel worker, which
+#' can help lower the overall latency if there are multiple concurrent futures.
+#' This does _not_ return the collected results.
 #' 
-#' @param stdout (internal) If TRUE, captured standard output is relayed, otherwise note.
+#' @param stdout (internal) If TRUE, captured standard output is relayed, otherwise not.
 #' 
 #' @param signal (internal) If TRUE, captured \link[base]{conditions} are relayed,
 #' otherwise not.
@@ -52,6 +55,21 @@ resolve.Future <- function(x, idxs = NULL, recursive = 0, result = FALSE, stdout
   ## BACKWARD COMPATIBILITY
   if (missing(result) && "value" %in% names(list(...))) {
     .Defunct(msg = "Argument 'value' of resolve() is defunct. It was deprecated in future (>= 1.15.0) [2019-11-07]. Use 'result' instead.", package = .packageName)
+  }
+
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
+    t_start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(x,
+        event = "resolve",
+        category = "overhead",
+        start = t_start,
+        stop = Sys.time(),
+        skip = FALSE
+      )
+    })
   }
 
   if (is.logical(recursive)) {

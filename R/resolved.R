@@ -1,7 +1,7 @@
 #' Check whether a future is resolved or not
 #'
 #' @param x A \link{Future}, a list, or an environment (which also
-#' includes \link[listenv:listenv]{list environment}.
+#' includes \link[listenv:listenv]{list environment}).
 #'
 #' @param \dots Not used.
 #'
@@ -19,7 +19,23 @@
 #' e.g. `while (!resolved(future)) Sys.sleep(5)`.
 #'
 #' @export
-resolved <- function(x, ...) UseMethod("resolved")
+resolved <- function(x, ...) {
+  ## Automatically update journal entries for Future object
+  if (inherits(future, "Future") &&
+      inherits(future$.journal, "FutureJournal")) {
+    start <- Sys.time()
+    on.exit({
+      appendToFutureJournal(x,
+        event = "resolved",
+        category = "querying",
+        start = start,
+        stop = Sys.time(),
+        skip = FALSE
+      )
+    })
+  }
+  UseMethod("resolved")
+}
 
 #' @export
 resolved.default <- function(x, ...) TRUE

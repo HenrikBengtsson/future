@@ -1,10 +1,10 @@
-# CRAN submission future 1.31.0
+# CRAN submission future 1.33.1
 
-on 2023-01-31
+on 2023-12-21
 
-I've verified this submission has no negative impact on any of the 276 reverse package dependencies available on CRAN (n = 257) and Bioconductor (n = 19).
+## Notes sent to CRAN
 
-Thank you
+Thanks in advance
 
 
 ## Notes not sent to CRAN
@@ -13,16 +13,15 @@ Thank you
 
 The package has been verified using `R CMD check --as-cran` on:
 
-| R version | GitHub | R-hub  | mac/win-builder | Other  |
-| --------- | ------ | ------ | --------------- | ------ |
-| 3.4.x     | L      |        |                 |        |
-| 3.6.x     | L      |        |                 |        |
-| 4.0.x     | L      |        |                 |        |
-| 4.1.x     | L M W  |   M    |                 |        |
-| 4.2.x     | L M W  | L   W  | M1 W            | W*     |
-| devel     | L M W  | L      | M1 W            |        |
+| R version | GitHub | R-hub  | mac/win-builder |
+| --------- | ------ | ------ | --------------- |
+| 3.5.x     | L      |        |                 |
+| 4.1.x     | L      |        |                 |
+| 4.2.x     | L M W  | L   W  |                 |
+| 4.3.x     | L M W  | L   W  | M1 W            |
+| devel     | L M W  | L      |    W            |
 
-_Legend: OS: L = Linux, M = macOS, M1 = macOS M1, W = Windows, * = msys2_
+_Legend: OS: L = Linux, M = macOS, M1 = macOS M1, W = Windows_
 
 
 R-hub checks:
@@ -32,7 +31,6 @@ res <- rhub::check(platforms = c(
   "debian-clang-devel", 
   "fedora-gcc-devel",
   "debian-gcc-patched", 
-  "macos-highsierra-release-cran",
   "windows-x86_64-release"
 ))
 print(res)
@@ -41,48 +39,39 @@ print(res)
 gives
 
 ```
-── future 1.31.0: OK
+── future 1.33.1: OK
 
-  Build ID:   future_1.31.0.tar.gz-f8efc94ad4fa463f9affccc517690397
+  Build ID:   future_1.33.1.tar.gz-2f034a059c5d407aa6167d7fbe0ee504
   Platform:   Debian Linux, R-devel, clang, ISO-8859-15 locale
-  Submitted:  38m 17.6s ago
-  Build time: 38m 10.4s
+  Submitted:  45m 55.3s ago
+  Build time: 41m 47.9s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.31.0: OK
+── future 1.33.1: OK
 
-  Build ID:   future_1.31.0.tar.gz-9fecff4397854eb3a27733144f38d07e
+  Build ID:   future_1.33.1.tar.gz-f385f4998fac446bb0e2c5efc02f36d3
   Platform:   Fedora Linux, R-devel, GCC
-  Submitted:  38m 17.6s ago
-  Build time: 24m 9.5s
+  Submitted:  45m 55.3s ago
+  Build time: 28m 25.3s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.31.0: OK
+── future 1.33.1: OK
 
-  Build ID:   future_1.31.0.tar.gz-e0200a7435c443d49a81df2c976da755
+  Build ID:   future_1.33.1.tar.gz-5e83389a128540c48a35112d8f06810c
   Platform:   Debian Linux, R-patched, GCC
-  Submitted:  38m 17.6s ago
-  Build time: 35m 54.8s
+  Submitted:  45m 55.3s ago
+  Build time: 39m 28.8s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 
-── future 1.31.0: OK
+── future 1.33.1: OK
 
-  Build ID:   future_1.31.0.tar.gz-90adad97845a418cbff7ad20171a4d99
-  Platform:   macOS 10.13.6 High Sierra, R-release, CRAN's setup
-  Submitted:  38m 17.6s ago
-  Build time: 7m 17.3s
-
-0 errors ✔ | 0 warnings ✔ | 0 notes ✔
-
-── future 1.31.0: OK
-
-  Build ID:   future_1.31.0.tar.gz-4372d899916e45cc90ac72167dd7c69a
+  Build ID:   future_1.33.1.tar.gz-121079216c7b4f02a6ae2aceb1c2ba0b
   Platform:   Windows Server 2022, R-release, 32/64 bit
-  Submitted:  38m 17.6s ago
-  Build time: 5m 48.8s
+  Submitted:  45m 55.3s ago
+  Build time: 6m 57.4s
 
 0 errors ✔ | 0 warnings ✔ | 0 notes ✔
 ```

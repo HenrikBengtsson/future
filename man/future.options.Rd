@@ -26,7 +26,13 @@
 \alias{R_FUTURE_GLOBALS_ONREFERENCE}
 \alias{future.plan}
 \alias{R_FUTURE_PLAN}
+\alias{future.onFutureCondition.keepFuture}
+\alias{R_FUTURE_ONFUTURECONDITION_KEEPFUTURE}
 \alias{future.resolve.recursive}
+\alias{R_FUTURE_RESOLVE_RECURSIVE}
+\alias{future.globalenv.onMisuse}
+\alias{R_FUTURE_GLOBALENV_ONMISUSE}
+\alias{future.rng.onMisuse}
 \alias{R_FUTURE_RNG_ONMISUSE}
 \alias{future.wait.alpha}
 \alias{R_FUTURE_WAIT_ALPHA}
@@ -37,6 +43,8 @@
 \alias{R_FUTURE_RESOLVED_TIMEOUT}
 \alias{future.output.windows.reencode}
 \alias{R_FUTURE_OUTPUT_WINDOWS_REENCODE}
+\alias{future.journal}
+\alias{R_FUTURE_JOURNAL}
 \title{Options used for futures}
 \description{
 Below are the \R options and environment variables that are used by the
@@ -87,6 +95,10 @@ If \code{"ignore"}, no scan is performed.
 
 \item{\option{future.rng.onMisuse}: (\emph{beta feature - may change})}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that \emph{no} random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and \code{future.rng.onMisuse = "error"}, then an informative error message is produced.  If \code{"warning"}, then a warning message is produced.  If \code{"ignore"}, no check is performed. (Default: \code{"warning"})}
 
+\item{\option{future.globalenv.onMisuse}: (\emph{beta feature - may change})}{(character string) Assigning variables to the global environment for the purpose of using the variable at a later time makes no sense with futures, because the next future may be evaluated in different R process.  To protect against mistakes, the future framework attempts to detect when variables are added to the global environment.  If this is detected, and \code{future.globalenv.onMisuse = "error"}, then an informative error message is produced.  If \code{"warning"}, then a warning message is produced.  If \code{"ignore"}, no check is performed. (Default: \code{"ignore"})}
+
+\item{\option{future.onFutureCondition.keepFuture}:}{(logical) If \code{TRUE}, a \code{FutureCondition} keeps a copy of the \code{Future} object that triggered the condition. If \code{FALSE}, it is dropped. (Default: \code{TRUE})}
+
 \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: \code{30 * 24 * 60 * 60} (= 30 days))}
 
 \item{\option{future.wait.interval}:}{(numeric) Initial interval (in
@@ -121,7 +133,7 @@ If this option is not specified, environment variable \env{R_FUTURE_STARTUP_SCRI
 \describe{
 \item{\option{future.fork.multithreading.enable} (\emph{beta feature - may change}):}{(logical) Enable or disable \emph{multi-threading} while using \emph{forked} parallel processing.  If \code{FALSE}, different multi-thread library settings are overridden such that they run in single-thread mode. Specifically, multi-threading will be disabled for OpenMP (which requires the \pkg{RhpcBLASctl} package) and for \strong{RcppParallel}. If \code{TRUE}, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using \code{plan(multicore)} but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package. (Default: not set)}
 
-\item{\option{future.output.windows.reencode} (\emph{beta feature - may change}):}{(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  On MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (\code{"\\u2713"}) would be relayed as \code{"<U+2713>"} (a string with eight ASCII characters).  This option will cause \code{value()} to attempt to recover the intended UTF-8 symbols from \verb{<U+nnnn>} string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: \code{TRUE})}
+\item{\option{future.output.windows.reencode}:}{(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  In R (< 4.2.0) and on older versions of MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (\code{"\\u2713"}) would be relayed as \code{"<U+2713>"} (a string with eight ASCII characters).  Setting this option to \code{TRUE} will cause \code{value()} to attempt to recover the intended UTF-8 symbols from \verb{<U+nnnn>} string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: \code{TRUE})}
 }
 
 See also \link[parallelly:parallelly.options]{parallelly::parallelly.options}.

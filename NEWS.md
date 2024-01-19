@@ -1,19 +1,81 @@
 # Version (development version)
 
+ * ...
+
+
+# Version 1.33.1 [2023-12-21]
+
+## Bug Fixes
+
+ * `getExpression()` on 'cluster' future could under some
+   circumstances call `local()` on the global search path rather than
+   `base::local()` as intended.  For example, if a package that
+   exports its own `local()` function was attached, then that would be
+   called instead, often leading to a hard-to-troubleshoot error.
+ 
+
+# Version 1.33.0 [2023-07-01]
+
+## New Features
+
+ * When a 'cluster' future fails to communicate with the parallel
+   worker, it does a post-mortem analysis to figure out why, including
+   inspecting whether the worker process is still alive or not.  In
+   previous versions, this only worked for workers running on the
+   current machine. Starting with this version, it also attempts to
+   check this for remote versions.
+
+## Bug Fixes
+
+ * If a 'multicore' future failed, because the parallel process
+   crashed, the corresponding parallel-worker slot was never released.
+   Now it is removed if it can confirm that the forked worker process
+   is no longer alive.
+
 ## Deprecated and Defunct
 
- * Deprecated `plan(multiprocess, ...)` is now defunct when running in
-   interactive mode.  The next step is to make it defunct also when
-   running in batch mode.
-   
+ * The 'multiprocess' strategy has now been fully removed.  Please use
+   'multisession' (recommended) or 'multicore' instead.
+
+
+# Version 1.32.0 [2023-03-06]
+
+## New Features
+
+ * Add prototype of an internal event-logging framework for the
+   purpose of profiling futures and their backends.
+
+ * Add option `future.globalenv.onMisuse` for optionally asserting
+   that a future expression does not result in variables being added
+   to the global environment.
+
+ * Add option `future.onFutureCondition.keepFuture` for controlling
+   whether `FutureCondition` objects should keep a copy of the
+   `Future` object or not.  The default is to keep a copy, but if the
+   future carries large global objects, then the `FutureCondition`
+   will also be large, which can result in memory issues and slow
+   downs.
+
+## Miscellaneous
+
+ * Fix a **future.tests** check that occurred only on MS Windows.
+
+## Deprecated and Defunct
+
+ * The 'multiprocess' strategy, which has been deprecated since future
+   1.20.0 [2020-10-30] is now defunct.  Please use 'multisession'
+   (recommended) or 'multicore' instead.
+ 
+ * Add optional assertion of the internal Future `state` field.
+
 
 # Version 1.31.0 [2023-01-31]
 
-## Signficant Changes
+## Significant Changes
 
  * Remove function `remote()`.  Note that `plan(remote, ...)` has been
    deprecated since **future** 1.24.0 [2022-02-19] and defunct since
-   **future** 1.3.0 (2022-12-15).
+   **future** 1.30.0 (2022-12-15).
 
 ## Documentation
 

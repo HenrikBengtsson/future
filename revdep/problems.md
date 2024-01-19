@@ -6,7 +6,7 @@
 * GitHub: https://github.com/yqzhong7/AIPW
 * Source code: https://github.com/cran/AIPW
 * Date/Publication: 2021-06-11 09:30:02 UTC
-* Number of recursive dependencies: 100
+* Number of recursive dependencies: 102
 
 Run `revdep_details(, "AIPW")` for more info
 
@@ -26,11 +26,11 @@ Run `revdep_details(, "AIPW")` for more info
 
 <details>
 
-* Version: 4.0.3
+* Version: 4.4.0
 * GitHub: https://github.com/sipss/AlpsNMR
 * Source code: https://github.com/cran/AlpsNMR
-* Date/Publication: 2023-02-10
-* Number of recursive dependencies: 169
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 187
 
 Run `revdep_details(, "AlpsNMR")` for more info
 
@@ -38,50 +38,31 @@ Run `revdep_details(, "AlpsNMR")` for more info
 
 ## In both
 
-*   checking whether package ‘AlpsNMR’ can be installed ... ERROR
+*   checking re-building of vignette outputs ... ERROR
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/00install.out’ for details.
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘Vig01-introduction-to-alpsnmr.Rmd’ using rmarkdown
+    Error: processing vignette 'Vig01-introduction-to-alpsnmr.Rmd' failed with diagnostics:
+    LaTeX failed to compile /wynton/home/cbi/hb/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01-introduction-to-alpsnmr.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips.
+    --- failed re-building ‘Vig01-introduction-to-alpsnmr.Rmd’
+    
+    --- re-building ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’ using rmarkdown
+    Error: processing vignette 'Vig01b-introduction-to-alpsnmr-old-api.Rmd' failed with diagnostics:
+    LaTeX failed to compile /wynton/home/cbi/hb/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig01b-introduction-to-alpsnmr-old-api.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips.
+    ...
+    LaTeX failed to compile /wynton/home/cbi/hb/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/vign_test/AlpsNMR/vignettes/Vig02-handling-metadata-and-annotations.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips.
+    --- failed re-building ‘Vig02-handling-metadata-and-annotations.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘Vig01-introduction-to-alpsnmr.Rmd’
+      ‘Vig01b-introduction-to-alpsnmr-old-api.Rmd’
+      ‘Vig02-handling-metadata-and-annotations.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘AlpsNMR’ ...
-** using staged installation
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘AlpsNMR’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/new/AlpsNMR.Rcheck/AlpsNMR’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘AlpsNMR’ ...
-** using staged installation
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(i, c(lib.loc, .libPaths()), versionCheck = vI[[i]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘AlpsNMR’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/AlpsNMR/old/AlpsNMR.Rcheck/AlpsNMR’
-
-
-```
 # aroma.core
 
 <details>
@@ -90,7 +71,7 @@ ERROR: lazy loading failed for package ‘AlpsNMR’
 * GitHub: https://github.com/HenrikBengtsson/aroma.core
 * Source code: https://github.com/cran/aroma.core
 * Date/Publication: 2022-11-15 18:30:13 UTC
-* Number of recursive dependencies: 71
+* Number of recursive dependencies: 72
 
 Run `revdep_details(, "aroma.core")` for more info
 
@@ -102,29 +83,6 @@ Run `revdep_details(, "aroma.core")` for more info
     ```
     Packages suggested but not available for checking:
       'sfit', 'expectile', 'HaarSeg', 'mpcbs'
-    ```
-
-# BAMBI
-
-<details>
-
-* Version: 2.3.4
-* GitHub: https://github.com/c7rishi/BAMBI
-* Source code: https://github.com/cran/BAMBI
-* Date/Publication: 2022-09-02 15:10:05 UTC
-* Number of recursive dependencies: 51
-
-Run `revdep_details(, "BAMBI")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.2Mb
-      sub-directories of 1Mb or more:
-        libs   6.7Mb
     ```
 
 # bamm
@@ -143,64 +101,20 @@ Run `revdep_details(, "bamm")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking C++ specification ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
-# baseballr
-
-<details>
-
-* Version: 1.3.0
-* GitHub: https://github.com/BillPetti/baseballr
-* Source code: https://github.com/cran/baseballr
-* Date/Publication: 2022-09-09 07:52:55 UTC
-* Number of recursive dependencies: 118
-
-Run `revdep_details(, "baseballr")` for more info
-
-</details>
-
-## In both
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘baseballr.Rmd’ using rmarkdown
-    --- finished re-building ‘baseballr.Rmd’
-    
-    --- re-building ‘ncaa_scraping.Rmd’ using rmarkdown
-    --- finished re-building ‘ncaa_scraping.Rmd’
-    
-    --- re-building ‘plotting_statcast.Rmd’ using rmarkdown
-    --- finished re-building ‘plotting_statcast.Rmd’
-    ...
-    Quitting from lines 38-40 (using_statcast_pitch_data.Rmd) 
-    Error: processing vignette 'using_statcast_pitch_data.Rmd' failed with diagnostics:
-    HTTP error 404.
-    --- failed re-building ‘using_statcast_pitch_data.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘using_statcast_pitch_data.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
+      Specified C++11: please drop specification unless essential
     ```
 
 # batchtools
 
 <details>
 
-* Version: 0.9.16
+* Version: 0.9.17
 * GitHub: https://github.com/mllg/batchtools
 * Source code: https://github.com/cran/batchtools
-* Date/Publication: 2023-02-03 13:52:38 UTC
-* Number of recursive dependencies: 82
+* Date/Publication: 2023-04-20 14:20:06 UTC
+* Number of recursive dependencies: 84
 
 Run `revdep_details(, "batchtools")` for more info
 
@@ -208,82 +122,45 @@ Run `revdep_details(, "batchtools")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-    Package suggested but not available for checking: ‘doMPI’
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘Rmpi’
-    ```
-
-# bayesian
-
-<details>
-
-* Version: 0.0.9
-* GitHub: https://github.com/hsbadr/bayesian
-* Source code: https://github.com/cran/bayesian
-* Date/Publication: 2022-06-16 23:00:02 UTC
-* Number of recursive dependencies: 186
-
-Run `revdep_details(, "bayesian")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘bayesian’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/bayesian/new/bayesian.Rcheck/00install.out’ for details.
+    dev3:pid2802163: PSM3 can't open nic unit: 0 (err=23)
+    dev3:pid2802163.R: Unable to create send CQ of size 5080 on mlx5_0: Cannot allocate memory
+    dev3:pid2802163.R: Unable to initialize verbs NIC /sys/class/infiniband/mlx5_0 (unit 0:0)
+    dev3:pid2802163: PSM3 can't open nic unit: 0 (err=23)
+    dev3:pid2802163.R: Unable to create send CQ of size 5080 on mlx5_0: Cannot allocate memory
+    dev3:pid2802163.R: Unable to initialize verbs NIC /sys/class/infiniband/mlx5_0 (unit 0:0)
+    dev3:pid2802163: PSM3 can't open nic unit: 0 (err=23)
+    dev3:pid2802163.R: Unable to create send CQ of size 5080 on mlx5_0: Cannot allocate memory
+    dev3:pid2802163.R: Unable to initialize verbs NIC /sys/class/infiniband/mlx5_0 (unit 0:0)
+    --------------------------------------------------------------------------
+    ...
+    dev3:pid2802163.R: Unable to create send CQ of size 5080 on mlx5_0: Cannot allocate memory
+    dev3:pid2802163.R: Unable to initialize verbs NIC /sys/class/infiniband/mlx5_0 (unit 0:0)
+    --------------------------------------------------------------------------
+    Open MPI failed an OFI Libfabric library call (fi_endpoint).  This is highly
+    unusual; your job may behave unpredictably (and/or abort) after this.
+    
+      Local host: dev3
+      Location: mtl_ofi_component.c:513
+      Error: Invalid argument (22)
+    --------------------------------------------------------------------------
     ```
 
-## Installation
+*   checking for detritus in the temp directory ... NOTE
+    ```
+    Found the following files/directories:
+      ‘ompi.dev3.34002’
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘bayesian’ ...
-** package ‘bayesian’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: package or namespace load failed for ‘brms’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
- there is no package called ‘igraph’
-Execution halted
-ERROR: lazy loading failed for package ‘bayesian’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/bayesian/new/bayesian.Rcheck/bayesian’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘bayesian’ ...
-** package ‘bayesian’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error: package or namespace load failed for ‘brms’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
- there is no package called ‘igraph’
-Execution halted
-ERROR: lazy loading failed for package ‘bayesian’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/bayesian/old/bayesian.Rcheck/bayesian’
-
-
-```
 # BEKKs
 
 <details>
 
-* Version: 1.4.1
+* Version: 1.4.3
 * GitHub: NA
 * Source code: https://github.com/cran/BEKKs
-* Date/Publication: 2022-12-18 16:40:14 UTC
+* Date/Publication: 2023-03-26 11:00:02 UTC
 * Number of recursive dependencies: 99
 
 Run `revdep_details(, "BEKKs")` for more info
@@ -294,9 +171,9 @@ Run `revdep_details(, "BEKKs")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 18.4Mb
+      installed size is  7.6Mb
       sub-directories of 1Mb or more:
-        libs  17.5Mb
+        libs   7.3Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -309,11 +186,11 @@ Run `revdep_details(, "BEKKs")` for more info
 
 <details>
 
-* Version: 0.5.0
+* Version: 0.5.3
 * GitHub: https://github.com/spatialstatisticsupna/bigDM
 * Source code: https://github.com/cran/bigDM
-* Date/Publication: 2022-10-28 11:47:44 UTC
-* Number of recursive dependencies: 125
+* Date/Publication: 2023-10-17 12:50:02 UTC
+* Number of recursive dependencies: 135
 
 Run `revdep_details(, "bigDM")` for more info
 
@@ -335,11 +212,11 @@ Run `revdep_details(, "bigDM")` for more info
 
 <details>
 
-* Version: 1.1.1
+* Version: 1.1.2
 * GitHub: https://github.com/alexander-pastukhov/bistablehistory
 * Source code: https://github.com/cran/bistablehistory
-* Date/Publication: 2022-03-22 13:40:02 UTC
-* Number of recursive dependencies: 91
+* Date/Publication: 2023-09-13 13:20:09 UTC
+* Number of recursive dependencies: 92
 
 Run `revdep_details(, "bistablehistory")` for more info
 
@@ -349,16 +226,9 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 50.3Mb
+      installed size is 22.5Mb
       sub-directories of 1Mb or more:
-        libs  49.4Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘RcppParallel’ ‘magrittr’
-      All declared Imports should be used.
+        libs  22.3Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -370,11 +240,11 @@ Run `revdep_details(, "bistablehistory")` for more info
 
 <details>
 
-* Version: 0.4-6
+* Version: 0.5-2
 * GitHub: NA
 * Source code: https://github.com/cran/blavaan
-* Date/Publication: 2023-02-11 08:50:09 UTC
-* Number of recursive dependencies: 99
+* Date/Publication: 2023-09-25 22:20:02 UTC
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "blavaan")` for more info
 
@@ -389,10 +259,10 @@ Run `revdep_details(, "blavaan")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 89.8Mb
+      installed size is 53.8Mb
       sub-directories of 1Mb or more:
-        libs      87.3Mb
-        testdata   1.4Mb
+        R      1.2Mb
+        libs  52.6Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -404,11 +274,11 @@ Run `revdep_details(, "blavaan")` for more info
 
 <details>
 
-* Version: 2.18.0
+* Version: 2.20.4
 * GitHub: https://github.com/paul-buerkner/brms
 * Source code: https://github.com/cran/brms
-* Date/Publication: 2022-09-19 13:56:19 UTC
-* Number of recursive dependencies: 181
+* Date/Publication: 2023-09-25 19:00:09 UTC
+* Number of recursive dependencies: 200
 
 Run `revdep_details(, "brms")` for more info
 
@@ -416,74 +286,22 @@ Run `revdep_details(, "brms")` for more info
 
 ## In both
 
-*   checking whether package ‘brms’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/brms/new/brms.Rcheck/00install.out’ for details.
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘cmdstanr’
     ```
 
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘brms’ ...
-** package ‘brms’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-Warning: namespace ‘brms’ is not available and has been replaced
-by .GlobalEnv when processing object ‘brmsfit_example1’
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘brms’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/brms/new/brms.Rcheck/brms’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘brms’ ...
-** package ‘brms’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-Warning: namespace ‘brms’ is not available and has been replaced
-by .GlobalEnv when processing object ‘brmsfit_example1’
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘brms’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/brms/old/brms.Rcheck/brms’
-
-
-```
-# canaper
+# brpop
 
 <details>
 
-* Version: 1.0.0
-* GitHub: https://github.com/ropensci/canaper
-* Source code: https://github.com/cran/canaper
-* Date/Publication: 2022-10-04 10:20:12 UTC
-* Number of recursive dependencies: 167
+* Version: 0.3.0
+* GitHub: NA
+* Source code: https://github.com/cran/brpop
+* Date/Publication: 2023-10-24 13:20:02 UTC
+* Number of recursive dependencies: 45
 
-Run `revdep_details(, "canaper")` for more info
+Run `revdep_details(, "brpop")` for more info
 
 </details>
 
@@ -495,34 +313,97 @@ Run `revdep_details(, "canaper")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 50 lines of output:
-        4. └─base::loadNamespace(x)
-        5.   ├─base::namespaceImportFrom(...)
-        6.   │ └─base::asNamespace(ns)
-        7.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
-        8.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-        9.       └─base (local) withOneRestart(expr, restarts[[1L]])
+      Backtrace:
+           ▆
+        1. ├─brpop::regsaude_female_pop(type = "reg_saude_449") at test-regsaude_female_pop.R:8:3
+        2. │ └─... %>% dplyr::ungroup()
+        3. ├─dplyr::ungroup(.)
+        4. ├─dplyr::collect(.)
     ...
-        5.   ├─base::namespaceImportFrom(...)
-        6.   │ └─base::asNamespace(ns)
-        7.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
-        8.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-        9.       └─base (local) withOneRestart(expr, restarts[[1L]])
-       10.         └─base (local) doWithOneRestart(return(expr), restart)
+        7. │ └─multidplyr::cluster_assign_each(cluster, `:=`(!!name, shards))
+        8. │   └─multidplyr::cluster_assign(...)
+        9. └─base::loadNamespace(x)
+       10.   └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
+       11.     └─base (local) withOneRestart(expr, restarts[[1L]])
+       12.       └─base (local) doWithOneRestart(return(expr), restart)
       
-      [ FAIL 9 | WARN 0 | SKIP 0 | PASS 99 ]
+      [ FAIL 6 | WARN 0 | SKIP 0 | PASS 6 ]
       Error: Test failures
       Execution halted
+    ```
+
+# campsis
+
+<details>
+
+* Version: 1.5.0
+* GitHub: https://github.com/Calvagone/campsis
+* Source code: https://github.com/cran/campsis
+* Date/Publication: 2023-10-13 13:40:02 UTC
+* Number of recursive dependencies: 161
+
+Run `revdep_details(, "campsis")` for more info
+
+</details>
+
+## In both
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+              comment = NA_character_), new("theta", unit = NA_character_, 
+              name = "V2", index = 3L, value = 80, fix = FALSE, label = NA_character_, 
+              comment = NA_character_), new("theta", unit = NA_character_, 
+              name = "V3", index = 4L, value = 20, fix = FALSE, label = NA_character_, 
+              comment = NA_character_), new("theta", unit = NA_character_, 
+              name = "Q", index = 5L, value = 4, fix = FALSE, label = NA_character_, 
+    ...
+      Deleting unused snapshots:
+      • testDefaultPlots/scatterplot-colour-scenario.svg
+      • testDefaultPlots/scatterplot-no-colour.svg
+      • testDefaultPlots/shadedplot-colour-arm-strat-wt.svg
+      • testDefaultPlots/shadedplot-colour-arm-wt-strat-wt.svg
+      • testDefaultPlots/shadedplot-colour-scenario.svg
+      • testDefaultPlots/spaghettiplot-colour-arm-strat-wt.svg
+      • testDefaultPlots/spaghettiplot-colour-scenario.svg
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘campsis.Rmd’ using rmarkdown
+    
+    Quitting from lines 43-45 [unnamed-chunk-4] (campsis.Rmd)
+    Error: processing vignette 'campsis.Rmd' failed with diagnostics:
+    ℹ In index: 1.
+    Caused by error:
+    ℹ In index: 1.
+    Caused by error in `loadNamespace()`:
+    ! there is no package called 'qs'
+    --- failed re-building ‘campsis.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘campsis.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # ceRNAnetsim
 
 <details>
 
-* Version: 1.10.0
+* Version: 1.14.1
 * GitHub: https://github.com/selcenari/ceRNAnetsim
 * Source code: https://github.com/cran/ceRNAnetsim
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 99
+* Date/Publication: 2023-12-18
+* Number of recursive dependencies: 101
 
 Run `revdep_details(, "ceRNAnetsim")` for more info
 
@@ -530,23 +411,23 @@ Run `revdep_details(, "ceRNAnetsim")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking R code for possible problems ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    simulate: no visible binding for global variable ‘avg_count_current’
+    simulate: no visible binding for global variable ‘avg_count_pre’
+    Undefined global functions or variables:
+      avg_count_current avg_count_pre
     ```
 
 # ChromSCape
 
 <details>
 
-* Version: 1.8.0
+* Version: 1.12.0
 * GitHub: https://github.com/vallotlab/ChromSCape
 * Source code: https://github.com/cran/ChromSCape
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 227
+* Date/Publication: 2023-10-25
+* Number of recursive dependencies: 235
 
 Run `revdep_details(, "ChromSCape")` for more info
 
@@ -554,92 +435,33 @@ Run `revdep_details(, "ChromSCape")` for more info
 
 ## In both
 
-*   checking whether package ‘ChromSCape’ can be installed ... ERROR
+*   checking package dependencies ... ERROR
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/ChromSCape/new/ChromSCape.Rcheck/00install.out’ for details.
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘igraph’
+    Package required but not available: ‘qs’
+    
+    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
+    manual.
     ```
 
-*   checking for hidden files and directories ... NOTE
-    ```
-    Found the following hidden files and directories:
-      .BBSoptions
-    These were most likely included in error. See section ‘Package
-    structure’ in the ‘Writing R Extensions’ manual.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘ChromSCape’ ...
-** using staged installation
-** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/ChromSCape/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/ChromSCape/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c as_dist.cpp -o as_dist.o
-g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o ChromSCape.so RcppExports.o as_dist.o -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
-installing to /c4/home/henrik/repositories/future/revdep/checks/ChromSCape/new/ChromSCape.Rcheck/00LOCK-ChromSCape/00new/ChromSCape/libs
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘ChromSCape’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/ChromSCape/new/ChromSCape.Rcheck/ChromSCape’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘ChromSCape’ ...
-** using staged installation
-** libs
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/ChromSCape/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/ChromSCape/Rcpp/include' -I/usr/local/include   -fpic  -g -O2  -c as_dist.cpp -o as_dist.o
-g++ -std=gnu++14 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o ChromSCape.so RcppExports.o as_dist.o -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
-installing to /c4/home/henrik/repositories/future/revdep/checks/ChromSCape/old/ChromSCape.Rcheck/00LOCK-ChromSCape/00new/ChromSCape/libs
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘ChromSCape’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/ChromSCape/old/ChromSCape.Rcheck/ChromSCape’
-
-
-```
-# civis
+# clickR
 
 <details>
 
-* Version: 3.0.0
-* GitHub: https://github.com/civisanalytics/civis-r
-* Source code: https://github.com/cran/civis
-* Date/Publication: 2020-06-22 18:00:02 UTC
-* Number of recursive dependencies: 88
+* Version: 0.9.39
+* GitHub: NA
+* Source code: https://github.com/cran/clickR
+* Date/Publication: 2023-08-07 17:40:06 UTC
+* Number of recursive dependencies: 9
 
-Run `revdep_details(, "civis")` for more info
+Run `revdep_details(, "clickR")` for more info
 
 </details>
 
 ## In both
 
-*   checking LazyData ... NOTE
+*   checking data for non-ASCII characters ... NOTE
     ```
-      'LazyData' is specified without a 'data' directory
+      Note: found 1 marked UTF-8 string
     ```
 
 # codebook
@@ -650,7 +472,7 @@ Run `revdep_details(, "civis")` for more info
 * GitHub: https://github.com/rubenarslan/codebook
 * Source code: https://github.com/cran/codebook
 * Date/Publication: 2020-06-06 23:40:03 UTC
-* Number of recursive dependencies: 154
+* Number of recursive dependencies: 158
 
 Run `revdep_details(, "codebook")` for more info
 
@@ -675,6 +497,28 @@ Run `revdep_details(, "codebook")` for more info
       Note: found 65 marked UTF-8 strings
     ```
 
+# collinear
+
+<details>
+
+* Version: 1.1.1
+* GitHub: NA
+* Source code: https://github.com/cran/collinear
+* Date/Publication: 2023-12-08 08:50:02 UTC
+* Number of recursive dependencies: 55
+
+Run `revdep_details(, "collinear")` for more info
+
+</details>
+
+## In both
+
+*   checking data for non-ASCII characters ... NOTE
+    ```
+      Note: found 89 marked Latin-1 strings
+      Note: found 1203 marked UTF-8 strings
+    ```
+
 # cSEM
 
 <details>
@@ -683,7 +527,7 @@ Run `revdep_details(, "codebook")` for more info
 * GitHub: https://github.com/M-E-Rademaker/cSEM
 * Source code: https://github.com/cran/cSEM
 * Date/Publication: 2022-11-24 17:50:05 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 128
 
 Run `revdep_details(, "cSEM")` for more info
 
@@ -705,7 +549,7 @@ Run `revdep_details(, "cSEM")` for more info
 * GitHub: https://github.com/adsoncostanzifilho/CSGo
 * Source code: https://github.com/cran/CSGo
 * Date/Publication: 2021-05-07 18:50:02 UTC
-* Number of recursive dependencies: 76
+* Number of recursive dependencies: 77
 
 Run `revdep_details(, "CSGo")` for more info
 
@@ -720,75 +564,6 @@ Run `revdep_details(, "CSGo")` for more info
       All declared Imports should be used.
     ```
 
-# DeclareDesign
-
-<details>
-
-* Version: 1.0.2
-* GitHub: https://github.com/DeclareDesign/DeclareDesign
-* Source code: https://github.com/cran/DeclareDesign
-* Date/Publication: 2023-01-10 07:13:10 UTC
-* Number of recursive dependencies: 134
-
-Run `revdep_details(, "DeclareDesign")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘DesignLibrary’
-    ```
-
-# delayed
-
-<details>
-
-* Version: 0.4.0
-* GitHub: https://github.com/tlverse/delayed
-* Source code: https://github.com/cran/delayed
-* Date/Publication: 2022-10-19 22:25:09 UTC
-* Number of recursive dependencies: 80
-
-Run `revdep_details(, "delayed")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
-# dipsaus
-
-<details>
-
-* Version: 0.2.6
-* GitHub: https://github.com/dipterix/dipsaus
-* Source code: https://github.com/cran/dipsaus
-* Date/Publication: 2023-01-21 12:30:02 UTC
-* Number of recursive dependencies: 69
-
-Run `revdep_details(, "dipsaus")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  5.8Mb
-      sub-directories of 1Mb or more:
-        doc    1.1Mb
-        libs   3.3Mb
-    ```
-
 # dispositionEffect
 
 <details>
@@ -797,7 +572,7 @@ Run `revdep_details(, "dipsaus")` for more info
 * GitHub: https://github.com/marcozanotti/dispositionEffect
 * Source code: https://github.com/cran/dispositionEffect
 * Date/Publication: 2022-05-30 07:50:02 UTC
-* Number of recursive dependencies: 135
+* Number of recursive dependencies: 136
 
 Run `revdep_details(, "dispositionEffect")` for more info
 
@@ -811,21 +586,21 @@ Run `revdep_details(, "dispositionEffect")` for more info
      ERROR
     Running the tests in ‘tests/testthat.R’ failed.
     Last 50 lines of output:
-      ── Failure ('test-realized_duration.R:113'): realized_duration works (realized_only = TRUE) ──
+      ── Failure ('test-realized_duration.R:113:2'): realized_duration works (realized_only = TRUE) ──
       realized_duration(...) not equal to c(...).
       1/4 mismatches
       [2] 34 - 28 == 6
-      ── Failure ('test-realized_duration.R:116'): realized_duration works (realized_only = TRUE) ──
+      ── Failure ('test-realized_duration.R:116:2'): realized_duration works (realized_only = TRUE) ──
       realized_duration(...) not equal to c(...).
     ...
       1/4 mismatches
       [2] 34 - 28 == 6
-      ── Failure ('test-realized_duration.R:161'): realized_duration works (realized_only = TRUE) ──
+      ── Failure ('test-realized_duration.R:161:2'): realized_duration works (realized_only = TRUE) ──
       realized_duration(...) not equal to c(...).
       1/4 mismatches
       [1] 34 - 28 == 6
       
-      [ FAIL 36 | WARN 1 | SKIP 0 | PASS 331 ]
+      [ FAIL 36 | WARN 0 | SKIP 0 | PASS 331 ]
       Error: Test failures
       Execution halted
     ```
@@ -838,7 +613,7 @@ Run `revdep_details(, "dispositionEffect")` for more info
 * GitHub: https://github.com/sjspielman/dragon
 * Source code: https://github.com/cran/dragon
 * Date/Publication: 2022-04-08 08:42:33 UTC
-* Number of recursive dependencies: 140
+* Number of recursive dependencies: 131
 
 Run `revdep_details(, "dragon")` for more info
 
@@ -846,23 +621,27 @@ Run `revdep_details(, "dragon")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package subdirectories ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Problems with news in ‘NEWS.md’:
+    No news entries found.
+    ```
+
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespace in Imports field not imported from: ‘htmltools’
+      All declared Imports should be used.
     ```
 
 # drake
 
 <details>
 
-* Version: 7.13.4
+* Version: 7.13.8
 * GitHub: https://github.com/ropensci/drake
 * Source code: https://github.com/cran/drake
-* Date/Publication: 2022-08-19 15:40:02 UTC
-* Number of recursive dependencies: 162
+* Date/Publication: 2023-11-06 15:40:02 UTC
+* Number of recursive dependencies: 165
 
 Run `revdep_details(, "drake")` for more info
 
@@ -870,12 +649,9 @@ Run `revdep_details(, "drake")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Package suggested but not available for checking: ‘qs’
     ```
 
 # EFAtools
@@ -886,7 +662,7 @@ Run `revdep_details(, "drake")` for more info
 * GitHub: https://github.com/mdsteiner/EFAtools
 * Source code: https://github.com/cran/EFAtools
 * Date/Publication: 2023-01-06 14:50:40 UTC
-* Number of recursive dependencies: 92
+* Number of recursive dependencies: 94
 
 Run `revdep_details(, "EFAtools")` for more info
 
@@ -894,17 +670,56 @@ Run `revdep_details(, "EFAtools")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking C++ specification ... NOTE
     ```
-      installed size is  7.4Mb
-      sub-directories of 1Mb or more:
-        libs   6.2Mb
+      Specified C++11: please drop specification unless essential
     ```
 
 *   checking dependencies in R code ... NOTE
     ```
     Namespace in Imports field not imported from: ‘progress’
       All declared Imports should be used.
+    ```
+
+# EGAnet
+
+<details>
+
+* Version: 2.0.3
+* GitHub: https://github.com/hfgolino/EGAnet
+* Source code: https://github.com/cran/EGAnet
+* Date/Publication: 2023-11-17 17:30:05 UTC
+* Number of recursive dependencies: 190
+
+Run `revdep_details(, "EGAnet")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘EGAnet-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: community.detection
+    > ### Title: Apply a Community Detection Algorithm
+    > ### Aliases: community.detection
+    > 
+    > ### ** Examples
+    > 
+    > # Load data
+    ...
+        1     1     1     1     1     2     2     2     3     3     2     2     3 
+    wmt14 wmt15 wmt16 wmt17 wmt18 
+        3     2     3     2     2 
+    > 
+    > # Compute Optimal (identifies maximum modularity solution)
+    > community.detection(network, algorithm = "optimal")
+    Error in (function (graph, weights = NULL)  : 
+      At core/community/optimal_modularity.c:86 : GLPK is not available, Unimplemented function call
+    Calls: community.detection -> do.call -> <Anonymous>
+    Execution halted
     ```
 
 # envi
@@ -915,7 +730,7 @@ Run `revdep_details(, "EFAtools")` for more info
 * GitHub: https://github.com/lance-waller-lab/envi
 * Source code: https://github.com/cran/envi
 * Date/Publication: 2023-02-02 00:40:02 UTC
-* Number of recursive dependencies: 153
+* Number of recursive dependencies: 110
 
 Run `revdep_details(, "envi")` for more info
 
@@ -927,18 +742,23 @@ Run `revdep_details(, "envi")` for more info
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/envi/new/envi.Rcheck/00install.out’ for details.
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/envi/new/envi.Rcheck/00install.out’ for details.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘RStoolbox’
     ```
 
 # EpiNow2
 
 <details>
 
-* Version: 1.3.4
+* Version: 1.4.0
 * GitHub: https://github.com/epiforecasts/EpiNow2
 * Source code: https://github.com/cran/EpiNow2
-* Date/Publication: 2023-02-12 21:52:20 UTC
-* Number of recursive dependencies: 128
+* Date/Publication: 2023-09-26 12:00:02 UTC
+* Number of recursive dependencies: 129
 
 Run `revdep_details(, "EpiNow2")` for more info
 
@@ -948,10 +768,9 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 229.4Mb
+      installed size is 77.1Mb
       sub-directories of 1Mb or more:
-        help    1.4Mb
-        libs  227.2Mb
+        libs  76.3Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -963,11 +782,11 @@ Run `revdep_details(, "EpiNow2")` for more info
 
 <details>
 
-* Version: 2.2.13
+* Version: 2.2.16
 * GitHub: https://github.com/EU-ECDC/epitweetr
 * Source code: https://github.com/cran/epitweetr
-* Date/Publication: 2022-12-01 00:40:03 UTC
-* Number of recursive dependencies: 146
+* Date/Publication: 2023-11-15 09:30:08 UTC
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "epitweetr")` for more info
 
@@ -983,8 +802,53 @@ Run `revdep_details(, "epitweetr")` for more info
 *   checking dependencies in R code ... NOTE
     ```
     Namespaces in Imports field not imported from:
-      ‘httpuv’ ‘knitr’ ‘plyr’ ‘rgdal’ ‘tidyverse’ ‘tokenizers’ ‘xml2’
+      ‘httpuv’ ‘knitr’ ‘plyr’ ‘tidyverse’ ‘xml2’
       All declared Imports should be used.
+    ```
+
+# fastRhockey
+
+<details>
+
+* Version: 0.4.0
+* GitHub: https://github.com/sportsdataverse/fastRhockey
+* Source code: https://github.com/cran/fastRhockey
+* Date/Publication: 2022-10-25 20:55:15 UTC
+* Number of recursive dependencies: 116
+
+Run `revdep_details(, "fastRhockey")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘qs’
+    ```
+
+# fdacluster
+
+<details>
+
+* Version: 0.3.0
+* GitHub: https://github.com/astamm/fdacluster
+* Source code: https://github.com/cran/fdacluster
+* Date/Publication: 2023-07-04 15:53:04 UTC
+* Number of recursive dependencies: 120
+
+Run `revdep_details(, "fdacluster")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  9.6Mb
+      sub-directories of 1Mb or more:
+        R      1.7Mb
+        libs   7.8Mb
     ```
 
 # fect
@@ -995,7 +859,7 @@ Run `revdep_details(, "epitweetr")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/fect
 * Date/Publication: 2022-10-14 09:52:32 UTC
-* Number of recursive dependencies: 68
+* Number of recursive dependencies: 81
 
 Run `revdep_details(, "fect")` for more info
 
@@ -1003,11 +867,16 @@ Run `revdep_details(, "fect")` for more info
 
 ## In both
 
+*   checking C++ specification ... NOTE
+    ```
+      Specified C++11: please drop specification unless essential
+    ```
+
 *   checking installed package size ... NOTE
     ```
-      installed size is 13.9Mb
+      installed size is  7.5Mb
       sub-directories of 1Mb or more:
-        libs  12.7Mb
+        libs   6.4Mb
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -1016,15 +885,101 @@ Run `revdep_details(, "fect")` for more info
       All declared Imports should be used.
     ```
 
+# FLAMES
+
+<details>
+
+* Version: 1.8.0
+* GitHub: https://github.com/OliverVoogd/FLAMES
+* Source code: https://github.com/cran/FLAMES
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 255
+
+Run `revdep_details(, "FLAMES")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘FLAMES-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: sc_heatmap_expression
+    > ### Title: FLAMES heetmap plots
+    > ### Aliases: sc_heatmap_expression
+    > 
+    > ### ** Examples
+    > 
+    > combined_sce <- combine_sce(
+    ...
+    > sc_heatmap_expression(gene = "ENSG00000108107", multiAssay = combined_sce)
+    Running PCA for experiments(multiAssay)$gene_counts ...
+    harmonizing input:
+      removing 257 sampleMap rows with 'colname' not in colnames of experiments
+      removing 236 colData rownames not in sampleMap 'primary'
+    Running UMAP for experiments(multiAssay)$gene_counts ...
+    Error in irlba::irlba(L, nv = n, nu = 0, maxit = iters) : 
+      function 'as_cholmod_sparse' not provided by package 'Matrix'
+    Calls: sc_heatmap_expression ... irlba_tsvd_normalized_laplacian_init -> irlba_spectral_tsvd
+    Execution halted
+    ```
+
+*   checking for hidden files and directories ... NOTE
+    ```
+    Found the following hidden files and directories:
+      .BBSoptions
+    These were most likely included in error. See section ‘Package
+    structure’ in the ‘Writing R Extensions’ manual.
+    ```
+
+*   checking whether package ‘FLAMES’ can be installed ... NOTE
+    ```
+    Found the following notes/warnings:
+      Non-staged installation was used
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/FLAMES/new/FLAMES.Rcheck/00install.out’ for details.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    annotation_to_fasta: no visible global function definition for
+      'write.table'
+    generate_sc_sce: no visible binding for global variable 'FSM_match'
+    plot_coverage: no visible binding for global variable 'x'
+    plot_coverage: no visible binding for global variable 'transcript'
+    plot_coverage: no visible binding for global variable 'length_bin'
+    plot_demultiplex: no visible binding for global variable 'Freq'
+    plot_demultiplex: no visible binding for global variable '.'
+    plot_demultiplex: no visible binding for global variable 'x'
+    plot_demultiplex: no visible binding for global variable
+    ...
+    sc_umap_expression : plot_idx: no visible binding for global variable
+      'y'
+    transcript_coverage: no visible binding for global variable 'mat'
+    Undefined global functions or variables:
+      . BarcodeEditDist FSM_match FlankEditDist Freq all_vars cell_id cnt
+      everything gene_id heatmap_annotation_colors label length_bin mat n
+      name tr_id transcript transcript_id value write.table x y
+    Consider adding
+      importFrom("utils", "write.table")
+    to your NAMESPACE file.
+    ```
+
+*   checking for GNU extensions in Makefiles ... NOTE
+    ```
+    GNU make is a SystemRequirements.
+    ```
+
 # flowGraph
 
 <details>
 
-* Version: 1.6.0
+* Version: 1.10.0
 * GitHub: https://github.com/aya49/flowGraph
 * Source code: https://github.com/cran/flowGraph
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 92
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 94
 
 Run `revdep_details(, "flowGraph")` for more info
 
@@ -1032,35 +987,24 @@ Run `revdep_details(, "flowGraph")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking R code for possible problems ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    get_child: no visible binding for global variable ‘no_cores’
+    get_paren: no visible binding for global variable ‘no_cores’
+    ms_psig: no visible binding for global variable ‘meta’
+    Undefined global functions or variables:
+      meta no_cores
     ```
 
-# foieGras
-
-<details>
-
-* Version: 0.7-6
-* GitHub: https://github.com/ianjonsen/foieGras
-* Source code: https://github.com/cran/foieGras
-* Date/Publication: 2021-04-26 22:10:07 UTC
-* Number of recursive dependencies: 140
-
-Run `revdep_details(, "foieGras")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
+*   checking Rd cross-references ... NOTE
     ```
-      installed size is 49.9Mb
-      sub-directories of 1Mb or more:
-        libs  49.0Mb
+    Package unavailable to check Rd xrefs: ‘doParallel’
+    ```
+
+*   checking for non-standard things in the check directory ... NOTE
+    ```
+    Found the following files/directories:
+      ‘temp’ ‘tmp’
     ```
 
 # forecastML
@@ -1071,7 +1015,7 @@ Run `revdep_details(, "foieGras")` for more info
 * GitHub: https://github.com/nredell/forecastML
 * Source code: https://github.com/cran/forecastML
 * Date/Publication: 2020-05-07 15:10:17 UTC
-* Number of recursive dependencies: 102
+* Number of recursive dependencies: 105
 
 Run `revdep_details(, "forecastML")` for more info
 
@@ -1085,53 +1029,26 @@ Run `revdep_details(, "forecastML")` for more info
       All declared Imports should be used.
     ```
 
-# genBaRcode
+# future.batchtools
 
 <details>
 
-* Version: 1.2.5
-* GitHub: NA
-* Source code: https://github.com/cran/genBaRcode
-* Date/Publication: 2022-05-27 12:50:05 UTC
-* Number of recursive dependencies: 158
+* Version: 0.12.1
+* GitHub: https://github.com/HenrikBengtsson/future.batchtools
+* Source code: https://github.com/cran/future.batchtools
+* Date/Publication: 2023-12-20 12:20:02 UTC
+* Number of recursive dependencies: 36
 
-Run `revdep_details(, "genBaRcode")` for more info
+Run `revdep_details(, "future.batchtools")` for more info
 
 </details>
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking for non-standard things in the check directory ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
-# geocmeans
-
-<details>
-
-* Version: 0.3.3
-* GitHub: https://github.com/JeremyGelb/geocmeans
-* Source code: https://github.com/cran/geocmeans
-* Date/Publication: 2023-02-07 01:02:31 UTC
-* Number of recursive dependencies: 197
-
-Run `revdep_details(, "geocmeans")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 14.6Mb
-      sub-directories of 1Mb or more:
-        doc       1.7Mb
-        extdata   3.0Mb
-        libs      8.2Mb
+    Found the following files/directories:
+      ‘.future-set-during-startup’
     ```
 
 # googleComputeEngineR
@@ -1142,7 +1059,7 @@ Run `revdep_details(, "geocmeans")` for more info
 * GitHub: https://github.com/cloudyr/googleComputeEngineR
 * Source code: https://github.com/cran/googleComputeEngineR
 * Date/Publication: 2019-05-04 22:40:02 UTC
-* Number of recursive dependencies: 68
+* Number of recursive dependencies: 69
 
 Run `revdep_details(, "googleComputeEngineR")` for more info
 
@@ -1163,7 +1080,7 @@ Run `revdep_details(, "googleComputeEngineR")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/googleTagManageR
 * Date/Publication: 2022-04-16 18:12:29 UTC
-* Number of recursive dependencies: 70
+* Number of recursive dependencies: 71
 
 Run `revdep_details(, "googleTagManageR")` for more info
 
@@ -1186,7 +1103,7 @@ Run `revdep_details(, "googleTagManageR")` for more info
 * GitHub: https://github.com/comeetie/greed
 * Source code: https://github.com/cran/greed
 * Date/Publication: 2022-10-03 22:00:05 UTC
-* Number of recursive dependencies: 96
+* Number of recursive dependencies: 98
 
 Run `revdep_details(, "greed")` for more info
 
@@ -1194,16 +1111,16 @@ Run `revdep_details(, "greed")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking C++ specification ... NOTE
     ```
-    Package suggested but not available for checking: ‘igraph’
+      Specified C++11: please drop specification unless essential
     ```
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 36.8Mb
+      installed size is 17.1Mb
       sub-directories of 1Mb or more:
-        libs  34.6Mb
+        libs  16.5Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -1219,7 +1136,7 @@ Run `revdep_details(, "greed")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/gsynth
 * Date/Publication: 2021-08-06 07:50:05 UTC
-* Number of recursive dependencies: 65
+* Number of recursive dependencies: 77
 
 Run `revdep_details(, "gsynth")` for more info
 
@@ -1227,33 +1144,50 @@ Run `revdep_details(, "gsynth")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking C++ specification ... NOTE
     ```
-      installed size is  5.2Mb
-      sub-directories of 1Mb or more:
-        libs   4.9Mb
+      Specified C++11: please drop specification unless essential
     ```
 
-# gWQS
+# gtfs2gps
 
 <details>
 
-* Version: 3.0.4
-* GitHub: NA
-* Source code: https://github.com/cran/gWQS
-* Date/Publication: 2021-05-20 09:30:02 UTC
-* Number of recursive dependencies: 103
+* Version: 2.1-1
+* GitHub: https://github.com/ipeaGIT/gtfs2gps
+* Source code: https://github.com/cran/gtfs2gps
+* Date/Publication: 2023-04-28 19:50:02 UTC
+* Number of recursive dependencies: 90
 
-Run `revdep_details(, "gWQS")` for more info
+Run `revdep_details(, "gtfs2gps")` for more info
 
 </details>
 
 ## In both
 
-*   checking dependencies in R code ... NOTE
+*   checking tests ...
     ```
-    Namespace in Imports field not imported from: ‘dplyr’
-      All declared Imports should be used.
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Complete output:
+      > library(testthat)
+      > library(gtfs2gps)
+      gtfs2gps version 2.1-1 is now loaded
+      NOTE: All filter functions from gtfs2gps were removed
+      Please replace them by similar functions from gtfstools
+      > library(magrittr)
+    ...
+       4.     └─terra (local) .local(x, ...)
+       5.       ├─terra::makeValid(x)
+       6.       └─terra::makeValid(x)
+       7.         └─terra (local) .local(x, ...)
+       8.           └─terra:::messages(x)
+       9.             └─terra:::error(f, x@cpp$getError())
+      
+      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 119 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # hackeRnews
@@ -1264,7 +1198,7 @@ Run `revdep_details(, "gWQS")` for more info
 * GitHub: https://github.com/szymanskir/hackeRnews
 * Source code: https://github.com/cran/hackeRnews
 * Date/Publication: 2019-12-13 13:20:05 UTC
-* Number of recursive dependencies: 69
+* Number of recursive dependencies: 71
 
 Run `revdep_details(, "hackeRnews")` for more info
 
@@ -1277,37 +1211,82 @@ Run `revdep_details(, "hackeRnews")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# hal9001
+# hero
 
 <details>
 
-* Version: 0.4.3
-* GitHub: https://github.com/tlverse/hal9001
-* Source code: https://github.com/cran/hal9001
-* Date/Publication: 2022-02-09 22:50:02 UTC
-* Number of recursive dependencies: 98
+* Version: 0.6
+* GitHub: NA
+* Source code: https://github.com/cran/hero
+* Date/Publication: 2023-07-15 21:10:09 UTC
+* Number of recursive dependencies: 162
 
-Run `revdep_details(, "hal9001")` for more info
+Run `revdep_details(, "hero")` for more info
 
 </details>
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking dependencies in R code ... NOTE
     ```
-      installed size is  7.6Mb
-      sub-directories of 1Mb or more:
-        libs   7.2Mb
+    dev3:pid3635515: PSM3 can't open nic unit: 0 (err=23)
+    dev3:pid3635515.R: Unable to create send CQ of size 5080 on mlx5_0: Cannot allocate memory
+    dev3:pid3635515.R: Unable to initialize verbs NIC /sys/class/infiniband/mlx5_0 (unit 0:0)
+    dev3:pid3635515: PSM3 can't open nic unit: 0 (err=23)
+    dev3:pid3635515.R: Unable to create send CQ of size 5080 on mlx5_0: Cannot allocate memory
+    dev3:pid3635515.R: Unable to initialize verbs NIC /sys/class/infiniband/mlx5_0 (unit 0:0)
+    dev3:pid3635515: PSM3 can't open nic unit: 0 (err=23)
+    dev3:pid3635515.R: Unable to create send CQ of size 5080 on mlx5_0: Cannot allocate memory
+    dev3:pid3635515.R: Unable to initialize verbs NIC /sys/class/infiniband/mlx5_0 (unit 0:0)
+    --------------------------------------------------------------------------
+    ...
+    dev3:pid3635515.R: Unable to create send CQ of size 5080 on mlx5_0: Cannot allocate memory
+    dev3:pid3635515.R: Unable to initialize verbs NIC /sys/class/infiniband/mlx5_0 (unit 0:0)
+    --------------------------------------------------------------------------
+    Open MPI failed an OFI Libfabric library call (fi_endpoint).  This is highly
+    unusual; your job may behave unpredictably (and/or abort) after this.
+    
+      Local host: dev3
+      Location: mtl_ofi_component.c:513
+      Error: Invalid argument (22)
+    --------------------------------------------------------------------------
+    ```
+
+*   checking for detritus in the temp directory ... NOTE
+    ```
+    Found the following files/directories:
+      ‘ompi.dev3.34002’
+    ```
+
+# hoopR
+
+<details>
+
+* Version: 2.1.0
+* GitHub: https://github.com/sportsdataverse/hoopR
+* Source code: https://github.com/cran/hoopR
+* Date/Publication: 2023-11-25 23:40:20 UTC
+* Number of recursive dependencies: 116
+
+Run `revdep_details(, "hoopR")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘qs’
     ```
 
 # hwep
 
 <details>
 
-* Version: 2.0.0
+* Version: 2.0.2
 * GitHub: https://github.com/dcgerard/hwep
 * Source code: https://github.com/cran/hwep
-* Date/Publication: 2022-08-16 07:20:02 UTC
+* Date/Publication: 2023-05-16 17:40:02 UTC
 * Number of recursive dependencies: 110
 
 Run `revdep_details(, "hwep")` for more info
@@ -1318,9 +1297,9 @@ Run `revdep_details(, "hwep")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 68.6Mb
+      installed size is 28.1Mb
       sub-directories of 1Mb or more:
-        libs  68.1Mb
+        libs  27.7Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
@@ -1332,11 +1311,11 @@ Run `revdep_details(, "hwep")` for more info
 
 <details>
 
-* Version: 1.14.0
+* Version: 1.18.1
 * GitHub: https://github.com/broadinstitute/inferCNV
 * Source code: https://github.com/cran/infercnv
-* Date/Publication: 2022-11-02
-* Number of recursive dependencies: 196
+* Date/Publication: 2023-12-01
+* Number of recursive dependencies: 205
 
 Run `revdep_details(, "infercnv")` for more info
 
@@ -1344,44 +1323,21 @@ Run `revdep_details(, "infercnv")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking dependencies in R code ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
-# inlinedocs
-
-<details>
-
-* Version: 2019.12.5
-* GitHub: https://github.com/tdhock/inlinedocs
-* Source code: https://github.com/cran/inlinedocs
-* Date/Publication: 2019-12-05 23:30:07 UTC
-* Number of recursive dependencies: 7
-
-Run `revdep_details(, "inlinedocs")` for more info
-
-</details>
-
-## In both
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘R.methodsS3’
+    Unexported object imported by a ':::' call: ‘HiddenMarkov:::makedensity’
+      See the note in ?`:::` about the use of this operator.
     ```
 
 # InPAS
 
 <details>
 
-* Version: 2.6.0
+* Version: 2.10.0
 * GitHub: NA
 * Source code: https://github.com/cran/InPAS
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 167
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 172
 
 Run `revdep_details(, "InPAS")` for more info
 
@@ -1407,7 +1363,7 @@ Run `revdep_details(, "InPAS")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/interflex
 * Date/Publication: 2021-05-18 11:40:02 UTC
-* Number of recursive dependencies: 99
+* Number of recursive dependencies: 103
 
 Run `revdep_details(, "interflex")` for more info
 
@@ -1415,126 +1371,9 @@ Run `revdep_details(, "interflex")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking C++ specification ... NOTE
     ```
-      installed size is  5.8Mb
-      sub-directories of 1Mb or more:
-        libs   5.1Mb
-    ```
-
-# ISAnalytics
-
-<details>
-
-* Version: 1.8.1
-* GitHub: https://github.com/calabrialab/ISAnalytics
-* Source code: https://github.com/cran/ISAnalytics
-* Date/Publication: 2022-12-01
-* Number of recursive dependencies: 171
-
-Run `revdep_details(, "ISAnalytics")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘ISAnalytics-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: import_Vispa2_stats
-    > ### Title: Import Vispa2 stats given the aligned association file.
-    > ### Aliases: import_Vispa2_stats
-    > 
-    > ### ** Examples
-    > 
-    > fs_path <- generate_default_folder_structure(type = "correct")
-    ...
-      2. │ ├─ISAnalytics:::.manage_association_file(...)
-      3. │ │ └─ISAnalytics:::.check_file_system_alignment(...)
-      4. │ │   └─proj_fold_col %in% colnames(df)
-      5. │ └─dplyr::if_else(...)
-      6. │   └─dplyr:::vec_case_when(...)
-      7. │     └─vctrs::list_check_all_vectors(values, arg = values_arg, call = call)
-      8. └─vctrs:::stop_scalar_type(`<fn>`(NULL), "false", `<env>`)
-      9.   └─vctrs:::stop_vctrs(...)
-     10.     └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(ISAnalytics)
-      Loading required package: magrittr
-      
-      Attaching package: 'magrittr'
-      
-    ...
-       13. │                       ├─ISAnalytics:::.manage_association_file(...)
-       14. │                       │ └─ISAnalytics:::.check_file_system_alignment(...)
-       15. │                       │   └─proj_fold_col %in% colnames(df)
-       16. │                       └─dplyr::if_else(...)
-       17. │                         └─dplyr:::vec_case_when(...)
-       18. │                           └─vctrs::list_check_all_vectors(values, arg = values_arg, call = call)
-       19. └─vctrs:::stop_scalar_type(`<fn>`(NULL), "false", `<env>`)
-       20.   └─vctrs:::stop_vctrs(...)
-       21.     └─rlang::abort(message, class = c(class, "vctrs_error"), ..., call = vctrs_error_call(call))
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘ISAnalytics.Rmd’ using rmarkdown
-    --- finished re-building ‘ISAnalytics.Rmd’
-    
-    --- re-building ‘sharing_analyses.Rmd’ using rmarkdown
-    --- finished re-building ‘sharing_analyses.Rmd’
-    
-    --- re-building ‘workflow_start.Rmd’ using rmarkdown
-    Quitting from lines 466-470 (workflow_start.Rmd) 
-    Error: processing vignette 'workflow_start.Rmd' failed with diagnostics:
-    `false` must be a vector, not `NULL`.
-    --- failed re-building ‘workflow_start.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘workflow_start.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.9Mb
-      sub-directories of 1Mb or more:
-        data   1.4Mb
-        doc    4.4Mb
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    .sh_row_permut: no visible global function definition for ‘.’
-    .sharing_multdf_mult_key: no visible binding for global variable ‘.’
-    .sharing_multdf_single_key: no visible binding for global variable ‘.’
-    .sharing_singledf_mult_key: no visible binding for global variable ‘.’
-    .sharing_singledf_single_key: no visible binding for global variable
-      ‘.’
-    cumulative_is: no visible binding for global variable ‘is’
-    gene_frequency_fisher: no visible binding for global variable ‘.’
-    Undefined global functions or variables:
-      . is
-    Consider adding
-      importFrom("methods", "is")
-    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
-    contains 'methods').
+      Specified C++11: please drop specification unless essential
     ```
 
 # ivmte
@@ -1545,7 +1384,7 @@ Run `revdep_details(, "ISAnalytics")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/ivmte
 * Date/Publication: 2021-09-17 12:20:07 UTC
-* Number of recursive dependencies: 110
+* Number of recursive dependencies: 112
 
 Run `revdep_details(, "ivmte")` for more info
 
@@ -1562,10 +1401,10 @@ Run `revdep_details(, "ivmte")` for more info
 
 <details>
 
-* Version: 0.4.2
+* Version: 0.5.0
 * GitHub: https://github.com/keyATM/keyATM
 * Source code: https://github.com/cran/keyATM
-* Date/Publication: 2023-01-06 18:50:52 UTC
+* Date/Publication: 2023-05-11 07:20:03 UTC
 * Number of recursive dependencies: 107
 
 Run `revdep_details(, "keyATM")` for more info
@@ -1576,41 +1415,41 @@ Run `revdep_details(, "keyATM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 23.9Mb
+      installed size is  9.3Mb
       sub-directories of 1Mb or more:
-        libs  23.6Mb
+        libs   9.1Mb
     ```
 
-# lava
+# ldsr
 
 <details>
 
-* Version: 1.7.1
-* GitHub: https://github.com/kkholst/lava
-* Source code: https://github.com/cran/lava
-* Date/Publication: 2023-01-06 22:30:34 UTC
-* Number of recursive dependencies: 136
+* Version: 0.0.2
+* GitHub: https://github.com/ntthung/ldsr
+* Source code: https://github.com/cran/ldsr
+* Date/Publication: 2020-05-04 14:40:09 UTC
+* Number of recursive dependencies: 80
 
-Run `revdep_details(, "lava")` for more info
+Run `revdep_details(, "ldsr")` for more info
 
 </details>
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking C++ specification ... NOTE
     ```
-    Package suggested but not available for checking: ‘igraph’
+      Specified C++11: please drop specification unless essential
     ```
 
 # lidR
 
 <details>
 
-* Version: 4.0.2
+* Version: 4.0.4
 * GitHub: https://github.com/r-lidar/lidR
 * Source code: https://github.com/cran/lidR
-* Date/Publication: 2022-12-15 15:10:02 UTC
-* Number of recursive dependencies: 157
+* Date/Publication: 2023-09-07 15:20:05 UTC
+* Number of recursive dependencies: 155
 
 Run `revdep_details(, "lidR")` for more info
 
@@ -1618,59 +1457,11 @@ Run `revdep_details(, "lidR")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘lidR-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: its_silva2016
-    > ### Title: Individual Tree Segmentation Algorithm
-    > ### Aliases: its_silva2016 silva2016
-    > 
-    > ### ** Examples
-    > 
-    > LASfile <- system.file("extdata", "MixedConifer.laz", package="lidR")
-    ...
-    > chm <- rasterize_canopy(las, res = 0.5, p2r(0.3), pkg = "raster")
-    > ker <- matrix(1,3,3)
-    > chm <- raster::focal(chm, w = ker, fun = mean, na.rm = TRUE)
-    > 
-    > ttops <- locate_trees(chm, lmf(4, 2))
-    > las   <- segment_trees(las, silva2016(chm, ttops))
-    Error in geos_op2_geom("intersection", x, y, ...) : 
-      st_crs(x) == st_crs(y) is not TRUE
-    Calls: segment_trees ... st_intersection.sf -> geos_op2_df -> geos_op2_geom -> stopifnot
-    Execution halted
-    ```
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 12039 Aborted                 ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > Sys.setenv("R_TESTS" = "")
-      > 
-      > library(testthat)
-      > library(lidR)
-      > test_check("lidR")
-      Tests using raster: terra 
-      Tests using future: TRUE 
-      Tests using OpenMP thread: 32 
-      OGR: Unsupported geometry type
-      OGR: Unsupported geometry type
-      terminate called after throwing an instance of 'std::length_error'
-        what():  basic_string::_S_create
-    ```
-
 *   checking installed package size ... NOTE
     ```
-      installed size is 19.6Mb
+      installed size is  7.8Mb
       sub-directories of 1Mb or more:
-        R         1.2Mb
-        extdata   1.1Mb
-        libs     15.8Mb
+        libs   6.8Mb
     ```
 
 # lightr
@@ -1681,7 +1472,7 @@ Run `revdep_details(, "lidR")` for more info
 * GitHub: https://github.com/ropensci/lightr
 * Source code: https://github.com/cran/lightr
 * Date/Publication: 2022-05-14 13:50:02 UTC
-* Number of recursive dependencies: 77
+* Number of recursive dependencies: 88
 
 Run `revdep_details(, "lightr")` for more info
 
@@ -1703,11 +1494,11 @@ Run `revdep_details(, "lightr")` for more info
 
 <details>
 
-* Version: 1.4.0
+* Version: 1.8.0
 * GitHub: https://github.com/KechrisLab/MAI
 * Source code: https://github.com/cran/MAI
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 168
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 178
 
 Run `revdep_details(, "MAI")` for more info
 
@@ -1722,101 +1513,15 @@ Run `revdep_details(, "MAI")` for more info
     is not mentioned in the DESCRIPTION file.
     ```
 
-# metabolomicsR
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/XikunHan/metabolomicsR
-* Source code: https://github.com/cran/metabolomicsR
-* Date/Publication: 2022-04-29 07:40:02 UTC
-* Number of recursive dependencies: 163
-
-Run `revdep_details(, "metabolomicsR")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘genuMet’
-    ```
-
-# mice
-
-<details>
-
-* Version: 3.15.0
-* GitHub: https://github.com/amices/mice
-* Source code: https://github.com/cran/mice
-* Date/Publication: 2022-11-19 13:00:02 UTC
-* Number of recursive dependencies: 133
-
-Run `revdep_details(, "mice")` for more info
-
-</details>
-
-## In both
-
-*   checking Rd cross-references ... WARNING
-    ```
-    Missing link or links in documentation object 'mice.impute.cart.Rd':
-      ‘rpart.control’
-    
-    See section 'Cross-references' in the 'Writing R Extensions' manual.
-    ```
-
-# microservices
-
-<details>
-
-* Version: 0.2.0
-* GitHub: https://github.com/tidylab/microservices
-* Source code: https://github.com/cran/microservices
-* Date/Publication: 2022-10-01 09:50:02 UTC
-* Number of recursive dependencies: 69
-
-Run `revdep_details(, "microservices")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(microservices)
-      > test_check("microservices")
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 12 ]
-      
-      ══ Failed tests ════════════════════════════════════════════════════════════════
-    ...
-      Backtrace:
-          ▆
-       1. ├─config::get(...) at test-endpoint-plumber-{route_name}.R:2:0
-       2. │ └─base::normalizePath(file, mustWork = FALSE)
-       3. │   └─base::path.expand(path)
-       4. └─base::system.file(...)
-      
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 12 ]
-      Error: Test failures
-      Execution halted
-    ```
-
 # migraph
 
 <details>
 
-* Version: 0.13.2
+* Version: 1.2.1
 * GitHub: https://github.com/snlab-ch/migraph
 * Source code: https://github.com/cran/migraph
-* Date/Publication: 2022-12-20 16:20:02 UTC
-* Number of recursive dependencies: 137
+* Date/Publication: 2023-12-17 22:30:02 UTC
+* Number of recursive dependencies: 115
 
 Run `revdep_details(, "migraph")` for more info
 
@@ -1824,23 +1529,35 @@ Run `revdep_details(, "migraph")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking examples ... ERROR
     ```
-    Package required but not available: ‘igraph’
+    Running examples in ‘migraph-Ex.R’ failed
+    The error most likely occurred in:
     
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    > ### Name: community
+    > ### Title: Community partitioning algorithms
+    > ### Aliases: community node_optimal node_kernighanlin node_edge_betweenness
+    > ###   node_fast_greedy node_leading_eigen node_walktrap node_infomap
+    > ###   node_spinglass node_louvain node_leiden
+    > 
+    > ### ** Examples
+    > 
+    > node_optimal(ison_adolescents)
+    Error in igraph::cluster_optimal(manynet::as_igraph(.data)) : 
+      At core/community/optimal_modularity.c:86 : GLPK is not available, Unimplemented function call
+    Calls: node_optimal -> <Anonymous>
+    Execution halted
     ```
 
 # MineICA
 
 <details>
 
-* Version: 1.38.0
+* Version: 1.42.0
 * GitHub: NA
 * Source code: https://github.com/cran/MineICA
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 217
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 216
 
 Run `revdep_details(, "MineICA")` for more info
 
@@ -1848,12 +1565,58 @@ Run `revdep_details(, "MineICA")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking dependencies in R code ... WARNING
     ```
-    Package required but not available: ‘igraph’
+    Namespace in Imports field not imported from: ‘lumiHumanAll.db’
+      All declared Imports should be used.
+    Packages in Depends field not imported from:
+      ‘GOstats’ ‘Hmisc’ ‘JADE’ ‘RColorBrewer’ ‘Rgraphviz’ ‘annotate’
+      ‘biomaRt’ ‘cluster’ ‘colorspace’ ‘fastICA’ ‘foreach’ ‘ggplot2’
+      ‘graph’ ‘gtools’ ‘igraph’ ‘marray’ ‘mclust’ ‘methods’ ‘plyr’ ‘scales’
+      ‘xtable’
+      These packages need to be imported from (in the NAMESPACE file)
+      for when this namespace is loaded but not attached.
+    Missing or unexported object: ‘GOstats::geneIdsByCategory’
+    ':::' calls which should be '::':
+      ‘Biobase:::annotation<-’ ‘Biobase:::validMsg’ ‘fpc:::pamk’
+      ‘lumi:::getChipInfo’ ‘mclust:::adjustedRandIndex’
+      See the note in ?`:::` about the use of this operator.
+    Unexported object imported by a ':::' call: ‘Biobase:::isValidVersion’
+      See the note in ?`:::` about the use of this operator.
+    ```
+
+*   checking Rd cross-references ... WARNING
+    ```
+    Missing link or links in documentation object 'Alist.Rd':
+      ‘class-IcaSet’
     
-    Package suggested but not available for checking: ‘igraph’
+    Missing link or links in documentation object 'Slist.Rd':
+      ‘class-IcaSet’
     
+    Missing link or links in documentation object 'class-IcaSet.Rd':
+      ‘class-IcaSet’
+    
+    Missing link or links in documentation object 'getComp.Rd':
+      ‘class-IcaSet’
+    
+    Missing link or links in documentation object 'runAn.Rd':
+      ‘[Category:class-GOHyperGParams]{GOHyperGParams}’
+    
+    See section 'Cross-references' in the 'Writing R Extensions' manual.
+    ```
+
+*   checking for missing documentation entries ... WARNING
+    ```
+    Undocumented S4 classes:
+      ‘MineICAParams’
+    All user-level objects in a package (including S4 classes and methods)
+    should have documentation entries.
+    See chapter ‘Writing R documentation files’ in the ‘Writing R
+    Extensions’ manual.
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
     Package which this enhances but not available for checking: ‘doMC’
     
     Depends: includes the non-default packages:
@@ -1863,44 +1626,81 @@ Run `revdep_details(, "MineICA")` for more info
       'graph', 'annotate', 'Hmisc', 'fastICA', 'JADE'
     Adding so many packages to the search path is excessive and importing
     selectively is preferable.
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
     ```
 
-# missSBM
-
-<details>
-
-* Version: 1.0.3
-* GitHub: https://github.com/grossSBM/missSBM
-* Source code: https://github.com/cran/missSBM
-* Date/Publication: 2022-08-23 12:10:06 UTC
-* Number of recursive dependencies: 109
-
-Run `revdep_details(, "missSBM")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
+*   checking DESCRIPTION meta-information ... NOTE
     ```
-    Package required but not available: ‘igraph’
+    Packages listed in more than one of Depends, Imports, Suggests, Enhances:
+      ‘biomaRt’ ‘GOstats’ ‘cluster’ ‘mclust’ ‘igraph’
+    A package should be listed in only one of these fields.
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    addGenesToGoReport: no visible global function definition for
+      ‘conditional’
+    addGenesToGoReport: no visible global function definition for
+      ‘sigCategories’
+    annot2Color: no visible global function definition for ‘brewer.pal’
+    annot2Color: no visible global function definition for ‘heat_hcl’
+    annot2Color: no visible global function definition for ‘terrain_hcl’
+    annot2Color: no visible global function definition for ‘cm.colors’
+    annot2Color: no visible global function definition for ‘rainbow_hcl’
+    annotFeatures: no visible global function definition for ‘na.omit’
+    ...
+      importFrom("methods", "callNextMethod", "new", "validObject")
+      importFrom("stats", "aggregate", "as.dendrogram", "as.dist",
+                 "as.hclust", "chisq.test", "cor", "cor.test", "cutree",
+                 "dist", "hclust", "kmeans", "kruskal.test", "lm", "median",
+                 "na.omit", "order.dendrogram", "p.adjust", "quantile",
+                 "reorder", "shapiro.test", "wilcox.test")
+      importFrom("utils", "capture.output", "combn", "read.table",
+                 "write.table")
+    to your NAMESPACE file (and ensure that your DESCRIPTION Imports field
+    contains 'methods').
+    ```
+
+*   checking re-building of vignette outputs ... NOTE
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘MineICA.Rnw’ using Sweave
+    Loading required package: BiocGenerics
     
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Attaching package: ‘BiocGenerics’
+    
+    The following objects are masked from ‘package:stats’:
+    
+        IQR, mad, sd, var, xtabs
+    
+    ...
+    l.23 \usepackage
+                    {subfig}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘MineICA.Rnw’
+    
+    SUMMARY: processing the following file failed:
+      ‘MineICA.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+*   checking for non-standard things in the check directory ... NOTE
+    ```
+    Found the following files/directories:
+      ‘ProjByComp’ ‘carbayo’ ‘gene2MixingMatrix’ ‘myGraph.txt’
+      ‘nodeInfo.txt’ ‘outputHyper_example.htm’ ‘resMineICACarbayo’ ‘toy’
     ```
 
 # mistyR
 
 <details>
 
-* Version: 1.6.0
+* Version: 1.10.0
 * GitHub: https://github.com/saezlab/mistyR
 * Source code: https://github.com/cran/mistyR
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 152
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 156
 
 Run `revdep_details(, "mistyR")` for more info
 
@@ -1908,193 +1708,48 @@ Run `revdep_details(, "mistyR")` for more info
 
 ## In both
 
-*   checking examples ... ERROR
+*   checking R code for possible problems ... NOTE
     ```
-    Running examples in ‘mistyR-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: plot_interaction_communities
-    > ### Title: Plot marker interaction communities
-    > ### Aliases: plot_interaction_communities
-    > 
-    > ### ** Examples
-    > 
-    > all.samples <- list.dirs("results", recursive = FALSE)
+    aggregate_results: no visible binding for global variable ‘measure’
+    aggregate_results: no visible binding for global variable ‘target’
+    aggregate_results: no visible binding for global variable ‘value’
+    aggregate_results: no visible binding for global variable ‘sd’
+    aggregate_results: no visible binding for global variable ‘view’
+    aggregate_results: no visible binding for global variable ‘.PT’
+    aggregate_results: no visible binding for global variable ‘Importance’
+    aggregate_results_subset: no visible binding for global variable ‘view’
+    aggregate_results_subset: no visible binding for global variable ‘.PT’
+    aggregate_results_subset: no visible binding for global variable
     ...
-    
-    Collecting importances
-    
-    Aggregating
-    > 
-    > misty.results %>%
-    +   plot_interaction_communities("intra") %>%
-    +   plot_interaction_communities("para.10")
-    Error: The provided result list is malformed. Consider using collect_results().
-    Execution halted
+    run_misty : <anonymous>: no visible binding for global variable
+      ‘multi.R2’
+    svm_model: no visible binding for global variable ‘index’
+    Undefined global functions or variables:
+      .PT Importance Predictor Target fraction index intra.R2 intra.RMSE
+      measure multi.R2 multi.RMSE nsamples p prediction sd target total ts
+      value view
+    Consider adding
+      importFrom("stats", "sd", "ts")
+    to your NAMESPACE file.
     ```
 
-*   checking tests ...
+*   checking for non-standard things in the check directory ... NOTE
     ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      
-      Computing triangulation
-      
-      Generating juxtaview
-      
-      Generating paraview
-    ...
-       1. ├─testthat::expect_invisible(...) at test-plots.R:47:2
-       2. │ └─base::withVisible(call)
-       3. ├─base::suppressWarnings(...)
-       4. │ └─base::withCallingHandlers(...)
-       5. └─mistyR::plot_interaction_communities(...)
-       6.   └─assertthat::assert_that(...)
-      
-      [ FAIL 1 | WARN 74 | SKIP 0 | PASS 172 ]
-      Error: Test failures
-      Execution halted
+    Found the following files/directories:
+      ‘results’
     ```
 
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘mistyR.Rmd’ using rmarkdown
-    The magick package is required to crop "/c4/home/henrik/repositories/future/revdep/checks/mistyR/new/mistyR.Rcheck/vign_test/mistyR/vignettes/mistyR_files/figure-html/unnamed-chunk-2-1.png" but not available.
-    
-     Progress: ───────────────────────────────────────────────────────────────  100%
-     Progress: ───────────────────────────────────────────────────────────────  100%
-     Progress: ───────────────────────────────────────────────────────────────  100%
-     Progress: ───────────────────────────────────────────────────────────────  100%
-     Progress: ───────────────────────────────────────────────────────────────  100%
-     Progress: ───────────────────────────────────────────────────────────────  100%
-    ...
-    Quitting from lines 251-252 (mistyR.Rmd) 
-    Error: processing vignette 'mistyR.Rmd' failed with diagnostics:
-    The package igraph (>= 1.2.7) is required to calculate the interaction communities.
-    --- failed re-building ‘mistyR.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘mistyR.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘igraph’
-    ```
-
-# mlr3pipelines
+# mlr3resampling
 
 <details>
 
-* Version: 0.4.2
-* GitHub: https://github.com/mlr-org/mlr3pipelines
-* Source code: https://github.com/cran/mlr3pipelines
-* Date/Publication: 2022-09-20 22:00:07 UTC
-* Number of recursive dependencies: 159
+* Version: 2023.12.20
+* GitHub: https://github.com/tdhock/mlr3resampling
+* Source code: https://github.com/cran/mlr3resampling
+* Date/Publication: 2023-12-21 16:40:07 UTC
+* Number of recursive dependencies: 86
 
-Run `revdep_details(, "mlr3pipelines")` for more info
-
-</details>
-
-## In both
-
-*   checking examples ... ERROR
-    ```
-    Running examples in ‘mlr3pipelines-Ex.R’ failed
-    The error most likely occurred in:
-    
-    > ### Name: mlr_pipeops_imputelearner
-    > ### Title: Impute Features by Fitting a Learner
-    > ### Aliases: mlr_pipeops_imputelearner PipeOpImputeLearner
-    > 
-    > ### ** Examples
-    > 
-    > library("mlr3")
-    ...
-    Empty data.table (0 rows and 8 cols): .impute_col,age,glucose,insulin,pedigree,pregnant...
-    
-    $task_prototype
-    Empty data.table (0 rows and 8 cols): .impute_col,age,glucose,insulin,pedigree,pregnant...
-    
-    $mlr3_version
-    [1] ‘0.14.1’
-    
-    $train_task
-    <TaskRegr:imputing> (768 x 8)
-    ```
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-      Starting 2 test processes
-      [ FAIL 5 | WARN 0 | SKIP 79 | PASS 12709 ]
-      
-      ══ Skipped tests ═══════════════════════════════════════════════════════════════
-      • On CRAN (77)
-      • empty test (2)
-    ...
-      Error: The following packages could not be loaded: igraph
-      Backtrace:
-          ▆
-       1. └─graph$plot() at test_multichannels.R:100:2
-       2.   └─mlr3pipelines:::.__Graph__plot(...)
-       3.     └─mlr3misc::require_namespaces("igraph")
-      
-      [ FAIL 5 | WARN 0 | SKIP 79 | PASS 12709 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘igraph’
-    ```
-
-# momentuHMM
-
-<details>
-
-* Version: 1.5.5
-* GitHub: https://github.com/bmcclintock/momentuHMM
-* Source code: https://github.com/cran/momentuHMM
-* Date/Publication: 2022-10-18 20:52:35 UTC
-* Number of recursive dependencies: 142
-
-Run `revdep_details(, "momentuHMM")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is 10.1Mb
-      sub-directories of 1Mb or more:
-        R      1.2Mb
-        doc    1.7Mb
-        libs   6.6Mb
-    ```
-
-# mslp
-
-<details>
-
-* Version: 1.0.1
-* GitHub: NA
-* Source code: https://github.com/cran/mslp
-* Date/Publication: 2022-11-20
-* Number of recursive dependencies: 88
-
-Run `revdep_details(, "mslp")` for more info
+Run `revdep_details(, "mlr3resampling")` for more info
 
 </details>
 
@@ -2104,75 +1759,128 @@ Run `revdep_details(, "mslp")` for more info
     ```
     Error(s) in re-building vignettes:
       ...
-    --- re-building ‘mslp.Rmd’ using rmarkdown
-    Error: processing vignette 'mslp.Rmd' failed with diagnostics:
-    there is no package called ‘BiocStyle’
-    --- failed re-building ‘mslp.Rmd’
+    --- re-building ‘Simulations.Rmd’ using rmarkdown
+    
+    Quitting from lines 543-708 [SimulationsAnimintClassification] (Simulations.Rmd)
+    Error: processing vignette 'Simulations.Rmd' failed with diagnostics:
+    Passed a vector of type 'NULL'. Needs to be type 'character'.
+    --- failed re-building ‘Simulations.Rmd’
     
     SUMMARY: processing the following file failed:
-      ‘mslp.Rmd’
+      ‘Simulations.Rmd’
     
     Error: Vignette re-building failed.
     Execution halted
     ```
 
-# netShiny
+# mrgsim.parallel
 
 <details>
 
-* Version: 1.0
-* GitHub: NA
-* Source code: https://github.com/cran/netShiny
-* Date/Publication: 2022-08-22 09:30:02 UTC
-* Number of recursive dependencies: 151
+* Version: 0.2.1
+* GitHub: https://github.com/kylebaron/mrgsim.parallel
+* Source code: https://github.com/cran/mrgsim.parallel
+* Date/Publication: 2022-03-17 19:50:05 UTC
+* Number of recursive dependencies: 76
 
-Run `revdep_details(, "netShiny")` for more info
+Run `revdep_details(, "mrgsim.parallel")` for more info
 
 </details>
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Package suggested but not available for checking: ‘qs’
     ```
 
-# nncc
+# nebula
 
 <details>
 
-* Version: 1.0.0
+* Version: 1.4.2
 * GitHub: NA
-* Source code: https://github.com/cran/nncc
-* Date/Publication: 2022-08-30 13:00:02 UTC
-* Number of recursive dependencies: 82
+* Source code: https://github.com/cran/nebula
+* Date/Publication: 2023-07-05 23:20:07 UTC
+* Number of recursive dependencies: 74
 
-Run `revdep_details(, "nncc")` for more info
+Run `revdep_details(, "nebula")` for more info
 
 </details>
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Package required but not available: ‘igraph’
+      installed size is  9.5Mb
+      sub-directories of 1Mb or more:
+        libs   9.3Mb
+    ```
+
+# nfl4th
+
+<details>
+
+* Version: 1.0.4
+* GitHub: https://github.com/nflverse/nfl4th
+* Source code: https://github.com/cran/nfl4th
+* Date/Publication: 2023-08-21 09:32:33 UTC
+* Number of recursive dependencies: 111
+
+Run `revdep_details(, "nfl4th")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘nfl4th’ can be installed ... WARNING
+    ```
+    Found the following significant warnings:
+      Warning: GitHub.com seems offline, and `options(nfl4th.keep_games)` is not set to TRUE. Deleting the games cache, and predictions may not be available without an internet connection.
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/nfl4th/new/nfl4th.Rcheck/00install.out’ for details.
+    ```
+
+*   checking whether the namespace can be loaded with stated dependencies ... NOTE
+    ```
+    Warning: GitHub.com seems offline, and `options(nfl4th.keep_games)` is not set to TRUE. Deleting the games cache, and predictions may not be available without an internet connection.
     
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    A namespace must be able to be loaded with just the base namespace
+    loaded: otherwise if the namespace gets loaded by a saved object, the
+    session will be unable to start.
+    
+    Probably some imports need to be declared in the NAMESPACE file.
+    ```
+
+# nflfastR
+
+<details>
+
+* Version: 4.6.0
+* GitHub: https://github.com/nflverse/nflfastR
+* Source code: https://github.com/cran/nflfastR
+* Date/Publication: 2023-10-20 15:30:07 UTC
+* Number of recursive dependencies: 104
+
+Run `revdep_details(, "nflfastR")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘qs’
     ```
 
 # oncomsm
 
 <details>
 
-* Version: 0.1.2
+* Version: 0.1.4
 * GitHub: https://github.com/Boehringer-Ingelheim/oncomsm
 * Source code: https://github.com/cran/oncomsm
-* Date/Publication: 2022-12-09 14:40:09 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2023-04-17 07:00:02 UTC
+* Number of recursive dependencies: 125
 
 Run `revdep_details(, "oncomsm")` for more info
 
@@ -2182,15 +1890,35 @@ Run `revdep_details(, "oncomsm")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 55.3Mb
+      installed size is 19.9Mb
       sub-directories of 1Mb or more:
-        doc    1.3Mb
-        libs  53.0Mb
+        libs  19.6Mb
     ```
 
 *   checking for GNU extensions in Makefiles ... NOTE
     ```
     GNU make is a SystemRequirements.
+    ```
+
+# onemapsgapi
+
+<details>
+
+* Version: 1.1.0
+* GitHub: NA
+* Source code: https://github.com/cran/onemapsgapi
+* Date/Publication: 2022-11-29 08:00:03 UTC
+* Number of recursive dependencies: 71
+
+Run `revdep_details(, "onemapsgapi")` for more info
+
+</details>
+
+## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘rgdal’
     ```
 
 # OOS
@@ -2201,7 +1929,7 @@ Run `revdep_details(, "oncomsm")` for more info
 * GitHub: https://github.com/tylerJPike/OOS
 * Source code: https://github.com/cran/OOS
 * Date/Publication: 2021-03-17 13:20:20 UTC
-* Number of recursive dependencies: 134
+* Number of recursive dependencies: 137
 
 Run `revdep_details(, "OOS")` for more info
 
@@ -2214,6 +1942,129 @@ Run `revdep_details(, "OOS")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
+# pareg
+
+<details>
+
+* Version: 1.6.0
+* GitHub: https://github.com/cbg-ethz/pareg
+* Source code: https://github.com/cran/pareg
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 320
+
+Run `revdep_details(, "pareg")` for more info
+
+</details>
+
+## In both
+
+*   checking examples ... ERROR
+    ```
+    Running examples in ‘pareg-Ex.R’ failed
+    The error most likely occurred in:
+    
+    > ### Name: as.data.frame.pareg
+    > ### Title: as.data.frame for an object of class 'pareg'.
+    > ### Aliases: as.data.frame.pareg
+    > 
+    > ### ** Examples
+    > 
+    > df_genes <- data.frame(
+    ...
+    [Errno 2] No such file or directory: '/wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/share/aclocal'
+    [Errno 2] No such file or directory: '/wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/lib/gettext'
+    [Errno 2] No such file or directory: '/wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/lib/pkgconfig'
+    [Errno 2] No such file or directory: '/wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/man/man1'
+    [Errno 2] No such file or directory: '/wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/share/man/man1'
+    [Errno 2] No such file or directory: '/wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/lib/bfd-plugins'
+    [Errno 2] No such file or directory: '/wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/include'
+    
+    Error: Error creating conda environment 'fallback' [exit code 1]
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+        pthread-stubs      conda-forge/linux-64::pthread-stubs-0.4-h36c2ea0_1001
+        python             conda-forge/linux-64::python-3.9.18-h0755675_0_cpython
+        r-base             conda-forge/linux-64::r-base-4.3.2-hb8ee39d_1
+        r-here             conda-forge/noarch::r-here-1.0.1-r43hc72bb7e_2
+        r-jsonlite         conda-forge/linux-64::r-jsonlite-1.8.8-r43h57805ef_0
+        r-lattice          conda-forge/linux-64::r-lattice-0.22_5-r43h57805ef_0
+    ...
+      done
+      Executing transaction: ...working... done
+      sh: /wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/bin/Rscript: No such file or directory
+      Error in makePSOCKcluster(1, rscript = rscript) : 
+        Cluster setup failed. 1 worker of 1 failed to connect.
+      Calls: <Anonymous> ... .activate_fallback -> basiliskStart -> makePSOCKcluster
+      In addition: Warning message:
+      In check_forbidden_install("Conda Environments") :
+        cannot install Conda Environments during R CMD check
+      Execution halted
+    ```
+
+*   checking re-building of vignette outputs ... ERROR
+    ```
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘pareg.Rmd’ using rmarkdown
+    The magick package is required to crop "/wynton/home/cbi/hb/repositories/future/revdep/checks/pareg/new/pareg.Rcheck/vign_test/pareg/vignettes/pareg_files/figure-html/unnamed-chunk-4-1.png" but not available.
+    The magick package is required to crop "/wynton/home/cbi/hb/repositories/future/revdep/checks/pareg/new/pareg.Rcheck/vign_test/pareg/vignettes/pareg_files/figure-html/unnamed-chunk-5-1.png" but not available.
+    2023-12-21 15:55:36.343997: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  SSE4.1 SSE4.2 AVX AVX2 FMA
+    To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+    sh: /wynton/home/cbi/hb/.cache/R/basilisk/1.14.1/0/envs/fallback/bin/Rscript: No such file or directory
+    
+    Quitting from lines 145-150 [unnamed-chunk-9] (pareg.Rmd)
+    ...
+    --- re-building ‘pathway_similarities.Rmd’ using rmarkdown
+    The magick package is required to crop "/wynton/home/cbi/hb/repositories/future/revdep/checks/pareg/new/pareg.Rcheck/vign_test/pareg/vignettes/pathway_similarities_files/figure-html/unnamed-chunk-2-1.png" but not available.
+    The magick package is required to crop "/wynton/home/cbi/hb/repositories/future/revdep/checks/pareg/new/pareg.Rcheck/vign_test/pareg/vignettes/pathway_similarities_files/figure-html/unnamed-chunk-3-1.png" but not available.
+    --- finished re-building ‘pathway_similarities.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘pareg.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
+
+*   checking for portable file names ... NOTE
+    ```
+    Found the following non-portable file paths:
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_ablation_study/config.yaml
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_ablation_study/params.csv
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_dispersion_fitting/config.yaml
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_dispersion_fitting/params.csv
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_real_datasets/config.yaml
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_real_datasets/params.csv
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_regularization_effect/config.yaml
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_regularization_effect/params.csv
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_regularization_parameter/config.yaml
+    ...
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_response_distribution/params.csv
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_similarity_measures/config.yaml
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_similarity_measures/params.csv
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/workflow/scripts/compare_rocauc_vs_loss.R
+      pareg/inst/scripts/synthetic_benchmark/resources/multi_config_workflow/config_regularization_parameter
+    
+    Tarballs are only required to store paths of up to 100 bytes and cannot
+    store those of more than 256 bytes, with restrictions including to 100
+    bytes for the final component.
+    See section ‘Package structure’ in the ‘Writing R Extensions’ manual.
+    ```
+
+*   checking whether package ‘pareg’ can be installed ... NOTE
+    ```
+    Found the following notes/warnings:
+      Non-staged installation was used
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/pareg/new/pareg.Rcheck/00install.out’ for details.
+    ```
+
 # partR2
 
 <details>
@@ -2222,7 +2073,7 @@ Run `revdep_details(, "OOS")` for more info
 * GitHub: https://github.com/mastoffel/partR2
 * Source code: https://github.com/cran/partR2
 * Date/Publication: 2021-01-18 16:30:04 UTC
-* Number of recursive dependencies: 92
+* Number of recursive dependencies: 94
 
 Run `revdep_details(, "partR2")` for more info
 
@@ -2240,11 +2091,11 @@ Run `revdep_details(, "partR2")` for more info
 
 <details>
 
-* Version: 2.8.0
+* Version: 2.9.0
 * GitHub: https://github.com/rmaia/pavo
 * Source code: https://github.com/cran/pavo
-* Date/Publication: 2022-08-16 13:00:20 UTC
-* Number of recursive dependencies: 92
+* Date/Publication: 2023-09-24 10:10:02 UTC
+* Number of recursive dependencies: 104
 
 Run `revdep_details(, "pavo")` for more info
 
@@ -2256,55 +2107,90 @@ Run `revdep_details(, "pavo")` for more info
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/pavo/new/pavo.Rcheck/00install.out’ for details.
     ```
 
-# pGRN
+# PCRedux
 
 <details>
 
-* Version: 0.3.5
-* GitHub: NA
-* Source code: https://github.com/cran/pGRN
-* Date/Publication: 2023-01-17 17:20:02 UTC
-* Number of recursive dependencies: 93
+* Version: 1.1-2
+* GitHub: https://github.com/PCRuniversum/PCRedux
+* Source code: https://github.com/cran/PCRedux
+* Date/Publication: 2022-05-11 11:40:02 UTC
+* Number of recursive dependencies: 155
 
-Run `revdep_details(, "pGRN")` for more info
+Run `revdep_details(, "PCRedux")` for more info
 
 </details>
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking examples ... ERROR
     ```
-    Package required but not available: ‘igraph’
+    Running examples in ‘PCRedux-Ex.R’ failed
+    The error most likely occurred in:
     
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    > ### Name: encu
+    > ### Title: A function to calculate numerous features from amplification
+    > ###   curve data from a quantitative PCR experiment.
+    > ### Aliases: encu
+    > ### Keywords: intercept normalization preprocessing slope
+    > 
+    > ### ** Examples
+    ...
+    Loading required package: MASS
+    Loading required package: minpack.lm
+    Loading required package: rgl
+    Loading required package: robustbase
+    Loading required package: Matrix
+    > res_encu <- encu(testdat[, 1:3])
+    Error in validObject(.Object) : 
+      invalid class “der” object: superclass "mMatrix" not defined in the environment of the object's class
+    Calls: encu ... initialize -> initialize -> initMatrix -> validObject
+    Execution halted
+    ```
+
+*   checking tests ...
+    ```
+      Running ‘spelling.R’
+      Running ‘testthat.R’
+     ERROR
+    Running the tests in ‘tests/testthat.R’ failed.
+    Last 50 lines of output:
+        8.           ├─chipPCR::bg.max(x, y)
+        9.           └─chipPCR::bg.max(x, y)
+       10.             ├─chipPCR::inder(x, y, smooth.method = "supsmu")
+       11.             └─chipPCR::inder(x, y, smooth.method = "supsmu")
+       12.               └─methods::new("der", .Data = dat, method = smooth.method)
+    ...
+       11.             └─chipPCR::inder(x, y, smooth.method = "supsmu")
+       12.               └─methods::new("der", .Data = dat, method = smooth.method)
+       13.                 ├─methods::initialize(value, ...)
+       14.                 └─methods::initialize(value, ...)
+       15.                   └─methods (local) initMatrix(.Object, ...)
+       16.                     └─methods::validObject(.Object)
+      
+      [ FAIL 4 | WARN 4 | SKIP 0 | PASS 37 ]
+      Error: Test failures
+      Execution halted
     ```
 
 # photosynthesis
 
 <details>
 
-* Version: 2.1.1
+* Version: 2.1.4
 * GitHub: https://github.com/cdmuir/photosynthesis
 * Source code: https://github.com/cran/photosynthesis
-* Date/Publication: 2022-11-19 19:40:09 UTC
-* Number of recursive dependencies: 135
+* Date/Publication: 2023-08-15 07:20:05 UTC
+* Number of recursive dependencies: 144
 
 Run `revdep_details(, "photosynthesis")` for more info
 
 </details>
 
 ## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.0Mb
-      sub-directories of 1Mb or more:
-        doc   6.0Mb
-    ```
 
 *   checking data for non-ASCII characters ... NOTE
     ```
@@ -2327,6 +2213,11 @@ Run `revdep_details(, "phylolm")` for more info
 
 ## In both
 
+*   checking C++ specification ... NOTE
+    ```
+      Specified C++11: please drop specification unless essential
+    ```
+
 *   checking Rd cross-references ... NOTE
     ```
     Packages unavailable to check Rd xrefs: ‘geiger’, ‘caper’
@@ -2336,11 +2227,11 @@ Run `revdep_details(, "phylolm")` for more info
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.0.4
 * GitHub: https://github.com/pln-team/PLNmodels
 * Source code: https://github.com/cran/PLNmodels
-* Date/Publication: 2023-02-12 14:42:07 UTC
-* Number of recursive dependencies: 146
+* Date/Publication: 2023-08-24 15:10:02 UTC
+* Number of recursive dependencies: 150
 
 Run `revdep_details(, "PLNmodels")` for more info
 
@@ -2348,12 +2239,11 @@ Run `revdep_details(, "PLNmodels")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+      installed size is  8.7Mb
+      sub-directories of 1Mb or more:
+        libs   7.8Mb
     ```
 
 # portvine
@@ -2364,7 +2254,7 @@ Run `revdep_details(, "PLNmodels")` for more info
 * GitHub: https://github.com/EmanuelSommer/portvine
 * Source code: https://github.com/cran/portvine
 * Date/Publication: 2023-01-06 09:40:04 UTC
-* Number of recursive dependencies: 129
+* Number of recursive dependencies: 132
 
 Run `revdep_details(, "portvine")` for more info
 
@@ -2372,140 +2262,27 @@ Run `revdep_details(, "portvine")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking C++ specification ... NOTE
     ```
-      installed size is 51.3Mb
-      sub-directories of 1Mb or more:
-        libs  50.6Mb
+      Specified C++11: please drop specification unless essential
     ```
-
-# ppcseq
-
-<details>
-
-* Version: 1.6.0
-* GitHub: https://github.com/stemangiola/ppcseq
-* Source code: https://github.com/cran/ppcseq
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 119
-
-Run `revdep_details(, "ppcseq")` for more info
-
-</details>
-
-## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 53.1Mb
+      installed size is 17.7Mb
       sub-directories of 1Mb or more:
-        data   1.5Mb
-        libs  50.3Mb
-    ```
-
-*   checking R code for possible problems ... NOTE
-    ```
-    .identify_abundant: no visible binding for global variable ‘.’
-    .identify_abundant: no visible binding for global variable ‘.abundant’
-    add_exposure_rate: no visible binding for global variable ‘.variable’
-    add_exposure_rate: no visible binding for global variable ‘S’
-    add_exposure_rate: no visible binding for global variable ‘exposure
-      rate’
-    add_partition: no visible binding for global variable ‘.’
-    add_scaled_counts_bulk.calcNormFactor: no visible binding for global
-      variable ‘transcript’
-    add_scaled_counts_bulk.get_low_expressed: no visible binding for global
-    ...
-      . .abundant .chain .draw .iteration .lower .upper .upper_2 .value
-      .variable CI G S TMM cc chains dummy exposure rate idx_MPI init l l
-      %>% sd med multiplier nf ppc read count MPI row res_discovery rowid s
-      sample wise data scale_abundance slope symbol MPI row tot tot_filt
-      transcript write_on_disk
-    Consider adding
-      importFrom("base", "row", "sample")
-      importFrom("stats", "sd")
-      importFrom("utils", "data")
-    to your NAMESPACE file.
-    ```
-
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
-
-# prewas
-
-<details>
-
-* Version: 1.1.1
-* GitHub: https://github.com/Snitkin-Lab-Umich/prewas
-* Source code: https://github.com/cran/prewas
-* Date/Publication: 2021-04-02 12:20:05 UTC
-* Number of recursive dependencies: 76
-
-Run `revdep_details(, "prewas")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Last 50 lines of output:
-       5.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
-       6.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-       7.       └─base (local) withOneRestart(expr, restarts[[1L]])
-       8.         └─base (local) doWithOneRestart(return(expr), restart)
-      ── Error ('test-preprocess_tree_and_vcf.R:46'): root_tree roots tree and drops outgroup when given valid inputs ──
-      <packageNotFoundError/error/condition>
-    ...
-       2.   ├─base::namespaceImportFrom(...)
-       3.   │ └─base::asNamespace(ns)
-       4.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
-       5.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-       6.       └─base (local) withOneRestart(expr, restarts[[1L]])
-       7.         └─base (local) doWithOneRestart(return(expr), restart)
-      
-      [ FAIL 4 | WARN 15 | SKIP 0 | PASS 324 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking re-building of vignette outputs ... ERROR
-    ```
-    Error(s) in re-building vignettes:
-      ...
-    --- re-building ‘getting_started_with_prewas.Rmd’ using rmarkdown
-    Quitting from lines 195-198 (getting_started_with_prewas.Rmd) 
-    Error: processing vignette 'getting_started_with_prewas.Rmd' failed with diagnostics:
-    there is no package called 'igraph'
-    --- failed re-building ‘getting_started_with_prewas.Rmd’
-    
-    SUMMARY: processing the following file failed:
-      ‘getting_started_with_prewas.Rmd’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘stats’
-      All declared Imports should be used.
+        libs  17.4Mb
     ```
 
 # projpred
 
 <details>
 
-* Version: 2.4.0
+* Version: 2.8.0
 * GitHub: https://github.com/stan-dev/projpred
 * Source code: https://github.com/cran/projpred
-* Date/Publication: 2023-02-12 13:30:02 UTC
-* Number of recursive dependencies: 149
+* Date/Publication: 2023-12-15 00:00:02 UTC
+* Number of recursive dependencies: 158
 
 Run `revdep_details(, "projpred")` for more info
 
@@ -2513,56 +2290,20 @@ Run `revdep_details(, "projpred")` for more info
 
 ## In both
 
-*   checking tests ...
-    ```
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(projpred)
-      This is projpred version 2.4.0.
-      > 
-      > test_check("projpred")
-      Error: Package "rstanarm" is needed for these tests. Please install it.
-      Execution halted
-    ```
-
 *   checking package dependencies ... NOTE
     ```
     Package suggested but not available for checking: ‘cmdstanr’
-    ```
-
-# promises
-
-<details>
-
-* Version: 1.2.0.1
-* GitHub: https://github.com/rstudio/promises
-* Source code: https://github.com/cran/promises
-* Date/Publication: 2021-02-11 19:00:02 UTC
-* Number of recursive dependencies: 68
-
-Run `revdep_details(, "promises")` for more info
-
-</details>
-
-## In both
-
-*   checking LazyData ... NOTE
-    ```
-      'LazyData' is specified without a 'data' directory
     ```
 
 # Prostar
 
 <details>
 
-* Version: 1.30.5
+* Version: 1.34.3
 * GitHub: https://github.com/prostarproteomics/Prostar
 * Source code: https://github.com/cran/Prostar
-* Date/Publication: 2023-02-10
-* Number of recursive dependencies: 166
+* Date/Publication: 2023-11-27
+* Number of recursive dependencies: 331
 
 Run `revdep_details(, "Prostar")` for more info
 
@@ -2570,78 +2311,67 @@ Run `revdep_details(, "Prostar")` for more info
 
 ## In both
 
-*   checking whether package ‘Prostar’ can be installed ... ERROR
+*   checking re-building of vignette outputs ... ERROR
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/00install.out’ for details.
+    Error(s) in re-building vignettes:
+      ...
+    --- re-building ‘Prostar_UserManual.Rmd’ using rmarkdown
+    ! Undefined control sequence.
+    <inserted text> dataset\textquotesingle 
+                                            {{}}\textquotesingle {{}},
+    l.556 ...textquotesingle{}\textquotesingle{}, one}
+                                                      imputed dataset'\,' and so...
+    
+    Error: processing vignette 'Prostar_UserManual.Rmd' failed with diagnostics:
+    LaTeX failed to compile /wynton/home/cbi/hb/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/vign_test/Prostar/vignettes/Prostar_UserManual.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See Prostar_UserManual.log for more info.
+    --- failed re-building ‘Prostar_UserManual.Rmd’
+    
+    SUMMARY: processing the following file failed:
+      ‘Prostar_UserManual.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
-## Installation
+*   checking dependencies in R code ... WARNING
+    ```
+    '::' or ':::' import not declared from: ‘Biobase’
+    Namespaces in Imports field not imported from:
+      ‘DT’ ‘R.utils’ ‘RColorBrewer’ ‘XML’ ‘colourpicker’ ‘gtools’ ‘knitr’
+      ‘rclipboard’ ‘sass’ ‘shinyTree’ ‘shinyWidgets’
+      All declared Imports should be used.
+    ```
 
-### Devel
-
-```
-* installing *source* package ‘Prostar’ ...
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘Prostar’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/Prostar/new/Prostar.Rcheck/Prostar’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘Prostar’ ...
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘Prostar’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/Prostar/old/Prostar.Rcheck/Prostar’
-
-
-```
-# protti
+# pseudohouseholds
 
 <details>
 
-* Version: 0.6.0
-* GitHub: https://github.com/jpquast/protti
-* Source code: https://github.com/cran/protti
-* Date/Publication: 2023-01-20 10:30:02 UTC
-* Number of recursive dependencies: 195
+* Version: 0.1.1
+* GitHub: https://github.com/chris31415926535/pseudohouseholds
+* Source code: https://github.com/cran/pseudohouseholds
+* Date/Publication: 2023-07-19 09:30:02 UTC
+* Number of recursive dependencies: 105
 
-Run `revdep_details(, "protti")` for more info
+Run `revdep_details(, "pseudohouseholds")` for more info
 
 </details>
 
 ## In both
 
-*   checking package dependencies ... NOTE
+*   checking data for non-ASCII characters ... NOTE
     ```
-    Package suggested but not available for checking: ‘igraph’
+      Note: found 596 marked UTF-8 strings
     ```
 
 # QDNAseq
 
 <details>
 
-* Version: 1.34.0
+* Version: 1.38.0
 * GitHub: https://github.com/ccagc/QDNAseq
 * Source code: https://github.com/cran/QDNAseq
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 88
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 93
 
 Run `revdep_details(, "QDNAseq")` for more info
 
@@ -2649,40 +2379,18 @@ Run `revdep_details(, "QDNAseq")` for more info
 
 ## In both
 
-*   checking re-building of vignette outputs ... NOTE
-    ```
-    Error(s) in re-building vignettes:
-    --- re-building ‘QDNAseq.Rnw’ using Sweave
-    EM algorithm started ... 
+*   R CMD check timed out
     
-    Warning in allprior/tot :
-      Recycling array of length 1 in vector-array arithmetic is deprecated.
-      Use c() or as.vector() instead.
-    
-    Warning in allprior/tot :
-      Recycling array of length 1 in vector-array arithmetic is deprecated.
-    ...
-    l.189 \RequirePackage
-                         {parnotes}^^M
-    !  ==> Fatal error occurred, no output PDF file produced!
-    --- failed re-building ‘QDNAseq.Rnw’
-    
-    SUMMARY: processing the following file failed:
-      ‘QDNAseq.Rnw’
-    
-    Error: Vignette re-building failed.
-    Execution halted
-    ```
 
 # RAINBOWR
 
 <details>
 
-* Version: 0.1.29
+* Version: 0.1.33
 * GitHub: NA
 * Source code: https://github.com/cran/RAINBOWR
-* Date/Publication: 2022-01-07 13:53:11 UTC
-* Number of recursive dependencies: 150
+* Date/Publication: 2023-09-12 05:40:02 UTC
+* Number of recursive dependencies: 167
 
 Run `revdep_details(, "RAINBOWR")` for more info
 
@@ -2692,30 +2400,9 @@ Run `revdep_details(, "RAINBOWR")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 37.7Mb
+      installed size is 11.7Mb
       sub-directories of 1Mb or more:
-        libs  36.5Mb
-    ```
-
-# rangeMapper
-
-<details>
-
-* Version: 2.0.3
-* GitHub: https://github.com/mpio-be/rangeMapper
-* Source code: https://github.com/cran/rangeMapper
-* Date/Publication: 2022-10-03 22:20:02 UTC
-* Number of recursive dependencies: 113
-
-Run `revdep_details(, "rangeMapper")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘igraph’
+        libs  10.8Mb
     ```
 
 # regmedint
@@ -2726,7 +2413,7 @@ Run `revdep_details(, "rangeMapper")` for more info
 * GitHub: https://github.com/kaz-yos/regmedint
 * Source code: https://github.com/cran/regmedint
 * Date/Publication: 2022-04-06 20:20:02 UTC
-* Number of recursive dependencies: 134
+* Number of recursive dependencies: 155
 
 Run `revdep_details(, "regmedint")` for more info
 
@@ -2744,11 +2431,11 @@ Run `revdep_details(, "regmedint")` for more info
 
 <details>
 
-* Version: 1.2.16
+* Version: 2.0.10
 * GitHub: https://github.com/PredictiveEcology/reproducible
 * Source code: https://github.com/cran/reproducible
-* Date/Publication: 2022-12-22 09:50:02 UTC
-* Number of recursive dependencies: 104
+* Date/Publication: 2023-11-22 04:40:02 UTC
+* Number of recursive dependencies: 103
 
 Run `revdep_details(, "reproducible")` for more info
 
@@ -2758,38 +2445,43 @@ Run `revdep_details(, "reproducible")` for more info
 
 *   checking tests ...
     ```
-      Running ‘test-all.R’/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/bin/BATCH: line 60: 11278 Segmentation fault      (core dumped) ${R_HOME}/bin/R -f ${in} ${opts} ${R_BATCH_OPTIONS} > ${out} 2>&1
-    
+      Running ‘test-all.R’
      ERROR
     Running the tests in ‘tests/test-all.R’ failed.
     Last 50 lines of output:
-        adding: scratch/henrik/RtmprFW55G/reproducible/4sZYfp_038/1Gis54o.tif (stored 0%)
-        adding: scratch/henrik/RtmprFW55G/reproducible/4sZYfp_038/EiHkghZ.grd (stored 0%)
-      
-       *** caught segfault ***
-      address 0x8, cause 'memory not mapped'
+        'test-preProcessWorks.R:315:3', 'test-preProcessWorks.R:328:3',
+        'test-preProcessWorks.R:348:3', 'test-preProcessWorks.R:361:3',
+        'test-preProcessWorks.R:374:3', 'test-preProcessWorks.R:391:3',
+        'test-preProcessWorks.R:409:3', 'test-preProcessWorks.R:438:3',
+        'test-preProcessWorks.R:459:3', 'test-preProcessWorks.R:487:3',
+        'test-preProcessWorks.R:543:3', 'test-preProcessWorks.R:569:3',
     ...
-      36: doTryCatch(return(expr), name, parentenv, handler)
-      37: tryCatchOne(expr, names, parentenv, handlers[[1L]])
-      38: tryCatchList(expr, classes, parentenv, handlers)
-      39: tryCatch(code, testthat_abort_reporter = function(cnd) {    cat(conditionMessage(cnd), "\n")    NULL})
-      40: with_reporter(reporters$multi, lapply(test_paths, test_one_file,     env = env, wrap = wrap))
-      41: test_files_serial(test_dir = test_dir, test_package = test_package,     test_paths = test_paths, load_helpers = load_helpers, reporter = reporter,     env = env, stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package)
-      42: test_files(test_dir = path, test_paths = test_paths, test_package = package,     reporter = reporter, load_helpers = load_helpers, env = env,     stop_on_failure = stop_on_failure, stop_on_warning = stop_on_warning,     wrap = wrap, load_package = load_package, parallel = parallel)
-      43: test_dir("testthat", package = package, reporter = reporter,     ..., load_package = "installed")
-      44: test_check("reproducible")
-      An irrecoverable exception occurred. R is aborting now ...
+       4.       └─reproducible:::makeVal(x)
+       5.         ├─terra::makeValid(x)
+       6.         └─terra::makeValid(x)
+       7.           └─terra (local) .local(x, ...)
+       8.             └─terra:::messages(x)
+       9.               └─terra:::error(f, x@cpp$getError())
+      
+      [ FAIL 2 | WARN 7 | SKIP 92 | PASS 389 ]
+      Error: Test failures
+      Execution halted
+    ```
+
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘qs’
     ```
 
 # rgee
 
 <details>
 
-* Version: 1.1.5
+* Version: 1.1.7
 * GitHub: https://github.com/r-spatial/rgee
 * Source code: https://github.com/cran/rgee
-* Date/Publication: 2022-09-13 08:10:06 UTC
-* Number of recursive dependencies: 150
+* Date/Publication: 2023-09-27 08:30:02 UTC
+* Number of recursive dependencies: 146
 
 Run `revdep_details(, "rgee")` for more info
 
@@ -2797,17 +2489,9 @@ Run `revdep_details(, "rgee")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking package dependencies ... NOTE
     ```
-      installed size is  7.9Mb
-      sub-directories of 1Mb or more:
-        doc   6.6Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘R6’
-      All declared Imports should be used.
+    Package suggested but not available for checking: ‘geojsonio’
     ```
 
 # robotstxt
@@ -2818,7 +2502,7 @@ Run `revdep_details(, "rgee")` for more info
 * GitHub: https://github.com/ropensci/robotstxt
 * Source code: https://github.com/cran/robotstxt
 * Date/Publication: 2020-09-03 19:30:02 UTC
-* Number of recursive dependencies: 68
+* Number of recursive dependencies: 70
 
 Run `revdep_details(, "robotstxt")` for more info
 
@@ -2837,6 +2521,29 @@ Run `revdep_details(, "robotstxt")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
+# rpm
+
+<details>
+
+* Version: 0.7-1
+* GitHub: https://github.com/handcock/rpm
+* Source code: https://github.com/cran/rpm
+* Date/Publication: 2023-04-21 23:30:02 UTC
+* Number of recursive dependencies: 66
+
+Run `revdep_details(, "rpm")` for more info
+
+</details>
+
+## In both
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.0Mb
+      sub-directories of 1Mb or more:
+        libs   5.6Mb
+    ```
+
 # sapfluxnetr
 
 <details>
@@ -2845,7 +2552,7 @@ Run `revdep_details(, "robotstxt")` for more info
 * GitHub: https://github.com/sapfluxnet/sapfluxnetr
 * Source code: https://github.com/cran/sapfluxnetr
 * Date/Publication: 2023-01-25 15:30:02 UTC
-* Number of recursive dependencies: 81
+* Number of recursive dependencies: 83
 
 Run `revdep_details(, "sapfluxnetr")` for more info
 
@@ -2858,127 +2565,14 @@ Run `revdep_details(, "sapfluxnetr")` for more info
       Note: found 4 marked UTF-8 strings
     ```
 
-# scBubbletree
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/snaketron/scBubbletree
-* Source code: https://github.com/cran/scBubbletree
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 178
-
-Run `revdep_details(, "scBubbletree")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘scBubbletree’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/scBubbletree/new/scBubbletree.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘scBubbletree’ ...
-** using staged installation
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘scBubbletree’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/scBubbletree/new/scBubbletree.Rcheck/scBubbletree’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘scBubbletree’ ...
-** using staged installation
-** R
-** data
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘scBubbletree’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/scBubbletree/old/scBubbletree.Rcheck/scBubbletree’
-
-
-```
-# scDiffCom
-
-<details>
-
-* Version: 0.1.0
-* GitHub: NA
-* Source code: https://github.com/cran/scDiffCom
-* Date/Publication: 2021-08-17 07:20:05 UTC
-* Number of recursive dependencies: 246
-
-Run `revdep_details(, "scDiffCom")` for more info
-
-</details>
-
-## In both
-
-*   checking tests ...
-    ```
-      Running ‘spelling.R’
-      Running ‘testthat.R’
-     ERROR
-    Running the tests in ‘tests/testthat.R’ failed.
-    Complete output:
-      > library(testthat)
-      > library(scDiffCom)
-      > 
-      > test_check("scDiffCom")
-      Loading required package: SeuratObject
-    ...
-        6.   ├─base::namespaceImportFrom(...)
-        7.   │ └─base::asNamespace(ns)
-        8.   └─base::loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]])
-        9.     └─base::withRestarts(stop(cond), retry_loadNamespace = function() NULL)
-       10.       └─base (local) withOneRestart(expr, restarts[[1L]])
-       11.         └─base (local) doWithOneRestart(return(expr), restart)
-      
-      [ FAIL 1 | WARN 0 | SKIP 0 | PASS 6 ]
-      Error: Test failures
-      Execution halted
-    ```
-
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘igraph’
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘future’ ‘utils’
-      All declared Imports should be used.
-    ```
-
 # sctransform
 
 <details>
 
-* Version: 0.3.5
+* Version: 0.4.1
 * GitHub: https://github.com/satijalab/sctransform
 * Source code: https://github.com/cran/sctransform
-* Date/Publication: 2022-09-21 17:10:07 UTC
+* Date/Publication: 2023-10-19 04:40:02 UTC
 * Number of recursive dependencies: 68
 
 Run `revdep_details(, "sctransform")` for more info
@@ -3000,13 +2594,18 @@ Run `revdep_details(, "sctransform")` for more info
 * GitHub: https://github.com/Abson-dev/sdmApp
 * Source code: https://github.com/cran/sdmApp
 * Date/Publication: 2021-07-07 08:30:02 UTC
-* Number of recursive dependencies: 171
+* Number of recursive dependencies: 177
 
 Run `revdep_details(, "sdmApp")` for more info
 
 </details>
 
 ## In both
+
+*   checking package dependencies ... NOTE
+    ```
+    Packages suggested but not available for checking: 'rgdal', 'rgeos'
+    ```
 
 *   checking dependencies in R code ... NOTE
     ```
@@ -3018,11 +2617,11 @@ Run `revdep_details(, "sdmApp")` for more info
 
 <details>
 
-* Version: 0.3.0
+* Version: 0.4.1
 * GitHub: https://github.com/pbs-assess/sdmTMB
 * Source code: https://github.com/cran/sdmTMB
-* Date/Publication: 2023-01-28 07:30:02 UTC
-* Number of recursive dependencies: 116
+* Date/Publication: 2023-11-03 07:20:02 UTC
+* Number of recursive dependencies: 117
 
 Run `revdep_details(, "sdmTMB")` for more info
 
@@ -3030,46 +2629,28 @@ Run `revdep_details(, "sdmTMB")` for more info
 
 ## In both
 
-*   checking package dependencies ... NOTE
-    ```
-    Package suggested but not available for checking: ‘INLA’
-    ```
-
 *   checking installed package size ... NOTE
     ```
-      installed size is 78.3Mb
+      installed size is 31.4Mb
       sub-directories of 1Mb or more:
-        libs  76.6Mb
-    ```
-
-*   checking Rd cross-references ... NOTE
-    ```
-    Package unavailable to check Rd xrefs: ‘INLA’
+        libs  30.9Mb
     ```
 
 # sentopics
 
 <details>
 
-* Version: 0.7.1
+* Version: 0.7.2
 * GitHub: https://github.com/odelmarcelle/sentopics
 * Source code: https://github.com/cran/sentopics
-* Date/Publication: 2022-05-18 13:20:02 UTC
-* Number of recursive dependencies: 165
+* Date/Publication: 2023-05-28 09:50:02 UTC
+* Number of recursive dependencies: 173
 
 Run `revdep_details(, "sentopics")` for more info
 
 </details>
 
 ## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  8.0Mb
-      sub-directories of 1Mb or more:
-        data   1.2Mb
-        libs   6.1Mb
-    ```
 
 *   checking Rd cross-references ... NOTE
     ```
@@ -3085,11 +2666,11 @@ Run `revdep_details(, "sentopics")` for more info
 
 <details>
 
-* Version: 4.3.0
+* Version: 5.0.1
 * GitHub: https://github.com/satijalab/seurat
 * Source code: https://github.com/cran/Seurat
-* Date/Publication: 2022-11-18 23:30:08 UTC
-* Number of recursive dependencies: 259
+* Date/Publication: 2023-11-17 23:10:06 UTC
+* Number of recursive dependencies: 264
 
 Run `revdep_details(, "Seurat")` for more info
 
@@ -3097,23 +2678,33 @@ Run `revdep_details(, "Seurat")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Packages suggested but not available for checking: 'BPCells', 'presto'
+    ```
+
+*   checking installed package size ... NOTE
+    ```
+      installed size is  6.8Mb
+      sub-directories of 1Mb or more:
+        R      1.6Mb
+        libs   5.0Mb
+    ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Package unavailable to check Rd xrefs: ‘Signac’
     ```
 
 # SeuratObject
 
 <details>
 
-* Version: 4.1.3
+* Version: 5.0.1
 * GitHub: https://github.com/mojaveazure/seurat-object
 * Source code: https://github.com/cran/SeuratObject
-* Date/Publication: 2022-11-07 18:50:02 UTC
-* Number of recursive dependencies: 57
+* Date/Publication: 2023-11-17 22:40:16 UTC
+* Number of recursive dependencies: 105
 
 Run `revdep_details(, "SeuratObject")` for more info
 
@@ -3121,33 +2712,16 @@ Run `revdep_details(, "SeuratObject")` for more info
 
 ## In both
 
+*   checking package dependencies ... NOTE
+    ```
+    Package suggested but not available for checking: ‘BPCells’
+    
+    Package which this enhances but not available for checking: ‘Seurat’
+    ```
+
 *   checking Rd cross-references ... NOTE
     ```
     Package unavailable to check Rd xrefs: ‘plotly’
-    ```
-
-# shiny
-
-<details>
-
-* Version: 1.7.4
-* GitHub: https://github.com/rstudio/shiny
-* Source code: https://github.com/cran/shiny
-* Date/Publication: 2022-12-15 13:10:02 UTC
-* Number of recursive dependencies: 91
-
-Run `revdep_details(, "shiny")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  9.6Mb
-      sub-directories of 1Mb or more:
-        R     1.6Mb
-        www   6.9Mb
     ```
 
 # shiny.worker
@@ -3158,7 +2732,7 @@ Run `revdep_details(, "shiny")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/shiny.worker
 * Date/Publication: 2021-01-21 11:00:02 UTC
-* Number of recursive dependencies: 64
+* Number of recursive dependencies: 65
 
 Run `revdep_details(, "shiny.worker")` for more info
 
@@ -3178,95 +2752,17 @@ Run `revdep_details(, "shiny.worker")` for more info
       'LazyData' is specified without a 'data' directory
     ```
 
-# signeR
+# Signac
 
 <details>
 
-* Version: 2.0.2
-* GitHub: https://github.com/rvalieris/signeR
-* Source code: https://github.com/cran/signeR
-* Date/Publication: 2023-01-19
-* Number of recursive dependencies: 242
+* Version: 1.12.0
+* GitHub: https://github.com/stuart-lab/signac
+* Source code: https://github.com/cran/Signac
+* Date/Publication: 2023-11-08 09:30:02 UTC
+* Number of recursive dependencies: 251
 
-Run `revdep_details(, "signeR")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘signeR’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/signeR/new/signeR.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘signeR’ ...
-** using staged installation
-** libs
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c fuzzy.cpp -o fuzzy.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c gibbs_2.cpp -o gibbs_2.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c signeR_init.c -o signeR_init.o
-g++ -std=gnu++11 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o signeR.so RcppExports.o fuzzy.o gibbs_2.o signeR_init.o -Wl,-S -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lRlapack -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lRblas -lgfortran -lm -lquadmath -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
-installing to /c4/home/henrik/repositories/future/revdep/checks/signeR/new/signeR.Rcheck/00LOCK-signeR/00new/signeR/libs
-** R
-...
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘signeR’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/signeR/new/signeR.Rcheck/signeR’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘signeR’ ...
-** using staged installation
-** libs
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c RcppExports.cpp -o RcppExports.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c fuzzy.cpp -o fuzzy.o
-g++ -std=gnu++11 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c gibbs_2.cpp -o gibbs_2.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/signeR/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/signeR/RcppArmadillo/include' -I/usr/local/include   -fpic  -g -O2  -c signeR_init.c -o signeR_init.o
-g++ -std=gnu++11 -shared -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -L/usr/local/lib64 -o signeR.so RcppExports.o fuzzy.o gibbs_2.o signeR_init.o -Wl,-S -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lRlapack -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lRblas -lgfortran -lm -lquadmath -L/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/lib -lR
-installing to /c4/home/henrik/repositories/future/revdep/checks/signeR/old/signeR.Rcheck/00LOCK-signeR/00new/signeR/libs
-** R
-...
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘signeR’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/signeR/old/signeR.Rcheck/signeR’
-
-
-```
-# SimDesign
-
-<details>
-
-* Version: 2.10.1
-* GitHub: https://github.com/philchalmers/SimDesign
-* Source code: https://github.com/cran/SimDesign
-* Date/Publication: 2023-02-01 15:30:02 UTC
-* Number of recursive dependencies: 104
-
-Run `revdep_details(, "SimDesign")` for more info
+Run `revdep_details(, "Signac")` for more info
 
 </details>
 
@@ -3274,25 +2770,114 @@ Run `revdep_details(, "SimDesign")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Package suggested but not available for checking: ‘doMPI’
+    Packages suggested but not available for checking: 'ggseqlogo', 'qlcMatrix'
     ```
+
+*   checking Rd cross-references ... NOTE
+    ```
+    Unknown package ‘ggseqlogo’ in Rd xrefs
+    ```
+
+# signeR
+
+<details>
+
+* Version: 2.4.0
+* GitHub: https://github.com/TojalLab/signeR
+* Source code: https://github.com/cran/signeR
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 244
+
+Run `revdep_details(, "signeR")` for more info
+
+</details>
+
+## In both
+
+*   checking C++ specification ... NOTE
+    ```
+      Specified C++11: please drop specification unless essential
+    ```
+
+*   checking R code for possible problems ... NOTE
+    ```
+    covariate: no visible binding for global variable ‘.’
+    explorepage: no visible binding for global variable ‘.’
+    genCountMatrixFromMAF: no visible binding for global variable
+      ‘Variant_Type’
+    genCountMatrixFromMAF: no visible binding for global variable
+      ‘Reference_Allele’
+    genCountMatrixFromMAF: no visible binding for global variable
+      ‘Tumor_Seq_Allele2’
+    genCountMatrixFromMAF: no visible binding for global variable
+      ‘Tumor_Seq_Allele1’
+    ...
+    ExposureCorrelation,SignExp-numeric: no visible binding for global
+      variable ‘exposure’
+    ExposureCorrelation,matrix-numeric: no visible binding for global
+      variable ‘Feature’
+    ExposureCorrelation,matrix-numeric: no visible binding for global
+      variable ‘exposure’
+    Undefined global functions or variables:
+      . Col Feature Frequency Reference_Allele Row Samples Signatures
+      Tumor_Seq_Allele1 Tumor_Seq_Allele2 Variant_Type alt<- exposure fc
+      project sig sig_test
+    ```
+
+*   checking Rd files ... NOTE
+    ```
+    prepare_Rd: cosmic_data.Rd:91-93: Dropping empty section \details
+    prepare_Rd: cosmic_data.Rd:98-100: Dropping empty section \references
+    prepare_Rd: cosmic_data.Rd:101-102: Dropping empty section \examples
+    prepare_Rd: tcga_similarities.Rd:96-98: Dropping empty section \details
+    prepare_Rd: tcga_similarities.Rd:99-101: Dropping empty section \source
+    prepare_Rd: tcga_similarities.Rd:102-104: Dropping empty section \references
+    prepare_Rd: tcga_similarities.Rd:105-106: Dropping empty section \examples
+    prepare_Rd: tcga_tumors.Rd:18-20: Dropping empty section \details
+    prepare_Rd: tcga_tumors.Rd:21-23: Dropping empty section \source
+    prepare_Rd: tcga_tumors.Rd:24-26: Dropping empty section \references
+    prepare_Rd: tcga_tumors.Rd:27-28: Dropping empty section \examples
+    ```
+
+*   checking for non-standard things in the check directory ... NOTE
+    ```
+    Found the following files/directories:
+      ‘tmp.pdf’
+    ```
+
+# sits
+
+<details>
+
+* Version: 1.4.2-1
+* GitHub: https://github.com/e-sensing/sits
+* Source code: https://github.com/cran/sits
+* Date/Publication: 2023-11-02 15:10:02 UTC
+* Number of recursive dependencies: 221
+
+Run `revdep_details(, "sits")` for more info
+
+</details>
+
+## In both
 
 *   checking installed package size ... NOTE
     ```
-      installed size is  6.7Mb
+      installed size is  5.9Mb
       sub-directories of 1Mb or more:
-        doc   6.2Mb
+        R      1.1Mb
+        libs   4.6Mb
     ```
 
 # skpr
 
 <details>
 
-* Version: 1.1.6
+* Version: 1.6.1
 * GitHub: https://github.com/tylermorganwall/skpr
 * Source code: https://github.com/cran/skpr
-* Date/Publication: 2022-07-14 10:50:05 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2023-12-07 16:50:02 UTC
+* Number of recursive dependencies: 149
 
 Run `revdep_details(, "skpr")` for more info
 
@@ -3302,9 +2887,50 @@ Run `revdep_details(, "skpr")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 56.7Mb
+      installed size is 20.8Mb
       sub-directories of 1Mb or more:
-        libs  55.2Mb
+        libs  20.3Mb
+    ```
+
+# SmCCNet
+
+<details>
+
+* Version: 2.0.1
+* GitHub: https://github.com/KechrisLab/SmCCNet
+* Source code: https://github.com/cran/SmCCNet
+* Date/Publication: 2023-10-03 21:50:16 UTC
+* Number of recursive dependencies: 163
+
+Run `revdep_details(, "SmCCNet")` for more info
+
+</details>
+
+## In both
+
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘SmCCNet_Vignette_AutoSmCCNet.Rmd’ using rmarkdown
+    ! LaTeX Error: File `ucharcat.sty' not found.
+    
+    ! Emergency stop.
+    <read *> 
+    
+    Error: processing vignette 'SmCCNet_Vignette_AutoSmCCNet.Rmd' failed with diagnostics:
+    LaTeX failed to compile /wynton/home/cbi/hb/repositories/future/revdep/checks/SmCCNet/new/SmCCNet.Rcheck/vign_test/SmCCNet/vignettes/SmCCNet_Vignette_AutoSmCCNet.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See SmCCNet_Vignette_AutoSmCCNet.log for more info.
+    --- failed re-building ‘SmCCNet_Vignette_AutoSmCCNet.Rmd’
+    ...
+    Error: processing vignette 'SmCCNet_Vignette_SingleOmics.Rmd' failed with diagnostics:
+    LaTeX failed to compile /wynton/home/cbi/hb/repositories/future/revdep/checks/SmCCNet/new/SmCCNet.Rcheck/vign_test/SmCCNet/vignettes/SmCCNet_Vignette_SingleOmics.tex. See https://yihui.org/tinytex/r/#debugging for debugging tips. See SmCCNet_Vignette_SingleOmics.log for more info.
+    --- failed re-building ‘SmCCNet_Vignette_SingleOmics.Rmd’
+    
+    SUMMARY: processing the following files failed:
+      ‘SmCCNet_Vignette_AutoSmCCNet.Rmd’ ‘SmCCNet_Vignette_MultiOmics.Rmd’
+      ‘SmCCNet_Vignette_SingleOmics.Rmd’
+    
+    Error: Vignette re-building failed.
+    Execution halted
     ```
 
 # solitude
@@ -3315,7 +2941,7 @@ Run `revdep_details(, "skpr")` for more info
 * GitHub: https://github.com/talegari/solitude
 * Source code: https://github.com/cran/solitude
 * Date/Publication: 2021-07-29 20:00:02 UTC
-* Number of recursive dependencies: 127
+* Number of recursive dependencies: 131
 
 Run `revdep_details(, "solitude")` for more info
 
@@ -3323,9 +2949,34 @@ Run `revdep_details(, "solitude")` for more info
 
 ## In both
 
+*   checking dependencies in R code ... NOTE
+    ```
+    Namespaces in Imports field not imported from:
+      ‘R6’ ‘lgr’
+      All declared Imports should be used.
+    ```
+
+# SpaDES.core
+
+<details>
+
+* Version: 2.0.3
+* GitHub: https://github.com/PredictiveEcology/SpaDES.core
+* Source code: https://github.com/cran/SpaDES.core
+* Date/Publication: 2023-11-10 10:20:02 UTC
+* Number of recursive dependencies: 139
+
+Run `revdep_details(, "SpaDES.core")` for more info
+
+</details>
+
+## In both
+
 *   checking package dependencies ... ERROR
     ```
-    Package required but not available: ‘igraph’
+    Package required but not available: ‘qs’
+    
+    Package suggested but not available for checking: ‘NLMR’
     
     See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
     manual.
@@ -3335,11 +2986,11 @@ Run `revdep_details(, "solitude")` for more info
 
 <details>
 
-* Version: 4.1.20
+* Version: 4.4.16
 * GitHub: NA
 * Source code: https://github.com/cran/spaMM
-* Date/Publication: 2022-12-12 12:50:03 UTC
-* Number of recursive dependencies: 122
+* Date/Publication: 2023-12-20 13:50:02 UTC
+* Number of recursive dependencies: 102
 
 Run `revdep_details(, "spaMM")` for more info
 
@@ -3350,7 +3001,7 @@ Run `revdep_details(, "spaMM")` for more info
 *   checking package dependencies ... NOTE
     ```
     Packages suggested but not available for checking:
-      'Infusion', 'IsoriX', 'blackbox'
+      'IsoriX', 'ROI.plugin.glpk'
     
     Packages which this enhances but not available for checking:
       'multcomp', 'RLRsim', 'lmerTest'
@@ -3358,10 +3009,10 @@ Run `revdep_details(, "spaMM")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 55.5Mb
+      installed size is 21.3Mb
       sub-directories of 1Mb or more:
-        R      2.5Mb
-        libs  51.8Mb
+        R      2.6Mb
+        libs  18.2Mb
     ```
 
 # sparrpowR
@@ -3372,7 +3023,7 @@ Run `revdep_details(, "spaMM")` for more info
 * GitHub: https://github.com/machiela-lab/sparrpowR
 * Source code: https://github.com/cran/sparrpowR
 * Date/Publication: 2023-02-02 01:00:02 UTC
-* Number of recursive dependencies: 133
+* Number of recursive dependencies: 130
 
 Run `revdep_details(, "sparrpowR")` for more info
 
@@ -3384,7 +3035,7 @@ Run `revdep_details(, "sparrpowR")` for more info
     ```
     Found the following significant warnings:
       Warning: no DISPLAY variable so Tk is not available
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/sparrpowR/new/sparrpowR.Rcheck/00install.out’ for details.
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/sparrpowR/new/sparrpowR.Rcheck/00install.out’ for details.
     ```
 
 # SPARSEMODr
@@ -3395,7 +3046,7 @@ Run `revdep_details(, "sparrpowR")` for more info
 * GitHub: https://github.com/NAU-CCL/SPARSEMODr
 * Source code: https://github.com/cran/SPARSEMODr
 * Date/Publication: 2022-07-19 20:50:02 UTC
-* Number of recursive dependencies: 122
+* Number of recursive dependencies: 127
 
 Run `revdep_details(, "SPARSEMODr")` for more info
 
@@ -3410,29 +3061,6 @@ Run `revdep_details(, "SPARSEMODr")` for more info
       All declared Imports should be used.
     ```
 
-# spatialTIME
-
-<details>
-
-* Version: 1.2.2
-* GitHub: https://github.com/FridleyLab/spatialTIME
-* Source code: https://github.com/cran/spatialTIME
-* Date/Publication: 2022-11-22 17:30:02 UTC
-* Number of recursive dependencies: 91
-
-Run `revdep_details(, "spatialTIME")` for more info
-
-</details>
-
-## In both
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘gridExtra’ ‘pheatmap’
-      All declared Imports should be used.
-    ```
-
 # spatialwarnings
 
 <details>
@@ -3441,7 +3069,7 @@ Run `revdep_details(, "spatialTIME")` for more info
 * GitHub: https://github.com/spatial-ews/spatialwarnings
 * Source code: https://github.com/cran/spatialwarnings
 * Date/Publication: 2022-03-21 13:00:02 UTC
-* Number of recursive dependencies: 98
+* Number of recursive dependencies: 97
 
 Run `revdep_details(, "spatialwarnings")` for more info
 
@@ -3457,46 +3085,15 @@ Run `revdep_details(, "spatialwarnings")` for more info
     See section 'Cross-references' in the 'Writing R Extensions' manual.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.8Mb
-      sub-directories of 1Mb or more:
-        libs   5.8Mb
-    ```
-
-# specr
-
-<details>
-
-* Version: 1.0.0
-* GitHub: https://github.com/masurp/specr
-* Source code: https://github.com/cran/specr
-* Date/Publication: 2023-01-20 13:50:02 UTC
-* Number of recursive dependencies: 149
-
-Run `revdep_details(, "specr")` for more info
-
-</details>
-
-## In both
-
-*   checking package dependencies ... ERROR
-    ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
-    ```
-
 # sphunif
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.3.0
 * GitHub: https://github.com/egarpor/sphunif
 * Source code: https://github.com/cran/sphunif
-* Date/Publication: 2021-09-02 07:40:02 UTC
-* Number of recursive dependencies: 74
+* Date/Publication: 2023-12-04 19:50:02 UTC
+* Number of recursive dependencies: 79
 
 Run `revdep_details(, "sphunif")` for more info
 
@@ -3506,9 +3103,9 @@ Run `revdep_details(, "sphunif")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 24.2Mb
+      installed size is 10.1Mb
       sub-directories of 1Mb or more:
-        libs  23.3Mb
+        libs   9.8Mb
     ```
 
 *   checking data for non-ASCII characters ... NOTE
@@ -3520,10 +3117,10 @@ Run `revdep_details(, "sphunif")` for more info
 
 <details>
 
-* Version: 0.4.3.6
+* Version: 0.4.3.8
 * GitHub: https://github.com/JeremyGelb/spNetwork
 * Source code: https://github.com/cran/spNetwork
-* Date/Publication: 2022-11-11 08:10:02 UTC
+* Date/Publication: 2023-08-24 11:20:05 UTC
 * Number of recursive dependencies: 149
 
 Run `revdep_details(, "spNetwork")` for more info
@@ -3532,23 +3129,22 @@ Run `revdep_details(, "spNetwork")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking installed package size ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+      installed size is  9.2Mb
+      sub-directories of 1Mb or more:
+        libs   8.8Mb
     ```
 
 # squat
 
 <details>
 
-* Version: 0.1.0
-* GitHub: NA
+* Version: 0.2.1
+* GitHub: https://github.com/LMJL-Alea/squat
 * Source code: https://github.com/cran/squat
-* Date/Publication: 2022-12-22 11:20:02 UTC
-* Number of recursive dependencies: 123
+* Date/Publication: 2023-07-09 09:10:05 UTC
+* Number of recursive dependencies: 133
 
 Run `revdep_details(, "squat")` for more info
 
@@ -3558,21 +3154,20 @@ Run `revdep_details(, "squat")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 18.6Mb
+      installed size is  6.2Mb
       sub-directories of 1Mb or more:
-        data   1.1Mb
-        libs  16.6Mb
+        libs   6.1Mb
     ```
 
 # ssdtools
 
 <details>
 
-* Version: 1.0.2
+* Version: 1.0.6
 * GitHub: https://github.com/bcgov/ssdtools
 * Source code: https://github.com/cran/ssdtools
-* Date/Publication: 2022-05-14 23:50:02 UTC
-* Number of recursive dependencies: 144
+* Date/Publication: 2023-09-07 14:10:02 UTC
+* Number of recursive dependencies: 120
 
 Run `revdep_details(, "ssdtools")` for more info
 
@@ -3582,21 +3177,20 @@ Run `revdep_details(, "ssdtools")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 23.0Mb
+      installed size is 10.3Mb
       sub-directories of 1Mb or more:
-        doc    1.2Mb
-        libs  20.6Mb
+        libs  10.0Mb
     ```
 
 # stars
 
 <details>
 
-* Version: 0.6-0
+* Version: 0.6-4
 * GitHub: https://github.com/r-spatial/stars
 * Source code: https://github.com/cran/stars
-* Date/Publication: 2022-11-21 13:10:02 UTC
-* Number of recursive dependencies: 153
+* Date/Publication: 2023-09-11 11:50:02 UTC
+* Number of recursive dependencies: 163
 
 Run `revdep_details(, "stars")` for more info
 
@@ -3606,26 +3200,41 @@ Run `revdep_details(, "stars")` for more info
 
 *   checking package dependencies ... NOTE
     ```
-    Package suggested but not available for checking: ‘starsdata’
+    Packages suggested but not available for checking: 'ncdfgeom', 'starsdata'
     ```
 
-*   checking installed package size ... NOTE
+# stppSim
+
+<details>
+
+* Version: 1.3.2
+* GitHub: https://github.com/Manalytics/stppSim
+* Source code: https://github.com/cran/stppSim
+* Date/Publication: 2023-10-29 21:20:02 UTC
+* Number of recursive dependencies: 134
+
+Run `revdep_details(, "stppSim")` for more info
+
+</details>
+
+## In both
+
+*   checking whether package ‘stppSim’ can be installed ... WARNING
     ```
-      installed size is  6.0Mb
-      sub-directories of 1Mb or more:
-        doc   2.4Mb
-        nc    1.7Mb
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/stppSim/new/stppSim.Rcheck/00install.out’ for details.
     ```
 
 # synergyfinder
 
 <details>
 
-* Version: 3.6.2
+* Version: 3.10.0
 * GitHub: NA
 * Source code: https://github.com/cran/synergyfinder
-* Date/Publication: 2022-12-22
-* Number of recursive dependencies: 191
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 202
 
 Run `revdep_details(, "synergyfinder")` for more info
 
@@ -3641,13 +3250,6 @@ Run `revdep_details(, "synergyfinder")` for more info
       All declared Imports should be used.
     ```
 
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.0Mb
-      sub-directories of 1Mb or more:
-        doc   5.7Mb
-    ```
-
 *   checking R code for possible problems ... NOTE
     ```
     .Extract2DrugPlotData: no visible binding for global variable
@@ -3661,16 +3263,21 @@ Run `revdep_details(, "synergyfinder")` for more info
     .Extract2DrugPlotData: no visible binding for global variable ‘conc2’
     .Extract2DrugPlotData: no visible binding for global variable ‘text’
     ...
-      block_id color conc1 conc2 css data end head id input_type label left
-      maxn metric n nn pred r response response_CI95 response_mean
-      response_origin response_origin_CI95 response_origin_mean
-      response_origin_sd response_origin_sem response_sd response_sem right
-      start synergy text theta value x y
+      response_mean response_origin response_origin_CI95
+      response_origin_mean response_origin_sd response_origin_sem
+      response_sd response_sem right start synergy t.test text theta value
+      x y
     Consider adding
+      importFrom("grDevices", "dev.list", "dev.off")
       importFrom("graphics", "text")
-      importFrom("stats", "end", "start")
+      importFrom("stats", "end", "start", "t.test")
       importFrom("utils", "data", "head")
     to your NAMESPACE file.
+    ```
+
+*   checking Rd files ... NOTE
+    ```
+    checkRd: (-1) FitDoseResponse.Rd:55: Escaped LaTeX specials: \&
     ```
 
 # tableschema.r
@@ -3694,75 +3301,15 @@ Run `revdep_details(, "tableschema.r")` for more info
     Package unavailable to check Rd xrefs: ‘parsedate’
     ```
 
-# tarchetypes
-
-<details>
-
-* Version: 0.7.4
-* GitHub: https://github.com/ropensci/tarchetypes
-* Source code: https://github.com/cran/tarchetypes
-* Date/Publication: 2023-01-06 18:50:20 UTC
-* Number of recursive dependencies: 78
-
-Run `revdep_details(, "tarchetypes")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘tarchetypes’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/tarchetypes/new/tarchetypes.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘tarchetypes’ ...
-** package ‘tarchetypes’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘tarchetypes’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/tarchetypes/new/tarchetypes.Rcheck/tarchetypes’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘tarchetypes’ ...
-** package ‘tarchetypes’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘tarchetypes’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/tarchetypes/old/tarchetypes.Rcheck/tarchetypes’
-
-
-```
 # targeted
 
 <details>
 
-* Version: 0.3
+* Version: 0.4
 * GitHub: https://github.com/kkholst/targeted
 * Source code: https://github.com/cran/targeted
-* Date/Publication: 2022-10-25 20:30:02 UTC
-* Number of recursive dependencies: 94
+* Date/Publication: 2023-12-19 22:50:02 UTC
+* Number of recursive dependencies: 100
 
 Run `revdep_details(, "targeted")` for more info
 
@@ -3772,20 +3319,20 @@ Run `revdep_details(, "targeted")` for more info
 
 *   checking installed package size ... NOTE
     ```
-      installed size is 16.8Mb
+      installed size is  9.6Mb
       sub-directories of 1Mb or more:
-        libs  15.7Mb
+        libs   9.3Mb
     ```
 
 # targets
 
 <details>
 
-* Version: 0.14.2
+* Version: 1.4.0
 * GitHub: https://github.com/ropensci/targets
 * Source code: https://github.com/cran/targets
-* Date/Publication: 2023-01-06 14:50:02 UTC
-* Number of recursive dependencies: 173
+* Date/Publication: 2023-12-11 17:00:02 UTC
+* Number of recursive dependencies: 166
 
 Run `revdep_details(, "targets")` for more info
 
@@ -3793,23 +3340,20 @@ Run `revdep_details(, "targets")` for more info
 
 ## In both
 
-*   checking package dependencies ... ERROR
+*   checking package dependencies ... NOTE
     ```
-    Package required but not available: ‘igraph’
-    
-    See section ‘The DESCRIPTION file’ in the ‘Writing R Extensions’
-    manual.
+    Package suggested but not available for checking: ‘qs’
     ```
 
 # text
 
 <details>
 
-* Version: 0.9.99.2
+* Version: 1.0
 * GitHub: https://github.com/OscarKjell/text
 * Source code: https://github.com/cran/text
-* Date/Publication: 2022-09-20 22:00:02 UTC
-* Number of recursive dependencies: 150
+* Date/Publication: 2023-08-09 16:40:05 UTC
+* Number of recursive dependencies: 155
 
 Run `revdep_details(, "text")` for more info
 
@@ -3822,92 +3366,14 @@ Run `revdep_details(, "text")` for more info
       Note: found 3 marked UTF-8 strings
     ```
 
-# TreeSearch
-
-<details>
-
-* Version: 1.2.0
-* GitHub: https://github.com/ms609/TreeSearch
-* Source code: https://github.com/cran/TreeSearch
-* Date/Publication: 2022-08-10 22:40:17 UTC
-* Number of recursive dependencies: 117
-
-Run `revdep_details(, "TreeSearch")` for more info
-
-</details>
-
-## In both
-
-*   checking whether package ‘TreeSearch’ can be installed ... ERROR
-    ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/TreeSearch/new/TreeSearch.Rcheck/00install.out’ for details.
-    ```
-
-## Installation
-
-### Devel
-
-```
-* installing *source* package ‘TreeSearch’ ...
-** package ‘TreeSearch’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphy.c -o RMorphy.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphyUtils.c -o RMorphyUtils.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c TreeSearch-init.c -o TreeSearch-init.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c fitch.c -o fitch.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c morphy.c -o morphy.o
-...
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘TreeSearch’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/TreeSearch/new/TreeSearch.Rcheck/TreeSearch’
-
-
-```
-### CRAN
-
-```
-* installing *source* package ‘TreeSearch’ ...
-** package ‘TreeSearch’ successfully unpacked and MD5 sums checked
-** using staged installation
-** libs
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphy.c -o RMorphy.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c RMorphyUtils.c -o RMorphyUtils.o
-g++ -std=gnu++14 -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2 -c RcppExports.cpp -o RcppExports.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c TreeSearch-init.c -o TreeSearch-init.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c fitch.c -o fitch.o
-gcc -I"/software/c4/cbi/software/R-4.2.2-gcc10/lib64/R/include" -DNDEBUG  -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/Rcpp/include' -I'/c4/home/henrik/repositories/future/revdep/library/TreeSearch/TreeTools/include' -I/usr/local/include   -fpic  -g -O2  -c morphy.c -o morphy.o
-...
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘TreeSearch’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/TreeSearch/old/TreeSearch.Rcheck/TreeSearch’
-
-
-```
 # TriDimRegression
 
 <details>
 
-* Version: 1.0.1
+* Version: 1.0.2
 * GitHub: https://github.com/alexander-pastukhov/tridim-regression
 * Source code: https://github.com/cran/TriDimRegression
-* Date/Publication: 2021-10-05 08:30:08 UTC
+* Date/Publication: 2023-09-13 14:10:03 UTC
 * Number of recursive dependencies: 100
 
 Run `revdep_details(, "TriDimRegression")` for more info
@@ -3916,47 +3382,42 @@ Run `revdep_details(, "TriDimRegression")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking whether package ‘TriDimRegression’ can be installed ... ERROR
     ```
-      installed size is 47.3Mb
-      sub-directories of 1Mb or more:
-        libs  46.8Mb
-    ```
-
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespaces in Imports field not imported from:
-      ‘RcppParallel’ ‘rstantools’
-      All declared Imports should be used.
+    Installation failed.
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/TriDimRegression/new/TriDimRegression.Rcheck/00install.out’ for details.
     ```
 
-*   checking for GNU extensions in Makefiles ... NOTE
-    ```
-    GNU make is a SystemRequirements.
-    ```
+## Installation
 
-# TSstudio
+### Devel
 
-<details>
+```
+* installing *source* package ‘TriDimRegression’ ...
+** package ‘TriDimRegression’ successfully unpacked and MD5 sums checked
+** using staged installation
+Error in loadNamespace(x) : there is no package called ‘rstantools’
+Calls: loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: configuration failed for package ‘TriDimRegression’
+* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/TriDimRegression/new/TriDimRegression.Rcheck/TriDimRegression’
 
-* Version: 0.1.6
-* GitHub: https://github.com/RamiKrispin/TSstudio
-* Source code: https://github.com/cran/TSstudio
-* Date/Publication: 2020-01-21 05:30:02 UTC
-* Number of recursive dependencies: 156
 
-Run `revdep_details(, "TSstudio")` for more info
+```
+### CRAN
 
-</details>
+```
+* installing *source* package ‘TriDimRegression’ ...
+** package ‘TriDimRegression’ successfully unpacked and MD5 sums checked
+** using staged installation
+Error in loadNamespace(x) : there is no package called ‘rstantools’
+Calls: loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
+Execution halted
+ERROR: configuration failed for package ‘TriDimRegression’
+* removing ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/TriDimRegression/old/TriDimRegression.Rcheck/TriDimRegression’
 
-## In both
 
-*   checking dependencies in R code ... NOTE
-    ```
-    Namespace in Imports field not imported from: ‘forecastHybrid’
-      All declared Imports should be used.
-    ```
-
+```
 # txshift
 
 <details>
@@ -3965,7 +3426,7 @@ Run `revdep_details(, "TSstudio")` for more info
 * GitHub: https://github.com/nhejazi/txshift
 * Source code: https://github.com/cran/txshift
 * Date/Publication: 2022-02-09 22:30:02 UTC
-* Number of recursive dependencies: 111
+* Number of recursive dependencies: 113
 
 Run `revdep_details(, "txshift")` for more info
 
@@ -3978,53 +3439,6 @@ Run `revdep_details(, "txshift")` for more info
     Package which this enhances but not available for checking: ‘sl3’
     ```
 
-# UCSCXenaShiny
-
-<details>
-
-* Version: 1.1.9
-* GitHub: https://github.com/openbiox/UCSCXenaShiny
-* Source code: https://github.com/cran/UCSCXenaShiny
-* Date/Publication: 2022-12-12 09:00:03 UTC
-* Number of recursive dependencies: 181
-
-Run `revdep_details(, "UCSCXenaShiny")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  6.6Mb
-      sub-directories of 1Mb or more:
-        doc        1.4Mb
-        shinyapp   3.3Mb
-    ```
-
-# updog
-
-<details>
-
-* Version: 2.1.3
-* GitHub: https://github.com/dcgerard/updog
-* Source code: https://github.com/cran/updog
-* Date/Publication: 2022-10-18 08:00:02 UTC
-* Number of recursive dependencies: 145
-
-Run `revdep_details(, "updog")` for more info
-
-</details>
-
-## In both
-
-*   checking installed package size ... NOTE
-    ```
-      installed size is  7.9Mb
-      sub-directories of 1Mb or more:
-        libs   7.1Mb
-    ```
-
 # vmeasur
 
 <details>
@@ -4033,7 +3447,7 @@ Run `revdep_details(, "updog")` for more info
 * GitHub: NA
 * Source code: https://github.com/cran/vmeasur
 * Date/Publication: 2021-11-11 19:00:02 UTC
-* Number of recursive dependencies: 117
+* Number of recursive dependencies: 119
 
 Run `revdep_details(, "vmeasur")` for more info
 
@@ -4041,54 +3455,54 @@ Run `revdep_details(, "vmeasur")` for more info
 
 ## In both
 
-*   checking whether package ‘vmeasur’ can be installed ... ERROR
+*   checking whether package ‘vmeasur’ can be installed ... WARNING
     ```
-    Installation failed.
-    See ‘/c4/home/henrik/repositories/future/revdep/checks/vmeasur/new/vmeasur.Rcheck/00install.out’ for details.
+    Found the following significant warnings:
+      Warning: no DISPLAY variable so Tk is not available
+    See ‘/wynton/home/cbi/hb/repositories/future/revdep/checks/vmeasur/new/vmeasur.Rcheck/00install.out’ for details.
     ```
 
-## Installation
+# WeightedCluster
 
-### Devel
+<details>
 
-```
-* installing *source* package ‘vmeasur’ ...
-** package ‘vmeasur’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘vmeasur’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/vmeasur/new/vmeasur.Rcheck/vmeasur’
+* Version: 1.6-4
+* GitHub: NA
+* Source code: https://github.com/cran/WeightedCluster
+* Date/Publication: 2023-07-07 07:50:02 UTC
+* Number of recursive dependencies: 43
 
+Run `revdep_details(, "WeightedCluster")` for more info
 
-```
-### CRAN
+</details>
 
-```
-* installing *source* package ‘vmeasur’ ...
-** package ‘vmeasur’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
-  there is no package called ‘igraph’
-Calls: <Anonymous> ... loadNamespace -> withRestarts -> withOneRestart -> doWithOneRestart
-Execution halted
-ERROR: lazy loading failed for package ‘vmeasur’
-* removing ‘/c4/home/henrik/repositories/future/revdep/checks/vmeasur/old/vmeasur.Rcheck/vmeasur’
+## In both
 
+*   checking re-building of vignette outputs ... WARNING
+    ```
+    Error(s) in re-building vignettes:
+    --- re-building ‘WeightedCluster.Rnw’ using knitr
+    --- finished re-building ‘WeightedCluster.Rnw’
+    
+    --- re-building ‘WeightedClusterFR.Rnw’ using knitr
+    Error: processing vignette 'WeightedClusterFR.Rnw' failed with diagnostics:
+    Running 'texi2dvi' on 'WeightedClusterFR.tex' failed.
+    LaTeX errors:
+    ! Package babel Error: Unknown option `frenchb'. Either you misspelled it
+    (babel)                or the language definition file frenchb.ldf was not foun
+    ...
+    l.85 \usepackage
+                    {tikz}^^M
+    !  ==> Fatal error occurred, no output PDF file produced!
+    --- failed re-building ‘WeightedClusterPreview.Rnw’
+    
+    SUMMARY: processing the following files failed:
+      ‘WeightedClusterFR.Rnw’ ‘WeightedClusterPreview.Rnw’
+    
+    Error: Vignette re-building failed.
+    Execution halted
+    ```
 
-```
 # wru
 
 <details>
@@ -4097,7 +3511,7 @@ ERROR: lazy loading failed for package ‘vmeasur’
 * GitHub: https://github.com/kosukeimai/wru
 * Source code: https://github.com/cran/wru
 * Date/Publication: 2022-10-21 17:30:02 UTC
-* Number of recursive dependencies: 87
+* Number of recursive dependencies: 89
 
 Run `revdep_details(, "wru")` for more info
 
@@ -4105,12 +3519,9 @@ Run `revdep_details(, "wru")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking C++ specification ... NOTE
     ```
-      installed size is  5.6Mb
-      sub-directories of 1Mb or more:
-        data   3.5Mb
-        libs   1.9Mb
+      Specified C++11: please drop specification unless essential
     ```
 
 *   checking dependencies in R code ... NOTE
@@ -4123,11 +3534,11 @@ Run `revdep_details(, "wru")` for more info
 
 <details>
 
-* Version: 1.6.0
+* Version: 1.10.0
 * GitHub: NA
 * Source code: https://github.com/cran/XNAString
-* Date/Publication: 2022-11-01
-* Number of recursive dependencies: 101
+* Date/Publication: 2023-10-24
+* Number of recursive dependencies: 106
 
 Run `revdep_details(, "XNAString")` for more info
 
@@ -4135,11 +3546,27 @@ Run `revdep_details(, "XNAString")` for more info
 
 ## In both
 
-*   checking installed package size ... NOTE
+*   checking compiled code ... WARNING
     ```
-      installed size is 11.2Mb
-      sub-directories of 1Mb or more:
-        libs   9.5Mb
+    File ‘XNAString/libs/XNAString.so’:
+      Found ‘rand’, possibly from ‘rand’ (C)
+        Object: ‘./ViennaRNA/utils/utils.o’
+      Found ‘sprintf’, possibly from ‘sprintf’ (C)
+        Objects: ‘./ViennaRNA/part_func_up.o’, ‘./ViennaRNA/RNAstruct.o’,
+          ‘./ViennaRNA/model.o’
+      Found ‘srand’, possibly from ‘srand’ (C)
+        Object: ‘./ViennaRNA/utils/utils.o’
+    
+    Compiled code should not call entry points which might terminate R nor
+    write to stdout/stderr instead of to the console, nor use Fortran I/O
+    nor system RNGs nor [v]sprintf.
+    
+    See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
+    ```
+
+*   checking C++ specification ... NOTE
+    ```
+      Specified C++11: please drop specification unless essential
     ```
 
 *   checking top-level files ... NOTE
@@ -4147,20 +3574,5 @@ Run `revdep_details(, "XNAString")` for more info
     File
       LICENSE
     is not mentioned in the DESCRIPTION file.
-    ```
-
-*   checking compiled code ... NOTE
-    ```
-    File ‘XNAString/libs/XNAString.so’:
-      Found ‘rand’, possibly from ‘rand’ (C)
-        Object: ‘./ViennaRNA/utils/utils.o’
-      Found ‘srand’, possibly from ‘srand’ (C)
-        Object: ‘./ViennaRNA/utils/utils.o’
-    
-    Compiled code should not call entry points which might terminate R nor
-    write to stdout/stderr instead of to the console, nor use Fortran I/O
-    nor system RNGs.
-    
-    See ‘Writing portable packages’ in the ‘Writing R Extensions’ manual.
     ```
 

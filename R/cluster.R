@@ -28,7 +28,6 @@
 #' ```
 #'
 #' @inheritParams ClusterFuture-class
-#' @inheritParams multiprocess
 #' @inheritParams Future-class
 #' @inheritParams future
 #'

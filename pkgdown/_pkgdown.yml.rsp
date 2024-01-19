@@ -1,6 +1,6 @@
 <%
-pkgs <- c("globals", "listenv", "parallelly", "future", "future.apply", "furrr", "future.tests", "future.callr", "future.batchtools", "doFuture", "progressr", "BiocParallel.FutureParam")
-pkgs_extra <- c("future.mapreduce", "marshal")
+pkgs <- c("globals", "listenv", "parallelly", "future", "future.apply", "furrr", "future.tests", "future.callr", "future.batchtools", "doFuture", "progressr")
+pkgs_extra <- c("BiocParallel.FutureParam", "future.tools", "future.mirai", "future.mapreduce", "marshal")
 pkgs <- c(sort(pkgs), pkgs_extra)
 urls <- sprintf("https://%s.futureverse.org", pkgs)
 names(urls) <- pkgs
@@ -19,7 +19,7 @@ home:
     href: https://github.com/HenrikBengtsson/<%= pkg %>/milestones
   - text: The Futureverse Project
     href: https://www.futureverse.org/
-  - text: Futureverse User Forum (new!)
+  - text: Futureverse User Forum
     href: https://github.com/HenrikBengtsson/future/discussions
 
 navbar:
@@ -27,7 +27,7 @@ navbar:
     right: [futureverse, pkgs, cran, github]
   components:
     futureverse:
-      icon: fas fa-fast-backward
+      icon: fas fa-home
       href: https://www.futureverse.org/
     pkgs:
       text: Packages

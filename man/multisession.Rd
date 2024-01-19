@@ -13,9 +13,11 @@ multisession(
 )
 }
 \arguments{
-\item{...}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
+\item{\dots}{Additional arguments passed to \code{\link[=Future]{Future()}}.}
 
-\item{workers}{Ignored in \strong{future} (>= 1.31.0).}
+\item{workers}{The number of parallel processes to use.
+If a function, it is called without arguments \emph{when the future
+is created} and its value is used to configure the workers.}
 
 \item{lazy}{If FALSE (default), the future is resolved
 eagerly (starting immediately), otherwise not.}

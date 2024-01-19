@@ -42,7 +42,7 @@ ClusterFuture <- function(expr = NULL, substitute = TRUE, envir = parent.frame()
   future <- do.call(MultiprocessFuture, args = c(list(expr = quote(expr), substitute = FALSE, envir = envir, persistent = persistent, node = NA_integer_), args[future_args]), quote = FALSE)
 
   future <- do.call(as_ClusterFuture, args = c(list(future, workers = workers), args[!future_args]), quote = TRUE)
-
+  
   future
 }
 
@@ -109,8 +109,8 @@ run.ClusterFuture <- function(future, ...) {
   ## FutureRegistry to use
   reg <- sprintf("workers-%s", attr(workers, "name", exact = TRUE))
 
-
   ## Next available cluster node
+  t_start <- Sys.time()
   node_idx <- requestNode(await = function() {
     FutureRegistry(reg, action = "collect-first", earlySignal = TRUE)
   }, workers = workers)
@@ -118,6 +118,16 @@ run.ClusterFuture <- function(future, ...) {
 
   ## Cluster node to use
   cl <- workers[node_idx]
+  
+  if (inherits(future$.journal, "FutureJournal")) {
+    appendToFutureJournal(future,
+         event = "getWorker",
+      category = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
+    )
+  }
 
 
   ## (i) Reset global environment of cluster node such that
@@ -125,7 +135,17 @@ run.ClusterFuture <- function(future, ...) {
   ##     may happen even if the future is evaluated inside a
   ##     local, e.g. local({ a <<- 1 }).
   if (!persistent) {
+    t_start <- Sys.time()
     cluster_call(cl, fun = grmall, future = future, when = "call grmall() on")
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+           event = "eraseWorker",
+        category = "overhead",
+          parent = "launch",
+           start = t_start,
+            stop = Sys.time()
+      )
+    }
   }
 
 
@@ -133,6 +153,7 @@ run.ClusterFuture <- function(future, ...) {
   ##      NOTE: Already take care of by getExpression() of the Future class.
   ##      However, if we need to get an early error about missing packages,
   ##      we can get the error here before launching the future.
+  t_start <- Sys.time()
   packages <- packages(future)
   if (future$earlySignal && length(packages) > 0) {
     if (debug) mdebugf("Attaching %d packages (%s) on cluster node #%d ...",
@@ -144,10 +165,20 @@ run.ClusterFuture <- function(future, ...) {
                       length(packages), hpaste(sQuote(packages)), node_idx)
   }
   
+  if (inherits(future$.journal, "FutureJournal")) {
+    appendToFutureJournal(future,
+         event = "attachPackages",
+      category = "overhead",
+        parent = "launch",
+         start = t_start,
+          stop = Sys.time()
+    )
+  }
 
   ## (iii) Export globals
   globals <- globals(future)
   if (length(globals) > 0) {
+    t_start <- Sys.time()
     if (debug) {
       total_size <- asIEC(objectSize(globals))
       mdebugf("Exporting %d global objects (%s) to cluster node #%d ...", length(globals), total_size, node_idx)
@@ -170,6 +201,16 @@ run.ClusterFuture <- function(future, ...) {
       value <- NULL
     }
     if (debug) mdebugf("Exporting %d global objects (%s) to cluster node #%d ... DONE", length(globals), total_size, node_idx)
+    
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+           event = "exportGlobals",
+        category = "overhead",
+          parent = "launch",
+           start = t_start,
+            stop = Sys.time()
+      )
+    }
   }
   ## Not needed anymore
   globals <- NULL
@@ -238,9 +279,9 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = NULL, ...) {
 
     isValid <- isConnectionValid(con)
     if (!isValid) {
-      label <- x$label
-      if (is.null(label)) label <- "<none>"
-      stop(FutureError(sprintf("Cannot resolve %s (%s), because the connection to the worker is corrupt: %s", class(x)[1], label, attr(isValid, "reason", exact = TRUE)), future = future))
+      ex <- simpleError("Connection to the worker is corrupt")
+      msg <- post_mortem_cluster_failure(ex, when = "checking resolved from", node = node, future = future)
+      stop(FutureError(msg, future = future))
     }
 
     if (is.null(timeout)) {
@@ -348,11 +389,13 @@ receiveMessageFromWorker <- function(future, ...) {
     if (debug) mdebugf("- Validating connection of %s", class(future)[1])
     isValid <- isConnectionValid(con)
     if (!isValid) {
-      label <- future$label
-      if (is.null(label)) label <- "<none>"
-      stop(FutureError(sprintf("Cannot receive results for %s (%s), because the connection to the worker is corrupt: %s", class(future)[1], label, attr(isValid, "reason", exact = TRUE)), future = future))
+      ex <- simpleError("Connection to the worker is corrupt")
+      msg <- post_mortem_cluster_failure(ex, when = "receiving message from", node = node, future = future)
+      stop(FutureError(msg, future = future))
     }
   }
+
+  t_start <- Sys.time()
 
   ## If not, wait for process to finish, and
   ## then collect and record the value
@@ -364,7 +407,7 @@ receiveMessageFromWorker <- function(future, ...) {
 
   if (inherits(ack, "error")) {
     if (debug) mdebugf("- parallel:::recvResult() produced an error: %s", conditionMessage(ack))
-    msg <- post_mortem_cluster_failure(ack, when = "receive results from", node = node, future = future)
+    msg <- post_mortem_cluster_failure(ack, when = "receive message results from", node = node, future = future)
     ex <- FutureError(msg, call = ack$call, future = future)
     future$result <- ex
     stop(ex)          
@@ -399,6 +442,16 @@ receiveMessageFromWorker <- function(future, ...) {
 
   if (inherits(msg, "FutureResult")) {
     result <- msg
+
+    if (inherits(future$.journal, "FutureJournal")) {
+      appendToFutureJournal(future,
+           event = "receiveResult",
+        category = "overhead",
+          parent = "gather",
+           start = t_start,
+            stop = Sys.time()
+      )
+    }
 
     ## Add back already signaled and muffled conditions so that also
     ## they will be resignaled each time value() is called.
@@ -554,7 +607,7 @@ requestNode <- function(await, workers, timeout = getOption("future.wait.timeout
 #' @export
 getExpression.ClusterFuture <- local({
   tmpl_expr_conditions <- bquote_compile({
-    ...future.makeSendCondition <- local({
+    ...future.makeSendCondition <- base::local({
       sendCondition <- NULL
 
       function(frame = 1L) {
@@ -667,6 +720,7 @@ cluster_call <- function(cl, ..., when = "call function on", future) {
 }
 
 
+#' @importFrom parallelly isNodeAlive
 post_mortem_cluster_failure <- function(ex, when, node, future) {
   stop_if_not(inherits(ex, "error"))
   stop_if_not(length(when) == 1L, is.character(when))
@@ -710,9 +764,9 @@ post_mortem_cluster_failure <- function(ex, when, node, future) {
 
   ## (4) POST-MORTEM ANALYSIS:
   postmortem <- list()
-  ## (a) Did a localhost worker process terminate?
-  if (!is.null(host)) {
-    if (localhost && is.numeric(pid)) {
+  ## (a) Did the worker process terminate?
+  if (!is.null(host) && is.numeric(pid)) {
+    if (localhost) {
       pid_exists <- import_parallelly("pid_exists")
       alive <- pid_exists(pid)
       if (is.na(alive)) {
@@ -722,8 +776,18 @@ post_mortem_cluster_failure <- function(ex, when, node, future) {
       } else {
         msg2 <- "No process exists with this PID, i.e. the localhost worker is no longer alive"
       }
-      postmortem$alive <- msg2
+    } else {
+      ## Checking remote workers on hosts requires parallelly (>= 1.36.0)
+      alive <- isNodeAlive(node, timeout = getOption("future.alive.timeout", 30.0))
+      if (is.na(alive)) {
+        msg2 <- "Failed to determined whether the process with this PID exists or not on the remote host, i.e. cannot infer whether remote worker is alive or not"
+      } else if (alive) {
+        msg2 <- "A process with this PID exists on the remote host, which suggests that the remote worker is still alive"
+      } else {
+        msg2 <- "No process exists with this PID on the remote host, i.e. the remote worker is no longer alive"
+      }
     }
+    postmortem$alive <- msg2
   }
 
   ## (b) Did the worker use a connection that changed?

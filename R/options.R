@@ -46,6 +46,10 @@
 #'
 #'  \item{\option{future.rng.onMisuse}: (_beta feature - may change_)}{(character string) If random numbers are used in futures, then parallel (L'Ecuyer-CMRG) RNG should be used in order to get statistical sound RNGs. The defaults in the future framework assume that _no_ random number generation (RNG) is taken place in the future expression because L'Ecuyer-CMRG RNGs come with an unnecessary overhead if not needed.  To protect against mistakes, the future framework attempts to detect when random numbers are used despite L'Ecuyer-CMRG RNGs are not in place.  If this is detected, and `future.rng.onMisuse = "error"`, then an informative error message is produced.  If `"warning"`, then a warning message is produced.  If `"ignore"`, no check is performed. (Default: `"warning"`)}
 #'
+#'  \item{\option{future.globalenv.onMisuse}: (_beta feature - may change_)}{(character string) Assigning variables to the global environment for the purpose of using the variable at a later time makes no sense with futures, because the next future may be evaluated in different R process.  To protect against mistakes, the future framework attempts to detect when variables are added to the global environment.  If this is detected, and `future.globalenv.onMisuse = "error"`, then an informative error message is produced.  If `"warning"`, then a warning message is produced.  If `"ignore"`, no check is performed. (Default: `"ignore"`)}
+#'
+#'  \item{\option{future.onFutureCondition.keepFuture}:}{(logical) If `TRUE`, a `FutureCondition` keeps a copy of the `Future` object that triggered the condition. If `FALSE`, it is dropped. (Default: `TRUE`)}
+#'
 #'  \item{\option{future.wait.timeout}:}{(numeric) Maximum waiting time (in seconds) for a free worker before a timeout error is generated. (Default: `30 * 24 * 60 * 60` (= 30 days))}
 #'
 #'  \item{\option{future.wait.interval}:}{(numeric) Initial interval (in
@@ -74,7 +78,7 @@
 #' \describe{
 #'  \item{\option{future.fork.multithreading.enable} (_beta feature - may change_):}{(logical) Enable or disable _multi-threading_ while using _forked_ parallel processing.  If `FALSE`, different multi-thread library settings are overridden such that they run in single-thread mode. Specifically, multi-threading will be disabled for OpenMP (which requires the \pkg{RhpcBLASctl} package) and for **RcppParallel**. If `TRUE`, or not set (the default), multi-threading is allowed.  Parallelization via multi-threaded processing (done in native code by some packages and external libraries) while at the same time using forked (aka "multicore") parallel processing is known to unstable.  Note that this is not only true when using `plan(multicore)` but also when using, for instance, \code{\link[=mclapply]{mclapply}()} of the \pkg{parallel} package. (Default: not set)}
 #'
-#'  \item{\option{future.output.windows.reencode} (_beta feature - may change_):}{(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  On MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (`"\u2713"`) would be relayed as `"<U+2713>"` (a string with eight ASCII characters).  This option will cause `value()` to attempt to recover the intended UTF-8 symbols from `<U+nnnn>` string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: `TRUE`)}
+#'  \item{\option{future.output.windows.reencode}:}{(logical) Enable or disable re-encoding of UTF-8 symbols that were incorrectly encoded while captured.  In R (< 4.2.0) and on older versions of MS Windows, R cannot capture UTF-8 symbols as-is when they are captured from the standard output.  For examples, a UTF-8 check mark symbol (`"\u2713"`) would be relayed as `"<U+2713>"` (a string with eight ASCII characters).  Setting this option to `TRUE` will cause `value()` to attempt to recover the intended UTF-8 symbols from `<U+nnnn>` string components, if, and only if, the string was captured by a future resolved on MS Windows. (Default: `TRUE`)}
 #' }
 #'
 #' See also [parallelly::parallelly.options].
@@ -150,7 +154,13 @@
 #' R_FUTURE_GLOBALS_ONREFERENCE
 #' future.plan
 #' R_FUTURE_PLAN
+#' future.onFutureCondition.keepFuture
+#' R_FUTURE_ONFUTURECONDITION_KEEPFUTURE
 #' future.resolve.recursive
+#' R_FUTURE_RESOLVE_RECURSIVE
+#' future.globalenv.onMisuse
+#' R_FUTURE_GLOBALENV_ONMISUSE
+#' future.rng.onMisuse
 #' R_FUTURE_RNG_ONMISUSE
 #' future.wait.alpha
 #' R_FUTURE_WAIT_ALPHA
@@ -161,6 +171,8 @@
 #' R_FUTURE_RESOLVED_TIMEOUT
 #' future.output.windows.reencode
 #' R_FUTURE_OUTPUT_WINDOWS_REENCODE
+#' future.journal
+#' R_FUTURE_JOURNAL
 #'
 #' @name future.options
 NULL
@@ -262,7 +274,7 @@ update_package_options <- function(debug = FALSE) {
 
   update_package_option("future.deprecated.ignore", split = ",", debug = debug)
 
-  update_package_option("future.deprecated.defunct", mode = "character", split = ",", default = if (interactive()) "multiprocess" else NULL, debug = debug)
+  update_package_option("future.deprecated.defunct", mode = "character", split = ",", debug = debug)
 
   update_package_option("future.fork.multithreading.enable", mode = "logical", debug = debug)
 
@@ -290,14 +302,22 @@ update_package_options <- function(debug = FALSE) {
 
   update_package_option("future.resolve.recursive", mode = "integer", debug = debug)
 
+  ## Introduced in future 1.33.0:
+  update_package_option("future.alive.timeout", mode = "numeric", debug = debug)
+
   ## Introduced in future 1.22.0:
   for (name in c("future.resolved.timeout", "future.cluster.resolved.timeout", "future.multicore.resolved.timeout")) {
     update_package_option(name, mode = "numeric", debug = debug)
   }
 
+  ## Introduced in future 1.32.0:
+  update_package_option("future.onFutureCondition.keepFuture", mode = "logical", debug = debug)
+
   update_package_option("future.rng.onMisuse", debug = debug)
-  update_package_option("future.rng.onMisuse.keepFuture", mode = "logical", debug = debug)
   
+  ## Prototyping in future 1.32.0:
+  update_package_option("future.globalenv.onMisuse", debug = debug)
+
   update_package_option("future.wait.timeout", mode = "numeric", debug = debug)
   update_package_option("future.wait.interval", mode = "numeric", debug = debug)
   update_package_option("future.wait.alpha", mode = "numeric", debug = debug)
@@ -311,6 +331,12 @@ update_package_options <- function(debug = FALSE) {
 
   ## Prototyping in future 1.26.0:
   update_package_option("future.globals.globalsOf.locals", mode = "logical", debug = debug)
+
+  ## future 1.32.0:
+  update_package_option("future.state.onInvalid", mode = "character", debug = debug)
+
+  ## future 1.32.0:
+  update_package_option("future.journal", mode = "logical", debug = debug)
 
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:

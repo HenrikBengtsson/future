@@ -8,7 +8,7 @@ resolved(x, ...)
 }
 \arguments{
 \item{x}{A \link{Future}, a list, or an environment (which also
-includes \link[listenv:listenv]{list environment}.}
+includes \link[listenv:listenv]{list environment}).}
 
 \item{\dots}{Not used.}
 }

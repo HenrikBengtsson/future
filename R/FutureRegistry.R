@@ -47,7 +47,7 @@ FutureRegistry <- local({
   } ## collectValues()
 
 
-  function(where, action = c("add", "remove", "list", "collect-first", "collect-all", "reset"), future = NULL, earlySignal = TRUE, ...) {
+  function(where, action = c("add", "remove", "list", "contains", "collect-first", "collect-all", "reset"), future = NULL, earlySignal = TRUE, ...) {
     stop_if_not(length(where) == 1, nzchar(where))
     futures <- db[[where]]
 
@@ -66,6 +66,9 @@ FutureRegistry <- local({
       }
       futures[[length(futures)+1L]] <- future
       db[[where]] <<- futures
+    } else if (action == "contains") {
+      idx <- indexOf(futures, future = future)
+      return(!is.na(idx))
     } else if (action == "remove") {
       idx <- indexOf(futures, future = future)
       if (is.na(idx)) {
