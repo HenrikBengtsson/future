@@ -6,6 +6,15 @@ makeExpression <- local({
   tmpl_enter_optenvar <- bquote_compile({
     ## Start time for future evaluation
     ...future.startTime <- base::Sys.time()
+    if (.(journal.memory)) {
+      ## ...future.memory <- future:::.memory()
+      ...future.memory <- .(.memory)
+    } else {
+      ...future.memory <- function(...) {
+        structure(c(rss = NA_real_, vms = NA_real_), class = "object_size")
+      }
+    }
+    ...future.startMemory <- ...future.memory(NA)
     
     ## Required packages are loaded and attached here
     .(enter)
@@ -237,6 +246,8 @@ makeExpression <- local({
           rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
           globalenv = if (.(globalenv)) list(added = base::setdiff(base::names(base::.GlobalEnv), ...future.globalenv.names)) else NULL,
           started = ...future.startTime,
+          memory_started = ...future.startMemory,
+          memory_finished = ...future.memory(),
           version = "1.8"
         )
       }, condition = base::local({
@@ -329,6 +340,8 @@ makeExpression <- local({
         rng = !identical(base::globalenv()$.Random.seed, ...future.rng),
         started = ...future.startTime,
         finished = Sys.time(),
+        memory_started = ...future.startMemory,
+        memory_finished = ...future.memory(),
         session_uuid = NA_character_,
         version = "1.8"
       ), class = "FutureResult")
@@ -354,7 +367,7 @@ makeExpression <- local({
   })
 
 
-  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), globalenv = (getOption("future.globalenv.onMisuse", "ignore") != "ignore"), enter = NULL, exit = NULL, version = "1.8") {
+  function(expr, local = TRUE, immediateConditions = FALSE, stdout = TRUE, conditionClasses = NULL, split = FALSE, globals.onMissing = getOption("future.globals.onMissing", NULL), journal.memory = FALSE, globalenv = (getOption("future.globalenv.onMisuse", "ignore") != "ignore"), enter = NULL, exit = NULL, version = "1.8") {
     conditionClassesExclude <- attr(conditionClasses, "exclude", exact = TRUE)
     muffleInclude <- attr(conditionClasses, "muffleInclude", exact = TRUE)
     if (is.null(muffleInclude)) muffleInclude <- "^muffle"

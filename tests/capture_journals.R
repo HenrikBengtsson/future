@@ -8,7 +8,8 @@ slow_fcn <- function(x) {
   Sys.sleep(0.5 + 1/x)
 }
 
-plan(multisession, workers = 2)
+plan(multisession, workers = 2L)
+
 js <- capture_journals({
   fs <- lapply(3:1, FUN = function(x) future(slow_fcn(x)))
   vs <- value(fs)

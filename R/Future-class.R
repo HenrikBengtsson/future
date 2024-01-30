@@ -839,7 +839,7 @@ getExpression.Future <- local({
       enter <- bquote_apply(tmpl_enter_rng)
     }
   
-    expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, split = split, enter = enter, exit = exit, ..., version = version)
+    expr <- makeExpression(expr = expr, local = local, stdout = stdout, conditionClasses = conditionClasses, journal.memory = inherits(future$.journal, "FutureJournal"), split = split, enter = enter, exit = exit, ..., version = version)
     if (getOption("future.debug", FALSE)) mprint(expr)
   
   ##  mdebug("getExpression() ... DONE")

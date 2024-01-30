@@ -37,7 +37,7 @@
 FutureResult <- local({
   r_info <- NULL
 
-  function(value = NULL, visible = TRUE, stdout = NULL, conditions = NULL, rng = FALSE, ..., started = .POSIXct(NA_real_), finished = Sys.time(), version = "1.8") {
+  function(value = NULL, visible = TRUE, stdout = NULL, conditions = NULL, rng = FALSE, ..., started = .POSIXct(NA_real_), finished = Sys.time(), memory_started = .memory(FALSE), memory_finished = .memory(), version = "1.9") {
     args <- list(...)
     if (length(args) > 0) {
       names <- names(args)
@@ -72,17 +72,19 @@ FutureResult <- local({
     }
 
     structure(list(
-      value        = value,
-      visible      = visible,
-      stdout       = stdout,
-      conditions   = conditions,
-      rng          = rng,
-      ...,
-      started      = started,
-      finished     = finished,
-      session_uuid = session_uuid(),
-      r_info       = r_info,
-      version      = version
+         value        = value,
+         visible      = visible,
+         stdout       = stdout,
+         conditions   = conditions,
+         rng          = rng,
+         ...,
+         started      = started,
+         finished     = finished,
+       memory_started = memory_started,
+      memory_finished = memory_finished,
+         session_uuid = session_uuid(),
+         r_info       = r_info,
+         version      = version
     ), class = "FutureResult")
   }
 })
@@ -122,6 +124,10 @@ print.FutureResult <- function(x, ...) {
   t0 <- x[["started"]]
   t1 <- x[["finished"]]
   s <- c(s, sprintf("duration: %s (started %s)", format(t1-t0), t0))
+  
+  m0 <- x[["memory_started"]]
+  m1 <- x[["memory_finished"]]
+  s <- c(s, sprintf("memory change: %s (from %s)", format(m1 - m0), m0))
   s <- c(s, sprintf("version: %s", x[["version"]]))
   cat(s, sep = "\n")
 }

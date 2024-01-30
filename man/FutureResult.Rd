@@ -15,7 +15,9 @@ FutureResult(
   ...,
   started = .POSIXct(NA_real_),
   finished = Sys.time(),
-  version = "1.8"
+  memory_started = .memory(FALSE),
+  memory_finished = .memory(),
+  version = "1.9"
 )
 
 \method{as.character}{FutureResult}(x, ...)
