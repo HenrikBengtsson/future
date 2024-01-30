@@ -74,7 +74,8 @@ journal.Future <- function(x, ...) {
   if (is.null(data)) {
     label <- x$label
     if (is.null(label)) label <- "<none>"
-    stop(sprintf("No journal is available for future ('%s'). Did you forget to enable journaling?", label))
+    msg <- sprintf("No journal is available for future ('%s'). Did you forget to enable journaling?", label)
+    stop(FutureError(msg, future = x))
   }
   stop_if_not(inherits(data, "FutureJournal"))
   session_uuid <- x$owner
@@ -327,7 +328,7 @@ memory_rss <- local({
     if (getOption("future.journal.memory", FALSE)) {
       if (is.null(ps_handle)) {
         if (!requireNamespace("ps", quietly = TRUE)) {
-          stop("Package 'ps' is not installed")
+          stop(FutureError("Package 'ps' is not installed")
         }
         ps_handle <<- ps::ps_handle()
       }
@@ -376,7 +377,7 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time(), memor
   stop_if_not(inherits(data, "FutureJournal"))
   row <- which(data$event == event)
   n <- length(row)
-  if (n == 0L) stop("No such 'event' entry in journal: ", sQuote(event))
+  if (n == 0L) stop(FutureError(sprintf("No such 'event' entry in journal: %s", sQuote(event))))
   if (n > 1L) row <- row[n]
   entry <- data[row, ]
   if (!is.null(start)) entry$start <- start
