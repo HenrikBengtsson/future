@@ -186,136 +186,143 @@ print.FutureJournal <- function(x, digits.secs = 3L, ...) {
 
 
 #' @export
-summary.FutureJournal <- function(object, ...) {
+summary.FutureJournal <- function(object, by = c("future", "process"), ...) {
   ## To please 'R CMD check'
   event <- future_uuid <- median <- parent <- category <- NULL
+
+  by <- match.arg(by)
+
+  if (by == "future") {
+    dt_top <- subset(object, is.na(parent))
   
-  dt_top <- subset(object, is.na(parent))
-
-  uuids <- unique(dt_top$future_uuid)
-  nbr_of_futures <- length(uuids)
-
-  ## Calculate 'stop' times
-  dt_top$stop <- dt_top$start + dt_top$duration
-
-  ## -------------------------------------------------------
-  ## 1. Calculate the total walltime
-  ## -------------------------------------------------------
-  ## (a) timestamp when the first event starts
-  t_begin <- subset(dt_top, event == "create")[["start"]]
-  ## (b) timestamp when 'gather' finishes
-  t_end <- subset(dt_top, event == "gather")[["stop"]]
-  ## (c) durations (per future)
-  t_delta <- t_end - t_begin
-  ## (d) total duration
-  t_total <- sum(t_delta, na.rm = TRUE)
-
-  ## (e) build table
-  t <- NULL
-  if (length(uuids) > 1L) {
-    t <- c(t,    min =    min(t_delta, na.rm = TRUE))
-    t <- c(t,   mean =   mean(t_delta, na.rm = TRUE))
-    t <- c(t, median = median(t_delta, na.rm = TRUE))
-    t <- c(t,    max =    max(t_delta, na.rm = TRUE))
-    t <- as.difftime(t, units = "secs")
-  }
-  t <- c(t, total = t_total)
-  stats <- data.frame(walltime = t)
+    uuids <- unique(dt_top$future_uuid)
+    nbr_of_futures <- length(uuids)
   
-  ## -------------------------------------------------------
-  ## 2. Calculate efficiency
-  ## -------------------------------------------------------
-  ## (a) Per future
-  eff <- list()
-  for (kk in seq_along(uuids)) {
-    uuid <- uuids[[kk]]
-    dt_uuid <- subset(dt_top, future_uuid == uuid)
-    res <- data.frame(
-      evaluate = subset(dt_uuid, category == "evaluation")[["duration"]],
-      overhead = sum(subset(dt_uuid, category == "overhead")[["duration"]])
-    )
-    res[["duration"]] <- t_delta[kk]
-    eff[[uuid]] <- res
-  }
-  eff <- Reduce(rbind, eff)
-
-  ## (b) Summary
-  res <- NULL
-  if (length(uuids) > 1L) {
-    t <- lapply(c("min", "mean", "median", "max"), FUN = function(fcn_name) {
-      fcn <- get(fcn_name, mode = "function")
-      t <- as.data.frame(lapply(eff, FUN = fcn))
-      rownames(t) <- fcn_name
-      t
-    })
-    t <- Reduce(rbind, t)
-    res <- t
-  }
-
-  ## (c) Total
-  t <- as.data.frame(lapply(eff, FUN = sum))
-  rownames(t) <- "total"
-  res <- rbind(res, t)
-
-  ## (d) Combine
-  stats <- cbind(stats, res)
-
-  ## (e) Fractions
-  stats[["evaluate_ratio"]] <- as.numeric(stats[["evaluate"]]) / as.numeric(stats[["duration"]])
-  stats[["overhead_ratio"]] <- as.numeric(stats[["overhead"]]) / as.numeric(stats[["duration"]])
-
-
-  ## -------------------------------------------------------
-  ## 3. Summarize memory use for evaluation
-  ## -------------------------------------------------------
-  ## (a) Per future
-  eff <- list()
-  for (kk in seq_along(uuids)) {
-    uuid <- uuids[[kk]]
-    dt_uuid <- subset(dt_top, future_uuid == uuid)
-    dt <- subset(dt_uuid, category == "evaluation")
-    res_kk <- list()
-    for (type in c("rss", "vms")) {
-      t_delta <- dt[[paste0("memory_stop_", type)]] - dt[[paste0("memory_start_", type)]]
-      res_kk[[paste0("memory_", type)]] <- t_delta
+    ## Calculate 'stop' times
+    dt_top$stop <- dt_top$start + dt_top$duration
+  
+    ## -------------------------------------------------------
+    ## 1. Calculate the total walltime
+    ## -------------------------------------------------------
+    ## (a) timestamp when the first event starts
+    t_begin <- subset(dt_top, event == "create")[["start"]]
+    ## (b) timestamp when 'gather' finishes
+    t_end <- subset(dt_top, event == "gather")[["stop"]]
+    ## (c) durations (per future)
+    t_delta <- t_end - t_begin
+    ## (d) total duration
+    t_total <- sum(t_delta, na.rm = TRUE)
+  
+    ## (e) build table
+    t <- NULL
+    if (length(uuids) > 1L) {
+      t <- c(t,    min =    min(t_delta, na.rm = TRUE))
+      t <- c(t,   mean =   mean(t_delta, na.rm = TRUE))
+      t <- c(t, median = median(t_delta, na.rm = TRUE))
+      t <- c(t,    max =    max(t_delta, na.rm = TRUE))
+      t <- as.difftime(t, units = "secs")
     }
-    res_kk <- as.data.frame(res_kk)
-    eff[[uuid]] <- res_kk
-  }
-  eff <- Reduce(rbind, eff)
-
-  ## (b) Summary
-  res <- NULL
-  if (length(uuids) > 1L) {
-    t <- lapply(c("min", "mean", "median", "max"), FUN = function(fcn_name) {
-      fcn <- get(fcn_name, mode = "function")
-      t <- as.data.frame(lapply(eff, FUN = fcn))
-      rownames(t) <- fcn_name
-      t
-    })
-    t <- Reduce(rbind, t)
-    res <- t
-  }
-
-  ## (c) Total
-  t <- as.data.frame(lapply(eff, FUN = sum))
-  rownames(t) <- "total"
-  res <- rbind(res, t)
-  colnames(res) <- paste0("evaluate_", colnames(res))
-
-  ## (d) Combine
-  stats <- cbind(stats, res)
+    t <- c(t, total = t_total)
+    stats <- data.frame(walltime = t)
+    
+    ## -------------------------------------------------------
+    ## 2. Calculate efficiency
+    ## -------------------------------------------------------
+    ## (a) Per future
+    eff <- list()
+    for (kk in seq_along(uuids)) {
+      uuid <- uuids[[kk]]
+      dt_uuid <- subset(dt_top, future_uuid == uuid)
+      res <- data.frame(
+        evaluate = subset(dt_uuid, category == "evaluation")[["duration"]],
+        overhead = sum(subset(dt_uuid, category == "overhead")[["duration"]])
+      )
+      res[["duration"]] <- t_delta[kk]
+      eff[[uuid]] <- res
+    }
+    eff <- Reduce(rbind, eff)
   
-
-  ## -------------------------------------------------------
-  ## 4. Wrap up
-  ## -------------------------------------------------------
-  stats[["summary"]] <- rownames(stats)
-  rownames(stats) <- NULL
-  stats <- stats[, c("summary", "evaluate", "evaluate_ratio", "overhead", "overhead_ratio", "duration", "walltime", "evaluate_memory_rss", "evaluate_memory_vms")]
-
-  attr(stats, "nbr_of_futures") <- length(uuids)
-  class(stats) <- c("FutureJournalSummary", class(stats))
+    ## (b) Summary
+    res <- NULL
+    if (length(uuids) > 1L) {
+      t <- lapply(c("min", "mean", "median", "max"), FUN = function(fcn_name) {
+        fcn <- get(fcn_name, mode = "function")
+        t <- as.data.frame(lapply(eff, FUN = fcn))
+        rownames(t) <- fcn_name
+        t
+      })
+      t <- Reduce(rbind, t)
+      res <- t
+    }
+  
+    ## (c) Total
+    t <- as.data.frame(lapply(eff, FUN = sum))
+    rownames(t) <- "total"
+    res <- rbind(res, t)
+  
+    ## (d) Combine
+    stats <- cbind(stats, res)
+  
+    ## (e) Fractions
+    stats[["evaluate_ratio"]] <- as.numeric(stats[["evaluate"]]) / as.numeric(stats[["duration"]])
+    stats[["overhead_ratio"]] <- as.numeric(stats[["overhead"]]) / as.numeric(stats[["duration"]])
+  
+  
+    ## -------------------------------------------------------
+    ## 3. Summarize memory use for future evaluations
+    ## -------------------------------------------------------
+    ## (a) Per future
+    eff <- list()
+    for (kk in seq_along(uuids)) {
+      uuid <- uuids[[kk]]
+      dt_uuid <- subset(dt_top, future_uuid == uuid)
+      dt <- subset(dt_uuid, category == "evaluation")
+      res_kk <- list()
+      for (type in c("rss", "vms")) {
+        t_delta <- dt[[paste0("memory_stop_", type)]] - dt[[paste0("memory_start_", type)]]
+        res_kk[[paste0("memory_", type)]] <- t_delta
+      }
+      res_kk <- as.data.frame(res_kk)
+      eff[[uuid]] <- res_kk
+    }
+    eff <- Reduce(rbind, eff)
+  
+    ## (b) Summary
+    res <- NULL
+    if (length(uuids) > 1L) {
+      t <- lapply(c("min", "mean", "median", "max"), FUN = function(fcn_name) {
+        fcn <- get(fcn_name, mode = "function")
+        t <- as.data.frame(lapply(eff, FUN = fcn))
+        rownames(t) <- fcn_name
+        t
+      })
+      t <- Reduce(rbind, t)
+      res <- t
+    }
+  
+    ## (c) Total
+    t <- as.data.frame(lapply(eff, FUN = sum))
+    rownames(t) <- "total"
+    res <- rbind(res, t)
+    colnames(res) <- paste0("evaluate_", colnames(res))
+  
+    ## (d) Combine
+    stats <- cbind(stats, res)
+    
+  
+    ## -------------------------------------------------------
+    ## 4. Wrap up
+    ## -------------------------------------------------------
+    stats[["summary"]] <- rownames(stats)
+    rownames(stats) <- NULL
+    stats <- stats[, c("summary", "evaluate", "evaluate_ratio", "overhead", "overhead_ratio", "duration", "walltime", "evaluate_memory_rss", "evaluate_memory_vms")]
+  
+    attr(stats, "nbr_of_futures") <- length(uuids)
+    class(stats) <- c("FutureJournalSummary", class(stats))
+  } else if (by == "process") {
+    stop(FutureError(sprintf("summary(..., by = \"process\") for %s is not implemented", class(object)[1])))
+  }
+  
   stats
 }
 

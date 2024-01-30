@@ -1,4 +1,5 @@
 source("incl/start.R")
+options(future.debug = FALSE)
 
 capture_journals <- future:::capture_journals
 
