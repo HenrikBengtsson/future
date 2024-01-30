@@ -24,4 +24,15 @@ plan(sequential)
 
 message("*** capture_journals() ... done")
 
-source("incl/end.R")
+
+message("*** summary() of FutureJournal ...")
+
+js <- do.call(rbind, js)
+print(js)
+
+stats <- summary(js)
+print(stats)
+
+message("*** summary() of FutureJournal ... done")
+
+#source("incl/end.R")
