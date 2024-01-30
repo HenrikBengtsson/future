@@ -35,6 +35,15 @@ print(js)
 stats <- summary(js)
 print(stats)
 
+stats <- summary(js, by = "future")
+print(stats)
+
+stats <- summary(js, by = "process")
+print(stats)
+
+stats <- summary(js, by = "future")
+print(stats)
+
 message("*** summary() of FutureJournal ... done")
 
 #source("incl/end.R")
