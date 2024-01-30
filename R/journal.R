@@ -21,9 +21,9 @@
 #'  5.               `at` (difftime)         - the time when the event started
 #'                                             relative to first event
 #'  6.         `duration` (difftime)         - the duration of the event
-#'  7. `memory_start` (numeric)          - the memory consumption at the beginning
+#'  7.     `memory_start` (numeric)          - the memory consumption at the beginning
 #'                                             of the event
-#'  8.  `memory_stop` (numeric)          - the memory consumption at the end of
+#'  8.      `memory_stop` (numeric)          - the memory consumption at the end of
 #'                                             the event
 #'  9.     `future_label` (character string) - the label of the future 
 #' 10.      `future_uuid` (factor)           - the UUID of the future
@@ -317,7 +317,7 @@ summary.FutureJournal <- function(object, by = c("evaluation", "process", "futur
     t <- as.data.frame(lapply(eff, FUN = sum))
     rownames(t) <- "total"
     res <- rbind(res, t)
-    colnames(res) <- paste0("evaluate_", colnames(res))
+    colnames(res) <- paste0("evaluate_", colnames(res), "_delta")
   
     ## (d) Combine
     stats <- cbind(stats, res)
@@ -328,7 +328,7 @@ summary.FutureJournal <- function(object, by = c("evaluation", "process", "futur
     ## -------------------------------------------------------
     stats[["summary"]] <- rownames(stats)
     rownames(stats) <- NULL
-    stats <- stats[, c("summary", "evaluate", "evaluate_ratio", "overhead", "overhead_ratio", "duration", "walltime", "evaluate_memory_rss", "evaluate_memory_vms")]
+    stats <- stats[, c("summary", "evaluate", "evaluate_ratio", "overhead", "overhead_ratio", "duration", "walltime", "evaluate_memory_rss_delta", "evaluate_memory_vms_delta")]
   
     attr(stats, "nbr_of_futures") <- length(uuids)
     class(stats) <- c("FutureJournalSummary", class(stats))
@@ -339,26 +339,27 @@ summary.FutureJournal <- function(object, by = c("evaluation", "process", "futur
   } else if (by == "process") {
     dt_top <- object
 
-    uuids <- unique(dt_top$session_uuid)
-  
+    ## Keep "evaluation" processes
+    session_uuids <- unique(subset(dt_top, event == "evaluate")$session_uuid)
+    dt_top <- subset(dt_top, session_uuid %in% session_uuids)
+    
     ## Calculate 'stop' times
     dt_top$stop <- dt_top$start + dt_top$duration
     dt_top$at <- dt_top$start - min(dt_top$start, na.rm = TRUE)
 
     ## (a) Groups by sessions
-    groups <- by(dt_top, dt_top$session_uuid, FUN = identity)
+    groups <- by(dt_top, as.character(dt_top$session_uuid), FUN = identity)
 
     ## (b) Stats by group
     stats <- lapply(groups, FUN = function(group) {
       stats <- data.frame(
-          session_uuid = group$session_uuid[1],
-                 start = min(group$start, na.rm = TRUE),
-                    at = min(group$at, na.rm = TRUE),
-              duration = diff(range(group$at, group$at + group$duration, na.rm = TRUE)),
-            memory_rss = diff(range(c(group$memory_start_rss, group$memory_stop_rss), na.rm = TRUE)),
-            memory_vms = diff(range(c(group$memory_start_vms, group$memory_stop_vms), na.rm = TRUE)),
-        nbr_of_futures = length(unique(subset(group, event == "evaluate")$future_uuid))
-
+            session_uuid = group$session_uuid[1],
+                   start = min(group$start, na.rm = TRUE),
+                      at = min(group$at, na.rm = TRUE),
+                duration = diff(range(group$at, group$at + group$duration, na.rm = TRUE)),
+        memory_rss_delta = diff(range(c(group$memory_start_rss, group$memory_stop_rss), na.rm = TRUE)),
+        memory_vms_delta = diff(range(c(group$memory_start_vms, group$memory_stop_vms), na.rm = TRUE)),
+          nbr_of_futures = length(unique(subset(group, event == "evaluate")$future_uuid))
       )
       stats
     })
@@ -376,26 +377,26 @@ summary.FutureJournal <- function(object, by = c("evaluation", "process", "futur
   } else if (by == "future") {
     dt_top <- object
 
-    uuids <- unique(dt_top$future_uuid)
-  
     ## Calculate 'stop' times
     dt_top$stop <- dt_top$start + dt_top$duration
     dt_top$at <- dt_top$start - min(dt_top$start, na.rm = TRUE)
 
     ## (a) Groups by futures
-    groups <- by(dt_top, dt_top$future_uuid, FUN = identity)
+    groups <- by(dt_top, as.character(dt_top$future_uuid), FUN = identity)
 
     ## (b) Stats by group
     stats <- lapply(groups, FUN = function(group) {
-      stats <- data.frame(
-           future_uuid = group$future_uuid[1],
-                 start = min(group$start, na.rm = TRUE),
-                    at = min(group$at, na.rm = TRUE),
-              duration = diff(range(group$at, group$at + group$duration, na.rm = TRUE)),
-            memory_rss = diff(range(c(group$memory_start_rss, group$memory_stop_rss), na.rm = TRUE)),
-            memory_vms = diff(range(c(group$memory_start_vms, group$memory_stop_vms), na.rm = TRUE)),
-       nbr_of_sessions = length(unique(subset(group, event == "evaluate")$session_uuid))
+      evaluation_session_uuid <- unique(subset(group, event == "evaluate")$session_uuid)
+      group <- subset(group, session_uuid == evaluation_session_uuid)
 
+      stats <- data.frame(
+             future_uuid = group$future_uuid[1],
+                   start = min(group$start, na.rm = TRUE),
+                      at = min(group$at, na.rm = TRUE),
+                duration = diff(range(group$at, group$at + group$duration, na.rm = TRUE)),
+        memory_rss_delta = diff(range(c(group$memory_start_rss, group$memory_stop_rss), na.rm = TRUE)),
+        memory_vms_delta = diff(range(c(group$memory_start_vms, group$memory_stop_vms), na.rm = TRUE)),
+         nbr_of_sessions = length(unique(group$session_uuid))
       )
       stats
     })
