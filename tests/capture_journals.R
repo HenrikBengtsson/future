@@ -13,8 +13,7 @@ slow_fcn <- function(n) {
   mean(y)
 }
 
-#plan(multisession, workers = 2L)
-plan(future.callr::callr, workers = 2L)
+plan(multisession, workers = 2L)
 
 js <- capture_journals({
   fs <- lapply(3:1, FUN = function(x) future(slow_fcn(x)))
