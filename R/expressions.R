@@ -11,7 +11,7 @@ makeExpression <- local({
       ...future.memory <- .(.memory)
     } else {
       ...future.memory <- function(...) {
-        structure(c(rss = NA_real_, vms = NA_real_), class = "object_size")
+        base::structure(base::c(rss = NA_real_, vms = NA_real_), class = "object_size")
       }
     }
     ...future.startMemory <- ...future.memory(NA)
