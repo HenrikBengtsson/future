@@ -14,21 +14,21 @@
 #' @return
 #' A data frame of class `FutureJournal` with columns:
 #'
-#'  1.        `event` (factor)           - type of event that took place
-#'  2.     `category` (factor)           - the category of the event
-#'  3.       `parent` (character string) - (to be describe)
-#'  4.        `start` (POSIXct)          - the timestamp when the event started
-#'  5.           `at` (difftime)         - the time when the event started
-#'                                         relative to first event
-#'  6.     `duration` (difftime)         - the duration of the event
-#'  7. `memory_start` (numeric)          - the memory consumption at the beginning
-#'                                         of the event
-#'  8.  `memory_stop` (numeric)          - the memory consumption at the end of
-#'                                         the event
-#'  9. `future_label` (character string) - the label of the future 
-#' 10.  `future_uuid` (factor)           - the UUID of the future
-#' 11. `session_uuid` (factor)           - the UUID of the R session where the
-#'                                         event took place
+#'  1.            `event` (factor)           - type of event that took place
+#'  2.         `category` (factor)           - the category of the event
+#'  3.           `parent` (character string) - (to be describe)
+#'  4.            `start` (POSIXct)          - the timestamp when the event started
+#'  5.               `at` (difftime)         - the time when the event started
+#'                                             relative to first event
+#'  6.         `duration` (difftime)         - the duration of the event
+#'  7. `memory_rss_start` (numeric)          - the memory consumption at the beginning
+#'                                             of the event
+#'  8.  `memory_rss_stop` (numeric)          - the memory consumption at the end of
+#'                                             the event
+#'  9.     `future_label` (character string) - the label of the future 
+#' 10.      `future_uuid` (factor)           - the UUID of the future
+#' 11.     `session_uuid` (factor)           - the UUID of the R session where the
+#'                                             event took place
 #'
 #' The common events are:
 #'
@@ -90,8 +90,8 @@ journal.Future <- function(x, ...) {
           category = "evaluation",
              start = x$result$started,
               stop = x$result$finished,
-      memory_start = structure(NA_real_, class = "object_size"),
-       memory_stop = structure(NA_real_, class = "object_size")
+      memory_rss_start = structure(NA_real_, class = "object_size"),
+       memory_rss_stop = structure(NA_real_, class = "object_size")
     )
     data <- x$.journal
     stop_if_not(length(x$result$session_uuid) == 1L, is.character(x$result$session_uuid))
@@ -267,9 +267,9 @@ summary.FutureJournal <- function(object, ...) {
   ## 3. Summarize memory use
   ## -------------------------------------------------------
   ## (a) memory use when the first event starts
-  t_begin <- subset(dt_top, event == "create")[["memory_start"]]
+  t_begin <- subset(dt_top, event == "create")[["memory_rss_start"]]
   ## (b) memory use when 'gather' finishes
-  t_end <- subset(dt_top, event == "gather")[["memory_stop"]]
+  t_end <- subset(dt_top, event == "gather")[["memory_rss_stop"]]
   ## (c) memory change (per future)
   t_delta <- t_end - t_begin
   ## (d) total memory change
@@ -296,7 +296,7 @@ summary.FutureJournal <- function(object, ...) {
 
   t <- c(t, total = t_total)
   t <- structure(t, class = "object_size")
-  mem_stats <- data.frame(memory_change = t)
+  mem_stats <- data.frame(memory_rss_change = t)
   stats[["memory"]] <- mem_stats
 
   ## -------------------------------------------------------
@@ -319,7 +319,7 @@ print.FutureJournalSummary <- function(x, ...) {
 }
 
 
-makeFutureJournal <- function(x, event = "create", category = "other", parent = NA_character_, start = stop, stop = Sys.time(), memory_start = structure(NA_real_, class = "object_size"), memory_stop = structure(NA_real_, class = "object_size")) {
+makeFutureJournal <- function(x, event = "create", category = "other", parent = NA_character_, start = stop, stop = Sys.time(), memory_rss_start = structure(NA_real_, class = "object_size"), memory_rss_stop = structure(NA_real_, class = "object_size")) {
   stop_if_not(
     inherits(x, "Future"),
     is.null(x$.journal),
@@ -328,17 +328,17 @@ makeFutureJournal <- function(x, event = "create", category = "other", parent = 
     length(parent) == 1L, is.character(parent),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct"),
-    length(memory_start) == 1L, is.numeric(memory_start),
-    length(memory_stop) == 1L, is.numeric(memory_stop)
+    length(memory_rss_start) == 1L, is.numeric(memory_rss_start),
+    length(memory_rss_stop) == 1L, is.numeric(memory_rss_stop)
   )
 
-  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop, memory_start = memory_start, memory_stop = memory_stop)
+  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop, memory_rss_start = memory_rss_start, memory_rss_stop = memory_rss_stop)
   class(data) <- c("FutureJournal", class(data))
   x$.journal <- data
   invisible(x)
 }
 
-updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time(), memory_start = NULL, memory_stop = NULL) {
+updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time(), memory_rss_start = NULL, memory_rss_stop = NULL) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
@@ -347,8 +347,8 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time(), memor
     length(event) == 1L, is.character(event), !is.na(event),
     is.null(start) || (length(start) == 1L && inherits(start, "POSIXct")),
     is.null(stop) || (length(stop) == 1L && inherits(stop, "POSIXct")),
-    is.null(memory_start) || length(memory_start) == 1L, is.numeric(memory_start),
-    is.null(memory_stop) || length(memory_stop) == 1L, is.numeric(memory_stop)
+    is.null(memory_rss_start) || length(memory_rss_start) == 1L, is.numeric(memory_rss_start),
+    is.null(memory_rss_stop) || length(memory_rss_stop) == 1L, is.numeric(memory_rss_stop)
   )
 
   data <- x$.journal
@@ -360,8 +360,8 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time(), memor
   entry <- data[row, ]
   if (!is.null(start)) entry$start <- start
   if (!is.null(stop)) entry$stop <- stop
-  if (!is.null(memory_start)) entry$memory_start <- memory_start
-  if (!is.null(memory_stop)) entry$memory_stop <- memory_stop
+  if (!is.null(memory_rss_start)) entry$memory_rss_start <- memory_rss_start
+  if (!is.null(memory_rss_stop)) entry$memory_rss_stop <- memory_rss_stop
   data[row, ] <- entry
   stop_if_not(inherits(data, "FutureJournal"))
   x$.journal <- data
@@ -369,7 +369,7 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time(), memor
 }
 
 
-appendToFutureJournal <- function(x, event, category = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), memory_start = structure(NA_real_, class = "object_size"), memory_stop = structure(NA_real_, class = "object_size"), skip = TRUE) {
+appendToFutureJournal <- function(x, event, category = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), memory_rss_start = structure(NA_real_, class = "object_size"), memory_rss_stop = structure(NA_real_, class = "object_size"), skip = TRUE) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
@@ -382,11 +382,11 @@ appendToFutureJournal <- function(x, event, category = "other", parent = NA_char
     length(parent) == 1L, is.character(parent),
     length(start) == 1L, inherits(start, "POSIXct"),
     length(stop) == 1L, inherits(stop, "POSIXct"),
-    length(memory_start) == 1L, is.numeric(memory_start),
-    length(memory_stop) == 1L, is.numeric(memory_stop)
+    length(memory_rss_start) == 1L, is.numeric(memory_rss_start),
+    length(memory_rss_stop) == 1L, is.numeric(memory_rss_stop)
   )
 
-  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop, memory_start = memory_start, memory_stop = memory_stop)
+  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop, memory_rss_start = memory_rss_start, memory_rss_stop = memory_rss_stop)
   x$.journal <- rbind(x$.journal, data)
   invisible(x)
 }
