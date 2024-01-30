@@ -86,10 +86,10 @@ journal.Future <- function(x, ...) {
   if (!is.element("evaluate", data$event) && !is.null(x$result)) {
     stop_if_not(is.character(session_uuid))
     x <- appendToFutureJournal(x,
-             event = "evaluate",
-          category = "evaluation",
-             start = x$result$started,
-              stop = x$result$finished,
+                 event = "evaluate",
+              category = "evaluation",
+                 start = x$result$started,
+                  stop = x$result$finished,
       memory_rss_start = structure(NA_real_, class = "object_size"),
        memory_rss_stop = structure(NA_real_, class = "object_size")
     )
@@ -136,6 +136,7 @@ journal.Future <- function(x, ...) {
     ## Class attributes are lost when subsetting a data frame
     classes <- lapply(data, FUN = function(x) class(x))
     data <- data[order(data$at), ]
+    rownames(data) <- NULL
     for (kk in seq_along(data)) {
       class(data[[kk]]) <- classes[[kk]]
     }
@@ -319,7 +320,27 @@ print.FutureJournalSummary <- function(x, ...) {
 }
 
 
-makeFutureJournal <- function(x, event = "create", category = "other", parent = NA_character_, start = stop, stop = Sys.time(), memory_rss_start = structure(NA_real_, class = "object_size"), memory_rss_stop = structure(NA_real_, class = "object_size")) {
+memory_rss <- local({
+  ps_handle <- NULL
+  
+  function() {
+    if (getOption("future.journal.memory", FALSE)) {
+      if (is.null(ps_handle)) {
+        if (!requireNamespace("ps", quietly = TRUE)) {
+          stop("Package 'ps' is not installed")
+        }
+        ps_handle <<- ps::ps_handle()
+      }
+      value <- ps::ps_memory_info(ps_handle)[["rss"]]
+    } else {
+      value <- NA_real_
+    }
+    structure(value, class = "object_size")
+  }
+})
+
+
+makeFutureJournal <- function(x, event = "create", category = "other", parent = NA_character_, start = stop, stop = Sys.time(), memory_rss_start = memory_rss(), memory_rss_stop = structure(NA_real_, class = "object_size")) {
   stop_if_not(
     inherits(x, "Future"),
     is.null(x$.journal),
@@ -369,7 +390,7 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time(), memor
 }
 
 
-appendToFutureJournal <- function(x, event, category = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), memory_rss_start = structure(NA_real_, class = "object_size"), memory_rss_stop = structure(NA_real_, class = "object_size"), skip = TRUE) {
+appendToFutureJournal <- function(x, event, category = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), memory_rss_start = memory_rss(), memory_rss_stop = structure(NA_real_, class = "object_size"), skip = TRUE) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
@@ -385,6 +406,10 @@ appendToFutureJournal <- function(x, event, category = "other", parent = NA_char
     length(memory_rss_start) == 1L, is.numeric(memory_rss_start),
     length(memory_rss_stop) == 1L, is.numeric(memory_rss_stop)
   )
+
+  if (missing(memory_rss_stop) && !missing(stop)) {
+    memory_rss_stop <- memory_rss()
+  }
 
   data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop, memory_rss_start = memory_rss_start, memory_rss_stop = memory_rss_stop)
   x$.journal <- rbind(x$.journal, data)
