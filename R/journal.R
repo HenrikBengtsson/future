@@ -21,9 +21,13 @@
 #'  5.           `at` (difftime)         - the time when the event started
 #'                                         relative to first event
 #'  6.     `duration` (difftime)         - the duration of the event
-#'  7. `future_label` (character string) - the label of the future 
-#'  8.  `future_uuid` (factor)           - the UUID of the future
-#'  9. `session_uuid` (factor)           - the UUID of the R session where the
+#'  7. `memory_start` (numeric)          - the memory consumption at the beginning
+#'                                         of the event
+#'  8.  `memory_stop` (numeric)          - the memory consumption at the end of
+#'                                         the event
+#'  9. `future_label` (character string) - the label of the future 
+#' 10.  `future_uuid` (factor)           - the UUID of the future
+#' 11. `session_uuid` (factor)           - the UUID of the R session where the
 #'                                         event took place
 #'
 #' The common events are:
@@ -82,10 +86,12 @@ journal.Future <- function(x, ...) {
   if (!is.element("evaluate", data$event) && !is.null(x$result)) {
     stop_if_not(is.character(session_uuid))
     x <- appendToFutureJournal(x,
-         event = "evaluate",
-      category = "evaluation",
-         start = x$result$started,
-          stop = x$result$finished
+             event = "evaluate",
+          category = "evaluation",
+             start = x$result$started,
+              stop = x$result$finished,
+      memory_start = structure(NA_real_, class = "object_size"),
+       memory_stop = structure(NA_real_, class = "object_size")
     )
     data <- x$.journal
     stop_if_not(length(x$result$session_uuid) == 1L, is.character(x$result$session_uuid))
@@ -126,7 +132,14 @@ journal.Future <- function(x, ...) {
   data$category <- factor(data$category, levels = levels)
 
   ## Sort by relative start time
-  if (nrow(data) > 1L) data <- data[order(data$at), ]
+  if (nrow(data) > 1L) {
+    ## Class attributes are lost when subsetting a data frame
+    classes <- lapply(data, FUN = function(x) class(x))
+    data <- data[order(data$at), ]
+    for (kk in seq_along(data)) {
+      class(data[[kk]]) <- classes[[kk]]
+    }
+  }
 
   data
 }
@@ -249,9 +262,49 @@ summary.FutureJournal <- function(object, ...) {
   stats[["evaluate_ratio"]] <- as.numeric(stats[["evaluate"]]) / as.numeric(stats[["duration"]])
   stats[["overhead_ratio"]] <- as.numeric(stats[["overhead"]]) / as.numeric(stats[["duration"]])
 
+
+  ## -------------------------------------------------------
+  ## 3. Summarize memory use
+  ## -------------------------------------------------------
+  ## (a) memory use when the first event starts
+  t_begin <- subset(dt_top, event == "create")[["memory_start"]]
+  ## (b) memory use when 'gather' finishes
+  t_end <- subset(dt_top, event == "gather")[["memory_stop"]]
+  ## (c) memory change (per future)
+  t_delta <- t_end - t_begin
+  ## (d) total memory change
+  t_delta <- t_delta[!is.na(t_delta)]
+
+  if (length(t_delta) > 0) {
+    t_total <- sum(t_delta, na.rm = FALSE)
+  } else {
+    t_total <- NA_real_
+  }
+
+  ## (e) build table
+  t <- NULL
+  if (length(uuids) > 1L) {
+    if (length(t_delta) > 0) {
+      t <- c(t,    min =    min(t_delta, na.rm = FALSE))
+      t <- c(t,   mean =   mean(t_delta, na.rm = FALSE))
+      t <- c(t, median = median(t_delta, na.rm = FALSE))
+      t <- c(t,    max =    max(t_delta, na.rm = FALSE))
+    } else {
+      t <- c(t, min = NA_real_, mean = NA_real_, median = NA_real_, max = NA_real_)
+    }
+  }
+
+  t <- c(t, total = t_total)
+  t <- structure(t, class = "object_size")
+  mem_stats <- data.frame(memory_change = t)
+  stats[["memory"]] <- mem_stats
+
+  ## -------------------------------------------------------
+  ## 4. Wrap up
+  ## -------------------------------------------------------
   stats[["summary"]] <- rownames(stats)
   rownames(stats) <- NULL
-  stats <- stats[, c("summary", "evaluate", "evaluate_ratio", "overhead", "overhead_ratio", "duration", "walltime")]
+  stats <- stats[, c("summary", "evaluate", "evaluate_ratio", "overhead", "overhead_ratio", "duration", "walltime", "memory")]
 
   attr(stats, "nbr_of_futures") <- length(uuids)
   class(stats) <- c("FutureJournalSummary", class(stats))
@@ -266,7 +319,7 @@ print.FutureJournalSummary <- function(x, ...) {
 }
 
 
-makeFutureJournal <- function(x, event = "create", category = "other", parent = NA_character_, start = stop, stop = Sys.time()) {
+makeFutureJournal <- function(x, event = "create", category = "other", parent = NA_character_, start = stop, stop = Sys.time(), memory_start = structure(NA_real_, class = "object_size"), memory_stop = structure(NA_real_, class = "object_size")) {
   stop_if_not(
     inherits(x, "Future"),
     is.null(x$.journal),
@@ -274,16 +327,18 @@ makeFutureJournal <- function(x, event = "create", category = "other", parent = 
     length(category) == 1L, is.character(category), !is.na(event),
     length(parent) == 1L, is.character(parent),
     length(start) == 1L, inherits(start, "POSIXct"),
-    length(stop) == 1L, inherits(stop, "POSIXct")
+    length(stop) == 1L, inherits(stop, "POSIXct"),
+    length(memory_start) == 1L, is.numeric(memory_start),
+    length(memory_stop) == 1L, is.numeric(memory_stop)
   )
 
-  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop)
+  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop, memory_start = memory_start, memory_stop = memory_stop)
   class(data) <- c("FutureJournal", class(data))
   x$.journal <- data
   invisible(x)
 }
 
-updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time()) {
+updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time(), memory_start = NULL, memory_stop = NULL) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
@@ -291,7 +346,9 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time()) {
     inherits(x, "Future"),
     length(event) == 1L, is.character(event), !is.na(event),
     is.null(start) || (length(start) == 1L && inherits(start, "POSIXct")),
-    is.null(stop) || (length(stop) == 1L && inherits(stop, "POSIXct"))
+    is.null(stop) || (length(stop) == 1L && inherits(stop, "POSIXct")),
+    is.null(memory_start) || length(memory_start) == 1L, is.numeric(memory_start),
+    is.null(memory_stop) || length(memory_stop) == 1L, is.numeric(memory_stop)
   )
 
   data <- x$.journal
@@ -303,6 +360,8 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time()) {
   entry <- data[row, ]
   if (!is.null(start)) entry$start <- start
   if (!is.null(stop)) entry$stop <- stop
+  if (!is.null(memory_start)) entry$memory_start <- memory_start
+  if (!is.null(memory_stop)) entry$memory_stop <- memory_stop
   data[row, ] <- entry
   stop_if_not(inherits(data, "FutureJournal"))
   x$.journal <- data
@@ -310,7 +369,7 @@ updateFutureJournal <- function(x, event, start = NULL, stop = Sys.time()) {
 }
 
 
-appendToFutureJournal <- function(x, event, category = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), skip = TRUE) {
+appendToFutureJournal <- function(x, event, category = "other", parent = NA_character_, start = Sys.time(), stop = as.POSIXct(NA_real_), memory_start = structure(NA_real_, class = "object_size"), memory_stop = structure(NA_real_, class = "object_size"), skip = TRUE) {
   ## Nothing to do?
   if (!inherits(x$.journal, "FutureJournal")) return(x)
 
@@ -322,10 +381,12 @@ appendToFutureJournal <- function(x, event, category = "other", parent = NA_char
     length(category) == 1L, is.character(category), !is.na(event),
     length(parent) == 1L, is.character(parent),
     length(start) == 1L, inherits(start, "POSIXct"),
-    length(stop) == 1L, inherits(stop, "POSIXct")
+    length(stop) == 1L, inherits(stop, "POSIXct"),
+    length(memory_start) == 1L, is.numeric(memory_start),
+    length(memory_stop) == 1L, is.numeric(memory_stop)
   )
 
-  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop)
+  data <- data.frame(event = event, category = category, parent = parent, start = start, stop = stop, memory_start = memory_start, memory_stop = memory_stop)
   x$.journal <- rbind(x$.journal, data)
   invisible(x)
 }
