@@ -8,7 +8,10 @@ ClusterRegistry <- local({
 
     if (is.null(workers)) {
     } else if (is.numeric(workers)) {
+      ## Preserve class attributes, especially "AsIs"
+      clazz <- class(workers)
       workers <- as.integer(workers)
+      class(workers) <- clazz
       stop_if_not(length(workers) == 1, is.finite(workers))
     } else if (is.character(workers)) {
       stop_if_not(length(workers) >= 1, !anyNA(workers))
