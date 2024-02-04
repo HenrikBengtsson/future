@@ -851,12 +851,14 @@ getExpression.Future <- local({
 
 globals <- function(future, ...) UseMethod("globals")
 
+#' @exportS3Method
 globals.Future <- function(future, ...) {
   future[["globals"]]
 }
 
 packages <- function(future, ...) UseMethod("packages")
 
+#' @exportS3Method
 packages.Future <- function(future, ...) {
   future[["packages"]]
 }
