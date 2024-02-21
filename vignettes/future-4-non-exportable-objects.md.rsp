@@ -48,7 +48,7 @@ The culprit here is that the connection uses a so called _external pointer_:
 ```r
 str(con)
 ## Classes 'file', 'connection'  atomic [1:1] 3
-##   ..- attr(*, "conn_id")=<externalptr> 
+##   ..- attr(*, "conn_id")=<externalptr>
 ```
 
 which is bound to the main R process and makes no sense to the worker.  Ideally, the R process of the worker would detect this and produce an informative error message, but as seen here, that does not always occur.
@@ -176,7 +176,7 @@ plan(multisession)
 x <- rnorm(10)
 n %<-% my_length(x)
 n
-#> Error in .Call("_code_1748ff617940b9_my_length", x, PACKAGE = "code_1748ff617940b9") : 
+#> Error in .Call("_code_1748ff617940b9_my_length", x, PACKAGE = "code_1748ff617940b9") :
 #>   "_code_1748ff617940b9_my_length" not available for .Call() for package "code_1748ff617940b9"
 ```
 
@@ -220,7 +220,7 @@ library(future)
 plan(cluster, workers = 1L)
 f <- future(sum_1_to_n(10, 0))
 v <- value(f)
-## Error in .Primitive(".C")(<pointer: (nil)>, n = as.integer(n), x = as.double(x)) : 
+## Error in .Primitive(".C")(<pointer: (nil)>, n = as.integer(n), x = as.double(x)) :
 ##   NULL value passed as symbol address
 ```
 
@@ -266,7 +266,7 @@ f <- future({
   stats::predict(model, test_input)
 }, seed = TRUE)
 pred <- value(f)
-## Error in do.call(object$predict, args) : 
+## Error in do.call(object$predict, args) :
 ##   'what' must be a function or character string
 ```
 
@@ -411,7 +411,7 @@ library(reticulate)
 os <- import("os")
 pwd %<-% os$getcwd()
 pwd
-## Error in eval(quote(os$getcwd()), new.env()) : 
+## Error in eval(quote(os$getcwd()), new.env()) :
 ##   attempt to apply non-function
 ```
 
@@ -433,7 +433,7 @@ twice(1.2)
 ## [1] 2.4
 y %<-% twice(1.2)
 y
-## Error in unserialize(node$con) : 
+## Error in unserialize(node$con) :
 ##   Failed to retrieve the value of MultisessionFuture from cluster node #1
 ##   (on 'localhost').  The reason reported was 'error reading from connection'
 ```
@@ -531,7 +531,7 @@ file <- system.file("misc", "exDIF.csv", package = "utils")
 data <- spark_read_csv(sc, "exDIF", file)
 d %<-% dim(data)
 d
-## Error in unserialize(node$con) : 
+## Error in unserialize(node$con) :
 ##   Failed to retrieve the value of MultisessionFuture (<none>) from cluster
 ## SOCKnode #1 (PID 29864 on localhost 'localhost'). The reason reported was
 ## 'unknown input format'. Post-mortem diagnostic: A process with this PID
@@ -565,7 +565,7 @@ file <- system.file("ex/elev.tif", package = "terra")
 r <- rast(file)
 dr %<-% dim(r)
 dr
-## Error in .External(list(name = "CppMethod__invoke_notvoid", address = <pointer: (nil)>,  : 
+## Error in .External(list(name = "CppMethod__invoke_notvoid", address = <pointer: (nil)>,  :
 ##  NULL value passed as symbol address
 ```
 
@@ -585,7 +585,7 @@ dr %<-% dim(data)
 ## 'SpatRaster') used in the future expression
 ```
 
-Functions `wrap()` and `vect()` of the **terra** package can be used as workaround to marshal and unmarshal non-exportable **terra** objects, e.g.
+Functions `wrap()` and `unwrap()` of the **terra** package can be used as workaround to marshal and unmarshal non-exportable **terra** objects, e.g.
 
 ```r
 library(future)
@@ -606,11 +606,11 @@ and
 ```r
 file <- system.file("ex/elev.tif", package = "terra")
 r <- rast(file)
-.r <- wrap(v)
-dr %<-% { r <- vect(.r); dim(r) }
+.r <- wrap(r)
+dr %<-% { r <- rast(.r); dim(r) }
 rm(.r) ## not needed anymore
 dr
-[1] 12  6
+[1] 90 95  1
 ```
 
 For more details, see `help("wrap", package = "terra")`.
@@ -626,7 +626,7 @@ udmodel <- udpipe_download_model(language = "dutch")
 udmodel <- udpipe_load_model(file = udmodel$file_model)
 x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
 x
-## Error in udp_tokenise_tag_parse(object$model, x, doc_id, tokenizer, tagger,  : 
+## Error in udp_tokenise_tag_parse(object$model, x, doc_id, tokenizer, tagger,  :
 ##   external pointer is not valid
 ```
 
@@ -734,7 +734,7 @@ Possible actions:
 2: normal R exit
 3: exit R without saving workspace
 4: exit R saving workspace
-Selection: 
+Selection:
 ```
 
 This is a very harsh way of telling us that we cannot export all types
@@ -938,16 +938,16 @@ code <- "
 data {
   int<lower=0> N;
   real y[N];
-} 
+}
 
 parameters {
   real mu;
-} 
+}
 
 model {
   target += normal_lpdf(mu | 0, 10);
   target += normal_lpdf(y  | mu, 1);
-} 
+}
 "
 
 y <- rnorm(20)
