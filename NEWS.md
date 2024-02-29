@@ -12,7 +12,7 @@
 
  * Now `plan(multisession, workers = I(n))`, and same for `cluster`,
    preserves the "AsIs" class attribute on the `workers` argument so
-   that it propagated to `parallelly::makeClusterWorkers()`.
+   that it is propagated to `parallelly::makeClusterWorkers()`.
 
 
 # Version 1.33.1 [2023-12-21]
