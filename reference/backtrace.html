@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1-9004</span>
       </span>
     </div>
 
@@ -202,69 +202,71 @@
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> tryCatch(withCallingHandlers({</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> base::tryCatch(base::withCallingHandlers({</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpVnGYLM/callr-fun-127f263888f8c"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/henrik/RtmpVnGYLM/callr-res-127f2648bed1f5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::saveRDS(base::do.call(base::do.call, base::c(base::readRDS("/tmp/henrik/RtmpUoau9e/callr-fun-38663920af51d4"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/henrik/RtmpUoau9e/callr-res-38663927f63559", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         compress = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stdout())</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stderr())</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::flush(base::stdout())</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::flush(base::stderr())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     invisible()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::invisible()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, error = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- as.environment("tools:callr")$`__callr_data__`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- base::as.environment("tools:callr")$`__callr_data__`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         err &lt;- callr_data$err</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (FALSE) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Traceback", .traceback(4), envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             dump.frames("__callr_dump__")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::assign(".Traceback", base::.traceback(4), envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             utils::dump.frames("__callr_dump__")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             rm("__callr_dump__", envir = .GlobalEnv)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::rm("__callr_dump__", envir = .GlobalEnv)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e &lt;- err$process_call(e)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error("error in callr subprocess")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- c("callr_remote_error", class(e2))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         class &lt;- base::class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- base::c("callr_remote_error", class(e2))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- which(e2$trace$scope == "global")[1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- base::which(e2$trace$scope == "global")[1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!base::is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpVnGYLM/callr-res-127f2648bed1f5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::saveRDS(base::list("error", e2, e), file = base::paste0("/tmp/henrik/RtmpUoau9e/callr-res-38663927f63559", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- as.environment("tools:callr")$`__callr_data__`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- base::as.environment("tools:callr")$`__callr_data__`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         err &lt;- callr_data$err</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (FALSE) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Traceback", .traceback(4), envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             dump.frames("__callr_dump__")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::assign(".Traceback", base::.traceback(4), envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             utils::dump.frames("__callr_dump__")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             rm("__callr_dump__", envir = .GlobalEnv)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::rm("__callr_dump__", envir = .GlobalEnv)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e &lt;- err$process_call(e)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error("error in callr subprocess")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- c("callr_remote_error", class(e2))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         class &lt;- base::class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- base::c("callr_remote_error", class(e2))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- which(e2$trace$scope == "global")[1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- base::which(e2$trace$scope == "global")[1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!base::is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpVnGYLM/callr-res-127f2648bed1f5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::saveRDS(base::list("error", e2, e), file = base::paste0("/tmp/henrik/RtmpUoau9e/callr-res-38663927f63559", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, callr_message = function(e) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     try(signalCondition(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::try(base::signalCondition(e))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }), error = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     if (FALSE) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         try(stop(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::try(base::stop(e))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         invisible()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::invisible()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
@@ -272,7 +274,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     else {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         invisible()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::invisible()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -296,73 +298,75 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> doTryCatch(return(expr), name, parentenv, handler)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> withCallingHandlers({</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> base::withCallingHandlers({</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpVnGYLM/callr-fun-127f263888f8c"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/henrik/RtmpVnGYLM/callr-res-127f2648bed1f5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::saveRDS(base::do.call(base::do.call, base::c(base::readRDS("/tmp/henrik/RtmpUoau9e/callr-fun-38663920af51d4"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         quote = TRUE), file = "/tmp/henrik/RtmpUoau9e/callr-res-38663927f63559", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         compress = FALSE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stdout())</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     flush(stderr())</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::flush(base::stdout())</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::flush(base::stderr())</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     invisible()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::invisible()</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, error = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- as.environment("tools:callr")$`__callr_data__`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- base::as.environment("tools:callr")$`__callr_data__`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         err &lt;- callr_data$err</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (FALSE) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Traceback", .traceback(4), envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             dump.frames("__callr_dump__")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::assign(".Traceback", base::.traceback(4), envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             utils::dump.frames("__callr_dump__")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             rm("__callr_dump__", envir = .GlobalEnv)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::rm("__callr_dump__", envir = .GlobalEnv)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e &lt;- err$process_call(e)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error("error in callr subprocess")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- c("callr_remote_error", class(e2))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         class &lt;- base::class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- base::c("callr_remote_error", class(e2))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- which(e2$trace$scope == "global")[1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- base::which(e2$trace$scope == "global")[1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!base::is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpVnGYLM/callr-res-127f2648bed1f5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::saveRDS(base::list("error", e2, e), file = base::paste0("/tmp/henrik/RtmpUoau9e/callr-res-38663927f63559", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, interrupt = function(e) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- as.environment("tools:callr")$`__callr_data__`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         callr_data &lt;- base::as.environment("tools:callr")$`__callr_data__`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         err &lt;- callr_data$err</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         if (FALSE) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Traceback", .traceback(4), envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             dump.frames("__callr_dump__")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::assign(".Traceback", base::.traceback(4), envir = callr_data)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             utils::dump.frames("__callr_dump__")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::assign(".Last.dump", .GlobalEnv$`__callr_dump__`, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 envir = callr_data)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             rm("__callr_dump__", envir = .GlobalEnv)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             base::rm("__callr_dump__", envir = .GlobalEnv)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e &lt;- err$process_call(e)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$new_error("error in callr subprocess")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- c("callr_remote_error", class(e2))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         class &lt;- base::class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         class(e2) &lt;- base::c("callr_remote_error", class(e2))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         e2 &lt;- err$add_trace_back(e2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- which(e2$trace$scope == "global")[1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!is.na(cut)) {</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         cut &lt;- base::which(e2$trace$scope == "global")[1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         if (!base::is.na(cut)) {</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             e2$trace &lt;- e2$trace[-(1:cut), ]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         }</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         saveRDS(list("error", e2, e), file = paste0("/tmp/henrik/RtmpVnGYLM/callr-res-127f2648bed1f5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         base::saveRDS(base::list("error", e2, e), file = base::paste0("/tmp/henrik/RtmpUoau9e/callr-res-38663927f63559", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             ".error"))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     }</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> }, callr_message = function(e) {</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     try(signalCondition(e))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::try(base::signalCondition(e))</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> })</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> saveRDS(do.call(do.call, c(readRDS("/tmp/henrik/RtmpVnGYLM/callr-fun-127f263888f8c"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE), file = "/tmp/henrik/RtmpVnGYLM/callr-res-127f2648bed1f5", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> base::saveRDS(base::do.call(base::do.call, base::c(base::readRDS("/tmp/henrik/RtmpUoau9e/callr-fun-38663920af51d4"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE), file = "/tmp/henrik/RtmpUoau9e/callr-res-38663927f63559", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     compress = FALSE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> do.call(do.call, c(readRDS("/tmp/henrik/RtmpVnGYLM/callr-fun-127f263888f8c"), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> base::do.call(base::do.call, base::c(base::readRDS("/tmp/henrik/RtmpUoau9e/callr-fun-38663920af51d4"), </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     base::list(envir = .GlobalEnv, quote = TRUE)), envir = .GlobalEnv, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     quote = TRUE)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
@@ -378,9 +382,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     options(cli.num_colors = cli_colors, crayon.colors = cli_colors, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         pkgdown.internet = pkgdown_internet)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown::build_site(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> }), base::quote(list(pkg = list(package = "future", version = "1.33.1", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/henrik/RtmpVnGYLM/future", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     dst_path = "/tmp/henrik/RtmpVnGYLM/future/docs", install_metadata = FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> }), base::quote(list(pkg = list(package = "future", version = "1.33.1-9004", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/henrik/RtmpUoau9e/future", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     dst_path = "/tmp/henrik/RtmpUoau9e/future/docs", install_metadata = FALSE, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     desc = &lt;environment&gt;, meta = list(url = "https://future.futureverse.org", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         home = list(links = list(list(text = "Roadmap/Milestones", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             href = "https://github.com/HenrikBengtsson/future/milestones"), </span>
@@ -2609,9 +2613,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>     options(cli.num_colors = cli_colors, crayon.colors = cli_colors, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         pkgdown.internet = pkgdown_internet)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     pkgdown::build_site(...)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> })(pkg = base::quote(list(package = "future", version = "1.33.1", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/henrik/RtmpVnGYLM/future", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     dst_path = "/tmp/henrik/RtmpVnGYLM/future/docs", install_metadata = FALSE, </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> })(pkg = base::quote(list(package = "future", version = "1.33.1-9004", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     lang = "en", src_path = "/tmp/henrik/RtmpUoau9e/future", </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     dst_path = "/tmp/henrik/RtmpUoau9e/future/docs", install_metadata = FALSE, </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     desc = &lt;environment&gt;, meta = list(url = "https://future.futureverse.org", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         home = list(links = list(list(text = "Roadmap/Milestones", </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             href = "https://github.com/HenrikBengtsson/future/milestones"), </span>
