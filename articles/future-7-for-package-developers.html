@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1-9007</span>
       </span>
     </div>
 
@@ -322,6 +322,20 @@ cumbersome. Instead, it is neater to use:</p>
 <code>plan(sequential)</code>.</p>
 </div>
 <div class="section level2">
+<h2 id="avoid-changing-the-future-options">Avoid changing the future options<a class="anchor" aria-label="anchor" href="#avoid-changing-the-future-options"></a>
+</h2>
+<p>Just like for other R options, you must not change any of the R
+<code>future.*</code> options. Only the end-user should set these.</p>
+<p>If you find yourself having to tweak one of the options, make sure to
+undo your changes immediately afterward. For example, if you want to
+bump up the <code>future.globals.maxSize</code> limit when creating a
+future, use something like the following inside your function:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">oopts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="fl">1.0</span> <span class="op">*</span> <span class="fl">1e9</span><span class="op">)</span>  <span class="co">## 1.0 GB</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">oopts</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span> <span class="va">expr</span> <span class="op">}</span><span class="op">)</span>  <span class="co">## Launch a future with large objects</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="writing-examples">Writing examples<a class="anchor" aria-label="anchor" href="#writing-examples"></a>
 </h2>
 <p>If your example sets the future strategy at the beginning, make sure
@@ -331,7 +345,7 @@ previous one will be cleaned up. This is particularly important for
 multisession and cluster futures where <code>plan(sequential)</code>
 will shut down the underlying PSOCK clusters.</p>
 <p>For instance, here is an example:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Run the analysis in parallel on the local computer</span></span>
 <span><span class="fu">future</span><span class="fu">::</span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="st">"multisession"</span><span class="op">)</span></span>
 <span></span>
@@ -343,16 +357,16 @@ will shut down the underlying PSOCK clusters.</p>
 <code>R CMD check --as-cran</code>, or <code>R CMD check</code> with
 environment variable <code>_R_CHECK_CONNECTIONS_LEFT_OPEN_=true</code>
 set, will produce an error on</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="sc">$</span> R CMD check <span class="sc">--</span>as<span class="sc">-</span>cran mypkg_1.<span class="fl">0.</span>tar.gz</span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>...</span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="sc">*</span> checking examples ... ERROR</span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a>Running examples <span class="cf">in</span> <span class="st">'analyze-Ex.R'</span> failed</span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>...</span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cleanEx</span>()</span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>Error<span class="sc">:</span> connections left open<span class="sc">:</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a>      <span class="er">&lt;</span><span class="sc">-</span>localhost<span class="sc">:</span><span class="dv">37400</span> (sockconn)</span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>      <span class="ot">&lt;-</span>localhost<span class="sc">:</span><span class="dv">37400</span> (sockconn)</span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>Execution halted</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="sc">$</span> R CMD check <span class="sc">--</span>as<span class="sc">-</span>cran mypkg_1.<span class="fl">0.</span>tar.gz</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a>...</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="sc">*</span> checking examples ... ERROR</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>Running examples <span class="cf">in</span> <span class="st">'analyze-Ex.R'</span> failed</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>...</span>
+<span id="cb12-6"><a href="#cb12-6" tabindex="-1"></a><span class="sc">&gt;</span> <span class="fu">cleanEx</span>()</span>
+<span id="cb12-7"><a href="#cb12-7" tabindex="-1"></a>Error<span class="sc">:</span> connections left open<span class="sc">:</span></span>
+<span id="cb12-8"><a href="#cb12-8" tabindex="-1"></a>      <span class="er">&lt;</span><span class="sc">-</span>localhost<span class="sc">:</span><span class="dv">37400</span> (sockconn)</span>
+<span id="cb12-9"><a href="#cb12-9" tabindex="-1"></a>      <span class="ot">&lt;-</span>localhost<span class="sc">:</span><span class="dv">37400</span> (sockconn)</span>
+<span id="cb12-10"><a href="#cb12-10" tabindex="-1"></a>Execution halted</span></code></pre></div>
 <p>If you for some reason do not like to display reset of the future
 strategy in the help documentation, but you still want it run, wrap the
 statement in an Rd <code>\dontshow{}</code> statement.</p>
@@ -363,22 +377,22 @@ statement in an Rd <code>\dontshow{}</code> statement.</p>
 <p>If you want to make sure your code works when running sequentially as
 well as when running in parallel, it is often good enough to have
 package tests that run the code with:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">multisession</span><span class="op">)</span></span></code></pre></div>
 <p>If the code works with this setup, you can be sure that all global
 variables are properly identified and exported to the workers and that
 the required packages are loaded on the workers.</p>
 <p>Always make sure to shut down your parallel ‘multisession’ workers at
 the end of each package test by calling:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 <p>If not all of your tests are written this way, you can set
 environment variable <code>R_FUTURE_PLAN=multisession</code> before you
 call <code>R CMD check</code>. This will make the default future
 strategy to become ‘multisession’ instead of ‘sequential’. For
 example,</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="ex">$</span> export R_FUTURE_PLAN=multisession</span>
-<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="ex">$</span> R CMD check <span class="at">--as-cran</span> mypkg_1.0.tar.gz</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="ex">$</span> export R_FUTURE_PLAN=multisession</span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a><span class="ex">$</span> R CMD check <span class="at">--as-cran</span> mypkg_1.0.tar.gz</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="making-sure-to-stop-parallel-workers">Making sure to stop parallel workers<a class="anchor" aria-label="anchor" href="#making-sure-to-stop-parallel-workers"></a>
@@ -406,15 +420,15 @@ Found the following files/directories:
 worker processes, which almost always are parallel
 <code>cluster</code>:s that we forgot to stop at the end. To stop
 ‘multisession’ workers, call:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">sequential</span><span class="op">)</span></span></code></pre></div>
 <p>at the end of your examples(*), vignettes, and package tests.</p>
 <p>If you create the <code>cluster</code> manually using</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu">parallelly</span><span class="fu">::</span><span class="fu"><a href="https://parallelly.futureverse.org/reference/makeClusterPSOCK.html" class="external-link">makeClusterPSOCK</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span></code></pre></div>
 <p>make sure to stop such clusters at the end using</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">parallel</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></code></pre></div>
 <p>(*) Currently, examples are excluded from the detritus checks. This
 was the validated with R-devel revision 82991 (2022-10-02).</p>

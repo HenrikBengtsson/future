@@ -28,7 +28,7 @@ further notice."><meta property="og:image" content="https://future.futureverse.o
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1-9006</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1-9007</span>
       </span>
     </div>
 
@@ -173,6 +173,21 @@ further notice.</em></p>
     </div>
 
 
+    <div id="packages-must-not-change-future-options">
+    <h2>Packages must not change future options</h2>
+    
+
+
+<p>Just like for other R options, as a package developer you must <em>not</em> change
+any of the below <code>future.*</code> options.  Only the end-user should set these.
+If you find yourself having to tweak one of the options, make sure to
+undo your changes immediately afterward.  For example, if you want to
+bump up the <code>future.globals.maxSize</code> limit when creating a future,
+use something like the following inside your function:</p>
+<p></p><div class="sourceCode r"><pre><code><span><span class="va">oopts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>future.globals.maxSize <span class="op">=</span> <span class="fl">1.0</span> <span class="op">*</span> <span class="fl">1e9</span><span class="op">)</span>  <span class="co">## 1.0 GB</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span><span class="va">oopts</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/future.html">future</a></span><span class="op">(</span><span class="op">{</span> <span class="va">expr</span> <span class="op">}</span><span class="op">)</span>  <span class="co">## Launch a future with large objects</span></span></code></pre><p></p></div>
+    </div>
     <div id="settings-moved-to-the-parallelly-package">
     <h2>Settings moved to the 'parallelly' package</h2>
     
