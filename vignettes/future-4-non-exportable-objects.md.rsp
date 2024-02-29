@@ -158,22 +158,36 @@ library(future)
 plan(multisession)
 
 data <- as_arrow_table(iris)
-
 f <- future(dim(data))
 v <- value(f)
 #> Error: Invalid <Table>, external pointer to null
 ```
 
-This error takes place on the parallel worker.  We can use:
+This error takes place on the parallel worker.  We could set
+`options(future.globals.onReference = "error")` to have **future**
+detect the problem before it sends the object over to the parallel
+worker.
+
+That said, the **arrow** package provides low-level functions
+`write_to_raw()` and `read_ipc_stream()` that can used to marshal and
+unmarshal **arrow** objects. For example,
 
 ```r
-options(future.globals.onReference = "error")
-f <- future(dim(data))
-#> Error: Detected a non-exportable reference ('externalptr') in one of the globals
-#> ('data' of class 'Table') used in the future expression
-```
+library(arrow)
 
-to help us detect the problem sooner.
+library(future)
+plan(multisession)
+
+data <- as_arrow_table(iris)
+.data <- write_to_raw(data)
+f <- future({
+  data <- read_ipc_stream(.data)
+  dim(data)
+})
+v <- value(f)
+print(v)
+#> [1] 150   5
+```
 
 
 #### Package: cpp11
