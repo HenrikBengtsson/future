@@ -149,8 +149,8 @@ Below are some examples of packages who produce non-exportable objects with _ext
 #### Package: arrow
 
 The **[arrow]** package provides efficient in-memory storage of arrays
-and tables.  How, these objects cannot be transferred as-is to a
-parallel workers.
+and tables.  However, these objects cannot be transferred as-is to a
+parallel worker.
 
 ```r
 library(arrow)
