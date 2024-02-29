@@ -7,6 +7,21 @@
 #'  change in future versions of the package.  Please use with care until
 #'  further notice._
 #'
+#' @section Packages must not change future options:
+#'
+#' Just like for other R options, as a package developer you must _not_ change
+#' any of the below `future.*` options.  Only the end-user should set these.
+#' If you find yourself having to tweak one of the options, make sure to
+#' undo your changes immediately afterward.  For example, if you want to
+#' bump up the `future.globals.maxSize` limit when creating a future,
+#' use something like the following inside your function:
+#'
+#' ```r
+#' oopts <- options(future.globals.maxSize = 1.0 * 1e9)  ## 1.0 GB
+#' on.exit(options(oopts))
+#' f <- future({ expr })  ## Launch a future with large objects
+#' ```
+#'
 #' @section Settings moved to the 'parallelly' package:
 #' Several functions have been moved to the \pkg{parallelly} package:
 #'

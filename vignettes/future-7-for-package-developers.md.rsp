@@ -127,6 +127,23 @@ my_fcn <- function(x) {
 and let the user control whether or not they want to parallelize via `plan()`, e.g. `plan(multisession)` and `plan(sequential)`.
 
 
+## Avoid changing the future options
+
+Just like for other R options, you must not change any of the R
+`future.*` options.  Only the end-user should set these.
+
+If you find yourself having to tweak one of the options, make sure to
+undo your changes immediately afterward.  For example, if you want to
+bump up the `future.globals.maxSize` limit when creating a future,
+use something like the following inside your function:
+
+```r
+oopts <- options(future.globals.maxSize = 1.0 * 1e9)  ## 1.0 GB
+on.exit(options(oopts))
+f <- future({ expr })  ## Launch a future with large objects
+```
+
+
 ## Writing examples
 
 If your example sets the future strategy at the beginning, make sure to reset the future strategy to `plan(sequential)` at the end of the example.  The reason for this is that when switching plan, the previous one will be cleaned up.  This is particularly important for multisession and cluster futures where `plan(sequential)` will shut down the underlying PSOCK clusters.

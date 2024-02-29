@@ -14,6 +14,10 @@
    preserves the "AsIs" class attribute on the `workers` argument so
    that it is propagated to `parallelly::makeClusterWorkers()`.
 
+## Documentation
+
+ * Clarify that packages must not change any of the `future.*` options.
+ 
 
 # Version 1.33.1 [2023-12-21]
 
