@@ -43,6 +43,8 @@ jobs:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       ## Test in other locale (optional)
       LANGUAGE: ${{ matrix.config.language }}
+      ## R (>= 4.4.0) Note, no trailing underscore (sic!)
+      _R_COMPARE_LANG_OBJECTS: eqonly
       ## R CMD check
       _R_CHECK_CRAN_INCOMING_: false
       _R_CHECK_LENGTH_1_CONDITION_: true
