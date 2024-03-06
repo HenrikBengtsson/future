@@ -736,7 +736,7 @@ train <- xgb.DMatrix(agaricus.train$data, label = agaricus.train$label)
 class(train)
 ## [1] "xgb.DMatrix"
 
-d <- dim(dtrain)
+d <- dim(train)
 d
 ## [1] 6513  126
 ```
@@ -744,7 +744,7 @@ d
 works just fine but if we attempt to pass on the 'xgb.DMatrix' object `train` to an external worker, we silently get a incorrect value:
 
 ```r
-f <- future(dim(dtrain))
+f <- future(dim(train))
 d <- value(f)
 d
 ## NULL
