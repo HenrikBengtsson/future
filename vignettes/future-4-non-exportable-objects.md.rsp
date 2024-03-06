@@ -391,35 +391,16 @@ library(polars)
 data <- as_polars_df(data.frame(x = 1:3))
 f <- future(dim(data), packages = "polars")
 v <- value(f)
-#> Error in unserialize(node$con) : 
-#>  MultisessionFuture (<none>) failed to receive message results from
-#> cluster RichSOCKnode #1 (PID 3748944 on localhost 'localhost'). The
-#> reason reported was 'error reading from connection'. Post-mortem
-#> diagnostic: No process exists with this PID, i.e. the localhost worker
-#> is no longer alive. Detected a non-exportable reference ('externalptr'
-#> of class 'RPolarsDataFrame') in one of the globals ('data' of class
-#> 'RPolarsDataFrame') used in the future expression. The total size of
-#> the 1 globals exported is 464 bytes. There is one global: 'data' (464
-#> bytes of class 'externalptr')
+#> Error: Execution halted with the following contexts
+#>    0: In R: in `$.RPolarsDataFrame`
+#>    0: During function call [workRSOCK()]
+#>    1: This Polars object is not valid. Execute `rm(<object>)` to remove
+#>       the object or restart the R session.
 ```
 
 This is because the external pointer in the `RPolarsDataFrame` object
-is erased when transferred to another process, which the **polars**
-package does not anticipate.  The **future** package can help protect
-against this:
-
-```r
-library(future)
-plan(multisession)
-options(future.globals.onReference = "error")
-
-library(polars)
-data <- as_polars_df(data.frame(x = 1:3))
-f <- future(dim(data), packages = "polars")
-#> Error: Detected a non-exportable reference ('externalptr' of class
-#> 'RPolarsDataFrame') in one of the globals ('data' of class 'RPolarsDataFrame')
-#> used in the future expression
-```
+is erased when transferred to another process, which **polars** (>= 0.15.0)
+detects and gives an informative error message about.
 
 
 #### Package: raster
