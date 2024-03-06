@@ -180,9 +180,9 @@ library(future)
 plan(multisession)
 
 data <- as_arrow_table(iris)
-.data <- write_to_raw(data)
+.data <- write_to_raw(data)      ## marshal
 f <- future({
-  data <- read_ipc_stream(.data)
+  data <- read_ipc_stream(.data) ## unmarshal
   dim(data)
 })
 v <- value(f)
@@ -332,9 +332,9 @@ Functions `serialize_model()` and `unserialize_model()` of the
 non-exportable **keras** objects, e.g.
 
 ```r
-.model <- serialize_model(model)
+.model <- serialize_model(model)      ## marshal
 f <- future({
-  model <- unserialize_model(.model)
+  model <- unserialize_model(.model)  ## unmarshal
   stats::predict(model, test_input)
 }, seed = TRUE)
 rm(.model) ## not needed anymore
@@ -668,8 +668,11 @@ library(terra)
 
 file <- system.file("ex/lux.shp", package = "terra")
 v <- vect(file)
-.v <- wrap(v)
-dv %<-% { v <- unwrap(.v); dim(v) }
+.v <- wrap(v)      ## marshal
+dv %<-% {
+  v <- unwrap(.v)  ## unmarshal
+  dim(v)
+}
 rm(.v) ## not needed anymore
 dv
 [1] 12  6
@@ -680,8 +683,11 @@ and
 ```r
 file <- system.file("ex/elev.tif", package = "terra")
 r <- rast(file)
-.r <- wrap(r)
-dr %<-% { r <- unwrap(.r); dim(r) }
+.r <- wrap(r)      ## marshal
+dr %<-% {
+  r <- unwrap(.r)  ## unmarshal
+  dim(r)
+}
 rm(.r) ## not needed anymore
 dr
 [1] 90 95  1
@@ -827,9 +833,12 @@ doc <- xmlParse(system.file("exampleData", "tagnames.xml", package = "XML"))
 a <- getNodeSet(doc, "/doc//a[@status]")[[1]]
 
 ## Marshall the non-exportable XMLInternalElementNode object
-a_m <- xmlSerializeHook(a)
+.a <- xmlSerializeHook(a)      ## marshal
 
-f <- future({ a <- xmlDeserializeHook(a_m); xmlGetAttr(a, "status") })
+f <- future({
+  a <- xmlDeserializeHook(.a)  ## unmarshal
+  xmlGetAttr(a, "status")
+})
 value(f)
 ## [1] "xyz"
 ```
@@ -882,12 +891,12 @@ One workaround when dealing with non-exportable objects is to look for ways to e
 
 ```r
 ## Encode the 'xml_document' object 'doc' as a 'raw' object
-doc_raw <- xml_serialize(doc, connection = NULL)
+.doc <- xml_serialize(doc, connection = NULL)  ## marshal
 
 f <- future({
   ## In the future, reconstruct the 'xml_document' object
   ## from the 'raw' object
-  doc <- xml_unserialize(doc_raw)
+  doc <- xml_unserialize(.doc)                 ## unmarshal
 
   ## Continue as usual
   children <- xml_children(doc)
