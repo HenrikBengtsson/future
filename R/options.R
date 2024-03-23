@@ -128,9 +128,9 @@
 #' environment variable \env{R_FUTURE_*} _when the \pkg{future} package is
 #' loaded_. This means that those environment variables must be set before
 #' the \pkg{future} package is loaded in order to have an effect.
-#' For example, if `R_FUTURE_RNG_ONMISUSE = "ignore"`, then option
+#' For example, if `R_FUTURE_RNG_ONMISUSE="ignore"`, then option
 #' \option{future.rng.onMisuse} is set to `"ignore"` (character string).
-#' Similarly, if `R_FUTURE_GLOBALS_MAXSIZE = "50000000"`, then option
+#' Similarly, if `R_FUTURE_GLOBALS_MAXSIZE="50000000"`, then option
 #' \option{future.globals.maxSize} is set to `50000000` (numeric).
 #'
 #' @examples
