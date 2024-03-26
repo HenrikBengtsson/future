@@ -32,7 +32,7 @@ a function be included or not?}
 
 \item{persistent}{If TRUE, non-existing globals (= identified in expression but not found in memory) are always silently ignored and assumed to be existing in the evaluation environment.  If FALSE, non-existing globals are by default ignore, but may also trigger an informative error if option \option{future.globals.onMissing} in \code{"error"} (should only be used for troubleshooting).}
 
-\item{maxSize}{The maximum allowed total size (in bytes) of globals - for
+\item{maxSize}{The maximum allowed total size (in bytes) of globals---for
 the purpose of preventing too large exports / transfers happening by
 mistake.  If the total size of the global objects are greater than this
 limit, an informative error message is produced. If

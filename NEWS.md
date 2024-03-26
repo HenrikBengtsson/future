@@ -1,3 +1,24 @@
+# Version 1.33.2 [2024-03-23]
+
+## Performance
+
+ * Decreased the overhead of launching futures that occurred for future
+   strategies that used a complex `workers` argument. For example,
+   `plan(cluster, workers = cl)`, where `cl` is a `cluster` object,
+   would come with an extra overhead, because the `workers` object was
+   unnecessarily transferred to the cluster nodes.
+
+## Miscellaneous
+
+ * Now `plan(multisession, workers = I(n))`, and same for `cluster`,
+   preserves the "AsIs" class attribute on the `workers` argument so
+   that it is propagated to `parallelly::makeClusterWorkers()`.
+
+## Documentation
+
+ * Clarify that packages must not change any of the `future.*` options.
+ 
+
 # Version 1.33.1 [2023-12-21]
 
 ## Bug Fixes
@@ -6,7 +27,7 @@
    circumstances call `local()` on the global search path rather than
    `base::local()` as intended.  For example, if a package that
    exports its own `local()` function was attached, then that would be
-   called instead, often leading to a hard to troubleshoot error.
+   called instead, often leading to a hard-to-troubleshoot error.
  
 
 # Version 1.33.0 [2023-07-01]

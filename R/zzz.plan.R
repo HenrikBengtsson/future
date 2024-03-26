@@ -5,21 +5,21 @@
 #' e.g. sequentially or in parallel.
 #'
 #' @param strategy The evaluation function (or name of it) to use
-#' for resolving a future.  If NULL, then the current strategy is returned.
+#' for resolving a future. If `NULL`, then the current strategy is returned.
 #'
 #' @param \dots Additional arguments overriding the default arguments
 #' of the evaluation function.  Which additional arguments are supported
 #' depends on what evaluation function is used, e.g. several support
-#' argument `workers` but not all.  For details, see the individual
+#' argument `workers` but not all. For details, see the individual
 #' functions of which some are linked to below.
 #"
-#' @param substitute If TRUE, the `strategy` expression is
+#' @param substitute If `TRUE`, the `strategy` expression is
 #' `substitute()`:d, otherwise not.
 #'
 #' @param .call (internal) Used for recording the call to this function.
 #'
 #' @param .skip (internal) If `TRUE`, then attempts to set a strategy
-#' that is the same as what is currently in use, will skipped.
+#' that is the same as what is currently in use, will be skipped.
 #'
 #' @param .cleanup (internal) Used to stop implicitly started clusters.
 #'
@@ -81,10 +81,10 @@
 #'
 #' @section For package developers:
 #' Please refrain from modifying the future strategy inside your packages /
-#' functions, i.e. do not call `plan()` in your code.  Instead, leave
-#' the control on what backend to use to the end user.  This idea is part of
-#' the core philosophy of the future framework - as a developer you can never
-#' know what future backends the user have access to.  Moreover, by not making
+#' functions, i.e. do not call `plan()` in your code. Instead, leave
+#' the control on what backend to use to the end user. This idea is part of
+#' the core philosophy of the future framework---as a developer you can never
+#' know what future backends the user have access to. Moreover, by not making
 #' any assumptions about what backends are available, your code will also work
 #' automatically with any new backends developed after you wrote your code.
 #'
@@ -107,17 +107,17 @@
 #' others' toes._
 #'
 #' @section Using plan() in scripts and vignettes:
-#' When writing scripts or vignettes that uses futures, try to place any
-#' call to `plan()` as far up (as early on) in the code as possible.  
+#' When writing scripts or vignettes that use futures, try to place any
+#' call to `plan()` as far up (i.e. as early on) in the code as possible.  
 #' This will help users to quickly identify where the future plan is set up
 #' and allow them to modify it to their computational resources.
 #' Even better is to leave it to the user to set the `plan()` prior to
 #' `source()`:ing the script or running the vignette.
 #' If a \file{\link{.future.R}} exists in the current directory and / or in
 #' the user's home directory, it is sourced when the \pkg{future} package is
-#' _loaded_.  Because of this, the \file{.future.R} file provides a
+#' _loaded_. Because of this, the \file{.future.R} file provides a
 #' convenient place for users to set the `plan()`.
-#' This behavior can be controlled via an \R option - see
+#' This behavior can be controlled via an \R option---see
 #' \link[future:future.options]{future options} for more details.
 #'
 #' @importFrom utils capture.output

@@ -736,9 +736,15 @@ getExpression.Future <- local({
   tmpl_enter_plan <- bquote_compile({
     ## covr: skip=2
     .(enter)
+    
+    ## Record the original future strategy set on this worker
+    ...future.strategy.old <- future::plan("list")
+    
     ## Prevent 'future.plan' / R_FUTURE_PLAN settings from being nested
     options(future.plan = NULL)
     Sys.unsetenv("R_FUTURE_PLAN")
+
+    ## Use the next-level-down ("popped") future strategy
     future::plan(.(strategiesR), .cleanup = FALSE, .init = FALSE)
   })
 
@@ -752,7 +758,8 @@ getExpression.Future <- local({
       Sys.unsetenv("R_FUTURE_PLAN")
     else
       Sys.setenv(R_FUTURE_PLAN = .(oenv))
-    future::plan(.(strategies), .cleanup = FALSE, .init = FALSE)
+    ## Revert to the original future strategy
+    future::plan(...future.strategy.old, .cleanup = FALSE, .init = FALSE)
     ## FIXME: If we move .(exit) here, then 'R CMD check' on MS Windows
     ## complain about leftover RscriptXXXXX temporary files. /2022-07-21
     ## .(exit)
@@ -797,9 +804,12 @@ getExpression.Future <- local({
     ## Pass down the default or the remain set of future strategies?
     strategiesR <- strategies[-1]
     ##  mdebugf("Number of remaining strategies: %d", length(strategiesR))
-  
-    ## Identify packages needed by the futures
-    if (length(strategiesR) > 0L) {
+
+    ## Use default future strategy + identify packages needed by the futures
+    if (length(strategiesR) == 0L) {
+      if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
+      strategiesR <- "default"
+    } else {
       ## Identify package namespaces needed for strategies
       pkgsS <- lapply(strategiesR, FUN = environment)
       pkgsS <- lapply(pkgsS, FUN = environmentName)
@@ -808,8 +818,6 @@ getExpression.Future <- local({
       pkgsS <- intersect(pkgsS, loadedNamespaces())
       if (debug) mdebugf("Packages needed by future strategies (n = %d): %s", length(pkgsS), paste(sQuote(pkgsS), collapse = ", "))
       pkgs <- unique(c(pkgs, pkgsS))
-    } else {
-      if (debug) mdebug("Packages needed by future strategies (n = 0): <none>")
     }
   
     ## Make sure to load and attach all package needed  
@@ -822,10 +830,6 @@ getExpression.Future <- local({
       enter <- bquote_apply(tmpl_enter_packages)
     }
   
-    ## Make sure to set all nested future strategies needed
-    ## Use default future strategy?
-    if (length(strategiesR) == 0L) strategiesR <- "default"
-
     ## Pass down future strategies
     enter <- bquote_apply(tmpl_enter_plan)
     exit <- bquote_apply(tmpl_exit_plan)
@@ -847,12 +851,14 @@ getExpression.Future <- local({
 
 globals <- function(future, ...) UseMethod("globals")
 
+#' @exportS3Method
 globals.Future <- function(future, ...) {
   future[["globals"]]
 }
 
 packages <- function(future, ...) UseMethod("packages")
 
+#' @exportS3Method
 packages.Future <- function(future, ...) {
   future[["packages"]]
 }

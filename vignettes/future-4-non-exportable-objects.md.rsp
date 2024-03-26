@@ -48,7 +48,7 @@ The culprit here is that the connection uses a so called _external pointer_:
 ```r
 str(con)
 ## Classes 'file', 'connection'  atomic [1:1] 3
-##   ..- attr(*, "conn_id")=<externalptr> 
+##   ..- attr(*, "conn_id")=<externalptr>
 ```
 
 which is bound to the main R process and makes no sense to the worker.  Ideally, the R process of the worker would detect this and produce an informative error message, but as seen here, that does not always occur.
@@ -75,7 +75,9 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
 
   Package         | Examples of non-exportable types or classes
   :---------------|:-------------------------------------------
+  **arrow**       | Table (`externalptr`)
   **base**        | connection (`externalptr`)
+  **bigmemory**   | big.matrix (`externalptr`)
   **cpp11**       | E.g. functions created by `cpp_source()`
   **DBI**         | DBIConnection (`externalptr`)
   **inline**      | CFunc (`externalptr` of class DLLHandle)
@@ -83,6 +85,7 @@ _If you identify other cases, please consider [reporting](https://github.com/Hen
   **magick**      | magick-image (`externalptr`)
   **ncdf4**       | ncdf4 (custom reference; _non-detectable_)
   **parallel**    | cluster and cluster nodes (`connection`)
+  **polars**      | RPolarsDataFrame (`externalptr`)
   **raster**      | RasterLayer (`externalptr`; _not all_)
   **Rcpp**        | NativeSymbol (`externalptr`)
   **reticulate**  | python.builtin.function (`externalptr`), python.builtin.module (`externalptr`)
@@ -144,6 +147,122 @@ However, there are objects with _external pointer_:s that can be exported, e.g. 
 Below are some examples of packages who produce non-exportable objects with _external pointer_:s.
 
 
+#### Package: arrow
+
+The **[arrow]** package provides efficient in-memory storage of arrays
+and tables.  However, these objects cannot be transferred as-is to a
+parallel worker.
+
+```r
+library(arrow)
+
+library(future)
+plan(multisession)
+
+data <- as_arrow_table(iris)
+f <- future(dim(data))
+v <- value(f)
+#> Error: Invalid <Table>, external pointer to null
+```
+
+This error takes place on the parallel worker.  We could set
+`options(future.globals.onReference = "error")` to have **future**
+detect the problem before it sends the object over to the parallel
+worker.
+
+That said, the **arrow** package provides low-level functions
+`write_to_raw()` and `read_ipc_stream()` that can used to marshal and
+unmarshal **arrow** objects. For example,
+
+```r
+library(arrow)
+
+library(future)
+plan(multisession)
+
+data <- as_arrow_table(iris)
+.data <- write_to_raw(data)      ## marshal
+f <- future({
+  data <- read_ipc_stream(.data) ## unmarshal
+  dim(data)
+})
+v <- value(f)
+print(v)
+#> [1] 150   5
+```
+
+
+#### Package: bigmemory
+
+The **[bigmemory]** package provides mechanisms for working with very
+large matrices that can be updated in-place, which helps save
+memory. For example,
+
+```r
+library(bigmemory)
+
+g <- function(x) {
+  x[1,1] <- 42L
+  x
+}
+
+x <- big.matrix(nrow = 3, ncol = 2, type = "integer")
+print(x[1,1])
+#> [1] NA
+
+void <- g(x)
+print(x[1,1])
+#> [1] 42
+```
+
+Note how `x` was updated in-place. This is achived by `big.matrix`
+objects holds an external pointer to where the matrix data is stored;
+
+```r
+str(x)
+#> Formal class 'big.matrix' [package "bigmemory"] with 1 slot
+#>   ..@ address:<externalptr> 
+```
+
+If we would try to use `x` in a parallel worker, then the parallel
+worker crashes due to a bug in **bigmemory**, e.g.
+
+```r
+library(bigmemory)
+
+library(future)
+plan(multisession, workers = 2)
+
+x <- big.matrix(nrow = 3, ncol = 2, type = "integer")
+f <- future(dim(x), packages = "bigmemory")
+value(f)
+#> Error in unserialize(node$con) : 
+#>   MultisessionFuture (<none>) failed to receive message results from
+#> cluster RichSOCKnode #1 (PID 1746676 on localhost 'localhost'). The
+#> reason reported was 'error reading from connection'. Post-mortem
+#> diagnostic: No process exists with this PID, i.e. the localhost worker
+#> is no longer alive. Detected a non-exportable reference
+#> ('externalptr') in one of the globals ('x' of class 'big.matrix') used
+#> in the future expression. The total size of the 1 globals exported is
+#> 696 bytes. There is one global: 'x' (696 bytes of class 'S4')
+```
+
+We can protected against this setting:
+
+```r
+options(future.globals.onReference = "error")
+```
+
+which gives:
+
+```r
+f <- future(dim(x), packages = "bigmemory")
+#> Error: Detected a non-exportable reference ('externalptr') in one
+#> of the globals ('x' of class 'big.matrix') used in the future
+#> expression
+```
+
+
 #### Package: cpp11
 
 Another example is **[cpp11]**, which allows us to easily create R functions that are implemented in C++, e.g.
@@ -176,7 +295,7 @@ plan(multisession)
 x <- rnorm(10)
 n %<-% my_length(x)
 n
-#> Error in .Call("_code_1748ff617940b9_my_length", x, PACKAGE = "code_1748ff617940b9") : 
+#> Error in .Call("_code_1748ff617940b9_my_length", x, PACKAGE = "code_1748ff617940b9") :
 #>   "_code_1748ff617940b9_my_length" not available for .Call() for package "code_1748ff617940b9"
 ```
 
@@ -220,7 +339,7 @@ library(future)
 plan(cluster, workers = 1L)
 f <- future(sum_1_to_n(10, 0))
 v <- value(f)
-## Error in .Primitive(".C")(<pointer: (nil)>, n = as.integer(n), x = as.double(x)) : 
+## Error in .Primitive(".C")(<pointer: (nil)>, n = as.integer(n), x = as.double(x)) :
 ##   NULL value passed as symbol address
 ```
 
@@ -266,7 +385,7 @@ f <- future({
   stats::predict(model, test_input)
 }, seed = TRUE)
 pred <- value(f)
-## Error in do.call(object$predict, args) : 
+## Error in do.call(object$predict, args) :
 ##   'what' must be a function or character string
 ```
 
@@ -285,9 +404,9 @@ Functions `serialize_model()` and `unserialize_model()` of the
 non-exportable **keras** objects, e.g.
 
 ```r
-.model <- serialize_model(model)
+.model <- serialize_model(model)      ## marshal
 f <- future({
-  model <- unserialize_model(.model)
+  model <- unserialize_model(.model)  ## unmarshal
   stats::predict(model, test_input)
 }, seed = TRUE)
 rm(.model) ## not needed anymore
@@ -327,6 +446,33 @@ we'll see that this is caught even before attempting to run this in parallel;
 ## 'magick-image') in one of the globals ('frink' of class 'magick-image')
 ## used in the future expression
 ```
+
+
+#### Package: polars
+
+The **[polars]** package provides objects for performant processing on
+tabular data.  However, these objects are tied to the R process that
+created them. If we attempt to use them in a parallel worker, we end
+up crashing the parallel worker:
+
+```r
+library(future)
+plan(multisession)
+
+library(polars)
+data <- as_polars_df(data.frame(x = 1:3))
+f <- future(dim(data), packages = "polars")
+v <- value(f)
+#> Error: Execution halted with the following contexts
+#>    0: In R: in `$.RPolarsDataFrame`
+#>    0: During function call [workRSOCK()]
+#>    1: This Polars object is not valid. Execute `rm(<object>)` to remove
+#>       the object or restart the R session.
+```
+
+This is because the external pointer in the `RPolarsDataFrame` object
+is erased when transferred to another process, which **polars** (>= 0.15.0)
+detects and gives an informative error message about.
 
 
 #### Package: raster
@@ -411,7 +557,7 @@ library(reticulate)
 os <- import("os")
 pwd %<-% os$getcwd()
 pwd
-## Error in eval(quote(os$getcwd()), new.env()) : 
+## Error in eval(quote(os$getcwd()), new.env()) :
 ##   attempt to apply non-function
 ```
 
@@ -433,7 +579,7 @@ twice(1.2)
 ## [1] 2.4
 y %<-% twice(1.2)
 y
-## Error in unserialize(node$con) : 
+## Error in unserialize(node$con) :
 ##   Failed to retrieve the value of MultisessionFuture from cluster node #1
 ##   (on 'localhost').  The reason reported was 'error reading from connection'
 ```
@@ -531,7 +677,7 @@ file <- system.file("misc", "exDIF.csv", package = "utils")
 data <- spark_read_csv(sc, "exDIF", file)
 d %<-% dim(data)
 d
-## Error in unserialize(node$con) : 
+## Error in unserialize(node$con) :
 ##   Failed to retrieve the value of MultisessionFuture (<none>) from cluster
 ## SOCKnode #1 (PID 29864 on localhost 'localhost'). The reason reported was
 ## 'unknown input format'. Post-mortem diagnostic: A process with this PID
@@ -565,7 +711,7 @@ file <- system.file("ex/elev.tif", package = "terra")
 r <- rast(file)
 dr %<-% dim(r)
 dr
-## Error in .External(list(name = "CppMethod__invoke_notvoid", address = <pointer: (nil)>,  : 
+## Error in .External(list(name = "CppMethod__invoke_notvoid", address = <pointer: (nil)>,  :
 ##  NULL value passed as symbol address
 ```
 
@@ -585,7 +731,7 @@ dr %<-% dim(data)
 ## 'SpatRaster') used in the future expression
 ```
 
-Functions `wrap()` and `vect()` of the **terra** package can be used as workaround to marshal and unmarshal non-exportable **terra** objects, e.g.
+Functions `wrap()` and `unwrap()` of the **terra** package can be used as workaround to marshal and unmarshal non-exportable **terra** objects, e.g.
 
 ```r
 library(future)
@@ -594,8 +740,11 @@ library(terra)
 
 file <- system.file("ex/lux.shp", package = "terra")
 v <- vect(file)
-.v <- wrap(v)
-dv %<-% { v <- vect(.v); dim(v) }
+.v <- wrap(v)      ## marshal
+dv %<-% {
+  v <- unwrap(.v)  ## unmarshal
+  dim(v)
+}
 rm(.v) ## not needed anymore
 dv
 [1] 12  6
@@ -606,11 +755,14 @@ and
 ```r
 file <- system.file("ex/elev.tif", package = "terra")
 r <- rast(file)
-.r <- wrap(v)
-dr %<-% { r <- vect(.r); dim(r) }
+.r <- wrap(r)      ## marshal
+dr %<-% {
+  r <- unwrap(.r)  ## unmarshal
+  dim(r)
+}
 rm(.r) ## not needed anymore
 dr
-[1] 12  6
+[1] 90 95  1
 ```
 
 For more details, see `help("wrap", package = "terra")`.
@@ -626,7 +778,7 @@ udmodel <- udpipe_download_model(language = "dutch")
 udmodel <- udpipe_load_model(file = udmodel$file_model)
 x %<-% udpipe_annotate(udmodel, x = "Ik ging op reis en ik nam mee.")
 x
-## Error in udp_tokenise_tag_parse(object$model, x, doc_id, tokenizer, tagger,  : 
+## Error in udp_tokenise_tag_parse(object$model, x, doc_id, tokenizer, tagger,  :
 ##   external pointer is not valid
 ```
 
@@ -656,7 +808,7 @@ train <- xgb.DMatrix(agaricus.train$data, label = agaricus.train$label)
 class(train)
 ## [1] "xgb.DMatrix"
 
-d <- dim(dtrain)
+d <- dim(train)
 d
 ## [1] 6513  126
 ```
@@ -664,7 +816,7 @@ d
 works just fine but if we attempt to pass on the 'xgb.DMatrix' object `train` to an external worker, we silently get a incorrect value:
 
 ```r
-f <- future(dim(dtrain))
+f <- future(dim(train))
 d <- value(f)
 d
 ## NULL
@@ -734,7 +886,7 @@ Possible actions:
 2: normal R exit
 3: exit R without saving workspace
 4: exit R saving workspace
-Selection: 
+Selection:
 ```
 
 This is a very harsh way of telling us that we cannot export all types
@@ -753,9 +905,12 @@ doc <- xmlParse(system.file("exampleData", "tagnames.xml", package = "XML"))
 a <- getNodeSet(doc, "/doc//a[@status]")[[1]]
 
 ## Marshall the non-exportable XMLInternalElementNode object
-a_m <- xmlSerializeHook(a)
+.a <- xmlSerializeHook(a)      ## marshal
 
-f <- future({ a <- xmlDeserializeHook(a_m); xmlGetAttr(a, "status") })
+f <- future({
+  a <- xmlDeserializeHook(.a)  ## unmarshal
+  xmlGetAttr(a, "status")
+})
 value(f)
 ## [1] "xyz"
 ```
@@ -808,12 +963,12 @@ One workaround when dealing with non-exportable objects is to look for ways to e
 
 ```r
 ## Encode the 'xml_document' object 'doc' as a 'raw' object
-doc_raw <- xml_serialize(doc, connection = NULL)
+.doc <- xml_serialize(doc, connection = NULL)  ## marshal
 
 f <- future({
   ## In the future, reconstruct the 'xml_document' object
   ## from the 'raw' object
-  doc <- xml_unserialize(doc_raw)
+  doc <- xml_unserialize(.doc)                 ## unmarshal
 
   ## Continue as usual
   children <- xml_children(doc)
@@ -938,16 +1093,16 @@ code <- "
 data {
   int<lower=0> N;
   real y[N];
-} 
+}
 
 parameters {
   real mu;
-} 
+}
 
 model {
   target += normal_lpdf(mu | 0, 10);
   target += normal_lpdf(y  | mu, 1);
-} 
+}
 "
 
 y <- rnorm(20)
@@ -987,12 +1142,14 @@ str(e)
 
 
 [data.table]: https://cran.r-project.org/package=data.table
+[arrow]: https://cran.r-project.org/package=arrow
 [cpp11]: https://cran.r-project.org/package=cpp11
 [DBI]: https://cran.r-project.org/package=DBI
 [inline]: https://cran.r-project.org/package=inline
 [keras]: https://cran.r-project.org/package=DBI
 [magick]: https://cran.r-project.org/package=magick
 [ncdf4]: https://cran.r-project.org/package=ncdf4
+[polars]: https://rpolars.github.io/
 [raster]: https://cran.r-project.org/package=raster
 [Rcpp]: https://cran.r-project.org/package=Rcpp
 [reticulate]: https://cran.r-project.org/package=reticulate

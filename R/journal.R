@@ -14,34 +14,34 @@
 #' @return
 #' A data frame of class `FutureJournal` with columns:
 #'
-#'  1. `event` (character string) - type of event that took place
-#'  2. `category` (character string) - the category of the event
-#'  3. `parent` (character string) - (to be describe)
-#'  4. `start` (POSIXct) - the timestamp when the event started
-#'  5. `at` (difftime) - the time when the event started relative to
-#'     first event
-#'  6. `duration` (difftime) - the duration of the event
+#'  1.        `event` (factor)           - type of event that took place
+#'  2.     `category` (factor)           - the category of the event
+#'  3.       `parent` (character string) - (to be describe)
+#'  4.        `start` (POSIXct)          - the timestamp when the event started
+#'  5.           `at` (difftime)         - the time when the event started
+#'                                         relative to first event
+#'  6.     `duration` (difftime)         - the duration of the event
 #'  7. `future_label` (character string) - the label of the future 
-#'  8. `future_uuid` (character string) - the UUID of the future
-#'  9. `session_uuid` (character string) - the UUID of the R session
-#'     where the event took place
+#'  8.  `future_uuid` (factor)           - the UUID of the future
+#'  9. `session_uuid` (factor)           - the UUID of the R session where the
+#'                                         event took place
 #'
 #' The common events are:
 #'
-#'  * `create`   - the future was created (an `overhead`)
-#'  * `launch`   - the future was launched (an `overhead`)
+#'  *   `create` - the future was created (an `overhead`)
+#'  *   `launch` - the future was launched (an `overhead`)
 #'  * `evaluate` - the future was evaluated (an `evaluation`)
 #'  * `resolved` - the future was queried (may be occur multiple times)
 #'                 (an `overhead`)
-#'  * `gather`   - the results was retrieved (an `overhead`)
+#'  *   `gather` - the results was retrieved (an `overhead`)
 #'
 #' but others may be added by other Future classes.
 #'
-#' Common event categorys are:
+#' Common event categories are:
 #'
 #'  * `evaluation` - processing time is spent on evaluation
-#'  * `overhead`   - processing time is spent on orchestrating the future
-#'  * `waiting`    - processing time is spent on waiting to set up or
+#'  *   `overhead` - processing time is spent on orchestrating the future
+#'  *    `waiting` - processing time is spent on waiting to set up or
 #'                   querying the future
 #'
 #' but others may be added by other Future classes.
@@ -82,10 +82,10 @@ journal.Future <- function(x, ...) {
   if (!is.element("evaluate", data$event) && !is.null(x$result)) {
     stop_if_not(is.character(session_uuid))
     x <- appendToFutureJournal(x,
-      event = "evaluate",
-      category  = "evaluation",
-      start = x$result$started,
-      stop = x$result$finished
+         event = "evaluate",
+      category = "evaluation",
+         start = x$result$started,
+          stop = x$result$finished
     )
     data <- x$.journal
     stop_if_not(length(x$result$session_uuid) == 1L, is.character(x$result$session_uuid))
@@ -116,6 +116,14 @@ journal.Future <- function(x, ...) {
   other_levels <- sort(setdiff(data$event, known_levels))
   levels <- c(known_levels, other_levels)
   data$event <- factor(data$event, levels = levels)
+
+  ## Coerce 'category' to a factor
+  levels <- c("evaluation", "overhead", "waiting")
+  data$category <- factor(data$category, levels = levels)
+
+  ## Coerce 'category' to a factor
+  levels <- c("evaluation", "overhead", "waiting")
+  data$category <- factor(data$category, levels = levels)
 
   ## Sort by relative start time
   if (nrow(data) > 1L) data <- data[order(data$at), ]
