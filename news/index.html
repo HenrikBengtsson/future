@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.1-9010</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.2</span>
       </span>
     </div>
 
@@ -160,17 +160,17 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<h2 class="page-header" data-toc-text="1.33.2" id="version-1332">Version 1.33.2<a class="anchor" aria-label="anchor" href="#version-1332"></a></h2>
 <div class="section level3">
-<h3 id="performance-development-version">Performance<a class="anchor" aria-label="anchor" href="#performance-development-version"></a></h3>
+<h3 id="performance-1-33-2">Performance<a class="anchor" aria-label="anchor" href="#performance-1-33-2"></a></h3>
 <ul><li>Decreased the overhead of launching futures that occurred for future strategies that used a complex <code>workers</code> argument. For example, <code>plan(cluster, workers = cl)</code>, where <code>cl</code> is a <code>cluster</code> object, would come with an extra overhead, because the <code>workers</code> object was unnecessarily transferred to the cluster nodes.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="miscellaneous-development-version">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-development-version"></a></h3>
+<h3 id="miscellaneous-1-33-2">Miscellaneous<a class="anchor" aria-label="anchor" href="#miscellaneous-1-33-2"></a></h3>
 <ul><li>Now <code>plan(multisession, workers = I(n))</code>, and same for <code>cluster</code>, preserves the “AsIs” class attribute on the <code>workers</code> argument so that it is propagated to <code>parallelly::makeClusterWorkers()</code>.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="documentation-development-version">Documentation<a class="anchor" aria-label="anchor" href="#documentation-development-version"></a></h3>
+<h3 id="documentation-1-33-2">Documentation<a class="anchor" aria-label="anchor" href="#documentation-1-33-2"></a></h3>
 <ul><li>Clarify that packages must not change any of the <code>future.*</code> options.</li>
 </ul></div>
 </div>
