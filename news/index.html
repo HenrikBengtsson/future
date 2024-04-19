@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.2-9000</span>
       </span>
     </div>
 
@@ -99,6 +99,9 @@
       <a href="https://future.callr.futureverse.org" class="external-link">future.callr</a>
     </li>
     <li>
+      <a href="https://future.mirai.futureverse.org" class="external-link">future.mirai</a>
+    </li>
+    <li>
       <a href="https://future.tests.futureverse.org" class="external-link">future.tests</a>
     </li>
     <li>
@@ -118,9 +121,6 @@
     </li>
     <li>
       <a href="https://future.tools.futureverse.org" class="external-link">future.tools (experimental)</a>
-    </li>
-    <li>
-      <a href="https://future.mirai.futureverse.org" class="external-link">future.mirai (experimental)</a>
     </li>
     <li>
       <a href="https://future.mapreduce.futureverse.org" class="external-link">future.mapreduce (experimental)</a>
@@ -160,7 +160,11 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="1.33.2" id="version-1332">Version 1.33.2<a class="anchor" aria-label="anchor" href="#version-1332"></a></h2>
+<h2 class="page-header" data-toc-text="development version" id="version-development-version">Version (development version)<a class="anchor" aria-label="anchor" href="#version-development-version"></a></h2>
+<ul><li>…</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.33.2" id="version-1332">Version 1.33.2<small>2024-03-26</small><a class="anchor" aria-label="anchor" href="#version-1332"></a></h2>
 <div class="section level3">
 <h3 id="performance-1-33-2">Performance<a class="anchor" aria-label="anchor" href="#performance-1-33-2"></a></h3>
 <ul><li>Decreased the overhead of launching futures that occurred for future strategies that used a complex <code>workers</code> argument. For example, <code>plan(cluster, workers = cl)</code>, where <code>cl</code> is a <code>cluster</code> object, would come with an extra overhead, because the <code>workers</code> object was unnecessarily transferred to the cluster nodes.</li>
