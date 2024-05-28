@@ -280,8 +280,8 @@ resolved.ClusterFuture <- function(x, run = TRUE, timeout = NULL, ...) {
     isValid <- isConnectionValid(con)
     if (!isValid) {
       ex <- simpleError("Connection to the worker is corrupt")
-      msg <- post_mortem_cluster_failure(ex, when = "checking resolved from", node = node, future = future)
-      stop(FutureError(msg, future = future))
+      msg <- post_mortem_cluster_failure(ex, when = "checking resolved from", node = node, future = x)
+      stop(FutureError(msg, future = x))
     }
 
     if (is.null(timeout)) {

@@ -1,6 +1,11 @@
 # Version (development version)
 
- * ...
+## Bug Fixes
+
+ * `resolved()` for `ClusterFuture`:s would produce `Error:
+   'inherits(future, "Future")' is not TRUE` instead of an intended,
+   informative error message that the connection to the parallel
+   worker is broken.
 
 
 # Version 1.33.2 [2024-03-23]
