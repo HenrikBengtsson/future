@@ -1,5 +1,12 @@
 # Version (development version)
 
+## New Features
+
+ * Added support for backend maintainers to specify "cleanup" hook
+   functions on future strategies, which are called when switching
+   future plan. These hook functions are specified via the optional
+   `cleanup` attribute, cf. `attr(cluster, "cleanup")`.
+
 ## Bug Fixes
 
  * `resolved()` for `ClusterFuture`:s would produce `Error:

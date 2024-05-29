@@ -81,4 +81,7 @@ multisession <- function(..., workers = availableCores(), lazy = FALSE, rscript_
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
 attr(multisession, "init") <- TRUE
+attr(multisession, "cleanup") <- function() {
+  ClusterRegistry(action = "stop")
+}
 attr(multisession, "untweakable") <- c("persistent")

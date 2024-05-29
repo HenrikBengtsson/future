@@ -188,9 +188,9 @@ All of the above \R \option{future.*} options can be set by corresponding
 environment variable \env{R_FUTURE_*} \emph{when the \pkg{future} package is
 loaded}. This means that those environment variables must be set before
 the \pkg{future} package is loaded in order to have an effect.
-For example, if \code{R_FUTURE_RNG_ONMISUSE = "ignore"}, then option
+For example, if \code{R_FUTURE_RNG_ONMISUSE="ignore"}, then option
 \option{future.rng.onMisuse} is set to \code{"ignore"} (character string).
-Similarly, if \code{R_FUTURE_GLOBALS_MAXSIZE = "50000000"}, then option
+Similarly, if \code{R_FUTURE_GLOBALS_MAXSIZE="50000000"}, then option
 \option{future.globals.maxSize} is set to \code{50000000} (numeric).
 }
 

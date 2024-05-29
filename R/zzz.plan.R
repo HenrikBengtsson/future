@@ -177,7 +177,16 @@ plan <- local({
   })
 
   plan_cleanup <- function() {
-    ClusterRegistry(action = "stop")
+    evaluator <- stack[[1L]]
+    
+    cleanup <- attr(evaluator, "cleanup", exact = TRUE)
+    if (!is.null(cleanup)) {
+      if (is.function(cleanup)) {
+        cleanup()
+      } else {
+        stop(FutureError(sprintf("Unknown type of 'cleanup' attribute on current future strategy: %s", sQuote(paste(class(cleanup), collapse = ", ")))))
+      }
+    }
   }
 
   plan_init <- function() {
@@ -266,10 +275,10 @@ plan <- local({
     ## Warn about 'multicore' on certain systems
     warn_about_multicore(newStack)
 
-    stack <<- newStack
-
-    ## Stop any (implicitly started) clusters?
+    ## Stop/cleanup any previously registered backends?
     if (cleanup) plan_cleanup()
+
+    stack <<- newStack
 
     ## Initiate future workers?
     if (init) plan_init()
@@ -575,4 +584,3 @@ resetWorkers.multicore <- function(x, ...) {
   FutureRegistry(reg, action = "collect-all", earlySignal = FALSE)
   stop_if_not(usedCores() == 0L)
 }
-
