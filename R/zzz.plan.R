@@ -188,7 +188,7 @@ plan <- local({
       }
     } else {
       ## Backward compatibility for future (<= 1.33.2)
-      ClusterRegistry(action = "stop")
+      ## ClusterRegistry(action = "stop")
     }
   }
 
@@ -320,10 +320,10 @@ plan <- local({
       ## List stack of future strategies?
       return(stack)
     } else if (identical(strategy, "reset")) {
-      ## Reset stack of future strategies?
-      stack <<- defaultStack
       ## Stop any (implicitly started) clusters?
       if (.cleanup) plan_cleanup()
+      ## Reset stack of future strategies?
+      stack <<- defaultStack
       return(stack)
     } else if (identical(strategy, "pop")) {
       ## Pop strategy stack and return old stack
