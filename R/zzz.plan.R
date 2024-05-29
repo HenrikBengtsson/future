@@ -186,6 +186,9 @@ plan <- local({
       } else {
         stop(FutureError(sprintf("Unknown type of 'cleanup' attribute on current future strategy: %s", sQuote(paste(class(cleanup), collapse = ", ")))))
       }
+    } else {
+      ## Backward compatibility for future (<= 1.33.2)
+      ClusterRegistry(action = "stop")
     }
   }
 
