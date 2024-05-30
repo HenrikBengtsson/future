@@ -100,6 +100,10 @@ for (cores in 1:availCores) {
   ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
   ## stopifnot(inherits(res, "MyError"))    
 
+  ## Make sure to stop these cluster processes to avoid triggering
+  ## checking for detritus in the temp directory ... NOTE
+  ClusterRegistry(action = "stop")
+
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
