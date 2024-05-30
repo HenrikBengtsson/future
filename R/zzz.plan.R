@@ -190,7 +190,7 @@ plan <- local({
       ## Backward compatibility for future (<= 1.33.2)
       ## ClusterRegistry(action = "stop")
     }
-  }
+  } ## plan_cleanup()
 
   plan_init <- function() {
     evaluator <- stack[[1L]]
@@ -238,7 +238,7 @@ plan <- local({
                 paste(sQuote(class(evaluator)), collapse = ", "))
       }
     }
-  }
+  } ## plan_init()
 
 
   equal_strategy_stacks <- function(stack, other) {
@@ -295,7 +295,7 @@ plan <- local({
                 !is.na(nbrOfWorkers), nbrOfWorkers >= 1L)
 
     invisible(oldStack)
-  }
+  } ## plan_set()
 
 
   ## Main function
@@ -320,7 +320,7 @@ plan <- local({
       ## List stack of future strategies?
       return(stack)
     } else if (identical(strategy, "reset")) {
-      ## Stop any (implicitly started) clusters?
+      ## Stop/cleanup any previously registered backends?
       if (.cleanup) plan_cleanup()
       ## Reset stack of future strategies?
       stack <<- defaultStack

@@ -159,6 +159,7 @@ stopifnot(v == yTruth)
 
 message("*** multisession(..., workers = 1L) ... DONE")
 
+
 message("*** multisession(..., gc = TRUE) ...")
 plan(multisession, workers = 2L)
 
@@ -189,6 +190,11 @@ message("*** multisession(...) - stopping with plan() change ...")
   
 plan(multisession, workers = 2L)
 f <- future(1L)
+
+## Collect value, to speep up the stopping of the parallel workers,
+## and to make sure we're not leaving any stray processes behind.
+v <- value(f)
+
 cl <- ClusterRegistry("get")
 stopifnot(inherits(cl, "cluster"), length(cl) >= 1L)
 
