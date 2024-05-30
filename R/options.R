@@ -356,4 +356,7 @@ update_package_options <- function(debug = FALSE) {
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
+
+  ## future 1.34.0:
+  update_package_option("future.plan.cleanup.legacy", mode = "logical", debug = debug)
 }

@@ -188,7 +188,9 @@ plan <- local({
       }
     } else {
       ## Backward compatibility for future (<= 1.33.2)
-      ## ClusterRegistry(action = "stop")
+      if (getOption("future.plan.cleanup.legacy", FALSE)) {
+        ClusterRegistry(action = "stop")
+      }
     }
   } ## plan_cleanup()
 
