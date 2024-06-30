@@ -71,3 +71,4 @@ jobs:
           print(coverage)
           covr::codecov(coverage = coverage, token="${{secrets.CODECOV_TOKEN}}")
         shell: Rscript {0}
+
