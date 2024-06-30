@@ -18,7 +18,7 @@ url: https://<%= pkg %>.futureverse.org
 home:
   links:
   - text: Roadmap/Milestones
-    href: https://github.com/HenrikBengtsson/<%= pkg %>/milestones
+    href: https://github.com/<%= gsub("(^.*:|[.]git$)", "", subset(gert::git_remote_list(), name == "origin")$url) %>/milestones
   - text: The Futureverse Project
     href: https://www.futureverse.org/
   - text: Futureverse User Forum

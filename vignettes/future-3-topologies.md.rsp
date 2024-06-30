@@ -102,15 +102,15 @@ Although this does not give an error, we will find that the inner layer of futur
 Now, we could imagine that we process the outer layer with, say, two parallel futures, and then the inner layer with four parallel futures.  In that case, we would end up running on at most eight cores (= 2 * 4).  This can be achieved by forcing a fixed number of workers at each layer:
 
 ```r
-plan(list(tweak(multisession, workers = 2), tweak(multisession, workers = 4)))
+plan(list(tweak(multisession, workers = 2), tweak(multisession, workers = I(4))))
 ```
 
-When using this approach, there is a risk of setting up too many concurrent workers.  To make sure the setup respects `availableCores()`, use something like:
+When using this approach, there is a risk of setting up too many concurrent workers. Because Futureverse has a built-in protection, we need to declare nested workers using the As-Is `I(.)` function, which basically tells the parallel framework "trust us, we know what we are doing". To minimize the risk of mistakes and to make sure our setup respects `availableCores()`, use something like:
 
 ```r
 plan(list(
   tweak(multisession, workers = availableCores() %/% 4),
-  tweak(multisession, workers = 4)
+  tweak(multisession, workers = I(4))
 ))
 ```
 
@@ -134,7 +134,7 @@ One possible downside to the above setup is that we might not utilize all availa
 nodes <- rep(c("n1", "n2", "n3"), each = 8)
 plan(list(
   tweak(cluster, workers = nodes),
-  tweak(multisession, workers = 2)
+  tweak(multisession, workers = I(2))
 ))
 ```
 
@@ -229,7 +229,7 @@ tweaking the `multisession` plan by passing a function to `workers`;
 halfCores <- function() { max(1, round(0.5 * availableCores()))
 plan(list(
   tweak(cluster, workers = nodes),
-  tweak(multisession, workers = halfCores)
+  tweak(multisession, workers = I(halfCores))
 ))
 ```
 
@@ -250,7 +250,7 @@ customWorkers <- function() {
 }
 plan(list(
   tweak(cluster, workers = nodes),
-  tweak(multisession, workers = customWorkers)
+  tweak(multisession, workers = I(customWorkers))
 ))
 ```
 
