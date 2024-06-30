@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.2-9007</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.2-9008</span>
       </span>
     </div>
 
@@ -314,14 +314,18 @@ In that case, we would end up running on at most eight cores (= 2 * 4).
 This can be achieved by forcing a fixed number of workers at each
 layer:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>When using this approach, there is a risk of setting up too many
-concurrent workers. To make sure the setup respects
-<code><a href="../reference/re-exports.html">availableCores()</a></code>, use something like:</p>
+concurrent workers. Because Futureverse has a built-in protection, we
+need to declare nested workers using the As-Is <code>I(.)</code>
+function, which basically tells the parallel framework “trust us, we
+know what we are doing”. To minimize the risk of mistakes and to make
+sure our setup respects <code><a href="../reference/re-exports.html">availableCores()</a></code>, use something
+like:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="../reference/re-exports.html">availableCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span> <span class="fl">4</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>However, before using nested parallelization on a single machine,
 make sure it is actually more efficient than using parallelization in
@@ -351,7 +355,7 @@ setup:</p>
 <code class="sourceCode R"><span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="st">"n2"</span>, <span class="st">"n3"</span><span class="op">)</span>, each <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This will cause up to 24 (= 3*8) samples to be processed in parallel
 each processing two chromosomes at the same time.</p>
@@ -449,7 +453,7 @@ passing a function to <code>workers</code>;</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>halfCores <span class="ot">&lt;-</span> <span class="cf">function</span>() { <span class="fu">max</span>(<span class="dv">1</span>, <span class="fu">round</span>(<span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">availableCores</span>()))</span>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">plan</span>(<span class="fu">list</span>(</span>
 <span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a>  <span class="fu">tweak</span>(cluster, <span class="at">workers =</span> nodes),</span>
-<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">tweak</span>(multisession, <span class="at">workers =</span> halfCores)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>  <span class="fu">tweak</span>(multisession, <span class="at">workers =</span> <span class="fu">I</span>(halfCores))</span>
 <span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a>))</span></code></pre></div>
 <p>With this, each node will use at most 50% of the cores available. For
 instance, if <code>n1</code> and <code>n2</code> have eight cores, and
@@ -467,7 +471,7 @@ instance, if <code>n1</code> and <code>n2</code> have eight cores, and
 <span><span class="op">}</span></span>
 <span><span class="fu"><a href="../reference/plan.html">plan</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">cluster</span>, workers <span class="op">=</span> <span class="va">nodes</span><span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="va">customWorkers</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="../reference/tweak.html">tweak</a></span><span class="op">(</span><span class="va">multisession</span>, workers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I</a></span><span class="op">(</span><span class="va">customWorkers</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>In this case, node <code>n1</code> will always use two cores,
 <code>n2</code> three cores, and <code>n3</code> will respect what
