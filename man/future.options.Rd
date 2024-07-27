@@ -45,6 +45,8 @@
 \alias{R_FUTURE_OUTPUT_WINDOWS_REENCODE}
 \alias{future.journal}
 \alias{R_FUTURE_JOURNAL}
+\alias{R_FUTURE_GLOBALS_OBJECTSIZE_METHOD}
+\alias{future.globals.objectSize.method}
 \title{Options used for futures}
 \description{
 Below are the \R options and environment variables that are used by the

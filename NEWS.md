@@ -7,6 +7,12 @@
    future plan. These hook functions are specified via the optional
    `cleanup` attribute, cf. `attr(cluster, "cleanup")`.
 
+## Performance
+
+  * Size calculation of globals is now done using the much faster
+    `parallelly::serializedSize()`, if **parallelly** (>= 1.38.0) is
+    installed.
+
 ## Bug Fixes
 
  * `resolved()` for `ClusterFuture`:s would produce `Error:
