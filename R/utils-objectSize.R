@@ -1,18 +1,14 @@
 ## A *rough* estimate of size of an object + its environment.
 #' @keywords internal 
 #' @importFrom utils object.size
+#' @importFrom parallelly serializedSize
 objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.objectSize.enclosure", FALSE)) {
   # Nothing to do?
   if (isNamespace(x)) return(0)
   if (depth <= 0) return(0)
 
-  method <- getOption("future.globals.objectSize.method", "objectSize")
+  method <- getOption("future.globals.objectSize.method", "serializedSize")
   if (method == "serializedSize") {
-    ns <- getNamespace("parallelly")
-    if (!exists("serializedSize", envir = ns, inherits = FALSE)) {
-      stop("Option 'future.globals.objectSize.method' supports \"serializedSize\" only for parallelly (>= 1.38.0)")
-    }
-    serializedSize <- get("serializedSize", envir = ns, inherits = FALSE)
     size <- serializedSize(x)
     return(size)
   } else if (method != "objectSize") {
