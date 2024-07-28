@@ -10,8 +10,7 @@
 ## Performance
 
   * Size calculation of globals is now done using the much faster
-    `parallelly::serializedSize()`, if **parallelly** (>= 1.38.0) is
-    installed.
+    `parallelly::serializedSize()`.
 
 ## Bug Fixes
 
