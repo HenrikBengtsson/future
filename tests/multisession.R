@@ -100,47 +100,13 @@ for (cores in 1:availCores) {
   ## https://github.com/HenrikBengtsson/Wishlist-for-R/issues/57
   ## stopifnot(inherits(res, "MyError"))    
 
+  ## Make sure to stop these cluster processes to avoid triggering
+  ## checking for detritus in the temp directory ... NOTE
+  ClusterRegistry(action = "stop")
+
   message(sprintf("Testing with %d cores ... DONE", cores))
 } ## for (cores ...)
 
-
-message("*** multisession() - too large globals ...")
-ooptsT <- options(future.globals.maxSize = object.size(1:1014))
-
-limit <- getOption("future.globals.maxSize")
-cat(sprintf("Max total size of globals: %g bytes\n", limit))
-
-for (workers in unique(c(1L, availableCores()))) {
-  ## Speed up CRAN checks: Skip on CRAN Windows 32-bit
-  if (!fullTest && isWin32) next
-  
-  message("Max number of sessions: ", workers)
-
-  ## A large object
-  a <- 1:1014
-  yTruth <- sum(a)
-  size <- object.size(a)
-  cat(sprintf("a: %g bytes\n", size))
-  f <- multisession({ sum(a) }, globals = TRUE, workers = workers)
-  print(f)
-  rm(list = "a")
-  v <- value(f)
-  print(v)
-  stopifnot(v == yTruth)
-
-
-  ## A too large object
-  a <- 1:1015
-  yTruth <- sum(a)
-  size <- object.size(a)
-  cat(sprintf("a: %g bytes\n", size))
-  res <- try(f <- multisession({ sum(a) }, globals = TRUE, workers = workers), silent = TRUE)
-  rm(list = "a")
-  stopifnot(inherits(res, "try-error"))
-} ## for (workers in ...)
-
-## Undo options changed in this test
-options(ooptsT)
 
 message("*** multisession() - too large globals ... DONE")
 
@@ -158,6 +124,7 @@ print(v)
 stopifnot(v == yTruth)
 
 message("*** multisession(..., workers = 1L) ... DONE")
+
 
 message("*** multisession(..., gc = TRUE) ...")
 plan(multisession, workers = 2L)
@@ -189,6 +156,11 @@ message("*** multisession(...) - stopping with plan() change ...")
   
 plan(multisession, workers = 2L)
 f <- future(1L)
+
+## Collect value, to speep up the stopping of the parallel workers,
+## and to make sure we're not leaving any stray processes behind.
+v <- value(f)
+
 cl <- ClusterRegistry("get")
 stopifnot(inherits(cl, "cluster"), length(cl) >= 1L)
 

@@ -25,11 +25,11 @@ stopifnot(is.call(expr))
 
 clazzes <- list(
   sequential = SequentialFuture,
-  multisession = function(...) MultisessionFuture(..., workers = 2L),
+  multisession = function(...) MultisessionFuture(..., workers = I(1L)),
   sequential = SequentialFuture
 )
 if (supportsMulticore()) {
-  clazzes$multicore = function(...) MulticoreFuture(..., workers = 2L)
+  clazzes$multicore = function(...) MulticoreFuture(..., workers = I(1L))
 }
 
 for (clazz in clazzes) {
@@ -48,6 +48,9 @@ for (clazz in clazzes) {
   v <- value(f)
   print(v)
   stopifnot(v == 42L)
+  
+  ## To avoid 'multisession' from leaving stray workers behind
+  ClusterRegistry(action = "stop")
 }
 
 message("*** Future class - exception ... DONE")

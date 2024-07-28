@@ -1,6 +1,8 @@
 <%
-pkgs <- c("globals", "listenv", "parallelly", "future", "future.apply", "furrr", "future.tests", "future.callr", "future.batchtools", "doFuture", "progressr")
-pkgs_extra <- c("BiocParallel.FutureParam", "future.tools", "future.mirai", "future.mapreduce", "marshal")
+pkgs_mapreduce <- c("future.apply", "doFuture", "furrr")
+pkgs_backend <- c("future.batchtools", "future.callr", "future.mirai")
+pkgs <- c("globals", "listenv", "parallelly", "future", "future.tests", "progressr", pkgs_mapreduce, pkgs_backend)
+pkgs_extra <- c("BiocParallel.FutureParam", "future.tools", "future.mapreduce", "marshal")
 pkgs <- c(sort(pkgs), pkgs_extra)
 urls <- sprintf("https://%s.futureverse.org", pkgs)
 names(urls) <- pkgs
@@ -16,7 +18,7 @@ url: https://<%= pkg %>.futureverse.org
 home:
   links:
   - text: Roadmap/Milestones
-    href: https://github.com/HenrikBengtsson/<%= pkg %>/milestones
+    href: https://github.com/<%= gsub("(^.*:|[.]git$)", "", subset(gert::git_remote_list(), name == "origin")$url) %>/milestones
   - text: The Futureverse Project
     href: https://www.futureverse.org/
   - text: Futureverse User Forum
@@ -33,7 +35,7 @@ navbar:
       text: Packages
       menu:
 <% for (name in names(urls)) { %>
-      - text: <%= name %> <% if (name %in% pkgs_extra) { %>(experimental)<% } %>
+      - text: <%= name %> <% if (name %in% pkgs_extra) { %>(experimental)<% } else if (name %in% pkgs_backend) { %>(backend)<% } else if (name %in% pkgs_mapreduce) { %>(map-reduce)<% } %>
         href: <%= urls[name] %>
 <% } %>
     cran:

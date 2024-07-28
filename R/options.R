@@ -128,9 +128,9 @@
 #' environment variable \env{R_FUTURE_*} _when the \pkg{future} package is
 #' loaded_. This means that those environment variables must be set before
 #' the \pkg{future} package is loaded in order to have an effect.
-#' For example, if `R_FUTURE_RNG_ONMISUSE = "ignore"`, then option
+#' For example, if `R_FUTURE_RNG_ONMISUSE="ignore"`, then option
 #' \option{future.rng.onMisuse} is set to `"ignore"` (character string).
-#' Similarly, if `R_FUTURE_GLOBALS_MAXSIZE = "50000000"`, then option
+#' Similarly, if `R_FUTURE_GLOBALS_MAXSIZE="50000000"`, then option
 #' \option{future.globals.maxSize} is set to `50000000` (numeric).
 #'
 #' @examples
@@ -188,6 +188,8 @@
 #' R_FUTURE_OUTPUT_WINDOWS_REENCODE
 #' future.journal
 #' R_FUTURE_JOURNAL
+#' R_FUTURE_GLOBALS_OBJECTSIZE_METHOD
+#' future.globals.objectSize.method
 #'
 #' @name future.options
 NULL
@@ -356,4 +358,14 @@ update_package_options <- function(debug = FALSE) {
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
+
+  ## future 1.34.0:
+  update_package_option("future.globals.objectSize.method", mode = "character", debug = debug)
+  if (is.null(getOption("future.globals.objectSize.method"))) {
+   if (exists("serializedSize", envir = getNamespace("parallelly"), inherits = FALSE)) {
+      options(future.globals.objectSize.method = "serializedSize")
+    }
+  }
+
+  update_package_option("future.plan.cleanup.legacy", mode = "logical", debug = debug)
 }

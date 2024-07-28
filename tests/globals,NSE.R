@@ -40,6 +40,10 @@ for (strategy in supportedStrategies()) {
   } %lazy% TRUE
   stopifnot(identical(v3, v0))
 
+  ## Make sure to shut down nested parallel workers
+  void %<-% { plan(sequential) }
+  print(void)
+
   message(sprintf("- Strategy: %s ... DONE", strategy))
 }
 

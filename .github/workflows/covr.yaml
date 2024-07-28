@@ -6,9 +6,9 @@ jobs:
   covr:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
-    timeout-minutes: 45
+    timeout-minutes: 60
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     name: covr
 
@@ -17,48 +17,39 @@ jobs:
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      RSPM: https://packagemanager.rstudio.com/cran/__linux__/jammy/latest
+      R_KEEP_PKG_SOURCE: yes
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      ## Test in other locale (optional)
+      LANGUAGE: ${{ matrix.config.language }}
       ## R CMD check
+      _R_CHECK_CRAN_INCOMING_: false
       _R_CHECK_LENGTH_1_CONDITION_: true
       _R_CHECK_LENGTH_1_LOGIC2_: true
       _R_CHECK_MATRIX_DATA_: true
-      _R_CHECK_CRAN_INCOMING_: false
+      _R_CHECK_SUGGESTS_ONLY_: true
+      _R_CHECK_THINGS_IN_TEMP_DIR_: true
+      RCMDCHECK_ERROR_ON: note
+      ## Specific to futures
+      R_FUTURE_RNG_ONMISUSE: error
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: r-lib/actions/setup-pandoc@v2
-
       - uses: r-lib/actions/setup-r@v2
         with:
-          r-version: release
+          use-public-rspm: true
 
-      - name: Query dependencies
-        run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
-        shell: Rscript {0}
-
-      - name: Cache R packages
-        uses: actions/cache@v3
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
-      - name: Install system dependencies
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
-        run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+          extra-packages: |
+            any::rcmdcheck
+            any::remotes
+            any::sessioninfo
+            any::covr
+          needs: check
 
       - name: Install dependencies
         run: |
-          install.packages(c("covr", "sessioninfo"))
           remotes::install_deps(dependencies = TRUE)
           install.packages(".", repos=NULL, type="source")
         shell: Rscript {0}
@@ -76,7 +67,8 @@ jobs:
           ##    https://app.codecov.io/gh/<org>/<repo>/settings
           ## 2. Set 'CODECOV_TOKEN' in GitHub Secrets:
           ##    https://github.com/<org>/<repo>/settings/environments/
-          coverage <- covr::package_coverage()
+          coverage <- covr::package_coverage(quiet = FALSE)
           print(coverage)
           covr::codecov(coverage = coverage, token="${{secrets.CODECOV_TOKEN}}")
         shell: Rscript {0}
+

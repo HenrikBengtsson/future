@@ -19,18 +19,20 @@ navbar:
     pkgs:
       text: Packages
       menu:
-      - text: doFuture 
+      - text: doFuture (map-reduce)
         href: https://doFuture.futureverse.org
-      - text: furrr 
+      - text: furrr (map-reduce)
         href: https://furrr.futureverse.org
       - text: future 
         href: https://future.futureverse.org
-      - text: future.apply 
+      - text: future.apply (map-reduce)
         href: https://future.apply.futureverse.org
-      - text: future.batchtools 
+      - text: future.batchtools (backend)
         href: https://future.batchtools.futureverse.org
-      - text: future.callr 
+      - text: future.callr (backend)
         href: https://future.callr.futureverse.org
+      - text: future.mirai (backend)
+        href: https://future.mirai.futureverse.org
       - text: future.tests 
         href: https://future.tests.futureverse.org
       - text: globals 
@@ -45,8 +47,6 @@ navbar:
         href: https://BiocParallel.FutureParam.futureverse.org
       - text: future.tools (experimental)
         href: https://future.tools.futureverse.org
-      - text: future.mirai (experimental)
-        href: https://future.mirai.futureverse.org
       - text: future.mapreduce (experimental)
         href: https://future.mapreduce.futureverse.org
       - text: marshal (experimental)
