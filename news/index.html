@@ -23,7 +23,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">future</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.2-9008</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.33.2-9011</span>
       </span>
     </div>
 
@@ -164,6 +164,10 @@
 <div class="section level3">
 <h3 id="new-features-development-version">New Features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li>Added support for backend maintainers to specify “cleanup” hook functions on future strategies, which are called when switching future plan. These hook functions are specified via the optional <code>cleanup</code> attribute, cf. <code>attr(cluster, "cleanup")</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="performance-development-version">Performance<a class="anchor" aria-label="anchor" href="#performance-development-version"></a></h3>
+<ul><li>Size calculation of globals is now done using the much faster <code><a href="https://parallelly.futureverse.org/reference/serializedSize.html" class="external-link">parallelly::serializedSize()</a></code>.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug Fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
