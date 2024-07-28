@@ -7,7 +7,7 @@ objectSize <- function(x, depth = 3L, enclosure = getOption("future.globals.obje
   if (isNamespace(x)) return(0)
   if (depth <= 0) return(0)
 
-  method <- getOption("future.globals.objectSize.method", "objectSize")
+  method <- getOption("future.globals.objectSize.method", "serializedSize")
   if (method == "serializedSize") {
     size <- serializedSize(x)
     return(size)

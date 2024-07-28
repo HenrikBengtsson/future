@@ -361,11 +361,5 @@ update_package_options <- function(debug = FALSE) {
 
   ## future 1.34.0:
   update_package_option("future.globals.objectSize.method", mode = "character", debug = debug)
-  if (is.null(getOption("future.globals.objectSize.method"))) {
-   if (exists("serializedSize", envir = getNamespace("parallelly"), inherits = FALSE)) {
-      options(future.globals.objectSize.method = "serializedSize")
-    }
-  }
-
   update_package_option("future.plan.cleanup.legacy", mode = "logical", debug = debug)
 }
