@@ -177,8 +177,22 @@ plan <- local({
   })
 
   plan_cleanup <- function() {
-    ClusterRegistry(action = "stop")
-  }
+    evaluator <- stack[[1L]]
+    
+    cleanup <- attr(evaluator, "cleanup", exact = TRUE)
+    if (!is.null(cleanup)) {
+      if (is.function(cleanup)) {
+        cleanup()
+      } else {
+        stop(FutureError(sprintf("Unknown type of 'cleanup' attribute on current future strategy: %s", sQuote(paste(class(cleanup), collapse = ", ")))))
+      }
+    } else {
+      ## Backward compatibility for future (<= 1.33.2)
+      if (getOption("future.plan.cleanup.legacy", FALSE)) {
+        ClusterRegistry(action = "stop")
+      }
+    }
+  } ## plan_cleanup()
 
   plan_init <- function() {
     evaluator <- stack[[1L]]
@@ -226,7 +240,7 @@ plan <- local({
                 paste(sQuote(class(evaluator)), collapse = ", "))
       }
     }
-  }
+  } ## plan_init()
 
 
   equal_strategy_stacks <- function(stack, other) {
@@ -266,10 +280,10 @@ plan <- local({
     ## Warn about 'multicore' on certain systems
     warn_about_multicore(newStack)
 
-    stack <<- newStack
-
-    ## Stop any (implicitly started) clusters?
+    ## Stop/cleanup any previously registered backends?
     if (cleanup) plan_cleanup()
+
+    stack <<- newStack
 
     ## Initiate future workers?
     if (init) plan_init()
@@ -283,7 +297,7 @@ plan <- local({
                 !is.na(nbrOfWorkers), nbrOfWorkers >= 1L)
 
     invisible(oldStack)
-  }
+  } ## plan_set()
 
 
   ## Main function
@@ -308,10 +322,10 @@ plan <- local({
       ## List stack of future strategies?
       return(stack)
     } else if (identical(strategy, "reset")) {
+      ## Stop/cleanup any previously registered backends?
+      if (.cleanup) plan_cleanup()
       ## Reset stack of future strategies?
       stack <<- defaultStack
-      ## Stop any (implicitly started) clusters?
-      if (.cleanup) plan_cleanup()
       return(stack)
     } else if (identical(strategy, "pop")) {
       ## Pop strategy stack and return old stack
@@ -575,4 +589,3 @@ resetWorkers.multicore <- function(x, ...) {
   FutureRegistry(reg, action = "collect-all", earlySignal = FALSE)
   stop_if_not(usedCores() == 0L)
 }
-

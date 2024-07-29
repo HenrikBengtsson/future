@@ -215,7 +215,7 @@ print(x[1,1])
 #> [1] 42
 ```
 
-Note how `x` was updated in-place. This is achived by `big.matrix`
+Note how `x` was updated in-place. This is achieved by `big.matrix`
 objects holds an external pointer to where the matrix data is stored;
 
 ```r
@@ -1143,6 +1143,7 @@ str(e)
 
 [data.table]: https://cran.r-project.org/package=data.table
 [arrow]: https://cran.r-project.org/package=arrow
+[bigmemory]: https://cran.r-project.org/package=bigmemory
 [cpp11]: https://cran.r-project.org/package=cpp11
 [DBI]: https://cran.r-project.org/package=DBI
 [inline]: https://cran.r-project.org/package=inline

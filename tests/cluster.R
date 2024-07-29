@@ -141,39 +141,6 @@ for (type in types) {
     res <- tryCatch(value(f), error = identity)
     stopifnot(inherits(res, "error"), inherits(res, "MyError"))    
   
-    message("*** cluster() - too large globals ...")
-    ooptsT <- options(future.globals.maxSize = object.size(1:1014))
-  
-    limit <- getOption("future.globals.maxSize")
-    cat(sprintf("Max total size of globals: %g bytes\n", limit))
-  
-    ## A large object
-    a <- 1:1014
-    yTruth <- sum(a)
-    size <- object.size(a)
-    cat(sprintf("a: %g bytes\n", size))
-    f <- future({ sum(a) })
-    print(f)
-    rm(list = "a")
-    v <- value(f)
-    print(v)
-    stopifnot(v == yTruth)
-  
-  
-    ## A too large object
-    a <- 1:1015
-    yTruth <- sum(a)
-    size <- object.size(a)
-    cat(sprintf("a: %g bytes\n", size))
-    res <- tryCatch(f <- future({ sum(a) }), error = identity)
-    rm(list = "a")
-    stopifnot(inherits(res, "error"))
-  
-    ## Undo options changed in this test
-    options(ooptsT)
-  
-    message("*** cluster() - too large globals ... DONE")
-  
     message("*** cluster() - installed libraries ...")
     f <- try(cluster({
       list(

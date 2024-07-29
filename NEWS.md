@@ -1,3 +1,25 @@
+# Version 1.34.0 [2024-07-29]
+
+## New Features
+
+ * Added support for backend maintainers to specify "cleanup" hook
+   functions on future strategies, which are called when switching
+   future plan. These hook functions are specified via the optional
+   `cleanup` attribute, cf. `attr(cluster, "cleanup")`.
+
+## Performance
+
+  * Size calculation of globals is now done using the much faster
+    `parallelly::serializedSize()`.
+
+## Bug Fixes
+
+ * `resolved()` for `ClusterFuture`:s would produce `Error:
+   'inherits(future, "Future")' is not TRUE` instead of an intended,
+   informative error message that the connection to the parallel
+   worker is broken.
+
+
 # Version 1.33.2 [2024-03-23]
 
 ## Performance

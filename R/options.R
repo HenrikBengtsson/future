@@ -188,6 +188,8 @@
 #' R_FUTURE_OUTPUT_WINDOWS_REENCODE
 #' future.journal
 #' R_FUTURE_JOURNAL
+#' R_FUTURE_GLOBALS_OBJECTSIZE_METHOD
+#' future.globals.objectSize.method
 #'
 #' @name future.options
 NULL
@@ -356,4 +358,8 @@ update_package_options <- function(debug = FALSE) {
   ## SETTINGS USED FOR DEPRECATING FEATURES
   ## future 1.22.0:
   update_package_option("future.globals.keepWhere", mode = "logical", debug = debug)
+
+  ## future 1.34.0:
+  update_package_option("future.globals.objectSize.method", mode = "character", debug = debug)
+  update_package_option("future.plan.cleanup.legacy", mode = "logical", debug = debug)
 }

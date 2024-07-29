@@ -46,4 +46,7 @@ cluster <- function(..., persistent = FALSE, workers = availableWorkers(), envir
 }
 class(cluster) <- c("cluster", "multiprocess", "future", "function")
 attr(cluster, "init") <- TRUE
+attr(cluster, "cleanup") <- function() {
+  ClusterRegistry(action = "stop")
+}
 attr(cluster, "tweakable") <- quote(c(makeClusterPSOCK_args(), "persistent"))

@@ -1,12 +1,12 @@
 Package: future
-Version: 1.33.2
+Version: 1.34.0
 Title: Unified Parallel and Distributed Processing in R for Everyone
 Imports:
     digest,
     globals (>= 0.16.1),
     listenv (>= 0.8.0),
     parallel,
-    parallelly (>= 1.34.0),
+    parallelly (>= 1.38.0),
     utils
 Suggests:
     methods,
@@ -40,5 +40,5 @@ ByteCompile: TRUE
 URL: https://future.futureverse.org, https://github.com/HenrikBengtsson/future
 BugReports: https://github.com/HenrikBengtsson/future/issues
 Encoding: UTF-8
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)

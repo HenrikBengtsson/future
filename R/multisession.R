@@ -37,7 +37,7 @@
 #'
 #' @return
 #' A \link{MultisessionFuture}.
-#' If `workers == 1`, then all processing using done in the
+#' If `workers == 1`, then all processing is done in the
 #' current/main \R session and we therefore fall back to using a
 #' lazy future.  To override this fallback, use `workers = I(1)`.
 #'
@@ -81,4 +81,7 @@ multisession <- function(..., workers = availableCores(), lazy = FALSE, rscript_
 }
 class(multisession) <- c("multisession", "cluster", "multiprocess", "future", "function")
 attr(multisession, "init") <- TRUE
+attr(multisession, "cleanup") <- function() {
+  ClusterRegistry(action = "stop")
+}
 attr(multisession, "untweakable") <- c("persistent")
