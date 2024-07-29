@@ -6,7 +6,7 @@ jobs:
   covr:
     if: "! contains(github.event.head_commit.message, '[ci skip]')"    
 
-    timeout-minutes: 60
+    timeout-minutes: 120
 
     runs-on: ubuntu-latest
 
