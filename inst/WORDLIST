@@ -34,6 +34,7 @@ FutureRegistry
 FutureResult
 FutureStrategy
 FutureStrategyList
+Futureverse
 FutureWarning
 Globals
 HB
@@ -169,6 +170,7 @@ baseenv
 batchtools
 bc
 bfr
+bigmemory
 bioconductor
 calc
 callr
@@ -332,6 +334,7 @@ nbrOfWorkers
 nc
 ncdf
 ncid
+ncol
 ncores
 ncvar
 nd
@@ -391,6 +394,7 @@ resignal
 resignaled
 reticulate
 revdepcheck
+rhub
 rng
 rnorm
 roundtrip
