@@ -215,7 +215,7 @@ print(x[1,1])
 #> [1] 42
 ```
 
-Note how `x` was updated in-place. This is achived by `big.matrix`
+Note how `x` was updated in-place. This is achieved by `big.matrix`
 objects holds an external pointer to where the matrix data is stored;
 
 ```r
